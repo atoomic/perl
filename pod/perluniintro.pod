@@ -990,7 +990,7 @@ L<Unicode::UCD>
 
 =head1 ACKNOWLEDGMENTS
 
-Thanks to the kind readers of the perl7-porters@perl.org,
+Thanks to the kind readers of the perl5-porters@perl.org,
 perl-unicode@perl.org, linux-utf8@nl.linux.org, and unicore@unicode.org
 mailing lists for their valuable feedback.
 

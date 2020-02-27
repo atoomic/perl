@@ -48,7 +48,7 @@ ok($TEST++, 1, 'Loaded');
 # cond_wait and cond_timedwait extended tests adapted from cond.t
 
 # The two skips later on in these tests refer to this quote from the
-# pod/perl783delta.pod:
+# pod/perl583delta.pod:
 #
 # =head1 Platform Specific Problems
 #

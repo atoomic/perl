@@ -1,6 +1,6 @@
 =head1 NAME
 
-perl782delta - what is new for perl v5.8.2
+perl582delta - what is new for perl v5.8.2
 
 =head1 DESCRIPTION
 
@@ -8,8 +8,8 @@ This document describes differences between the 5.8.1 release and
 the 5.8.2 release.
 
 If you are upgrading from an earlier release such as 5.6.1, first read
-the L<perl78delta>, which describes differences between 5.6.0 and
-5.8.0, and the L<perl781delta>, which describes differences between
+the L<perl58delta>, which describes differences between 5.6.0 and
+5.8.0, and the L<perl581delta>, which describes differences between
 5.8.0 and 5.8.1.
 
 =head1 Incompatible Changes
@@ -133,7 +133,7 @@ as follows
 
 with the release following soon after, when testing is complete.
 
-See L<perl781delta/"Future Directions"> for more soothsaying.
+See L<perl581delta/"Future Directions"> for more soothsaying.
 
 =head1 Reporting Bugs
 

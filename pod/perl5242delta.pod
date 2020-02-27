@@ -2,7 +2,7 @@
 
 =head1 NAME
 
-perl7242delta - what is new for perl v5.24.2
+perl5242delta - what is new for perl v5.24.2
 
 =head1 DESCRIPTION
 
@@ -10,7 +10,7 @@ This document describes differences between the 5.24.1 release and the 5.24.2
 release.
 
 If you are upgrading from an earlier release such as 5.24.0, first read
-L<perl7241delta>, which describes differences between 5.24.0 and 5.24.1.
+L<perl5241delta>, which describes differences between 5.24.0 and 5.24.1.
 
 =head1 Security
 
@@ -20,8 +20,8 @@ The handling of (the removal of) C<'.'> in C<@INC> in L<base> has been
 improved.  This resolves some problematic behaviour in the approach taken in
 Perl 5.24.1, which is probably best described in the following two threads on
 the Perl 5 Porters mailing list:
-L<http://www.nntp.perl.org/group/perl.perl7.porters/2016/08/msg238991.html>,
-L<http://www.nntp.perl.org/group/perl.perl7.porters/2016/10/msg240297.html>.
+L<http://www.nntp.perl.org/group/perl.perl5.porters/2016/08/msg238991.html>,
+L<http://www.nntp.perl.org/group/perl.perl5.porters/2016/10/msg240297.html>.
 
 =head2 "Escaped" colons and relative paths in PATH
 

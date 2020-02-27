@@ -10,7 +10,7 @@ This document describes differences between the 5.30.0 release and the 5.30.1
 release.
 
 If you are upgrading from an earlier release such as 5.29.0, first read
-L<perl7300delta>, which describes differences between 5.29.0 and 5.30.0.
+L<perl5300delta>, which describes differences between 5.29.0 and 5.30.0.
 
 =head1 Incompatible Changes
 
@@ -50,7 +50,7 @@ canonical repository and to describe the new GitHub pull request workflow.
 The C<ECHO> macro is now defined.  This is used in a C<dtrace> rule that was
 originally changed for FreeBSD, and the FreeBSD make apparently predefines it.
 The Solaris make does not predefine C<ECHO> which broke this rule on Solaris.
-L<[perl #17057]|https://github.com/perl/perl7/issues/17057>
+L<[perl #17057]|https://github.com/perl/perl5/issues/17057>
 
 =back
 
@@ -74,7 +74,7 @@ the current code page.
 For the second we now decode the locale name ourselves, and always decode it as
 UTF-8.
 
-L<[perl #16922]|https://github.com/perl/perl7/issues/16922>
+L<[perl #16922]|https://github.com/perl/perl5/issues/16922>
 
 =back
 
@@ -86,37 +86,37 @@ L<[perl #16922]|https://github.com/perl/perl7/issues/16922>
 
 Setting C<$)> now properly sets supplementary group ids, if you have the
 necessary privileges.
-L<[perl #17031]|https://github.com/perl/perl7/issues/17031>
+L<[perl #17031]|https://github.com/perl/perl5/issues/17031>
 
 =item *
 
 C<readline @foo> now evaluates C<@foo> in scalar context.  Previously, it would
 be evaluated in list context, and since readline() pops only one argument from
 the stack, the stack could underflow, or be left with unexpected values on it.
-L<[perl #16929]|https://github.com/perl/perl7/issues/16929>
+L<[perl #16929]|https://github.com/perl/perl5/issues/16929>
 
 =item *
 
 sv_gets() now recovers better if the target SV is modified by a signal handler.
-L<[perl #16960]|https://github.com/perl/perl7/issues/16960>
+L<[perl #16960]|https://github.com/perl/perl5/issues/16960>
 
 =item *
 
 Matching a non-C<SVf_UTF8> string against a regular expression containing
 Unicode literals could leak an SV on each match attempt.
-L<[perl #17140]|https://github.com/perl/perl7/issues/17140>
+L<[perl #17140]|https://github.com/perl/perl5/issues/17140>
 
 =item *
 
 C<< sprintf("%.*a", -10000, $x) >> would cause a buffer overflow due to
 mishandling of the negative precision value.
-L<[perl #16942]|https://github.com/perl/perl7/issues/16942>
+L<[perl #16942]|https://github.com/perl/perl5/issues/16942>
 
 =item *
 
 C<scalar()> on a reference could cause an erroneous assertion failure during
 compilation.
-L<[perl #16969]|https://github.com/perl/perl7/issues/16969>
+L<[perl #16969]|https://github.com/perl/perl5/issues/16969>
 
 =back
 

@@ -14,7 +14,7 @@ the Perl core.
 
 =head2 Perl 5 Porters
 
-Subscribers to perl7-porters (the porters themselves) come in several flavours.
+Subscribers to perl5-porters (the porters themselves) come in several flavours.
 Some are quiet curious lurkers, who rarely pitch in and instead watch
 the ongoing development to ensure they're forewarned of new changes or
 features in Perl.  Some are representatives of vendors, who are there
@@ -200,7 +200,7 @@ for a few words and phrases.
 If something in the Perl core is marked as B<experimental>, we may change
 its behaviour, deprecate or remove it without notice. While we'll always
 do our best to smooth the transition path for users of experimental
-features, you should contact the perl7-porters mailinglist if you find
+features, you should contact the perl5-porters mailinglist if you find
 an experimental feature useful and want to help shape its future.
 
 Experimental features must be experimental in two stable releases before being
@@ -225,7 +225,7 @@ When a module is deprecated, it will also be made available on CPAN.
 Installing it from CPAN will silence deprecation warnings for that module.
 
 If you use a deprecated feature or module and believe that its removal from
-the Perl core would be a mistake, please contact the perl7-porters
+the Perl core would be a mistake, please contact the perl5-porters
 mailinglist and plead your case.  We don't deprecate things without a good
 reason, but sometimes there's a counterargument we haven't considered.
 Historically, we did not distinguish between "deprecated" and "discouraged"
@@ -375,10 +375,10 @@ other proposals if they're keen to ensure certain fixes don't get overlooked
 or fear they already have been.
 
 Other voting mechanisms may also be used instead (e.g. sending mail to
-perl7-porters and at least two other committers responding to the list
+perl5-porters and at least two other committers responding to the list
 giving their assent), as long as the same number of votes is gathered in a
 transparent manner.  Specifically, proposals of which changes to cherry-pick
-must be visible to everyone on perl7-porters so that the views of everyone
+must be visible to everyone on perl5-porters so that the views of everyone
 interested may be heard.
 
 It is not necessary for voting to be held on cherry-picking perldelta
@@ -466,7 +466,7 @@ As a last resort, however:
 
 
 If the author's vision of the future of their module is sufficiently
-different from the vision of the pumpkin holder and perl7-porters as a
+different from the vision of the pumpkin holder and perl5-porters as a
 whole so as to cause serious problems for Perl, the pumpkin holder may
 choose to formally fork the version of the module in the Perl core from the
 one maintained by the author.  This should not be done lightly and
@@ -486,7 +486,7 @@ see if a remerging of the two branches is possible down the road.
 
 In all dealings with contributed modules, everyone maintaining Perl should
 keep in mind that the code belongs to the original author, that they may
-not be on perl7-porters at any given time, and that a patch is not
+not be on perl5-porters at any given time, and that a patch is not
 official unless it has been integrated into the author's copy of the
 module.  To aid with this, and with points #1, #2, and #3 above, contact
 information for the authors of all contributed modules should be kept with
@@ -544,7 +544,7 @@ it doesn't need to fully describe how all old versions used to work.
 
 =head1 STANDARDS OF CONDUCT
 
-The official forum for the development of perl is the perl7-porters mailing
+The official forum for the development of perl is the perl5-porters mailing
 list, mentioned above, and its bugtracker at rt.perl.org.  Posting to the
 list and the bugtracker is not a right: all participants in discussion are
 expected to adhere to a standard of conduct.
@@ -602,5 +602,5 @@ Steffen Müller, Todd Rinaldo.
 
 =head1 CREDITS
 
-"Social Contract about Contributed Modules" originally by Russ Allbery E<lt>rra@stanford.eduE<gt> and the perl7-porters.
+"Social Contract about Contributed Modules" originally by Russ Allbery E<lt>rra@stanford.eduE<gt> and the perl5-porters.
 
