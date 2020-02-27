@@ -29,10 +29,9 @@ use File::Path;
 use File::Spec;
 use Text::Tabs;
 use re "/aa";
-use feature 'state';
 
+use feature 'state';
 use feature ':all';
-no warnings 'experimental::signatures'; ## FIXME
 
 sub DEBUG () { 0 }  # Set to 0 for production; 1 for development
 my $debugging_build = $Config{"ccflags"} =~ /-DDEBUGGING/;
