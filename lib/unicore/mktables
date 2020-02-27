@@ -31,6 +31,9 @@ use Text::Tabs;
 use re "/aa";
 use feature 'state';
 
+use feature ':all';
+no warnings 'experimental::signatures'; ## FIXME
+
 sub DEBUG () { 0 }  # Set to 0 for production; 1 for development
 my $debugging_build = $Config{"ccflags"} =~ /-DDEBUGGING/;
 
@@ -1717,18 +1720,12 @@ sub populate_char_info ($) {
 #    return $addr;
 #}
 
-sub max ($$) {
-    my $a = shift;
-    my $b = shift;
-    return $a if $a >= $b;
-    return $b;
+sub max($a, $b) {
+    return $a >= $b ? $a : $b;
 }
 
-sub min ($$) {
-    my $a = shift;
-    my $b = shift;
-    return $a if $a <= $b;
-    return $b;
+sub min($a, $b) {
+    return $a <= $b ? $a : $b;
 }
 
 sub clarify_number ($) {
@@ -6017,8 +6014,7 @@ END
         return $return;
     }
 
-    sub merge_single_annotation_line ($$$) {
-        my ($output, $annotation, $annotation_column) = @_;
+    sub merge_single_annotation_line ($output, $annotation, $annotation_column) {
 
         # This appends an annotation comment, $annotation, to $output,
         # starting in or after column $annotation_column, removing any
@@ -9702,7 +9698,7 @@ sub display_chr {
     return "\x{25CC}$chr";
 }
 
-sub join_lines($) {
+sub join_lines {
     # Returns lines of the input joined together, so that they can be folded
     # properly.
     # This causes continuation lines to be joined together into one long line
@@ -9765,7 +9761,7 @@ sub join_lines($) {
     return $return;
 }
 
-sub simple_fold($;$$$) {
+sub simple_fold {
     # Returns a string of the input (string or an array of strings) folded
     # into multiple-lines each of no more than $MAX_LINE_WIDTH characters plus
     # a \n
@@ -9945,8 +9941,7 @@ sub property_ref {  # Returns a reference to a property object.
     return Property::property_ref(@_);
 }
 
-sub force_unlink ($) {
-    my $filename = shift;
+sub force_unlink ($filename) {
     return unless file_exists($filename);
     return if CORE::unlink($filename);
 
@@ -9956,15 +9951,12 @@ sub force_unlink ($) {
     return;
 }
 
-sub write ($$@) {
+sub write ($file, $use_utf8, @lines) {
     # Given a filename and references to arrays of lines, write the lines of
     # each array to the file
     # Filename can be given as an arrayref of directory names
 
     return Carp::carp_too_few_args(\@_, 3) if main::DEBUG && @_ < 3;
-
-    my $file  = shift;
-    my $use_utf8 = shift;
 
     # Get into a single string if an array, and get rid of, in Unix terms, any
     # leading '.'
@@ -9987,7 +9979,7 @@ sub write ($$@) {
 
     binmode $OUT, ":utf8" if $use_utf8;
 
-    while (defined (my $lines_ref = shift)) {
+    foreach my $lines_ref (@lines) {
         unless (@$lines_ref) {
             Carp::my_carp("An array of lines for writing to file '$file' is empty; writing it anyway;");
         }
@@ -10028,7 +10020,7 @@ sub Standardize($) {
     return $name;
 }
 
-sub standardize ($) {
+sub standardize ($str) {
     # Returns a lower-cased standardized name, without underscores.  This form
     # is chosen so that it can distinguish between any real versus superficial
     # Unicode name differences.  It relies on the fact that Unicode doesn't
@@ -10037,21 +10029,19 @@ sub standardize ($) {
     # names (the Name property), as they mostly, but not always follow these
     # rules.
 
-    my $name = Standardize(shift);
+    my $name = Standardize($str);
     return if !defined $name;
 
     $name =~ s/ (?<= .) _ (?= . ) //xg;
     return lc $name;
 }
 
-sub utf8_heavy_name ($$) {
+sub utf8_heavy_name ($table, $alias) {
     # Returns the name that utf8_heavy.pl will use to find a table.  XXX
     # perhaps this function should be placed somewhere, like Heavy.pl so that
     # utf8_heavy can use it directly without duplicating code that can get
     # out-of sync.
 
-    my $table = shift;
-    my $alias = shift;
     Carp::carp_extra_args(\@_) if main::DEBUG && @_;
 
     my $property = $table->property;
@@ -10070,7 +10060,7 @@ sub utf8_heavy_name ($$) {
 
 {   # Closure
 
-    my $indent_increment = " " x (($debugging_build) ? 2 : 0);
+    my $indent_increment = " " x ( $debugging_build ? 2 : 0);
     %main::already_output = ();
 
     $main::simple_dumper_nesting = 0;
@@ -11179,7 +11169,7 @@ sub process_NormalizationsTest {
     } # End of looping through the file
 }
 
-sub output_perl_charnames_line ($$) {
+sub output_perl_charnames_line ($a, $b) {
 
     # Output the entries in Perl_charnames specially, using 5 digits instead
     # of four.  This makes the entries a constant length, and simplifies
@@ -11187,7 +11177,7 @@ sub output_perl_charnames_line ($$) {
     # ordinals, but they are all private use or noncharacters which do not
     # have names, so won't be in this table.
 
-    return sprintf "%05X\t%s\n", $_[0], $_[1];
+    return sprintf "%05X\t%s\n", $a, $b;
 }
 
 { # Closure
@@ -13008,10 +12998,8 @@ sub register_fraction($) {
     return;
 }
 
-sub gcd($$) {   # Greatest-common-divisor; from
+sub gcd($a, $b) {   # Greatest-common-divisor; from
                 # http://en.wikipedia.org/wiki/Euclidean_algorithm
-    my ($a, $b) = @_;
-
     use integer;
 
     while ($b != 0) {
@@ -13022,9 +13010,7 @@ sub gcd($$) {   # Greatest-common-divisor; from
     return $a;
 }
 
-sub reduce_fraction($) {
-    my $fraction_ref = shift;
-
+sub reduce_fraction($fraction_ref) {
     # Reduce a fraction to lowest terms.  The Unicode data may be reducible,
     # hence this is needed.  The argument is a reference to the
     # string denoting the fraction, which must be of the form:
@@ -15997,13 +15983,13 @@ END
     return;
 }
 
-sub register_file_for_name($$$) {
+sub register_file_for_name($table, $directory_ref, $file) {
     # Given info about a table and a datafile that it should be associated
     # with, register that association
 
-    my $table = shift;
-    my $directory_ref = shift;   # Array of the directory path for the file
-    my $file = shift;            # The file name in the final directory.
+    #my $table = shift;
+    #my $directory_ref = shift;   # Array of the directory path for the file
+    #my $file = shift;            # The file name in the final directory.
     Carp::carp_extra_args(\@_) if main::DEBUG && @_;
 
     trace "table=$table, file=$file, directory=@$directory_ref, fate=", $table->fate if main::DEBUG && $to_trace;
@@ -16191,18 +16177,18 @@ sub register_file_for_name($$$) {
                      # conflicts
     my %full_dir_name_of;   # Full length names of directories used.
 
-    sub construct_filename($$$) {
+    sub construct_filename($name, $mutable, $directories_ref) {
         # Return a file name for a table, based on the table name, but perhaps
         # changed to get rid of non-portable characters in it, and to make
         # sure that it is unique on a file system that allows the names before
         # any period to be at most 8 characters (DOS).  While we're at it
         # check and complain if there are any directory conflicts.
 
-        my $name = shift;       # The name to start with
-        my $mutable = shift;    # Boolean: can it be changed?  If no, but
+        #my $name = shift;       # The name to start with
+        #my $mutable = shift;    # Boolean: can it be changed?  If no, but
                                 # yet it must be to work properly, a warning
                                 # is given
-        my $directories_ref = shift;  # A reference to an array containing the
+        #my $directories_ref = shift;  # A reference to an array containing the
                                 # path to the file, with each element one path
                                 # component.  This is used because the same
                                 # name can be used in different directories.
@@ -16333,7 +16319,7 @@ my $FILLER = 3;     # Length of initial boiler-plate columns in a pod line
                     #   1   for the flag
                     #   1   for the space between the flag and the main data
 
-sub format_pod_line ($$$;$$) {
+sub format_pod_line {
     # Take a pod line and return it, formatted properly
 
     my $first_column_width = shift;
@@ -18833,12 +18819,10 @@ my @white_space_separators = ( # This used only for making the test script.
                             '   '
                         );
 
-sub generate_separator($) {
+sub generate_separator($lhs) {
     # This used only for making the test script.  It generates the colon or
     # equal separator between the property and property value, with random
     # white space surrounding the separator
-
-    my $lhs = shift;
 
     return "" if $lhs eq "";  # No separator if there's only one (the r) side
 
@@ -18853,20 +18837,20 @@ sub generate_separator($) {
             . $spaces_after;
 }
 
-sub generate_tests($$$$$) {
+sub generate_tests($lhs, $rhs, $valid_code, $invalid_code, $warning) {
     # This used only for making the test script.  It generates test cases that
     # are expected to compile successfully in perl.  Note that the LHS and
     # RHS are assumed to already be as randomized as the caller wants.
 
-    my $lhs = shift;           # The property: what's to the left of the colon
+    #my $lhs = shift;           # The property: what's to the left of the colon
                                #  or equals separator
-    my $rhs = shift;           # The property value; what's to the right
-    my $valid_code = shift;    # A code point that's known to be in the
+    #my $rhs = shift;           # The property value; what's to the right
+    #my $valid_code = shift;    # A code point that's known to be in the
                                # table given by LHS=RHS; undef if table is
                                # empty
-    my $invalid_code = shift;  # A code point known to not be in the table;
+    #my $invalid_code = shift;  # A code point known to not be in the table;
                                # undef if the table is all code points
-    my $warning = shift;
+    #my $warning = shift;
 
     # Get the colon or equal
     my $separator = generate_separator($lhs);
@@ -18895,19 +18879,19 @@ EOC
     return @output;
 }
 
-sub generate_wildcard_tests($$$$$) {
+sub generate_wildcard_tests($lhs, $rhs, $valid_code, $invalid_code, $warning) {
     # This used only for making the test script.  It generates wildcardl
     # matching test cases that are expected to compile successfully in perl.
 
-    my $lhs = shift;           # The property: what's to the left of the
+    #my $lhs = shift;           # The property: what's to the left of the
                                # or equals separator
-    my $rhs = shift;           # The property value; what's to the right
-    my $valid_code = shift;    # A code point that's known to be in the
+    #my $rhs = shift;           # The property value; what's to the right
+    #my $valid_code = shift;    # A code point that's known to be in the
                                # table given by LHS=RHS; undef if table is
                                # empty
-    my $invalid_code = shift;  # A code point known to not be in the table;
+    #my $invalid_code = shift;  # A code point known to not be in the table;
                                # undef if the table is all code points
-    my $warning = shift;
+    #my $warning = shift;
 
     return if $lhs eq "";
     return if $lhs =~ / ^ Is_ /x;   # These are not currently supported
@@ -18923,14 +18907,14 @@ sub generate_wildcard_tests($$$$$) {
     return @output;
 }
 
-sub generate_error($$$) {
+sub generate_error($lhs, $rhs, $already_in_error) {
     # This used only for making the test script.  It generates test cases that
     # are expected to not only not match, but to be syntax or similar errors
 
-    my $lhs = shift;                # The property: what's to the left of the
+    #my $lhs = shift;                # The property: what's to the left of the
                                     # colon or equals separator
-    my $rhs = shift;                # The property value; what's to the right
-    my $already_in_error = shift;   # Boolean; if true it's known that the
+    #my $rhs = shift;                # The property value; what's to the right
+    #my $already_in_error = shift;   # Boolean; if true it's known that the
                                 # unmodified LHS and RHS will cause an error.
                                 # This routine should not force another one
     # Get the colon or equal
@@ -19059,7 +19043,7 @@ sub randomize_stricter_name {
     return join "", @sections;
 }
 
-sub randomize_loose_name($;$) {
+sub randomize_loose_name {
     # This used only for making the test script
 
     my $name = shift;
