@@ -2,7 +2,7 @@
 
 =head1 NAME
 
-perl7180delta - what is new for perl v5.18.0
+perl5180delta - what is new for perl v5.18.0
 
 =head1 DESCRIPTION
 
@@ -10,7 +10,7 @@ This document describes differences between the v5.16.0 release and the v5.18.0
 release.
 
 If you are upgrading from an earlier release such as v5.14.0, first read
-L<perl7160delta>, which describes differences between v5.14.0 and v5.16.0.
+L<perl5160delta>, which describes differences between v5.14.0 and v5.16.0.
 
 =head1 Core Enhancements
 
@@ -772,7 +772,7 @@ granted that the platforms are safe and supported.  If they do not become
 buildable and regularly smoked, support for them may be actively removed in
 future releases.  If you have an interest in these platforms and you can lend
 your time, expertise, or hardware to help support these platforms, please let
-the perl development effort know by emailing C<perl7-porters@perl.org>.
+the perl development effort know by emailing C<perl5-porters@perl.org>.
 
 Some platforms that appear otherwise entirely dead are also on the short list
 for removal between now and v5.20.0:
@@ -1980,7 +1980,7 @@ x86_64-linux-5.13.6-thread-multi.  It is unset by default.
 This feature was requested by Tim Bunce, who observed that
 C<INSTALL_BASE> creates a library structure that does not
 differentiate by perl version.  Instead, it places architecture
-specific files in "$install_base/lib/perl7/$archname".  This makes
+specific files in "$install_base/lib/perl5/$archname".  This makes
 it difficult to use a common C<INSTALL_BASE> library path with
 multiple versions of perl.
 
@@ -2200,7 +2200,7 @@ Perl no longer mangles the environment block, e.g. when launching a new
 sub-process, when the environment contains non-ASCII characters. Known
 problems still remain, however, when the environment contains characters
 outside of the current ANSI codepage (e.g. see the item about Unicode in
-C<%ENV> in L<http://perl7.git.perl.org/perl.git/blob/HEAD:/Porting/todo.pod>).
+C<%ENV> in L<http://perl5.git.perl.org/perl.git/blob/HEAD:/Porting/todo.pod>).
 [perl #113536]
 
 =item *
@@ -2272,7 +2272,7 @@ It can be enabled in a perl build by running F<Configure> with
 B<-Accflags=-DPERL_NEW_COPY_ON_WRITE>, and we would encourage XS authors
 to try their code with such an enabled perl, and provide feedback.
 Unfortunately, there is not yet a good guide to updating XS code to cope
-with COW.  Until such a document is available, consult the perl7-porters
+with COW.  Until such a document is available, consult the perl5-porters
 mailing list.
 
 It breaks a few XS modules by allowing copy-on-write scalars to go
@@ -3763,7 +3763,7 @@ will be sent off to perlbug@perl.org to be analysed by the Perl porting team.
 
 If the bug you are reporting has security implications, which make it
 inappropriate to send to a publicly archived mailing list, then please send it
-to perl7-security-report@perl.org.  This points to a closed subscription
+to perl5-security-report@perl.org.  This points to a closed subscription
 unarchived mailing list, which includes all the core committers, who will be
 able to help assess the impact of issues, figure out a resolution, and help
 co-ordinate the release of patches to mitigate or fix the problem across all

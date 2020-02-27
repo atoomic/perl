@@ -1,7 +1,7 @@
 For an overview of what's changed in this release, see pod/perldelta.pod.
 
 For the details of changes in previous releases, see the individual
-perlNNNdelta.pod files. For example, pod/perl788delta.pod describes the
+perlNNNdelta.pod files. For example, pod/perl588delta.pod describes the
 changes between versions 5.8.7 and 5.8.8.
 
 For a list of contributors to perl, see AUTHORS.

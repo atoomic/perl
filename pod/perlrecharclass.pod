@@ -1041,7 +1041,7 @@ use it will raise a warning, unless disabled via
  no warnings "experimental::regex_sets";
 
 Comments on this feature are welcome; send email to
-C<perl7-porters@perl.org>.
+C<perl5-porters@perl.org>.
 
 The rules used by L<C<use re 'strict>|re/'strict' mode> apply to this
 construct.

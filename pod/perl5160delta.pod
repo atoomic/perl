@@ -2,7 +2,7 @@
 
 =head1 NAME
 
-perl7160delta - what is new for perl v5.16.0
+perl5160delta - what is new for perl v5.16.0
 
 =head1 DESCRIPTION
 
@@ -10,7 +10,7 @@ This document describes differences between the 5.14.0 release and
 the 5.16.0 release.
 
 If you are upgrading from an earlier release such as 5.12.0, first read
-L<perl7140delta>, which describes differences between 5.12.0 and
+L<perl5140delta>, which describes differences between 5.12.0 and
 5.14.0.
 
 Some bug fixes in this release have been backported to later
@@ -558,7 +558,7 @@ This section serves as a notice of features that are I<likely> to be
 removed or L<deprecated|perlpolicy/deprecated> in the next release of
 perl (5.18.0).  If your code depends on these features, you should
 contact the Perl 5 Porters via the L<mailing
-list|http://lists.perl.org/list/perl7-porters.html> or L<perlbug> to
+list|http://lists.perl.org/list/perl5-porters.html> or L<perlbug> to
 explain your use case and inform the deprecation process.
 
 =head2 Core Modules
@@ -4292,7 +4292,7 @@ analysed by the Perl porting team.
 
 If the bug you are reporting has security implications, which make it
 inappropriate to send to a publicly archived mailing list, then please
-send it to perl7-security-report@perl.org.  This points to a closed
+send it to perl5-security-report@perl.org.  This points to a closed
 subscription unarchived mailing list, which includes all core
 committers, who will be able to help assess the impact of issues, figure
 out a resolution, and help co-ordinate the release of patches to
