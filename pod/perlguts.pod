@@ -3613,7 +3613,7 @@ to distinguish them from malloced ops.
 
 Until May 1997, this document was maintained by Jeff Okamoto
 E<lt>okamoto@corp.hp.comE<gt>.  It is now maintained as part of Perl
-itself by the Perl 5 Porters E<lt>perl5-porters@perl.orgE<gt>.
+itself by the Perl 5 Porters E<lt>perl7-porters@perl.orgE<gt>.
 
 With lots of help and suggestions from Dean Roehrich, Malcolm Beattie,
 Andreas Koenig, Paul Hudson, Ilya Zakharevich, Paul Marquess, Neil

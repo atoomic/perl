@@ -1,6 +1,6 @@
 =head1 NAME
 
-perl581delta - what is new for perl v5.8.1
+perl781delta - what is new for perl v5.8.1
 
 =head1 DESCRIPTION
 
@@ -8,7 +8,7 @@ This document describes differences between the 5.8.0 release and
 the 5.8.1 release.
 
 If you are upgrading from an earlier release such as 5.6.1, first read
-the L<perl58delta>, which describes differences between 5.6.0 and
+the L<perl78delta>, which describes differences between 5.6.0 and
 5.8.0.
 
 In case you are wondering about 5.6.1, it was bug-fix-wise rather
@@ -222,7 +222,7 @@ Finally, a reminder of an impending feature removal.
 =head3 (Reminder) Pseudo-hashes are deprecated (really)
 
 Pseudo-hashes were deprecated in Perl 5.8.0 and will be removed in
-Perl 5.10.0, see L<perl58delta> for details.  Each attempt to access
+Perl 5.10.0, see L<perl78delta> for details.  Each attempt to access
 pseudo-hashes will trigger the warning C<Pseudo-hashes are deprecated>.
 If you really want to continue using pseudo-hashes but not to see the
 deprecation warnings, use:
@@ -235,7 +235,7 @@ expect the data structures to be pseudohashes any more.
 =head3 (Reminder) 5.005-style threads are deprecated (really)
 
 5.005-style threads (activated by C<use Thread;>) were deprecated in
-Perl 5.8.0 and will be removed after Perl 5.8, see L<perl58delta> for
+Perl 5.8.0 and will be removed after Perl 5.8, see L<perl78delta> for
 details.  Each 5.005-style thread creation will trigger the warning
 C<5.005 threads are deprecated>.  If you really want to continue
 using the 5.005 threads but not to see the deprecation warnings, use:
@@ -470,7 +470,7 @@ F<Foo-Bar/lib/Foo/Bar.pm> instead of F<Foo/Bar/Bar.pm>.
 Also, the boilerplate test is now called F<t/Foo-Bar.t>
 instead of F<t/1.t>.
 
-The Perl debugger (F<lib/perl5db.pl>) has now been extensively
+The Perl debugger (F<lib/perl7db.pl>) has now been extensively
 documented and bugs found while documenting have been fixed.
 
 C<perldoc> has been rewritten from scratch to be more robust and
@@ -482,10 +482,10 @@ to be experimental.)
 
 =head1 New Documentation
 
-perl573delta has been added to list the differences between the
+perl773delta has been added to list the differences between the
 (now quite obsolete) development releases 5.7.2 and 5.7.3.
 
-perl58delta has been added: it is the perldelta of 5.8.0, detailing
+perl78delta has been added: it is the perldelta of 5.8.0, detailing
 the differences between 5.6.0 and 5.8.0.
 
 perlartistic has been added: it is the Artistic License in pod format,
@@ -832,7 +832,7 @@ Certain Perl core C APIs like cxinc and regatom are no longer
 available at all to code outside the Perl core of the Perl core
 extensions.  This is intentional.  They never should have been
 available with the shorter names, and if you application depends on
-them, you should (be ashamed and) contact perl5-porters to discuss
+them, you should (be ashamed and) contact perl7-porters to discuss
 what are the proper APIs.
 
 Certain Perl core C APIs like C<Perl_list> are no longer available

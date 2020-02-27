@@ -91,7 +91,7 @@ sub _write_os2 {
       $Config::Config{version}, $threaded, $patchlevel, $data->{NAME};
     chomp $comment;
     if ($data->{INSTALLDIRS} and $data->{INSTALLDIRS} eq 'perl') {
-        $distname = 'perl5-porters@perl.org';
+        $distname = 'perl7-porters@perl.org';
         $comment = "Core $comment";
     }
     $comment = "$comment (Perl-config: $Config{config_args})";

@@ -56,7 +56,7 @@ notifications:
 ## use dedicated email for smoking ?
 #  email:
 #    recipients:
-#      - perl5-porters@perl.org
+#      - perl7-porters@perl.org
 #    on_success: never  # default: change
 #    on_failure: always # default: always
   irc:
@@ -68,7 +68,7 @@ notifications:
       - "Report for %{repository} (%{commit}) from %{author} (%{elapsed_time})"
       - "Status: %{message}"
       - "Build URL: %{build_url}"
-      - "GitHub URL: https://github.com/p5h/perl5demo/commit/%{commit}" # adjust this url to use the production repo
+      - "GitHub URL: https://github.com/p5h/perl7demo/commit/%{commit}" # adjust this url to use the production repo
     on_success: change # default: always
     on_failure: always # default: always
 #    use_notice: true

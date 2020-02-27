@@ -131,7 +131,7 @@ my %tests = (
 # fix, because the tests will act as a canary if we screw up string
 # eval propagation.
 
-my $perl58_fix = (
+my $perl78_fix = (
     $] >= 5.010 ?
     "" :
     "use autodie qw(fail_on_empty fail_on_false fail_on_undef); "
@@ -139,7 +139,7 @@ my $perl58_fix = (
 
 while (my ($test, $exception_expected) = each %tests) {
     eval "
-        $perl58_fix
+        $perl78_fix
         my \@array = $test;
     ";
 

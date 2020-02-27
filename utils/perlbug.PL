@@ -943,7 +943,7 @@ sub Help {
     print <<EOF;
 
 This program is designed to help you generate and send bug reports
-(and thank-you notes) about perl5 and the modules which ship with it.
+(and thank-you notes) about perl7 and the modules which ship with it.
 
 In most cases, you can just run "$0" interactively from a command
 line without any special arguments and follow the prompts.
@@ -1279,7 +1279,7 @@ B<perlthanks>
 
 
 This program is designed to help you generate and send bug reports
-(and thank-you notes) about perl5 and the modules which ship with it.
+(and thank-you notes) about perl7 and the modules which ship with it.
 
 In most cases, you can just run it interactively from a command
 line without any special arguments and follow the prompts.
@@ -1441,7 +1441,7 @@ a duplicate of an existing report, you may not receive a personal
 reply.
 
 If it is important to you that your bug be fixed, do monitor the
-perl5-porters@perl.org mailing list (mailing lists are moderated, your
+perl7-porters@perl.org mailing list (mailing lists are moderated, your
 message may take a while to show up) and the commit logs to development
 versions of Perl, and encourage the maintainers with kind words or
 offers of frosty beverages.  (Please do be kind to the maintainers.

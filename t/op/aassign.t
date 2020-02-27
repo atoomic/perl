@@ -541,7 +541,7 @@ SKIP: {
 
     # undef on LHS uses RHS as lvalue instead
     # Note this this just codifies existing behaviour - it may not be
-    # correct. See http://nntp.perl.org/group/perl.perl5.porters/240358.
+    # correct. See http://nntp.perl.org/group/perl.perl7.porters/240358.
 
     {
         ($x, $y, $z)  = (0, 10, 20);

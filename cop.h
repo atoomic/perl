@@ -80,20 +80,20 @@ typedef struct jmpenv JMPENV;
  * All the flexible exceptions code has been removed.
  * See the following threads for details:
  *
- *   http://www.xray.mpe.mpg.de/mailing-lists/perl5-porters/2004-07/msg00378.html
+ *   http://www.xray.mpe.mpg.de/mailing-lists/perl7-porters/2004-07/msg00378.html
  * 
  * Joshua's original patches (which weren't applied) and discussion:
  * 
- *   http://www.xray.mpe.mpg.de/mailing-lists/perl5-porters/1998-02/msg01396.html
- *   http://www.xray.mpe.mpg.de/mailing-lists/perl5-porters/1998-02/msg01489.html
- *   http://www.xray.mpe.mpg.de/mailing-lists/perl5-porters/1998-02/msg01491.html
- *   http://www.xray.mpe.mpg.de/mailing-lists/perl5-porters/1998-02/msg01608.html
- *   http://www.xray.mpe.mpg.de/mailing-lists/perl5-porters/1998-02/msg02144.html
- *   http://www.xray.mpe.mpg.de/mailing-lists/perl5-porters/1998-02/msg02998.html
+ *   http://www.xray.mpe.mpg.de/mailing-lists/perl7-porters/1998-02/msg01396.html
+ *   http://www.xray.mpe.mpg.de/mailing-lists/perl7-porters/1998-02/msg01489.html
+ *   http://www.xray.mpe.mpg.de/mailing-lists/perl7-porters/1998-02/msg01491.html
+ *   http://www.xray.mpe.mpg.de/mailing-lists/perl7-porters/1998-02/msg01608.html
+ *   http://www.xray.mpe.mpg.de/mailing-lists/perl7-porters/1998-02/msg02144.html
+ *   http://www.xray.mpe.mpg.de/mailing-lists/perl7-porters/1998-02/msg02998.html
  * 
  * Chip's reworked patch and discussion:
  * 
- *   http://www.xray.mpe.mpg.de/mailing-lists/perl5-porters/1999-03/msg00520.html
+ *   http://www.xray.mpe.mpg.de/mailing-lists/perl7-porters/1999-03/msg00520.html
  * 
  * The flaw in these patches (which went unnoticed at the time) was
  * that they moved some code that could potentially die() out of the
@@ -102,8 +102,8 @@ typedef struct jmpenv JMPENV;
  * 
  * The original patches that introduces flexible exceptions were:
  *
- * https://github.com/Perl/perl5/commit/312caa8e97f1c7ee342a9895c2f0e749625b4929
- * https://github.com/Perl/perl5/commit/14dd3ad8c9bf82cf09798a22cc89a9862dfd6d1a
+ * https://github.com/Perl/perl7/commit/312caa8e97f1c7ee342a9895c2f0e749625b4929
+ * https://github.com/Perl/perl7/commit/14dd3ad8c9bf82cf09798a22cc89a9862dfd6d1a
  *
  */
 

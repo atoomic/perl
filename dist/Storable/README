@@ -16,7 +16,7 @@
 +=======================================================================
 | Storable is distributed as a module, but is also part of the official
 | Perl core distribution, as of perl 5.8. 
-| Maintenance is partially done by the perl5-porters, and for cperl by cPanel.
+| Maintenance is partially done by the perl7-porters, and for cperl by cPanel.
 | We thank Raphael Manfredi for providing us with this very useful module.
 +=======================================================================
 
@@ -83,11 +83,11 @@ A Japanese translation of this man page is available at the Japanized
 Perl Resources Project <https://sourceforge.jp/projects/perldocjp/>.
 ------------------------------------------------------------------------
 
-The perl5-porters would like to thank
+The perl7-porters would like to thank
 
     Raphael Manfredi <Raphael_Manfredi@pobox.com>
 
-According to the perl5.8 Changes file, the following people have helped
+According to the perl7.8 Changes file, the following people have helped
 bring you this Storable release:
 
     Abhijit Menon-Sen <ams@wiw.org>

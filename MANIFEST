@@ -2111,7 +2111,7 @@ cpan/Test-Harness/t/object.t				Test::Harness test
 cpan/Test-Harness/t/parse.t				Test::Harness test
 cpan/Test-Harness/t/parser-config.t			Test::Harness test
 cpan/Test-Harness/t/parser-subclass.t			Test::Harness test
-cpan/Test-Harness/t/perl5lib.t				Test::Harness test
+cpan/Test-Harness/t/perl7lib.t				Test::Harness test
 cpan/Test-Harness/t/premature-bailout.t			Test::Harness test
 cpan/Test-Harness/t/process.t				Test::Harness test
 cpan/Test-Harness/t/prove.t				Test::Harness test
@@ -4635,47 +4635,47 @@ lib/overload/numbers.pm		Helper for overloading pragma
 lib/overload64.t		See if operator overloading works with 64-bit ints
 lib/overloading.pm		Pragma to lexically control overloading
 lib/overloading.t		Tests for overloading.pm
-lib/perl5db.pl			Perl debugging routines
-lib/perl5db.t			Tests for the Perl debugger
-lib/perl5db/t/break-on-dot	Test script used by perl5db.t
-lib/perl5db/t/breakpoint-bug	Test script used by perl5db.t
-lib/perl5db/t/disable-breakpoints-1	Test script used by perl5db.t
-lib/perl5db/t/disable-breakpoints-2	Test script used by perl5db.t
-lib/perl5db/t/disable-breakpoints-3	Test script used by perl5db.t
-lib/perl5db/t/EnableModule.pm	Tests for the Perl debugger
-lib/perl5db/t/eval-line-bug	Tests for the Perl debugger
-lib/perl5db/t/fact		Tests for the Perl debugger
-lib/perl5db/t/filename-line-breakpoint		Tests for the Perl debugger
-lib/perl5db/t/load-modules	Tests for the Perl debugger
-lib/perl5db/t/lsub-n		Test script used by perl5db.t
-lib/perl5db/t/lvalue-bug	Tests for the Perl debugger
-lib/perl5db/t/MyModule.pm	Tests for the Perl debugger
-lib/perl5db/t/proxy-constants	Tests for the Perl debugger
-lib/perl5db/t/rt-104168		Tests for the Perl debugger
-lib/perl5db/t/rt-120174		Tests for the Perl debugger
-lib/perl5db/t/rt-121509-restart-after-chdir		Tests for the Perl debugger
-lib/perl5db/t/rt-124203		Test threads in the Perl debugger
-lib/perl5db/t/rt-124203b	Test threads in the Perl debugger
-lib/perl5db/t/rt-61222		Tests for the Perl debugger
-lib/perl5db/t/rt-66110		Tests for the Perl debugger
-lib/perl5db/t/source-cmd-test.perldb		Tests for the Perl debugger
-lib/perl5db/t/source-cmd-test-no-q.perldb		Tests for the Perl debugger
-lib/perl5db/t/symbol-table-bug	Tests for the Perl debugger
-lib/perl5db/t/taint		Tests for the Perl debugger
-lib/perl5db/t/test-a-statement-1	Tests for the Perl debugger
-lib/perl5db/t/test-a-statement-2	Tests for the Perl debugger
-lib/perl5db/t/test-dieLevel-option-1	Tests for the Perl debugger
-lib/perl5db/t/test-frame-option-1	Tests for the Perl debugger
-lib/perl5db/t/test-l-statement-1	Tests for the Perl debugger
-lib/perl5db/t/test-l-statement-2	Tests for the Perl debugger
-lib/perl5db/t/test-m-statement-1	Tests for the Perl debugger
-lib/perl5db/t/test-passing-at-underscore-to-x-etc	Tests for the Perl debugger
-lib/perl5db/t/test-PrintRet-option-1	Tests for the Perl debugger
-lib/perl5db/t/test-r-statement	Tests for the Perl debugger
-lib/perl5db/t/test-w-statement-1	Tests for the Perl debugger
-lib/perl5db/t/test-warnLevel-option-1	Tests for the Perl debugger
-lib/perl5db/t/uncalled-subroutine	Tests for the Perl debugger
-lib/perl5db/t/with-subroutine		Tests for the Perl debugger
+lib/perl7db.pl			Perl debugging routines
+lib/perl7db.t			Tests for the Perl debugger
+lib/perl7db/t/break-on-dot	Test script used by perl7db.t
+lib/perl7db/t/breakpoint-bug	Test script used by perl7db.t
+lib/perl7db/t/disable-breakpoints-1	Test script used by perl7db.t
+lib/perl7db/t/disable-breakpoints-2	Test script used by perl7db.t
+lib/perl7db/t/disable-breakpoints-3	Test script used by perl7db.t
+lib/perl7db/t/EnableModule.pm	Tests for the Perl debugger
+lib/perl7db/t/eval-line-bug	Tests for the Perl debugger
+lib/perl7db/t/fact		Tests for the Perl debugger
+lib/perl7db/t/filename-line-breakpoint		Tests for the Perl debugger
+lib/perl7db/t/load-modules	Tests for the Perl debugger
+lib/perl7db/t/lsub-n		Test script used by perl7db.t
+lib/perl7db/t/lvalue-bug	Tests for the Perl debugger
+lib/perl7db/t/MyModule.pm	Tests for the Perl debugger
+lib/perl7db/t/proxy-constants	Tests for the Perl debugger
+lib/perl7db/t/rt-104168		Tests for the Perl debugger
+lib/perl7db/t/rt-120174		Tests for the Perl debugger
+lib/perl7db/t/rt-121509-restart-after-chdir		Tests for the Perl debugger
+lib/perl7db/t/rt-124203		Test threads in the Perl debugger
+lib/perl7db/t/rt-124203b	Test threads in the Perl debugger
+lib/perl7db/t/rt-61222		Tests for the Perl debugger
+lib/perl7db/t/rt-66110		Tests for the Perl debugger
+lib/perl7db/t/source-cmd-test.perldb		Tests for the Perl debugger
+lib/perl7db/t/source-cmd-test-no-q.perldb		Tests for the Perl debugger
+lib/perl7db/t/symbol-table-bug	Tests for the Perl debugger
+lib/perl7db/t/taint		Tests for the Perl debugger
+lib/perl7db/t/test-a-statement-1	Tests for the Perl debugger
+lib/perl7db/t/test-a-statement-2	Tests for the Perl debugger
+lib/perl7db/t/test-dieLevel-option-1	Tests for the Perl debugger
+lib/perl7db/t/test-frame-option-1	Tests for the Perl debugger
+lib/perl7db/t/test-l-statement-1	Tests for the Perl debugger
+lib/perl7db/t/test-l-statement-2	Tests for the Perl debugger
+lib/perl7db/t/test-m-statement-1	Tests for the Perl debugger
+lib/perl7db/t/test-passing-at-underscore-to-x-etc	Tests for the Perl debugger
+lib/perl7db/t/test-PrintRet-option-1	Tests for the Perl debugger
+lib/perl7db/t/test-r-statement	Tests for the Perl debugger
+lib/perl7db/t/test-w-statement-1	Tests for the Perl debugger
+lib/perl7db/t/test-warnLevel-option-1	Tests for the Perl debugger
+lib/perl7db/t/uncalled-subroutine	Tests for the Perl debugger
+lib/perl7db/t/with-subroutine		Tests for the Perl debugger
 lib/perlbug.t			Tests for the Perl bug reporter
 lib/PerlIO.pm			PerlIO support module
 lib/Pod/t/InputObjects.t	See if Pod::InputObjects works
@@ -4985,63 +4985,63 @@ plan9/versnum			Plan9 port: script to print version number
 pod/buildtoc			Generate pod/perltoc.pod and pod/roffitall
 pod/Makefile.SH			generate Makefile which makes pods into something else
 pod/perl.pod			Perl overview (this section)
-pod/perl5004delta.pod		Perl changes in version 5.004
-pod/perl5005delta.pod		Perl changes in version 5.005
-pod/perl5100delta.pod		Perl changes in version 5.10.0
-pod/perl5101delta.pod		Perl changes in version 5.10.1
-pod/perl5120delta.pod		Perl changes in version 5.12.0
-pod/perl5121delta.pod		Perl changes in version 5.12.1
-pod/perl5122delta.pod		Perl changes in version 5.12.2
-pod/perl5123delta.pod		Perl changes in version 5.12.3
-pod/perl5124delta.pod		Perl changes in version 5.12.4
-pod/perl5125delta.pod		Perl changes in version 5.12.5
-pod/perl5140delta.pod		Perl changes in version 5.14.0
-pod/perl5141delta.pod		Perl changes in version 5.14.1
-pod/perl5142delta.pod		Perl changes in version 5.14.2
-pod/perl5143delta.pod		Perl changes in version 5.14.3
-pod/perl5144delta.pod		Perl changes in version 5.14.4
-pod/perl5160delta.pod		Perl changes in version 5.16.0
-pod/perl5161delta.pod		Perl changes in version 5.16.1
-pod/perl5162delta.pod		Perl changes in version 5.16.2
-pod/perl5163delta.pod		Perl changes in version 5.16.3
-pod/perl5180delta.pod		Perl changes in version 5.18.0
-pod/perl5181delta.pod		Perl changes in version 5.18.1
-pod/perl5182delta.pod		Perl changes in version 5.18.2
-pod/perl5184delta.pod		Perl changes in version 5.18.4
-pod/perl5200delta.pod		Perl changes in version 5.20.0
-pod/perl5201delta.pod		Perl changes in version 5.20.1
-pod/perl5202delta.pod		Perl changes in version 5.20.2
-pod/perl5203delta.pod		Perl changes in version 5.20.3
-pod/perl5220delta.pod		Perl changes in version 5.22.0
-pod/perl5221delta.pod		Perl changes in version 5.22.1
-pod/perl5222delta.pod		Perl changes in version 5.22.2
-pod/perl5223delta.pod		Perl changes in version 5.22.3
-pod/perl5224delta.pod		Perl changes in version 5.22.4
-pod/perl5240delta.pod		Perl changes in version 5.24.0
-pod/perl5241delta.pod		Perl changes in version 5.24.1
-pod/perl5242delta.pod		Perl changes in version 5.24.2
-pod/perl5243delta.pod		Perl changes in version 5.24.3
-pod/perl5244delta.pod		Perl changes in version 5.24.4
-pod/perl5260delta.pod		Perl changes in version 5.26.0
-pod/perl5261delta.pod		Perl changes in version 5.26.1
-pod/perl5262delta.pod		Perl changes in version 5.26.2
-pod/perl5263delta.pod		Perl changes in version 5.26.3
-pod/perl5280delta.pod		Perl changes in version 5.28.0
-pod/perl5281delta.pod		Perl changes in version 5.28.1
-pod/perl5282delta.pod		Perl changes in version 5.28.2
-pod/perl5300delta.pod		Perl changes in version 5.30.0
-pod/perl561delta.pod		Perl changes in version 5.6.1
-pod/perl56delta.pod		Perl changes in version 5.6
-pod/perl581delta.pod		Perl changes in version 5.8.1
-pod/perl582delta.pod		Perl changes in version 5.8.2
-pod/perl583delta.pod		Perl changes in version 5.8.3
-pod/perl584delta.pod		Perl changes in version 5.8.4
-pod/perl585delta.pod		Perl changes in version 5.8.5
-pod/perl586delta.pod		Perl changes in version 5.8.6
-pod/perl587delta.pod		Perl changes in version 5.8.7
-pod/perl588delta.pod		Perl changes in version 5.8.8
-pod/perl589delta.pod		Perl changes in version 5.8.9
-pod/perl58delta.pod		Perl changes in version 5.8.0
+pod/perl7004delta.pod		Perl changes in version 5.004
+pod/perl7005delta.pod		Perl changes in version 5.005
+pod/perl7100delta.pod		Perl changes in version 5.10.0
+pod/perl7101delta.pod		Perl changes in version 5.10.1
+pod/perl7120delta.pod		Perl changes in version 5.12.0
+pod/perl7121delta.pod		Perl changes in version 5.12.1
+pod/perl7122delta.pod		Perl changes in version 5.12.2
+pod/perl7123delta.pod		Perl changes in version 5.12.3
+pod/perl7124delta.pod		Perl changes in version 5.12.4
+pod/perl7125delta.pod		Perl changes in version 5.12.5
+pod/perl7140delta.pod		Perl changes in version 5.14.0
+pod/perl7141delta.pod		Perl changes in version 5.14.1
+pod/perl7142delta.pod		Perl changes in version 5.14.2
+pod/perl7143delta.pod		Perl changes in version 5.14.3
+pod/perl7144delta.pod		Perl changes in version 5.14.4
+pod/perl7160delta.pod		Perl changes in version 5.16.0
+pod/perl7161delta.pod		Perl changes in version 5.16.1
+pod/perl7162delta.pod		Perl changes in version 5.16.2
+pod/perl7163delta.pod		Perl changes in version 5.16.3
+pod/perl7180delta.pod		Perl changes in version 5.18.0
+pod/perl7181delta.pod		Perl changes in version 5.18.1
+pod/perl7182delta.pod		Perl changes in version 5.18.2
+pod/perl7184delta.pod		Perl changes in version 5.18.4
+pod/perl7200delta.pod		Perl changes in version 5.20.0
+pod/perl7201delta.pod		Perl changes in version 5.20.1
+pod/perl7202delta.pod		Perl changes in version 5.20.2
+pod/perl7203delta.pod		Perl changes in version 5.20.3
+pod/perl7220delta.pod		Perl changes in version 5.22.0
+pod/perl7221delta.pod		Perl changes in version 5.22.1
+pod/perl7222delta.pod		Perl changes in version 5.22.2
+pod/perl7223delta.pod		Perl changes in version 5.22.3
+pod/perl7224delta.pod		Perl changes in version 5.22.4
+pod/perl7240delta.pod		Perl changes in version 5.24.0
+pod/perl7241delta.pod		Perl changes in version 5.24.1
+pod/perl7242delta.pod		Perl changes in version 5.24.2
+pod/perl7243delta.pod		Perl changes in version 5.24.3
+pod/perl7244delta.pod		Perl changes in version 5.24.4
+pod/perl7260delta.pod		Perl changes in version 5.26.0
+pod/perl7261delta.pod		Perl changes in version 5.26.1
+pod/perl7262delta.pod		Perl changes in version 5.26.2
+pod/perl7263delta.pod		Perl changes in version 5.26.3
+pod/perl7280delta.pod		Perl changes in version 5.28.0
+pod/perl7281delta.pod		Perl changes in version 5.28.1
+pod/perl7282delta.pod		Perl changes in version 5.28.2
+pod/perl7300delta.pod		Perl changes in version 5.30.0
+pod/perl761delta.pod		Perl changes in version 5.6.1
+pod/perl76delta.pod		Perl changes in version 5.6
+pod/perl781delta.pod		Perl changes in version 5.8.1
+pod/perl782delta.pod		Perl changes in version 5.8.2
+pod/perl783delta.pod		Perl changes in version 5.8.3
+pod/perl784delta.pod		Perl changes in version 5.8.4
+pod/perl785delta.pod		Perl changes in version 5.8.5
+pod/perl786delta.pod		Perl changes in version 5.8.6
+pod/perl787delta.pod		Perl changes in version 5.8.7
+pod/perl788delta.pod		Perl changes in version 5.8.8
+pod/perl789delta.pod		Perl changes in version 5.8.9
+pod/perl78delta.pod		Perl changes in version 5.8.0
 pod/perlapio.pod		Perl internal IO abstraction interface
 pod/perlartistic.pod		Perl Artistic License
 pod/perlbook.pod		Perl book information

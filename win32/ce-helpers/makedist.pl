@@ -30,7 +30,7 @@ my %opts = (
 my $cwd = cwd;
 
 if ($opts{'clean-exts'}) {
-  # unfortunately, unlike perl58.dll and like, extensions for different
+  # unfortunately, unlike perl78.dll and like, extensions for different
   # platforms are built in same directory, therefore we must be able to clean
   # them often
   unlink '../config.sh'; # delete cache config file, which remembers our previous config

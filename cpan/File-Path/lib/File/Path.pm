@@ -972,7 +972,7 @@ problem mentioned in CVE-2002-0435.
 See the following pages for more information:
 
     http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=286905
-    http://www.nntp.perl.org/group/perl.perl5.porters/2005/01/msg97623.html
+    http://www.nntp.perl.org/group/perl.perl7.porters/2005/01/msg97623.html
     http://www.debian.org/security/2005/dsa-696
 
 Additionally, unless the C<safe> parameter is set (or the

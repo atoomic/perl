@@ -820,7 +820,7 @@ C<fast_abs_path()>.
 
 =head1 AUTHOR
 
-Originally by the perl5-porters.
+Originally by the perl7-porters.
 
 Maintained by Ken Williams <KWILLIAMS@cpan.org>
 

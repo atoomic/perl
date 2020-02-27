@@ -894,7 +894,7 @@ this variable in either a CPAN/MyConfig.pm or a CPAN/Config.pm in your
 
 #       From: Larry Wall <larry@wall.org>
 #       Subject: Re: deprecating SIGDIE
-#       To: perl5-porters@perl.org
+#       To: perl7-porters@perl.org
 #       Date: Thu, 30 Sep 1999 14:58:40 -0700 (PDT)
 #
 #       The original intent of __DIE__ was only to allow you to substitute one
@@ -964,7 +964,7 @@ sub find_perl () {
             File::Spec->catfile($CPAN::iCwd,$^X),
             $Config::Config{'perlpath'},
         );
-        for my $perl_name ($^X, 'perl', 'perl5', "perl$]") {
+        for my $perl_name ($^X, 'perl', 'perl7', "perl$]") {
             for my $path (File::Spec->path(), $Config::Config{'binexp'}) {
                 if ( defined($path) && length $path && -d $path ) {
                     my $perl = File::Spec->catfile($path,$perl_name);
@@ -1375,7 +1375,7 @@ sub reset_tested {
 
 #-> sub CPAN::is_installed
 # unsets the is_tested flag: as soon as the thing is installed, it is
-# not needed in set_perl5lib anymore
+# not needed in set_perl7lib anymore
 sub is_installed {
     my($self,$what) = @_;
     delete $self->{is_tested}{$what};
@@ -1407,12 +1407,12 @@ sub _list_sorted_descending_is_tested {
     }
 }
 
-#-> sub CPAN::set_perl5lib
+#-> sub CPAN::set_perl7lib
 # Notes on max environment variable length:
 #   - Win32 : XP or later, 8191; Win2000 or NT4, 2047
 {
 my $fh;
-sub set_perl5lib {
+sub set_perl7lib {
     my($self,$for) = @_;
     unless ($for) {
         (undef,undef,undef,$for) = caller(1);
@@ -1431,21 +1431,21 @@ sub set_perl5lib {
     return if !@dirs;
 
     if (@dirs < 12) {
-        $CPAN::Frontend->optprint('perl5lib', "Prepending @dirs to PERL5LIB for '$for'\n");
+        $CPAN::Frontend->optprint('perl7lib', "Prepending @dirs to PERL5LIB for '$for'\n");
         $ENV{PERL5LIB} = join $Config::Config{path_sep}, @dirs, @env;
     } elsif (@dirs < 24 ) {
         my @d = map {my $cp = $_;
                      $cp =~ s/^\Q$CPAN::Config->{build_dir}\E/%BUILDDIR%/;
                      $cp
                  } @dirs;
-        $CPAN::Frontend->optprint('perl5lib', "Prepending @d to PERL5LIB; ".
+        $CPAN::Frontend->optprint('perl7lib', "Prepending @d to PERL5LIB; ".
                                  "%BUILDDIR%=$CPAN::Config->{build_dir} ".
                                  "for '$for'\n"
                                 );
         $ENV{PERL5LIB} = join $Config::Config{path_sep}, @dirs, @env;
     } else {
         my $cnt = keys %{$self->{is_tested}};
-        $CPAN::Frontend->optprint('perl5lib', "Prepending blib/arch and blib/lib of ".
+        $CPAN::Frontend->optprint('perl7lib', "Prepending blib/arch and blib/lib of ".
                                  "$cnt build dirs to PERL5LIB; ".
                                  "for '$for'\n"
                                 );
@@ -2197,7 +2197,7 @@ currently defined:
   password           your password if you CPAN server wants one
   patch              path to external prg
   patches_dir        local directory containing patch files
-  perl5lib_verbosity verbosity level for PERL5LIB additions
+  perl7lib_verbosity verbosity level for PERL5LIB additions
   plugin_list        list of active hooks (see Plugin support above
                      and the CPAN::Plugin module)
   prefer_external_tar
@@ -3371,7 +3371,7 @@ or
 you will find the shell more convenient than the bare shell before.
 
 If you have a local mirror of CPAN and can access all files with
-"file:" URLs, then you only need a perl later than perl5.003 to run
+"file:" URLs, then you only need a perl later than perl7.003 to run
 this module. Otherwise Net::FTP is strongly recommended. LWP may be
 required for non-UNIX systems, or if your nearest CPAN site is
 associated with a URL that is not C<ftp:>.

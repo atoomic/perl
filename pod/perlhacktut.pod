@@ -185,4 +185,4 @@ See L<perlhack> for details on how to submit this patch.
 =head1 AUTHOR
 
 This document was originally written by Nathan Torkington, and is
-maintained by the perl5-porters mailing list.
+maintained by the perl7-porters mailing list.

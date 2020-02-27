@@ -80,9 +80,9 @@ files and/or directories. It returns a hash with the file names as keys
 and the POD name as value. The POD name is derived from the file name
 and its position in the directory tree.
 
-E.g. when searching in F<$HOME/perl5lib>, the file
-F<$HOME/perl5lib/MyModule.pm> would get the POD name I<MyModule>,
-whereas F<$HOME/perl5lib/Myclass/Subclass.pm> would be
+E.g. when searching in F<$HOME/perl7lib>, the file
+F<$HOME/perl7lib/MyModule.pm> would get the POD name I<MyModule>,
+whereas F<$HOME/perl7lib/Myclass/Subclass.pm> would be
 I<Myclass::Subclass>. The name information can be used for POD
 translators.
 

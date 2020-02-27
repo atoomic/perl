@@ -733,11 +733,11 @@ restricted hashes.
 
 On 64bit systems some data structures may exceed the 2G (i.e. I32_MAX)
 limit. On 32bit systems also strings between I32 and U32 (2G-4G).
-Since Storable 3.00 (not in perl5 core) we are able to store and
-retrieve these objects, even if perl5 itself is not able to handle
+Since Storable 3.00 (not in perl7 core) we are able to store and
+retrieve these objects, even if perl7 itself is not able to handle
 them.  These are strings longer then 4G, arrays with more then 2G
 elements and hashes with more then 2G elements. cperl forbids hashes
-with more than 2G elements, but this fail in cperl then. perl5 itself
+with more than 2G elements, but this fail in cperl then. perl7 itself
 at least until 5.26 allows it, but cannot iterate over them.
 Note that creating those objects might cause out of memory
 exceptions by the operating system before perl has a chance to abort.

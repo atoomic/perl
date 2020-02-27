@@ -9,7 +9,7 @@
 
 ::- My paths...
 set perlexe=\speicherkarte2\bin\perl.exe
-set perllib=\speicherkarte2\usr\lib\perl5
+set perllib=\speicherkarte2\usr\lib\perl7
 
 ::- PERL5LIB
 cereg -k "HKLM\Environment" -n "PERL5LIB" -v "%perllib%"

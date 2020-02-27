@@ -215,7 +215,7 @@ A hash that contains information on the appropriate bug tracker
 for each core module.
 
 BUGS is an email or url to post bug reports.  For modules with
-UPSTREAM => 'blead', use L<mailto:perl5-porters@perl.org>.  rt.cpan.org
+UPSTREAM => 'blead', use L<mailto:perl7-porters@perl.org>.  rt.cpan.org
 appears to automatically provide a URL for CPAN modules; any value
 given here overrides the default:
 L<http://rt.cpan.org/Public/Dist/Display.html?Name=$ModuleName>
@@ -240,7 +240,7 @@ Moved to Changes file.
 
 Richard Clamp E<lt>richardc@unixbeard.netE<gt>
 
-Currently maintained by the perl 5 porters E<lt>perl5-porters@perl.orgE<gt>.
+Currently maintained by the perl 5 porters E<lt>perl7-porters@perl.orgE<gt>.
 
 =head1 LICENSE
 

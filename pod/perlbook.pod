@@ -316,6 +316,6 @@ limit this list to books published in the past five years.
 =head2 Get your book listed
 
 If your Perl book isn't listed and you think it should be, let us know.
-L<mailto:perl5-porters@perl.org>
+L<mailto:perl7-porters@perl.org>
 
 =cut

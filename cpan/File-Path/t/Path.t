@@ -103,7 +103,7 @@ my $dir2;
 sub gisle {
     # background info: @_ = 1; !shift # gives '' not 0
     # Message-Id: <3C820CE6-4400-4E91-AF43-A3D19B356E68@activestate.com>
-    # http://www.nntp.perl.org/group/perl.perl5.porters/2008/05/msg136625.html
+    # http://www.nntp.perl.org/group/perl.perl7.porters/2008/05/msg136625.html
     mkpath(shift, !shift, 0755);
 }
 

@@ -912,7 +912,7 @@ work as described.
 This will be fixed in a future release of Perl; in the meantime, avoid
 code that relies on any particular behavior of localising tied arrays
 or hashes (localising individual elements is still okay).
-See L<perl58delta/"Localising Tied Arrays and Hashes Is Broken"> for more
+See L<perl78delta/"Localising Tied Arrays and Hashes Is Broken"> for more
 details.
 X<local, tie>
 

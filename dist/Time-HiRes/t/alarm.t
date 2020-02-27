@@ -129,7 +129,7 @@ SKIP: {
 SKIP: {
     skip "no ualarm", 1 unless &Time::HiRes::d_ualarm;
     skip "perl bug", 1 unless $] >= 5.008001;
-    # http://groups.google.com/group/perl.perl5.porters/browse_thread/thread/adaffaaf939b042e/20dafc298df737f0%2320dafc298df737f0?sa=X&oi=groupsr&start=0&num=3
+    # http://groups.google.com/group/perl.perl7.porters/browse_thread/thread/adaffaaf939b042e/20dafc298df737f0%2320dafc298df737f0?sa=X&oi=groupsr&start=0&num=3
     # Perl changes [18765] and [18770], perl bug [perl #20920]
 
     print("# Finding delay loop...\n");

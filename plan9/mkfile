@@ -24,7 +24,7 @@ podnames = perl perlbook perldata perldebtut perldiag perldsc perlform perlfunc 
 faqpodnames = perlfaq perlfaq1 perlfaq2 perlfaq3 perlfaq4 perlfaq5 perlfaq6 perlfaq7 perlfaq8 perlfaq9
 advpodnames = perlapi perlapio perlcall perlclib perlcompile perldebguts perldbmfilter perldebug perldelta perldiag perlebcdic perlembed perlfilter perlfork perlguts perlhack perlintern perliol perllocale perlnumber perlobj perlpodspec perlre perlthrtut perltodo perlunicode perlunicook perlxs perlxs perlxstut
 archpodnames = perlaix perlamiga perlbeos perlbs2000 perlce perlcygwin perldgux perldos perlfreebsd perlhpux perlhurd perlirix perlmacos perlmpeix perlnetware perlos2 perlos390 perlos400 perlplan9 perlqnx perlsolaris perltru64 perlvms perlvos perlwin32
-histpods = perl5004delta perl5005delta perl561delta perl56delta perl570delta perl571delta perl572delta perl573delta perl58delta perlhist
+histpods = perl7004delta perl7005delta perl761delta perl76delta perl770delta perl771delta perl772delta perl773delta perl78delta perlhist
 
 libpods = ${podnames:%=pod/%.pod}
 

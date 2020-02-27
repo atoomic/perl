@@ -21,7 +21,7 @@ BEGIN {
 my $is_devel = $ENV{PERL_CORE} || -d ".git" ? 1 : 0;
 # Note this rawsocket test code is considered anti-social in p5p and was removed in
 # their variant.
-# See http://nntp.perl.org/group/perl.perl5.porters/240707
+# See http://nntp.perl.org/group/perl.perl7.porters/240707
 # Problem is that ping_icmp needs root perms, and previous bugs were
 # never caught. So I rather execute it via sudo in the core test suite
 # and on devel CPAN dirs, than not at all and risk further bitrot of this API.

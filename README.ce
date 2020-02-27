@@ -188,9 +188,9 @@ eMbedded C++ 4.0\EVC\WCE400\BIN\WCEARMV4.BAT"
 8. In the WinCE command prompt you made with WCEARMV4.BAT, goto the perl 
 source directory, cd into win32/ and run "nmake -f Makefile.ce".
 
-9. The ARM perl interpreter (perl519.dll and perl.exe) will be in something
-like "C:\perl519\src\win32\wince-arm-pocket-wce400", with the XS DLLs in
-"C:\perl519\src\xlib\wince-arm-hpc-wce400\auto".
+9. The ARM perl interpreter (perl719.dll and perl.exe) will be in something
+like "C:\perl719\src\win32\wince-arm-pocket-wce400", with the XS DLLs in
+"C:\perl719\src\xlib\wince-arm-hpc-wce400\auto".
 
 To prove success on the host machine, run
 "dumpbin /headers wince-arm-pocket-wce400\perl.exe" from the win32/ folder

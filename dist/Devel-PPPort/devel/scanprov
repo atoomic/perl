@@ -38,7 +38,7 @@ my @provided = grep { !exists $embed{$_} }
 
 my @perls = sort { $b->{version} <=> $a->{version} }
             map { { version => `$_ -e 'printf "%.6f", \$]'`, path => $_ } }
-            ($opt{blead}, glob "$opt{install}/*/bin/perl5.*");
+            ($opt{blead}, glob "$opt{install}/*/bin/perl7.*");
 
 for (1 .. $#perls) {
   $perls[$_]{todo} = $perls[$_-1]{version};

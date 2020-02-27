@@ -105,8 +105,8 @@ sub configure
         },
         repository => {
           type => 'git',
-          url  => 'git://perl5.git.perl.org/perl.git',
-          web  => 'https://perl5.git.perl.org/perl.git',
+          url  => 'git://perl7.git.perl.org/perl.git',
+          web  => 'https://perl7.git.perl.org/perl.git',
         },
       },
     },

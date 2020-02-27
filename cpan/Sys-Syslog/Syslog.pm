@@ -1664,7 +1664,7 @@ E<lt>F<larry (at) wall.org>E<gt>.
 
 UNIX domain sockets added by Sean Robinson
 E<lt>F<robinson_s (at) sc.maricopa.edu>E<gt> with support from Tim Bunce 
-E<lt>F<Tim.Bunce (at) ig.co.uk>E<gt> and the C<perl5-porters> mailing list.
+E<lt>F<Tim.Bunce (at) ig.co.uk>E<gt> and the C<perl7-porters> mailing list.
 
 Dependency on F<syslog.ph> replaced with XS code by Tom Hughes
 E<lt>F<tom (at) compton.nu>E<gt>.
@@ -1774,7 +1774,7 @@ does a
 
 but also has this strange piece of code:
 
-    # work around perl5.003 bug
+    # work around perl7.003 bug
     sub Sys::Syslog::hostname {}
 
 I don't know what bug the author referred to.

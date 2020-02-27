@@ -1,7 +1,7 @@
 ---
 abstract: 'The Perl 5 language interpreter'
 author:
-  - perl5-porters@perl.org
+  - perl7-porters@perl.org
 build_requires: {}
 dynamic_config: 1
 generated_by: 'CPAN::Meta version 2.150010, CPAN::Meta::Converter version 2.150010'
@@ -52,7 +52,7 @@ no_index:
     - dist/Time-HiRes
     - dist/Unicode-Normalize
     - dist/XSLoader
-    - lib/perl5db
+    - lib/perl7db
     - win32
   file:
     - autodoc.pl
@@ -110,9 +110,9 @@ no_index:
     - vutil.h
     - vxs.inc
 resources:
-  bugtracker: https://github.com/Perl/perl5/issues
+  bugtracker: https://github.com/Perl/perl7/issues
   homepage: http://www.perl.org/
   license: http://dev.perl.org/licenses/
-  repository: https://github.com/Perl/perl5
+  repository: https://github.com/Perl/perl7
 version: '7.000000'
 x_serialization_backend: 'CPAN::Meta::YAML version 0.018'

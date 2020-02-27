@@ -895,8 +895,8 @@ compatible manner, so that using localtime/gmtime in the way documented
 in perlfunc will still return what you expect.
 
 The module actually implements most of an interface described by
-Larry Wall on the perl5-porters mailing list here:
-L<http://www.xray.mpe.mpg.de/mailing-lists/perl5-porters/2000-01/msg00241.html>
+Larry Wall on the perl7-porters mailing list here:
+L<http://www.xray.mpe.mpg.de/mailing-lists/perl7-porters/2000-01/msg00241.html>
 
 =head1 USAGE
 

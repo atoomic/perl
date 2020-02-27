@@ -266,12 +266,12 @@ PAR - optional module which can treat C<.par> files as Perl libraries.
 
 Tim Bunce, 2nd June 1995.
 
-C<lib> is maintained by the perl5-porters. Please direct
+C<lib> is maintained by the perl7-porters. Please direct
 any questions to the canonical mailing list. Anything that
 is applicable to the CPAN release can be sent to its maintainer,
 though.
 
-Maintainer: The Perl5-Porters <perl5-porters@perl.org>
+Maintainer: The Perl5-Porters <perl7-porters@perl.org>
 
 Maintainer of the CPAN release: Steffen Mueller <smueller@cpan.org>
 

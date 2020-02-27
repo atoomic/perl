@@ -58,7 +58,7 @@ use File::Glob qw(:case);
 # of the files associated with the distribution.
 
 # BUGS is an email or url to post bug reports.  For modules with
-# UPSTREAM => 'blead', use perl5-porters@perl.org.  rt.cpan.org
+# UPSTREAM => 'blead', use perl7-porters@perl.org.  rt.cpan.org
 # appears to automatically provide a URL for CPAN modules; any value
 # given here overrides the default:
 # http://rt.cpan.org/Public/Dist/Display.html?Name=$ModuleName
@@ -1409,8 +1409,8 @@ use File::Glob qw(:case);
                 lib/overload/numbers.pm
                 lib/overloading.{pm,t}
                 lib/overload{.pm,.t,64.t}
-                lib/perl5db.{pl,t}
-                lib/perl5db/
+                lib/perl7db.{pl,t}
+                lib/perl7db/
                 lib/perlbug.t
                 lib/sigtrap.{pm,t}
                 lib/sort.{pm,t}
@@ -1453,7 +1453,7 @@ for ( keys %Modules ) {
 
     if ($Modules{$_}{UPSTREAM} eq 'blead') {
         $Modules{$_}{MAINTAINER} = 'P5P';
-        $Maintainers{P5P} = 'perl5-porters <perl5-porters@perl.org>';
+        $Maintainers{P5P} = 'perl7-porters <perl7-porters@perl.org>';
     }
     elsif (exists $Modules{$_}{DISTRIBUTION}) {
         (my $pause_id = $Modules{$_}{DISTRIBUTION}) =~ s{/.*$}{};

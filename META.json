@@ -1,7 +1,7 @@
 {
    "abstract" : "The Perl 5 language interpreter",
    "author" : [
-      "perl5-porters@perl.org"
+      "perl7-porters@perl.org"
    ],
    "dynamic_config" : 1,
    "generated_by" : "CPAN::Meta version 2.150010",
@@ -54,7 +54,7 @@
          "dist/Time-HiRes",
          "dist/Unicode-Normalize",
          "dist/XSLoader",
-         "lib/perl5db",
+         "lib/perl7db",
          "win32"
       ],
       "file" : [
@@ -117,14 +117,14 @@
    "release_status" : "stable",
    "resources" : {
       "bugtracker" : {
-         "web" : "https://github.com/Perl/perl5/issues"
+         "web" : "https://github.com/Perl/perl7/issues"
       },
       "homepage" : "http://www.perl.org/",
       "license" : [
          "http://dev.perl.org/licenses/"
       ],
       "repository" : {
-         "url" : "https://github.com/Perl/perl5"
+         "url" : "https://github.com/Perl/perl7"
       }
    },
    "version" : "7.000000",

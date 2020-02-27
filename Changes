@@ -1,14 +1,14 @@
 For an overview of what's changed in this release, see pod/perldelta.pod.
 
 For the details of changes in previous releases, see the individual
-perlNNNdelta.pod files. For example, pod/perl588delta.pod describes the
+perlNNNdelta.pod files. For example, pod/perl788delta.pod describes the
 changes between versions 5.8.7 and 5.8.8.
 
 For a list of contributors to perl, see AUTHORS.
 
 If you need a detailed commit history (i.e. descriptions of each
 individual commit),  you can view the git version control history online
-at https://github.com/Perl/perl5.  Or, you can download a copy of the git
+at https://github.com/Perl/perl7.  Or, you can download a copy of the git
 repository and then run a command like
 
     git log --name-status v5.12.0..v5.14.0

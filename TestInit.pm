@@ -43,7 +43,7 @@ $VERSION = 1.04;
 # which live dual lives on CPAN.
 # Don't interfere with the taintedness of %ENV, this could perturbate tests.
 # This feels like a better solution than the original, from
-# http://www.xray.mpe.mpg.de/mailing-lists/perl5-porters/2003-07/msg00154.html
+# http://www.xray.mpe.mpg.de/mailing-lists/perl7-porters/2003-07/msg00154.html
 $ENV{PERL_CORE} = $^X;
 
 $0 =~ s/\.dp$//; # for the test.deparse make target
