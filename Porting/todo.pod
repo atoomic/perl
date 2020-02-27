@@ -5,18 +5,18 @@ todo - Perl TO-DO list
 =head1 DESCRIPTION
 
 This is a list of wishes for Perl. The most up to date version of this file
-is at L<https://github.com/Perl/perl5/blob/blead/Porting/todo.pod>.
+is at L<https://github.com/Perl/perl7/blob/blead/Porting/todo.pod>.
 
 The tasks we think are smaller or easier are listed first. Anyone is welcome
 to work on any of these, but it's a good idea to first contact
-I<perl5-porters@perl.org> to avoid duplication of effort, and to learn from
+I<perl7-porters@perl.org> to avoid duplication of effort, and to learn from
 any previous attempts. By all means contact a pumpking privately first if you
 prefer.
 
 Whilst patches to make the list shorter are most welcome, ideas to add to
-the list are also encouraged. Check the perl5-porters archives for past
+the list are also encouraged. Check the perl7-porters archives for past
 ideas, and any discussion about them. One set of archives may be found at
-L<http://www.xray.mpe.mpg.de/mailing-lists/perl5-porters/>
+L<http://www.xray.mpe.mpg.de/mailing-lists/perl7-porters/>
 
 What can we offer you in return? Fame, fortune, and everlasting glory? Maybe
 not, but if your patch is incorporated, then we'll add your name to the
@@ -432,7 +432,7 @@ completely different. Andy Dougherty makes the counter argument "In parrot, I
 tried to call the command used to link object files and  libraries into an
 executable F<link>, since that's what my vaguely-remembered DOS and VMS
 experience suggested. I don't think any real confusion has ensued, so it's
-probably a reasonable name for perl5 to use."
+probably a reasonable name for perl7 to use."
 
 "Alas, I've always worried that introducing it would make things worse, 
 since now the module building utilities would have to look for 
@@ -608,7 +608,7 @@ called when the parser is finished building an C<entersub> op which calls
 them.
 
 Registration is done with C<Perl_cv_set_call_checker>, is documented at the
-API level in L<perlapi>, and L<perl5140delta/Custom per-subroutine check hooks>
+API level in L<perlapi>, and L<perl7140delta/Custom per-subroutine check hooks>
 notes that it can be used to inline a subroutine, by replacing it with a
 custom op. However there is no further detail of the code needed to do this.
 It would be useful to add one or more annotated examples of how to create
@@ -721,7 +721,7 @@ of running Perl code inside the signal handler context. (With all the dangers
 of things like C<malloc> corruption that that currently offers us)
 
 For more information see the thread starting with this message:
-L<http://www.xray.mpe.mpg.de/mailing-lists/perl5-porters/2008-03/msg00305.html>
+L<http://www.xray.mpe.mpg.de/mailing-lists/perl7-porters/2008-03/msg00305.html>
 
 =head2 autovivification
 
@@ -923,7 +923,7 @@ C<;> is parsed where it is not legal as a statement terminator (ie inside
 C<{}> used as a hashref, C<[]> or C<()>) it issues an error something like
 I<';' isn't legal inside an expression - if you need multiple statements use a
 do {...} block>. See the thread starting at
-L<http://www.xray.mpe.mpg.de/mailing-lists/perl5-porters/2008-09/msg00573.html>
+L<http://www.xray.mpe.mpg.de/mailing-lists/perl7-porters/2008-09/msg00573.html>
 
 =head2 strict as warnings
 
@@ -964,7 +964,7 @@ constructions involving state variables.
 Like ref(), only useful. It would call the C<DOES> method on objects; it
 would also tell whether something can be dereferenced as an
 array/hash/etc., or used as a regexp, etc.
-L<http://www.xray.mpe.mpg.de/mailing-lists/perl5-porters/2007-03/msg00481.html>
+L<http://www.xray.mpe.mpg.de/mailing-lists/perl7-porters/2007-03/msg00481.html>
 
 =head2 Tied filehandles and write() don't mix
 
@@ -1001,7 +1001,7 @@ arrays as alternations. With it, C</P/w> would be roughly equivalent to:
     do { local $"='|'; /\b(?:P)\b/ }
 
 See
-L<http://www.xray.mpe.mpg.de/mailing-lists/perl5-porters/2007-01/msg00400.html>
+L<http://www.xray.mpe.mpg.de/mailing-lists/perl7-porters/2007-01/msg00400.html>
 for the discussion.
 
 =head2 optional optimizer
@@ -1082,7 +1082,7 @@ have to actually "allocate" the ops in reverse-execution order to get them
 contiguous in memory in execution order.
 
 See
-L<http://www.nntp.perl.org/group/perl.perl5.porters/2007/12/msg131975.html>
+L<http://www.nntp.perl.org/group/perl.perl7.porters/2007/12/msg131975.html>
 
 Note that running this copy, and then freeing all the old location ops would
 cause their slabs to be freed, which would eliminate possible memory wastage if
@@ -1184,7 +1184,7 @@ don't make as much use of it as they should.  The proposal is to analyse
 where the current cache code has problems, and extend it to cover those cases.
 
 See also
-L<http://www.xray.mpe.mpg.de/mailing-lists/perl5-porters/2013-01/msg00339.html>
+L<http://www.xray.mpe.mpg.de/mailing-lists/perl7-porters/2013-01/msg00339.html>
 
 =head1 Big projects
 

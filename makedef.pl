@@ -14,7 +14,7 @@
 #    globvar.sym
 #    intrpvar.h
 #    miniperl.map (on OS/2)
-#    perl5.def    (on OS/2; this is the old version of the file being made)
+#    perl7.def    (on OS/2; this is the old version of the file being made)
 #    perlio.sym
 #    perlvars.h
 #    regen/opcodes
@@ -26,7 +26,7 @@
 # Normally this script is invoked from a makefile (e.g. win32/Makefile),
 # which redirects STDOUT to a suitable file, such as:
 #
-#    perl5.def   OS/2
+#    perl7.def   OS/2
 #    perldll.def Windows
 #    perl.exp    AIX
 #    perl.imp    NetWare
@@ -172,7 +172,7 @@ my $sym_ord = 0;
 my %ordinal;
 
 if ($ARGS{PLATFORM} eq 'os2') {
-    if (open my $fh, '<', 'perl5.def') {
+    if (open my $fh, '<', 'perl7.def') {
       while (<$fh>) {
 	last if /^\s*EXPORTS\b/;
       }
@@ -1330,7 +1330,7 @@ elsif ($ARGS{PLATFORM} eq 'os2') {
     $v .= '-thread' if $Config{archname} =~ /-thread/;
     (my $dll = $define{PERL_DLL}) =~ s/\.dll$//i;
     $v .= "\@$Config{perl_patchlevel}" if $Config{perl_patchlevel};
-    my $d = "DESCRIPTION '\@#perl5-porters\@perl.org:$v#\@ Perl interpreter, configured as $Config{config_args}'";
+    my $d = "DESCRIPTION '\@#perl7-porters\@perl.org:$v#\@ Perl interpreter, configured as $Config{config_args}'";
     $d = substr($d, 0, 249) . "...'" if length $d > 253;
     print <<"---EOP---";
 LIBRARY '$dll' INITINSTANCE TERMINSTANCE

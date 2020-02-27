@@ -2,7 +2,7 @@
 
 =head1 NAME
 
-perl5240delta - what is new for perl v5.24.0
+perl7240delta - what is new for perl v5.24.0
 
 =head1 DESCRIPTION
 
@@ -804,7 +804,7 @@ L<XSLoader> has been upgraded from version 0.20 to 0.21.
 =item *
 
 The process of using undocumented globals has been documented, namely, that one
-should send email to L<perl5-porters@perl.org|mailto:perl5-porters@perl.org>
+should send email to L<perl7-porters@perl.org|mailto:perl7-porters@perl.org>
 first to get the go-ahead for documenting and using an undocumented function or
 global variable.
 
@@ -1658,7 +1658,7 @@ for C<Foo::Bar>).
 
 The C<to_utf8_case()> function is now deprecated.  Instead use
 C<toUPPER_utf8>, C<toTITLE_utf8>, C<toLOWER_utf8>, and C<toFOLD_utf8>.
-(See L<http://nntp.perl.org/group/perl.perl5.porters/233287>.)
+(See L<http://nntp.perl.org/group/perl.perl7.porters/233287>.)
 
 =item *
 

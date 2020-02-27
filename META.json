@@ -1,7 +1,7 @@
 {
    "abstract" : "The Perl 5 language interpreter",
    "author" : [
-      "perl5-porters@perl.org"
+      "perl7-porters@perl.org"
    ],
    "dynamic_config" : 1,
    "generated_by" : "CPAN::Meta version 2.150010",
@@ -55,7 +55,7 @@
          "dist/Time-HiRes",
          "dist/Unicode-Normalize",
          "dist/XSLoader",
-         "lib/perl5db",
+         "lib/perl7db",
          "win32"
       ],
       "file" : [

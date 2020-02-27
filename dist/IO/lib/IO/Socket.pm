@@ -177,7 +177,7 @@ sub blocking {
 
     # Windows handles blocking differently
     #
-    # http://groups.google.co.uk/group/perl.perl5.porters/browse_thread/thread/b4e2b1d88280ddff/630b667a66e3509f?#630b667a66e3509f
+    # http://groups.google.co.uk/group/perl.perl7.porters/browse_thread/thread/b4e2b1d88280ddff/630b667a66e3509f?#630b667a66e3509f
     # http://msdn.microsoft.com/library/default.asp?url=/library/en-us/winsock/winsock/ioctlsocket_2.asp
     #
     # 0x8004667e is FIONBIO

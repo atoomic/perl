@@ -48,7 +48,7 @@ ok($TEST++, 1, 'Loaded');
 # cond_wait and cond_timedwait extended tests adapted from cond.t
 
 # The two skips later on in these tests refer to this quote from the
-# pod/perl583delta.pod:
+# pod/perl783delta.pod:
 #
 # =head1 Platform Specific Problems
 #
@@ -170,7 +170,7 @@ SYNC_SHARED: {
         if ($^O eq "hpux" && $Config{osvers} <= 10.20) {
             # The lock obtaining would pass, but the wait will not.
             ok($testnum++, 1, "$test_type: obtained initial lock");
-            ok($testnum++, 0, "# SKIP see perl583delta");
+            ok($testnum++, 0, "# SKIP see perl783delta");
 
         } else {
             $test_type =~ /twain/ ? lock($lock) : lock($cond);
@@ -303,7 +303,7 @@ SYNCH_REFS: {
         if ($^O eq "hpux" && $Config{osvers} <= 10.20) {
             # The lock obtaining would pass, but the wait will not.
             ok($testnum++, 1, "$test_type: obtained initial lock");
-            ok($testnum++, 0, "# SKIP see perl583delta");
+            ok($testnum++, 0, "# SKIP see perl783delta");
 
         } else {
             $test_type =~ /twain/ ? lock($lock) : lock($cond);

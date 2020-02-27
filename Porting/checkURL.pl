@@ -264,7 +264,7 @@ ftp:passive-mode
 ftp:
 http:[-
 http://search.cpan.org/src/KWILLIAMS/Module-Build-0.30/lib/Module/Build/Platform/Windows.pm:split_like_shell
-http://www.xray.mpe.mpg.de/mailing-lists/perl5-
+http://www.xray.mpe.mpg.de/mailing-lists/perl7-
 http://support.microsoft.com/support/kb/articles/Q280/3/41.ASP:
 http://perl.come/
 http://www.perl.come/
@@ -272,7 +272,7 @@ http://www.perl.come/
 # these are used as an example
 http://example.com/
 http://something.here/
-http://users.perl5.git.perl.org/~yourlogin/
+http://users.perl7.git.perl.org/~yourlogin/
 http://github.com/USERNAME/perl/tree/orange
 http://the.good.ship.lollypop.com:8080/cgi-bin/foo.cgi
 http://the.good.ship.lollypop.com:8080/cgi-bin/foo.cgi/somewhere/else?game=chess;game=checkers;weather=dull;foo=bar
@@ -335,7 +335,7 @@ http://www.fh-wedel.de/elvis/
 ftp://ftp.blarg.net/users/amol/zsh/
 ftp://ftp.funet.fi/pub/languages/perl/CPAN
 http://search.cpan.org/CPAN/authors/id/S/SH/SHAY/dmake-4.5-20060619-SHAY.zip
-http://users.perl5.git.perl.org/~USERNAME
+http://users.perl7.git.perl.org/~USERNAME
 http://foo/x//y/script.cgi/a//b
 http://xxx/script.cgi/http://foo
 http://foo/./x//z/script.cgi/a/../b//c
@@ -416,7 +416,7 @@ http://www.refcnt.org/papers/module-build-convert
 http://csrc.nist.gov/cryptval/shs.html
 http://msdn.microsoft.com/workshop/author/dhtml/reference/charsets/charset4.asp
 http://www.debian.or.jp/~kubota/unicode-symbols.html.en
-http://www.mail-archive.com/perl5-porters@perl.org/msg69766.html
+http://www.mail-archive.com/perl7-porters@perl.org/msg69766.html
 http://www.debian.or.jp/~kubota/unicode-symbols.html.en
 http://rfc.net/rfc2781.html
 http://www.icu-project.org/charset/
@@ -452,7 +452,7 @@ http://public.activestate.com/cgi-bin/perlbrowse/p/31194
 http://public.activestate.com/cgi-bin/perlbrowse?patch=16173
 http://public.activestate.com/cgi-bin/perlbrowse?patch=16049
 http://www.li18nux.org/docs/html/CodesetAliasTable-V10.html
-http://aspn.activestate.com/ASPN/Mail/Message/perl5-porters/3486118
+http://aspn.activestate.com/ASPN/Mail/Message/perl7-porters/3486118
 http://lxr.mozilla.org/seamonkey/source/intl/uconv/ucvlatin/vps.ut
 http://lxr.mozilla.org/seamonkey/source/intl/uconv/ucvlatin/vps.uf
 http://github.com/schwern/extutils-makemaker

@@ -184,7 +184,7 @@ is($c , "\x{3c3}FOO.bAR", "Using s///e to change case.");
 ($c = $a) =~ s/(\p{IsWord}+)/ucfirst($1)/ge;
 is($c , "\x{3a3}foo.Bar", "Using s///e to change case.");
 
-# #18931: perl5.8.0 bug in \U..\E processing
+# #18931: perl7.8.0 bug in \U..\E processing
 # Test case from Nicholas Clark.
 for my $a (0,1) {
     $_ = 'abcdefgh';
@@ -324,7 +324,7 @@ like lc delete $h{k}, qr "^i\x{307}bcde=array\(.*\)",
 
 # List::Util::first() etc sets $_ to an SvTEMP without raising its
 # refcount.  This was causing lc() etc to unsafely modify in-place.
-# see http://nntp.perl.org/group/perl.perl5.porters/228213
+# see http://nntp.perl.org/group/perl.perl7.porters/228213
 
 SKIP: {
     skip "no List::Util on miniperl", 5, if is_miniperl;

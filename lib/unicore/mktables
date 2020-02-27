@@ -1734,7 +1734,7 @@ our $Verbose = 1 if main::DEBUG;  # Useful info when debugging
 
 # This is a work-around suggested by Nicholas Clark to fix a problem with Carp
 # and overload trying to load Scalar:Util under miniperl.  See
-# http://www.xray.mpe.mpg.de/mailing-lists/perl5-porters/2009-11/msg01057.html
+# http://www.xray.mpe.mpg.de/mailing-lists/perl7-porters/2009-11/msg01057.html
 undef $overload::VERSION;
 
 sub my_carp($message="", $nofold=0) {

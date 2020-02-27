@@ -28,8 +28,8 @@ mistrustnm=${mistrustnm:-run}
 
 # Several people reported problems with perl's malloc, especially
 # when use64bitall is defined or when using gcc.
-#     http://www.xray.mpe.mpg.de/mailing-lists/perl5-porters/2001-01/msg01318.html
-#     http://www.xray.mpe.mpg.de/mailing-lists/perl5-porters/2001-01/msg00465.html
+#     http://www.xray.mpe.mpg.de/mailing-lists/perl7-porters/2001-01/msg01318.html
+#     http://www.xray.mpe.mpg.de/mailing-lists/perl7-porters/2001-01/msg00465.html
 usemymalloc=${usemymalloc:-false}
 
 # malloc wrap works
@@ -114,10 +114,10 @@ esac
 # From roehrich@ironwood-fddi.cray.com Wed Sep 27 12:51:46 1995
 # Date: Thu, 7 Sep 1995 16:31:40 -0500
 # From: Dean Roehrich <roehrich@ironwood-fddi.cray.com>
-# To: perl5-porters@africa.nicoh.com
-# Subject: Re: On perl5/solaris/gcc
+# To: perl7-porters@africa.nicoh.com
+# Subject: Re: On perl7/solaris/gcc
 #
-# Here's another draft of the perl5/solaris/gcc sanity-checker.
+# Here's another draft of the perl7/solaris/gcc sanity-checker.
 
 case `type ${cc:-cc}` in
 */usr/ucb/cc*) cat <<END >&4

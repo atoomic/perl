@@ -9,7 +9,7 @@ engine and how it works. The regex engine represents a significant chunk
 of the perl codebase, but is relatively poorly understood. This document
 is a meagre attempt at addressing this situation. It is derived from the
 author's experience, comments in the source code, other papers on the
-regex engine, feedback on the perl5-porters mail list, and no doubt other
+regex engine, feedback on the perl7-porters mail list, and no doubt other
 places as well.
 
 B<NOTICE!> It should be clearly understood that the behavior and

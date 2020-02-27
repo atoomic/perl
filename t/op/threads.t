@@ -102,7 +102,7 @@ print "ok";
 EOI
 
 # From a test case by Tim Bunce in
-# http://www.nntp.perl.org/group/perl.perl5.porters/63123
+# http://www.nntp.perl.org/group/perl.perl7.porters/63123
 fresh_perl_is(<<'EOI', 'ok', { }, 'Ensure PL_linestr can be cloned');
 use threads;
 print do 'op/threads_create.pl' || die $@;

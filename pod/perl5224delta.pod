@@ -2,7 +2,7 @@
 
 =head1 NAME
 
-perl5224delta - what is new for perl v5.22.4
+perl7224delta - what is new for perl v5.22.4
 
 =head1 DESCRIPTION
 
@@ -10,7 +10,7 @@ This document describes differences between the 5.22.3 release and the 5.22.4
 release.
 
 If you are upgrading from an earlier release such as 5.22.2, first read
-L<perl5223delta>, which describes differences between 5.22.2 and 5.22.3.
+L<perl7223delta>, which describes differences between 5.22.2 and 5.22.3.
 
 =head1 Security
 
@@ -20,8 +20,8 @@ The handling of (the removal of) C<'.'> in C<@INC> in L<base> has been
 improved.  This resolves some problematic behaviour in the approach taken in
 Perl 5.22.3, which is probably best described in the following two threads on
 the Perl 5 Porters mailing list:
-L<http://www.nntp.perl.org/group/perl.perl5.porters/2016/08/msg238991.html>,
-L<http://www.nntp.perl.org/group/perl.perl5.porters/2016/10/msg240297.html>.
+L<http://www.nntp.perl.org/group/perl.perl7.porters/2016/08/msg238991.html>,
+L<http://www.nntp.perl.org/group/perl.perl7.porters/2016/10/msg240297.html>.
 
 =head2 "Escaped" colons and relative paths in PATH
 
@@ -103,7 +103,7 @@ will be sent off to perlbug@perl.org to be analysed by the Perl porting team.
 
 If the bug you are reporting has security implications, which make it
 inappropriate to send to a publicly archived mailing list, then please send it
-to perl5-security-report@perl.org.  This points to a closed subscription
+to perl7-security-report@perl.org.  This points to a closed subscription
 unarchived mailing list, which includes all the core committers, who will be
 able to help assess the impact of issues, figure out a resolution, and help
 co-ordinate the release of patches to mitigate or fix the problem across all

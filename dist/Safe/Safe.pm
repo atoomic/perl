@@ -812,7 +812,7 @@ Originally designed and implemented by Malcolm Beattie.
 
 Reworked to use the Opcode module and other changes added by Tim Bunce.
 
-Currently maintained by the Perl 5 Porters, <perl5-porters@perl.org>.
+Currently maintained by the Perl 5 Porters, <perl7-porters@perl.org>.
 
 =cut
 

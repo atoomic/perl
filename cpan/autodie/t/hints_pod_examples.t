@@ -141,7 +141,7 @@ my %list_tests = (
 # fix, because the tests will act as a canary if we screw up string
 # eval propagation.
 
-my $perl58_fix = (
+my $perl78_fix = (
     PERL510 ?
     q{} :
     q{use autodie qw(
@@ -170,7 +170,7 @@ my $perl58_fix = (
 foreach my $test (sort keys %scalar_tests) {
     my $exception_expected= $scalar_tests{$test};
     my $ok= eval(my $code= "
-        $perl58_fix
+        $perl78_fix
         my \$scalar = $test;
         1;
     ");
@@ -190,7 +190,7 @@ foreach my $test (sort keys %scalar_tests) {
 foreach my $test (sort keys %list_tests) {
     my $exception_expected= $list_tests{$test};
     eval "
-        $perl58_fix
+        $perl78_fix
         my \@array = $test;
     ";
 

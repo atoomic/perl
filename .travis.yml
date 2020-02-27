@@ -53,7 +53,7 @@ notifications:
 ## use dedicated email for smoking ?
 #  email:
 #    recipients:
-#      - perl5-porters@perl.org
+#      - perl7-porters@perl.org
 #    on_success: never  # default: change
 #    on_failure: always # default: always
   irc:

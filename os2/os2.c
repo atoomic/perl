@@ -1366,7 +1366,7 @@ do_spawn3(pTHX_ char *cmd, int execf, int flag)
     else
     	shell = "cmd.exe";
 #else
-    /* Consensus on perl5-porters is that it is _very_ important to
+    /* Consensus on perl7-porters is that it is _very_ important to
        have a shell which will not change between computers with the
        same architecture, to avoid "action on a distance". 
        And to have simple build, this shell should be sh. */

@@ -159,7 +159,7 @@ sub run_tests {
 
     {
         my $message = 'UTF-8 hash keys and /$/';
-        # http://www.xray.mpe.mpg.de/mailing-lists/perl5-porters
+        # http://www.xray.mpe.mpg.de/mailing-lists/perl7-porters
         #                                         /2002-01/msg01327.html
 
         my $u = "a\x{100}";

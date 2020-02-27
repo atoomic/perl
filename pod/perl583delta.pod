@@ -1,6 +1,6 @@
 =head1 NAME
 
-perl583delta - what is new for perl v5.8.3
+perl783delta - what is new for perl v5.8.3
 
 =head1 DESCRIPTION
 
@@ -8,8 +8,8 @@ This document describes differences between the 5.8.2 release and
 the 5.8.3 release.
 
 If you are upgrading from an earlier release such as 5.6.1, first read
-the L<perl58delta>, which describes differences between 5.6.0 and
-5.8.0, and the L<perl581delta> and L<perl582delta>, which describe differences
+the L<perl78delta>, which describes differences between 5.6.0 and
+5.8.0, and the L<perl781delta> and L<perl782delta>, which describe differences
 between 5.8.0, 5.8.1 and 5.8.2
 
 =head1 Incompatible Changes
@@ -168,7 +168,7 @@ We have a backlog of unresolved bugs. Dealing with bugs and bug reports
 is unglamorous work; not something ideally suited to volunteer labour,
 but that is all that we have.
 
-The perl5 development team are implementing changes to help address this
+The perl7 development team are implementing changes to help address this
 problem, which should go live in early 2004.
 
 =head1 Future Directions

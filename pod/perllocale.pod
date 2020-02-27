@@ -1744,5 +1744,5 @@ see L<perlembed/Using embedded Perl with POSIX locales>.
 =head1 HISTORY
 
 Jarkko Hietaniemi's original F<perli18n.pod> heavily hacked by Dominic
-Dunlop, assisted by the perl5-porters.  Prose worked over a bit by
+Dunlop, assisted by the perl7-porters.  Prose worked over a bit by
 Tom Christiansen, and now maintained by Perl 5 porters.

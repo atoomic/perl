@@ -1018,7 +1018,7 @@ there are still existing I<child> threads.
 
 Since Perl 5.8.0, signals have been made safer in Perl by postponing their
 handling until the interpreter is in a I<safe> state.  See
-L<perl58delta/"Safe Signals"> and L<perlipc/"Deferred Signals (Safe Signals)">
+L<perl78delta/"Safe Signals"> and L<perlipc/"Deferred Signals (Safe Signals)">
 for more details.
 
 Safe signals is the default behavior, and the old, immediate, unsafe

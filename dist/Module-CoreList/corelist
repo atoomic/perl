@@ -558,7 +558,7 @@ sub numify_version {
 
 Copyright (c) 2002-2007 by D.H. aka PodMaster
 
-Currently maintained by the perl 5 porters E<lt>perl5-porters@perl.orgE<gt>.
+Currently maintained by the perl 5 porters E<lt>perl7-porters@perl.orgE<gt>.
 
 This program is distributed under the same terms as perl itself.
 See http://perl.org/ or http://cpan.org/ for more info on that.

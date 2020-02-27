@@ -2,7 +2,7 @@
 
 =head1 NAME
 
-perl588delta - what is new for perl v5.8.8
+perl788delta - what is new for perl v5.8.8
 
 =head1 DESCRIPTION
 
@@ -1416,7 +1416,7 @@ DEC/OSF, HP-UX and MPE/iX
 
 Perl extensions on Windows now can be statically built into the Perl DLL,
 thanks to a work by Vadim Konovalov. (This improvement was actually in 5.8.7,
-but was accidentally omitted from L<perl587delta>).
+but was accidentally omitted from L<perl787delta>).
 
 =head1 Selected Bug Fixes
 

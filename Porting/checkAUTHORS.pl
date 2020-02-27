@@ -269,7 +269,7 @@ sub generate_known_author_map {
         "perl\100dellah.anu.edu.au", "spoon\100dellah.org", "spoon\100cpan.org",
 
         # Ton Hospel
-        "me-02\100ton.iguana.be", "perl-5.8.0\100ton.iguana.be", "perl5-porters\100ton.iguana.be",
+        "me-02\100ton.iguana.be", "perl-5.8.0\100ton.iguana.be", "perl7-porters\100ton.iguana.be",
 
         # Beau Cox
         "beau\100beaucox.com",
@@ -281,14 +281,14 @@ sub generate_known_author_map {
         "pravus\100cpan.org",
 
         # perl internal addresses
-        "perl5-porters\100africa.nicoh.com",
+        "perl7-porters\100africa.nicoh.com",
         "perlbug\100perl.org",,
-        "perl5-porters.nicoh.com",
+        "perl7-porters.nicoh.com",
         "perlbug-followup\100perl.org",
         "perlbug-comment\100perl.org",
         "bug-module-corelist\100rt.cpan.org",
         "bug-storable\100rt.cpan.org",
-        "bugs-perl5\100bugs6.perl.org",
+        "bugs-perl7\100bugs6.perl.org",
         "unknown",
         "unknown\100unknown",
         "unknown\100longtimeago",
@@ -1047,7 +1047,7 @@ ignasi.roca\100fujitsu-siemens.com      ignasi.roca\100fujitsu.siemens.es
 ikegami\100adaelis.com                  eric\100fmdev10.(none)
 ilmari\100ilmari.org                    ilmari\100vesla.ilmari.org
 illpide\100telecel.pt                   arbor\100al37al08.telecel.pt
-# see http://www.nntp.perl.org/group/perl.perl5.porters/2001/01/msg28925.html
+# see http://www.nntp.perl.org/group/perl.perl7.porters/2001/01/msg28925.html
 #
 ilya\100math.berkeley.edu               ilya\100math.ohio-state.edu
 +                                       nospam-abuse\100ilyaz.org

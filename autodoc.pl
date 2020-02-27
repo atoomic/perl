@@ -364,7 +364,7 @@ document are not intended for public use, and should NOT be used under any
 circumstances.
 
 If you feel you need to use one of these functions, first send email to
-L<perl5-porters@perl.org|mailto:perl5-porters@perl.org>.  It may be
+L<perl7-porters@perl.org|mailto:perl7-porters@perl.org>.  It may be
 that there is a good reason for the function not being documented, and it
 should be removed from this list; or it may just be that no one has gotten
 around to documenting it.  In the latter case, you will be asked to submit a

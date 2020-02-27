@@ -14,7 +14,7 @@ These variables are global to an entire process.  They are shared between
 all interpreters and all threads in a process.  Any variables not documented
 here may be changed or removed without notice, so don't use them!
 If you feel you really do need to use an unlisted variable, first send email to
-L<perl5-porters@perl.org|mailto:perl5-porters@perl.org>.  It may be that
+L<perl7-porters@perl.org|mailto:perl7-porters@perl.org>.  It may be that
 someone there will point out a way to accomplish what you need without using an
 internal variable.  But if not, you should get a go-ahead to document and then
 use the variable.

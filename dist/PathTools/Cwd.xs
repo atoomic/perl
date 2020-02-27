@@ -28,7 +28,7 @@
  */
 
 /* See
- * http://www.xray.mpe.mpg.de/mailing-lists/perl5-porters/2004-11/msg00979.html
+ * http://www.xray.mpe.mpg.de/mailing-lists/perl7-porters/2004-11/msg00979.html
  * for the details of why the BSD license is compatible with the
  * AL/GPL standard perl license.
  */

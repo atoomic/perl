@@ -27,7 +27,7 @@ for a bug, comment fixes, etc., it's easy! Here's how:
 The perl source is in a git repository.  You can clone the repository
 with the following command:
 
-  % git clone https://github.com/Perl/perl5.git perl
+  % git clone https://github.com/Perl/perl7.git perl
 
 =item * Ensure you're following the latest advice
 
@@ -72,11 +72,11 @@ sentence.  For example, "Fixed spelling errors in perlhack.pod".
 
 The next step is to submit your patch to the Perl core ticket system.
 
-Create a GitHub fork of the perl5 repository and add it as a remote,
+Create a GitHub fork of the perl7 repository and add it as a remote,
 if you haven't already, as described in the GitHub documentation at
 L<https://help.github.com/en/articles/working-with-forks>.
 
-  % git remote add fork git@github.com:MyUser/perl5.git
+  % git remote add fork git@github.com:MyUser/perl7.git
 
 Then, push your new branch to your fork.
 
@@ -121,7 +121,7 @@ If you want to report a bug in Perl, or browse existing Perl bugs and
 patches, use the GitHub issue tracker at
 L<https://github.com/perl/perl5/issues>.
 
-Please check the archive of the perl5-porters list (see below) and/or
+Please check the archive of the perl7-porters list (see below) and/or
 the bug tracking system before submitting a bug report.  Often, you'll
 find that the bug has been reported already.
 
@@ -168,7 +168,7 @@ L<perlgit>.
 You will need a copy of Git for your computer.  You can fetch a copy of
 the repository using the git protocol:
 
-  % git clone git://github.com/Perl/perl5.git perl
+  % git clone git://github.com/Perl/perl7.git perl
 
 This clones the repository and makes a local copy in the F<perl>
 directory.
@@ -176,32 +176,32 @@ directory.
 If you cannot use the git protocol for firewall reasons, you can also
 clone via http:
 
-  % git clone https://github.com/Perl/perl5.git perl
+  % git clone https://github.com/Perl/perl7.git perl
 
 =head2 Read access via the web
 
 You may access the repository over the web.  This allows you to browse
 the tree, see recent commits, subscribe to repository notifications,
 search for particular commits and more.  You may access it at
-L<https://github.com/Perl/perl5>.
+L<https://github.com/Perl/perl7>.
 
 =head2 Read access via rsync
 
 You can also choose to use rsync to get a copy of the current source
 tree for the bleadperl branch and all maintenance branches:
 
-  % rsync -avz rsync://perl5.git.perl.org/perl-current .
-  % rsync -avz rsync://perl5.git.perl.org/perl-5.12.x .
-  % rsync -avz rsync://perl5.git.perl.org/perl-5.10.x .
-  % rsync -avz rsync://perl5.git.perl.org/perl-5.8.x .
-  % rsync -avz rsync://perl5.git.perl.org/perl-5.6.x .
-  % rsync -avz rsync://perl5.git.perl.org/perl-5.005xx .
+  % rsync -avz rsync://perl7.git.perl.org/perl-current .
+  % rsync -avz rsync://perl7.git.perl.org/perl-5.12.x .
+  % rsync -avz rsync://perl7.git.perl.org/perl-5.10.x .
+  % rsync -avz rsync://perl7.git.perl.org/perl-5.8.x .
+  % rsync -avz rsync://perl7.git.perl.org/perl-5.6.x .
+  % rsync -avz rsync://perl7.git.perl.org/perl-5.005xx .
 
 (Add the C<--delete> option to remove leftover files.)
 
 To get a full list of the available sync points:
 
-  % rsync perl5.git.perl.org::
+  % rsync perl7.git.perl.org::
 
 =head2 Write access via git
 
@@ -1011,7 +1011,7 @@ by running 'make test_notty'.
 
 Setting this variable runs all the Net::Ping modules tests, otherwise
 some tests that interact with the outside world are skipped.  See
-L<perl58delta>.
+L<perl78delta>.
 
 =item * PERL_TEST_NOVREXX
 
@@ -1196,7 +1196,7 @@ Here's some more recommendations
 
 =item *
 
-Subscribe to perl5-porters, follow the patches and try and understand
+Subscribe to perl7-porters, follow the patches and try and understand
 them; don't be afraid to ask if there's a portion you're not clear on -
 who knows, you may unearth a bug in the patch...
 
@@ -1283,4 +1283,4 @@ metaphor, so being meta is, after all, what it's for.
 =head1 AUTHOR
 
 This document was originally written by Nathan Torkington, and is
-maintained by the perl5-porters mailing list.
+maintained by the perl7-porters mailing list.

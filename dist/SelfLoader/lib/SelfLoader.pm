@@ -378,19 +378,19 @@ parsed.
 
 =head1 AUTHOR
 
-C<SelfLoader> is maintained by the perl5-porters. Please direct
+C<SelfLoader> is maintained by the perl7-porters. Please direct
 any questions to the canonical mailing list. Anything that
 is applicable to the CPAN release can be sent to its maintainer,
 though.
 
-Author and Maintainer: The Perl5-Porters <perl5-porters@perl.org>
+Author and Maintainer: The Perl5-Porters <perl7-porters@perl.org>
 
 Maintainer of the CPAN release: Steffen Mueller <smueller@cpan.org>
 
 =head1 COPYRIGHT AND LICENSE
 
 This package has been part of the perl core since the first release
-of perl5. It has been released separately to CPAN so older installations
+of perl7. It has been released separately to CPAN so older installations
 can benefit from bug fixes.
 
 This package has the same copyright and license as the perl core:

@@ -667,7 +667,7 @@ sub run_tests {
 
     {
         my $message = 'UTF-8 hash keys and /$/';
-        # http://www.xray.mpe.mpg.de/mailing-lists/perl5-porters
+        # http://www.xray.mpe.mpg.de/mailing-lists/perl7-porters
         #                                         /2002-01/msg01327.html
 
         my $u = "a\x{100}";
@@ -1389,7 +1389,7 @@ sub run_tests {
     }
 
     {
-        my $message = "http://nntp.perl.org/group/perl.perl5.porters/118663";
+        my $message = "http://nntp.perl.org/group/perl.perl7.porters/118663";
         my $qr_barR1 = qr/(bar)\g-1/;
         like("foobarbarxyz", $qr_barR1, $message);
         like("foobarbarxyz", qr/foo${qr_barR1}xyz/, $message);
@@ -2476,7 +2476,7 @@ EOF
     }
 
     { # Regexp:Grammars was broken:
-  # http://www.xray.mpe.mpg.de/mailing-lists/perl5-porters/2013-06/msg01290.html
+  # http://www.xray.mpe.mpg.de/mailing-lists/perl7-porters/2013-06/msg01290.html
         fresh_perl_like('use warnings; "abc" =~ qr{(?&foo){0}abc(?<foo>)}',
                         qr/Quantifier unexpected on zero-length expression/,
                         {},

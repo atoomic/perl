@@ -198,7 +198,7 @@ automatically.  Some options can be given explicitly on the command line;
 the following example specifies a non-default location for where Perl
 will be installed:
 
-    @configure "-d" "-Dprefix=dka100:[utils.perl5.]"
+    @configure "-d" "-Dprefix=dka100:[utils.perl7.]"
 
 Note that the installation location would be by default where you unpacked 
 the source with a "_ROOT." appended.  For example if you unpacked the perl 
@@ -604,7 +604,7 @@ missed someone.  That said, special thanks are due to the following:
      for ODS-5 filename handling and other modernizations
 
 and to the entire VMSperl group for useful advice and suggestions.  In
-addition the perl5-porters deserve credit for their creativity and
+addition the perl7-porters deserve credit for their creativity and
 willingness to work with the VMS newcomers.  Finally, the greatest debt of
 gratitude is due to Larry Wall larry@wall.org, for having the ideas which
 have made our sleepless nights possible.

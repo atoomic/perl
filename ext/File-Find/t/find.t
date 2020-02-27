@@ -500,7 +500,7 @@ is( scalar(keys %Expect_Dir), 0, "Got no files, as expected" );
 
 ##### #####
 # see thread starting
-# http://www.xray.mpe.mpg.de/mailing-lists/perl5-porters/2004-02/msg00351.html
+# http://www.xray.mpe.mpg.de/mailing-lists/perl7-porters/2004-02/msg00351.html
 {
     print "# checking that &_ and %_ are still accessible and that\n",
     "# tie magic on \$_ is not triggered\n";

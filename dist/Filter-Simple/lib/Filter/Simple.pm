@@ -789,7 +789,7 @@ Damian Conway
 Filter::Simple is now maintained by the Perl5-Porters.
 Please submit bug via the C<perlbug> tool that comes with your perl.
 For usage instructions, read C<perldoc perlbug> or possibly C<man perlbug>.
-For mostly anything else, please contact E<lt>perl5-porters@perl.orgE<gt>.
+For mostly anything else, please contact E<lt>perl7-porters@perl.orgE<gt>.
 
 Maintainer of the CPAN release is Steffen Mueller E<lt>smueller@cpan.orgE<gt>.
 Contact him with technical difficulties with respect to the packaging of the
