@@ -784,11 +784,6 @@ subsignature:	'('
 			        Perl_croak(aTHX_ "Experimental "
                                     "subroutine signatures not enabled");
 
-                            /* We shouldn't get here otherwise */
-                            Perl_ck_warner_d(aTHX_
-                                packWARN(WARN_EXPERIMENTAL__SIGNATURES),
-                                "The signatures feature is experimental");
-
                             aux = (UNOP_AUX_item*)PerlMemShared_malloc(
                                 sizeof(UNOP_AUX_item) * 3);
                             aux[0].iv = parser->sig_elems;
