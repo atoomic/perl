@@ -46,7 +46,7 @@ my @all_features = sort keys %feature;
 
 my %feature_bundle = (
      all     => [ @all_features ],
-     default =>	[ @all_features ],
+     default =>	[ ],
     "5.9.5"  =>	[qw(say state switch)],
     "5.10"   =>	[qw(say state switch)],
     "5.11"   =>	[qw(say state switch unicode_strings)],
