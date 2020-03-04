@@ -24,6 +24,9 @@
 
 use strict;
 
+use feature q{:all};
+#no warnings 'experimental::signatures'; ## FIXME
+
 if (@ARGV) {
     my $workdir = shift;
     chdir $workdir
@@ -31,6 +34,7 @@ if (@ARGV) {
 }
 require './regen/regen_lib.pl';
 require './regen/embed_lib.pl';
+
 
 #
 # See database of global and static function prototypes in embed.fnc
@@ -51,8 +55,7 @@ my %missing;
 
 my $curheader = "Unknown section";
 
-sub autodoc ($$) { # parse a file and extract documentation info
-    my($fh,$file) = @_;
+sub autodoc ($fh, $file) { # parse a file and extract documentation info
     my($in, $doc, $line, $header_doc);
 
     # Count lines easier
@@ -188,9 +191,8 @@ DOC:
     }
 }
 
-sub docout ($$$) { # output the docs for one function
-    my($fh, $name, $docref) = @_;
-    my($flags, $docs, $ret, $file, @args) = @$docref;
+sub docout ($fh, $name, $docref) { # output the docs for one function
+    my ($flags, $docs, $ret, $file, @args) = @$docref;
     $name =~ s/\s*$//;
 
     if ($flags =~ /D/) {
