@@ -1,5 +1,6 @@
 use ExtUtils::MakeMaker;
 
+my @extra;
 push @extra, 'INSTALLDIRS' => 'perl' if $] >= 5.008009 and $] < 5.012;
 
 push @extra, 'META_MERGE' => {
