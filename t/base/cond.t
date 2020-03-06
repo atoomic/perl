@@ -4,7 +4,7 @@
 
 print "1..4\n";
 
-$x = '0';
+my $x = '0';
 
 $x eq $x && (print "ok 1\n");
 $x ne $x && (print "not ok 1\n");
