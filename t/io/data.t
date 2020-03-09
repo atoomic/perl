@@ -21,6 +21,7 @@ done_testing();
 
 __END__
 # http://rt.perl.org/rt3/Ticket/Display.html?id=28106#txn-82657
+no warnings;
 while (<DATA>) {
     chomp;
     print "$.: '$_'\n";
