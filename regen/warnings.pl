@@ -650,7 +650,12 @@ sub import
 
 my %removedWarningsFor = (
     'FATAL'                    => 1,
-    'experimental::signatures' => 1,  
+    'experimental::signatures' => 1,
+    'experimental::signatures' => 1,
+    'experimental::signatures' => 1,
+    'experimental::signatures' => 1,
+    'experimental::signatures' => 1,
+    'experimental::signatures' => 1,
 );
 
 sub unimport
