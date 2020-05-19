@@ -14,11 +14,10 @@
 
 #define FEATURE_BUNDLE_DEFAULT	0
 #define FEATURE_BUNDLE_510	1
-#define FEATURE_BUNDLE_511	2
-#define FEATURE_BUNDLE_515	3
-#define FEATURE_BUNDLE_523	4
-#define FEATURE_BUNDLE_527	5
-#define FEATURE_BUNDLE_70	6
+#define FEATURE_BUNDLE_515	2
+#define FEATURE_BUNDLE_523	3
+#define FEATURE_BUNDLE_527	4
+#define FEATURE_BUNDLE_70	5
 #define FEATURE_BUNDLE_CUSTOM	(HINT_FEATURE_MASK >> HINT_FEATURE_SHIFT)
 
 #define CURRENT_HINTS \
@@ -130,8 +129,8 @@
 
 #define FEATURE_UNICODE_IS_ENABLED \
     ( \
-	(CURRENT_FEATURE_BUNDLE >= FEATURE_BUNDLE_511 && \
-	 CURRENT_FEATURE_BUNDLE <= FEATURE_BUNDLE_70) \
+	(CURRENT_FEATURE_BUNDLE >= FEATURE_BUNDLE_515 && \
+	 CURRENT_FEATURE_BUNDLE <= FEATURE_BUNDLE_527) \
      || (CURRENT_FEATURE_BUNDLE == FEATURE_BUNDLE_CUSTOM && \
 	 FEATURE_IS_ENABLED("unicode")) \
     )
@@ -158,9 +157,6 @@ S_enable_feature_bundle(pTHX_ SV *ver)
 		  (sv_setnv(comp_ver, 5.015),
 		   vcmp(ver, upg_version(comp_ver, FALSE)) >= 0)
 			? FEATURE_BUNDLE_515 :
-		  (sv_setnv(comp_ver, 5.011),
-		   vcmp(ver, upg_version(comp_ver, FALSE)) >= 0)
-			? FEATURE_BUNDLE_511 :
 		  (sv_setnv(comp_ver, 5.009005),
 		   vcmp(ver, upg_version(comp_ver, FALSE)) >= 0)
 			? FEATURE_BUNDLE_510 :
