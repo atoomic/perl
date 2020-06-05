@@ -1524,6 +1524,7 @@ cpan/perlfaq/lib/perlglossary.pod	Perl Glossary
 cpan/PerlIO-via-QuotedPrint/lib/PerlIO/via/QuotedPrint.pm	PerlIO::via::QuotedPrint
 cpan/PerlIO-via-QuotedPrint/t/QuotedPrint.t			PerlIO::via::QuotedPrint
 cpan/Pod-Checker/lib/Pod/Checker.pm
+cpan/Pod-Checker/scripts/podchecker		added for p7
 cpan/Pod-Checker/scripts/podchecker.PL
 cpan/Pod-Checker/t/pod/contains_bad_pod.xr
 cpan/Pod-Checker/t/pod/empty.xr
@@ -1545,6 +1546,7 @@ cpan/Pod-Parser/lib/Pod/Parser.pm		Pod-Parser - define base class for parsing PO
 cpan/Pod-Parser/lib/Pod/ParseUtils.pm		Pod-Parser - pod utility functions
 cpan/Pod-Parser/lib/Pod/PlainText.pm		Convert POD data to formatted ASCII text
 cpan/Pod-Parser/lib/Pod/Select.pm		Pod-Parser - select portions of POD docs
+cpan/Pod-Parser/scripts/podselect		added for p7
 cpan/Pod-Parser/scripts/podselect.PL	Pod-Parser - Pod::Select::podselect() CLI
 cpan/Pod-Parser/t/pod/contains_bad_pod.xr	Pod-Parser test file
 cpan/Pod-Parser/t/pod/contains_pod.t		Pod-Parser test
@@ -1802,6 +1804,7 @@ cpan/Pod-Simple/t/xhtml10.t				Pod::Simple test file
 cpan/Pod-Simple/t/xhtml15.t				Pod::Simple test file
 cpan/Pod-Simple/t/xhtml20.t				Pod::Simple test file
 cpan/Pod-Usage/lib/Pod/Usage.pm
+cpan/Pod-Usage/scripts/pod2usage		added for p7
 cpan/Pod-Usage/scripts/pod2usage.PL
 cpan/Pod-Usage/t/inc/Pod/InputObjects.pm
 cpan/Pod-Usage/t/inc/Pod/Parser.pm
@@ -4635,6 +4638,8 @@ lib/overload/numbers.pm		Helper for overloading pragma
 lib/overload64.t		See if operator overloading works with 64-bit ints
 lib/overloading.pm		Pragma to lexically control overloading
 lib/overloading.t		Tests for overloading.pm
+lib/p5.pm		added for p7
+lib/p7.pm		added for p7
 lib/perl7db.pl			Perl debugging routines
 lib/perl7db.t			Tests for the Perl debugger
 lib/perl7db/t/break-on-dot	Test script used by perl7db.t
@@ -5030,6 +5035,7 @@ pod/perl5280delta.pod		Perl changes in version 5.28.0
 pod/perl5281delta.pod		Perl changes in version 5.28.1
 pod/perl5282delta.pod		Perl changes in version 5.28.2
 pod/perl5300delta.pod		Perl changes in version 5.30.0
+pod/perl5301delta.pod		added for p7
 pod/perl561delta.pod		Perl changes in version 5.6.1
 pod/perl56delta.pod		Perl changes in version 5.6
 pod/perl581delta.pod		Perl changes in version 5.8.1
@@ -5281,6 +5287,7 @@ regen/op_private		Definitions of bits in an OP's op_private field
 regen/opcode.pl			Opcode header generator
 regen/opcodes			Opcode data
 regen/overload.pl		generate overload.h
+regen/pX.pl		added for p7
 regen/reentr.pl			Reentrant interfaces
 regen/regcharclass.pl		Generate regcharclass.h from inline data
 regen/regcharclass_multi_char_folds.pl	Generate input for regcharclass.pl
