@@ -6,9 +6,12 @@ use p5;
 use strict;
 use warnings;
 use constant DEBUG => !!$ENV{PERL_ENCODE_DEBUG};
+
+no warnings 'redefine';
+
 our $VERSION;
 BEGIN {
-    $VERSION = sprintf "%d.%02d", q$Revision: 3.01 $ =~ /(\d+)/g;
+    $VERSION = sprintf "%d.%02d", q$Revision: 3.01 $ =~ /(\d+)/g;    
     require XSLoader;
     XSLoader::load( __PACKAGE__, $VERSION );
 }
