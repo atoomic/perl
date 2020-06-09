@@ -4,6 +4,8 @@
 # This program is free software; you can redistribute it and/or modify it
 # under the same terms as Perl itself.
 
+use p5;
+
 =head1 NAME
 
 FindBin - Locate directory of original perl script
