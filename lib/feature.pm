@@ -5,7 +5,9 @@
 
 package feature;
 
-our $VERSION = '1.54';
+use p5;
+
+our $VERSION = '1.55';
 
 our %feature = (
     fc              => 'feature_fc',
@@ -24,7 +26,6 @@ our %feature = (
 );
 
 our %feature_bundle = (
-    "5.10"    => [qw(say state switch)],
     "5.15"    => [qw(current_sub evalbytes fc say state switch unicode_eval unicode_strings)],
     "5.23"    => [qw(current_sub evalbytes fc postderef_qq say state switch unicode_eval unicode_strings)],
     "5.27"    => [qw(bitwise current_sub evalbytes fc postderef_qq say state switch unicode_eval unicode_strings)],
@@ -46,7 +47,6 @@ $feature_bundle{"5.26"} = $feature_bundle{"5.23"};
 $feature_bundle{"5.28"} = $feature_bundle{"5.27"};
 $feature_bundle{"5.29"} = $feature_bundle{"5.27"};
 $feature_bundle{"5.30"} = $feature_bundle{"5.27"};
-$feature_bundle{"5.9.5"} = $feature_bundle{"5.10"};
 my %noops = (
     postderef => 1,
     lexical_subs => 1,
@@ -57,7 +57,7 @@ my %removed = (
 
 our $hint_shift   = 26;
 our $hint_mask    = 0x1c000000;
-our @hint_bundles = qw( default 5.10 5.15 5.23 5.27 7.0 );
+our @hint_bundles = qw( default 5.15 5.23 5.27 7.0 );
 
 # This gets set (for now) in $^H as well as in %^H,
 # for runtime speed of the uc/lc/ucfirst/lcfirst functions.
@@ -358,8 +358,6 @@ The following feature bundles are available:
   bundle    features included
   --------- -----------------
   :default
-
-  :5.10     say state switch
 
   :5.16     say state switch unicode_strings
             unicode_eval evalbytes current_sub fc
