@@ -449,7 +449,10 @@ sub getlines {
 1; # return true for error checking
 END
 
-*gets = \&getline;  # deprecated
+{
+    no warnings 'once';
+    *gets = \&getline;  # deprecated
+}
 
 sub truncate {
     @_ == 2 or croak 'usage: $io->truncate(LEN)';
