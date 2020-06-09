@@ -3,7 +3,7 @@ package English;
 our $VERSION = '1.10';
 
 require Exporter;
-@ISA = qw(Exporter);
+our @ISA = qw(Exporter);
 
 =head1 NAME
 
