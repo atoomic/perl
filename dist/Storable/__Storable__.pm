@@ -8,6 +8,8 @@
 #  in the README file that comes with the distribution.
 #
 
+use p5;
+
 require XSLoader;
 require Exporter;
 package Storable;
@@ -99,10 +101,12 @@ sub TIE_OK       () { 4 }
 sub FLAGS_COMPAT () { BLESS_OK | TIE_OK }
 
 # By default restricted hashes are downgraded on earlier perls.
-
-$Storable::flags = FLAGS_COMPAT;
-$Storable::downgrade_restricted = 1;
-$Storable::accept_future_minor = 1;
+{
+    no warnings 'once';
+    $Storable::flags = FLAGS_COMPAT;
+    $Storable::downgrade_restricted = 1;
+    $Storable::accept_future_minor = 1;
+}
 
 XSLoader::load('Storable');
 
