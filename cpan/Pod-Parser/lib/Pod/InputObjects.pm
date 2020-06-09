@@ -9,6 +9,8 @@
 #############################################################################
 
 package Pod::InputObjects;
+
+use p5;
 use strict;
 
 use vars qw($VERSION);

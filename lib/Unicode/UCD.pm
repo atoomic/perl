@@ -1,5 +1,6 @@
 package Unicode::UCD;
 
+use p5;
 use strict;
 use warnings;
 no warnings 'surrogate';    # surrogates can be inputs to this
@@ -571,7 +572,10 @@ sub _read_table ($;$) {
     # does.
     require "unicore/Heavy.pl";
     my $property = $table =~ s/\.pl//r;
-    $property = $utf8::file_to_swash_name{$property};
+    {
+        no warnings 'once';
+        $property = $utf8::file_to_swash_name{$property};
+    }
     my $to_adjust = defined $property
                     && $utf8::SwashInfo{$property}{'format'} =~ / ^ a /x;
 
@@ -2133,7 +2137,7 @@ sub prop_aliases ($) {
                     $list_ref = \@list;
                 }
             }
-            elsif (! exists $utf8::loose_to_file_of{$loose}) {
+            elsif (!scalar %utf8::loose_to_file_of || ! exists $utf8::loose_to_file_of{$loose}) {
 
                 # loose_to_file_of is a complete list of loose names.  If not
                 # there, the input is unknown.

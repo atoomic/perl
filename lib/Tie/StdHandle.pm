@@ -1,10 +1,11 @@
 package Tie::StdHandle; 
 
+use p5;
 use strict;
 
 use Tie::Handle;
 our @ISA = 'Tie::Handle';
-our $VERSION = '4.5';
+our $VERSION = '4.6';
 
 =head1 NAME
 

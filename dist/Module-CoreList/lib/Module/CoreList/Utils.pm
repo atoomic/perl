@@ -1577,7 +1577,7 @@ sub _create_aliases {
     }
 }
 
-'foo';
+1;
 
 =pod
 
