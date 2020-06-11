@@ -1284,6 +1284,7 @@ sub run_multiple_progs {
 	print $fh $prog,"\n";
 	close $fh or die "Cannot close $tmpfile: $!";
 	my $results = runperl( stderr => 1, progfile => $tmpfile,
+                   #run_as_five => 1,
 			       stdin => undef, $up
 			       ? (switches => ["-I$up/lib", $switch], nolib => 1)
 			       : (switches => [$switch])
