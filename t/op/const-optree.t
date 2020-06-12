@@ -8,6 +8,8 @@ BEGIN {
     require './test.pl';
     set_up_inc('../lib');
 }
+
+use p5;
 plan 168;
 
 # @tests is an array of hash refs, each of which can have various keys:
@@ -27,6 +29,8 @@ plan 168;
 #   method      - whether the sub has the :method attribute
 
 # [perl #63540] Don’t treat sub { if(){.....}; "constant" } as a constant
+my $blonk_was_called;
+my @tests;
 sub blonk { ++$blonk_was_called }
 push @tests, {
   nickname    => 'sub with null+kids (if-block), then constant',
@@ -362,7 +366,7 @@ push @tests, {
 push @tests, {
   nickname    => 'closure after \(my $x=1)',
   generator   => sub {
-    $y = \(my $x = 1);
+    my $y = \(my $x = 1);
     my $ret = sub () { $x };
     $$y += 7;
     $ret;
@@ -374,7 +378,7 @@ push @tests, {
   method      => 0,
 };
 
-push @tests, {
+push @tests, { # needs p5
   nickname    => 'sub:method with simple lexical',
   generator   => sub { my $y; sub():method{$y} },
   retval      => undef,
@@ -383,7 +387,8 @@ push @tests, {
   deprecated  => 0,
   method      => 1,
 };
-push @tests, {
+
+push @tests, { # needs p5
   nickname    => 'sub:method with constant',
   generator   => sub { sub():method{3} },
   retval      => 3,
@@ -392,7 +397,7 @@ push @tests, {
   deprecated  => 0,
   method      => 1,
 };
-push @tests, {
+push @tests, { # needs p5
   nickname    => 'my sub:method with constant',
   generator   => sub { my sub x ():method{3} \&x },
   retval      => 3,
@@ -402,7 +407,7 @@ push @tests, {
   method      => 1,
 };
 
-push @tests, {
+push @tests, { # needs p5
   nickname    => 'sub closing over state var',
   generator   => sub { state $x = 3; sub () {$x} },
   retval      => 3,
@@ -411,7 +416,7 @@ push @tests, {
   deprecated  => 0,
   method      => 0,
 };
-push @tests, {
+push @tests, { # needs p5
   nickname    => 'sub closing over state var++',
   generator   => sub { state $x++; sub () { $x } },
   retval      => 1,
