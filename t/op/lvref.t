@@ -4,6 +4,7 @@ BEGIN {
     set_up_inc("../lib");
 }
 
+use p5;
 plan 164;
 
 eval '\$x = \$y';
