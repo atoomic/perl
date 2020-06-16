@@ -38,6 +38,7 @@ Individual members of C<PL_parser> have their own documentation.
 #include "EXTERN.h"
 #define PERL_IN_TOKE_C
 #include "perl.h"
+#include "perl7.h"
 #include "dquote_inline.h"
 #include "invlist_inline.h"
 
@@ -5380,7 +5381,7 @@ Perl_yylex(pTHX)
 			  "use feature ':" STRINGIFY(PERL_REVISION) "." STRINGIFY(PERL_VERSION) "';");
 
         if (!PL_minus_5) /* by default load p7 feature */
-            sv_catpvs(PL_linestr, "use p7;"); /* try avoiding loading a module... */
+            sv_catpvs(PL_linestr, P7_TOKE_SETUP); /* try avoiding loading a module... */
         /* no need to load p5 when PL_minus_5 is set... this is already the defaults */
 
         if (PL_minus_n || PL_minus_p) {
