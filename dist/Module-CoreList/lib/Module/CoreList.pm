@@ -356,6 +356,7 @@ sub changes_between {
     5.031004 => '2019-09-20',
     5.031005 => '2019-10-20',
     5.030001 => '2019-11-10',
+    7.000000 => '2020-12-07',
   );
 
 for my $version ( sort { $a <=> $b } keys %released ) {
@@ -17913,6 +17914,13 @@ sub is_core
         removed => {
         }
     },
+    7.000000 => {
+        delta_from => 5.030000,
+        changed => {
+        },
+        removed => {
+        }
+    },    
 );
 
 %deprecated = _undelta(\%deprecated);
