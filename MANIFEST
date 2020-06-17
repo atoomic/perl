@@ -1524,7 +1524,6 @@ cpan/perlfaq/lib/perlglossary.pod	Perl Glossary
 cpan/PerlIO-via-QuotedPrint/lib/PerlIO/via/QuotedPrint.pm	PerlIO::via::QuotedPrint
 cpan/PerlIO-via-QuotedPrint/t/QuotedPrint.t			PerlIO::via::QuotedPrint
 cpan/Pod-Checker/lib/Pod/Checker.pm
-cpan/Pod-Checker/scripts/podchecker		added for p7
 cpan/Pod-Checker/scripts/podchecker.PL
 cpan/Pod-Checker/t/pod/contains_bad_pod.xr
 cpan/Pod-Checker/t/pod/empty.xr
@@ -1546,7 +1545,6 @@ cpan/Pod-Parser/lib/Pod/Parser.pm		Pod-Parser - define base class for parsing PO
 cpan/Pod-Parser/lib/Pod/ParseUtils.pm		Pod-Parser - pod utility functions
 cpan/Pod-Parser/lib/Pod/PlainText.pm		Convert POD data to formatted ASCII text
 cpan/Pod-Parser/lib/Pod/Select.pm		Pod-Parser - select portions of POD docs
-cpan/Pod-Parser/scripts/podselect		added for p7
 cpan/Pod-Parser/scripts/podselect.PL	Pod-Parser - Pod::Select::podselect() CLI
 cpan/Pod-Parser/t/pod/contains_bad_pod.xr	Pod-Parser test file
 cpan/Pod-Parser/t/pod/contains_pod.t		Pod-Parser test
@@ -1804,7 +1802,6 @@ cpan/Pod-Simple/t/xhtml10.t				Pod::Simple test file
 cpan/Pod-Simple/t/xhtml15.t				Pod::Simple test file
 cpan/Pod-Simple/t/xhtml20.t				Pod::Simple test file
 cpan/Pod-Usage/lib/Pod/Usage.pm
-cpan/Pod-Usage/scripts/pod2usage		added for p7
 cpan/Pod-Usage/scripts/pod2usage.PL
 cpan/Pod-Usage/t/inc/Pod/InputObjects.pm
 cpan/Pod-Usage/t/inc/Pod/Parser.pm
