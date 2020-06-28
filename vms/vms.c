@@ -4135,7 +4135,7 @@ create_forked_xterm(pTHX_ const char *cmd, const char *mode)
     /* Assign a channel on this so that it will persist, and not login */
     /* We stash this channel in the info structure for reference. */
     /* The created xterm self destructs when the last channel is removed */
-    /* and it appears that perl7db.pl (perl debugger) does this routinely */
+    /* and it appears that perl5db.pl (perl debugger) does this routinely */
     /* So leave this assigned. */
     device_name_dsc.dsc$w_length = device_name_len;
     status = sys$assign(&device_name_dsc,&info->xchan,0,0);

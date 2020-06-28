@@ -709,7 +709,7 @@ be kept as clean as possible.
  lib/Pod/Perldoc/ToMan.pm - '-c' switch for pod2man
  lib/Pod/Perldoc.pm    - Use 'less' pager, and use .exe extension
  lib/Term/ANSIColor.pm - Cygwin terminal info
- lib/perl7db.pl        - use stdin not /dev/tty
+ lib/perl5db.pl        - use stdin not /dev/tty
  utils/perlbug.PL      - Add CYGWIN environment variable to report
 
 =item Perl Module Tests

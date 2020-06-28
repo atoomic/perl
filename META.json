@@ -55,7 +55,7 @@
          "dist/Time-HiRes",
          "dist/Unicode-Normalize",
          "dist/XSLoader",
-         "lib/perl7db",
+         "lib/perl5db",
          "win32"
       ],
       "file" : [
