@@ -5925,7 +5925,6 @@ t/op/require_errors.t		See if errors from require are reported correctly
 t/op/require_override.t		See if require handles no argument properly
 t/op/reset.t			See if reset operator works
 t/op/reverse.t			See if reverse operator works
-t/op/rt119311.t			Test bug #119311 (die/DESTROY/recursion)
 t/op/runlevel.t			See if die() works from perl_call_*()
 t/op/select.t			See if 0- and 1-argument select works
 t/op/setpgrpstack.t		See if setpgrp works
@@ -5944,6 +5943,7 @@ t/op/sprintf.t			See if sprintf works
 t/op/sprintf2.t			See if sprintf works
 t/op/srand.t			See if srand works
 t/op/sselect.t			See if 4 argument select works
+t/op/stack-unwinding-gh13170.t			Test issue GH 13170 (die/DESTROY/recursion)
 t/op/stash.t			See if %:: stashes work
 t/op/stash_parse_gv.t		See if parse_gv_stash_name works
 t/op/stat.t			See if stat works
