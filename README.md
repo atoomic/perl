@@ -4,7 +4,7 @@ You can read more about [the Proposal for Perl 7](https://github.com/Perl/perl5/
 
 # About this 'core-p7' branch
 
-The branch `core-p7` is **experimental** and based on top of [v5.32.0](https://github.com/Perl/perl5/tree/v5.32.0). It tries to show what could looks like a `perl` binary compiled with `strict, warnings` and several features like `signature, no indirect...` as described in [the Proposal for Perl 7](https://github.com/Perl/perl5/wiki/The-Proposal-for-Perl-7).
+The branch `p7` is **experimental** and based on top of [v5.32.0](https://github.com/Perl/perl5/tree/v5.32.0). It tries to show what could looks like a `perl` binary compiled with `strict, warnings` and several features like `signature, no indirect...` as described in [the Proposal for Perl 7](https://github.com/Perl/perl5/wiki/The-Proposal-for-Perl-7).
 
 The goal is to identify issues with the proposal and to provide a **proof of concept**.
 
@@ -32,7 +32,7 @@ You can run tests in specific directories (relative to `t/`) with a command like
 make test TEST_FILES="io/*.t"
 ```
 
-## New defaults implemented in core-p7
+## New defaults implemented in p7
 
 `v7.0` is the opportunity to promote new defaults as standard.
 
@@ -43,7 +43,7 @@ When using perl from this branch you are going to have the following defaults ou
 
 ### Features enabled by default
 
-[regen/features.pl](https://github.com/Perl/perl5/blob/core-p7/regen/feature.pl) was patched to setup the list for `v7.0`.
+[regen/features.pl](https://github.com/atoomic/perl/blob/p7/regen/feature.pl) was patched to setup the list for `v7.0`.
 
 * bitwise
 * current_sub
@@ -68,19 +68,19 @@ Note that due to the limitation of features bundles wich can be stored in `HINT_
 
 Right now you could change the defaults by using `use p5` in a file to avoid enabling `v7.0` standards.
 
-[regen/pX.pl](https://github.com/Perl/perl5/blob/core-p7/regen/pX.pl) provides a mechanism to generate `lib/p5.pm` and `lib/p7.pm`.
+[regen/pX.pl](https://github.com/atoomic/perl/blob/p7/regen/pX.pl) provides a mechanism to generate `lib/p5.pm` and `lib/p7.pm`.
 
 The final name could change and we could prefer alternates like `use v7` and `use v5` or `use compat::p5` and `use compat::p7`. Right now by using `p5` and `p7` this allows to avoid some technical details and a global replace could be performed later in the development cycle.
 
-* [regen/pX.pl](https://github.com/Perl/perl5/blob/core-p7/regen/pX.pl)
-* [lib/p7.pm](https://github.com/Perl/perl5/blob/core-p7/lib/p7.pm)
-* [lib/p5.pm](https://github.com/Perl/perl5/blob/core-p7/lib/p5.pm)
+* [regen/pX.pl](https://github.com/atoomic/perl/blob/p7/regen/pX.pl)
+* [lib/p7.pm](https://github.com/atoomic/perl/blob/p7/lib/p7.pm)
+* [lib/p5.pm](https://github.com/atoomic/perl/blob/p7/lib/p5.pm)
 
 Note: `p5` needs to be patched to authorize `use feature "indirect"`.
 
 ## New flags
 
-This could change over time and we could come with a better solution, but right now this is what has been implemented in the `core-p7` branch.
+This could change over time and we could come with a better solution, but right now this is what has been implemented in the `p7` branch.
 
 ### -e promotes v7.0 standard
 
@@ -122,26 +122,31 @@ No, this branch will not be released as is. It's a primer to give the Perl commu
 
 No. The goal is to not break blead and submit small mergeable/reviewable chunks to blead later once the global direction for the project is validated.
 
-## How can I contribute to the work on the `core-p7` branch?
+## How can I contribute to the work on the `p7` branch?
 
-Working on the `core-p7` branch is very similar to working on `blead`, with two differences to be discussed below.
+Working on the `p7` branch is very similar to working on `blead`, with two differences to be discussed below.
 
 ### Work cycle:
 
-* Fork the [Perl 5 core repository](https://github.com/Perl/perl5) to your own
+* Fork the [Perl 5 core repository](https://github.com/atoomic/perl) to your own
   GitHub site, then clone that repository to your local machine.
-* `git checkout core-p7`
-* `git checkout -b my-core-p7-contribution`
+```
+git remote add atoomic git@github.com:atoomic/perl.git
+git fetch atoomic
+git checkout -t atoomic/p7
+git checkout -b my-p7-contribution
+... hack hack
+```
 * Regular configure-build-test cycle
 * `git add` then `git commit`
-* In the output from `git commit` you will be provided a github URL to create a pull request.  When you arrive at that URL, be sure to **change the target branch for that pull request** from `blead` to `core-p7`.  (This is Difference #1).
+* In the output from `git commit` you will be provided a github URL to create a pull request.
 
 ### Filing issues (bug tickets)
 
-Because we will encounter **many** bugs in the course of working on the `core-p7` branch, and because the overwhelming majority of those bug reports will not be relevant to ongoing development in blead, we are using a different location for issues for this branch.  (This is Difference #2).  We are creating Issues in this location:
+Because we will encounter **many** bugs in the course of working on the `p7` branch, and because the overwhelming majority of those bug reports will not be relevant to ongoing development in blead, we are using a different location for issues for this branch.  (This is Difference #2).  We are creating Issues in this location:
 
-[core-p7 branch bug tracker](https://github.com/atoomic/perl/issues)
+[p7 branch bug tracker](https://github.com/atoomic/perl/issues)
 
-Apart from avoiding flooding the regular Perl 5 issue tracker, this will enable you to establish a mail filter directing `core-p7`-related messages to a separate folder in your email client.
+Apart from avoiding flooding the regular Perl 5 issue tracker, this will enable you to establish a mail filter directing `p7`-related messages to a separate folder in your email client.
 
 Please don't use this issue tracker to discuss the future direction of Perl.  Those discussions should stay on the perl5-porters mailing list/newsgroup.
