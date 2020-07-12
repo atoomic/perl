@@ -6,7 +6,7 @@ BEGIN {
     set_up_inc('.', '../lib');
 }
 
-plan (194);
+plan (195);
 
 #
 # @foo, @bar, and @ary are also used from tie-stdarray after tie-ing them
@@ -524,8 +524,17 @@ sub {
 }->($plink[0], $plink[-2], $plink[-5], $plunk[-1]);
 
 $_ = \$#{[]};
-$$_ = \1;
-"$$_";
+{
+    my @warn;
+    local $SIG{__WARN__} = sub {push @warn, "@_"};
+    $$_ = \1;
+    like ($warn[0], qr/^Attempt to set length of freed array/);
+}
+{
+    no warnings 'void';
+    no warnings 'uninitialized';
+    "$$_";
+}
 pass "no assertion failure after assigning ref to arylen when ary is gone";
 
 
@@ -593,18 +602,21 @@ sub { undef *_; pop   }->();
 # splice() with null array entries
 # These used to crash.
 $#a = -1; $#a++;
-() = 0-splice @a; # subtract
-$#a = -1; $#a++;
-() =  -splice @a; # negate
-$#a = -1; $#a++;
-() = 0+splice @a; # add
-# And with array expansion, too
-$#a = -1; $#a++;
-() = 0-splice @a, 0, 1, 1, 1;
-$#a = -1; $#a++;
-() =  -splice @a, 0, 1, 1, 1;
-$#a = -1; $#a++;
-() = 0+splice @a, 0, 1, 1, 1;
+{
+    no warnings 'uninitialized';
+    () = 0-splice @a; # subtract
+    $#a = -1; $#a++;
+    () =  -splice @a; # negate
+    $#a = -1; $#a++;
+    () = 0+splice @a; # add
+    # And with array expansion, too
+    $#a = -1; $#a++;
+    () = 0-splice @a, 0, 1, 1, 1;
+    $#a = -1; $#a++;
+    () =  -splice @a, 0, 1, 1, 1;
+    $#a = -1; $#a++;
+    () = 0+splice @a, 0, 1, 1, 1;
+}
 
 # [perl #8910] lazy creation of array elements used to leak out
 {
