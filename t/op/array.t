@@ -631,8 +631,10 @@ $#a = -1; $#a++;
     is @a, 0,'unwinding localization of elem past end of array shrinks it';
 
     # Again, but with a package array
+    no warnings 'shadow';
     package tmp; (\our @a)->$#*++; package main;
     my @b = @a;
+    use warnings 'shadow';
     ok !exists $a[0], 'copying an array via = does not vivify elements';
     delete $a[0];
     @a[1..5] = 1..5;
@@ -708,4 +710,5 @@ $#a = -1; $#a++;
        'holes passed to sub do not lose their position (aelem, mg)';
 }
 
+no warnings 'void';
 "We're included by lib/Tie/Array/std.t so we need to return something true";
