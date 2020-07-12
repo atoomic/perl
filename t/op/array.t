@@ -6,7 +6,7 @@ BEGIN {
     set_up_inc('.', '../lib');
 }
 
-plan (195);
+plan (197);
 
 #
 # @foo, @bar, and @ary are also used from tie-stdarray after tie-ing them
@@ -342,12 +342,22 @@ sub test_arylen {
     is (scalar @array, 7);
     is ($$outer, 6);
 
-    $$inner = 1;
+    {
+        my @warn;
+        local $SIG{__WARN__} = sub {push @warn, "@_"};
+        $$inner = 1;
+        like ($warn[0], qr/^Attempt to set length of freed array/);
+    }
 
     is (scalar @array, 7);
     is ($$outer, 6);
 
-    $$inner = 503; # Bang!
+    {
+        my @warn;
+        local $SIG{__WARN__} = sub {push @warn, "@_"};
+        $$inner = 503; # Bang!
+        like ($warn[0], qr/^Attempt to set length of freed array/);
+    }
 
     is (scalar @array, 7);
     is ($$outer, 6);
