@@ -144,7 +144,7 @@ is($foo, 'b');
 # XXX tie-stdarray fails the tests involving local, so we use
 # different variable names to escape the 'tie'
 
-no strict;
+no strict 'vars';
 @bee = ( 'foo', 'bar', 'burbl', 'blah');
 {
     no warnings;
@@ -366,28 +366,38 @@ sub test_arylen {
 {
     # Bug #37350
     my @array = (1..4);
+    no strict 'refs';
     $#{@array} = 7;
+    use strict 'refs';
     is ($#{4}, 7);
 
     my $x;
     $#{$x} = 3;
     is(scalar @$x, 4);
 
+    no strict 'refs';
     push @{@array}, 23;
+    use strict 'refs';
     is ($4[8], 23);
 }
 {
     # Bug #37350 -- once more with a global
     use vars '@array';
     @array = (1..4);
+    no strict 'refs';
     $#{@array} = 7;
+    use strict 'refs';
     is ($#{4}, 7);
 
     my $x;
+    no strict 'refs';
     $#{$x} = 3;
+    use strict 'refs';
     is(scalar @$x, 4);
 
+    no strict 'refs';
     push @{@array}, 23;
+    use strict 'refs';
     is ($4[8], 23);
 }
 
@@ -427,6 +437,7 @@ sub test_arylen {
 
 # [perl #70171], [perl #82110]
 {
+    no strict 'refs';
     my ($i, $ra, $rh);
   again:
     my @a = @$ra; # common assignment on 2nd attempt
@@ -709,6 +720,7 @@ $#a = -1; $#a++;
     is "[@a]", "[7 3 1]",
        'holes passed to sub do not lose their position (aelem, mg)';
 }
+use strict;
 
 no warnings 'void';
 "We're included by lib/Tie/Array/std.t so we need to return something true";
