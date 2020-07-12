@@ -682,8 +682,11 @@ $#a = -1; $#a++;
     delete $a[0];
     @a[1..5] = 1..5;
     $#a++;
-    my $count;
-    my @existing_elements = map { exists $a[$count++] ? $_ : () } @a;
+
+    undef $count;
+    undef @existing_elements;
+    @existing_elements = map { exists $a[$count++] ? $_ : () } @a;
+    use warnings 'shadow';
     is join(",", @existing_elements), "1,2,3,4,5",
        'map {} @a does not vivify elements';
     $#a = -1;
