@@ -273,7 +273,9 @@ is ($got, '');
 
     is($a[2.1]  , 2);
     is($a[2.9]  , 2);
+    no warnings 'uninitialized';
     is($a[undef], 0);
+    no warnings 'numeric';
     is($a["3rd"], 3);
 }
 
