@@ -27,8 +27,11 @@ $foo[0] = '0';
 $r = join(',', $#foo, @foo);
 is($r, "0,0");
 $foo[2] = '2';
-$r = join(',', $#foo, @foo);
-is($r, "2,0,,2");
+{
+    no warnings 'uninitialized';
+    $r = join(',', $#foo, @foo);
+    is($r, "2,0,,2");
+}
 my @bar = ();
 $bar[0] = '0';
 $bar[1] = '1';
@@ -41,16 +44,22 @@ $bar[0] = '0';
 $r = join(',', $#bar, @bar);
 is($r, "0,0");
 $bar[2] = '2';
-$r = join(',', $#bar, @bar);
-is($r, "2,0,,2");
+{
+    no warnings 'uninitialized';
+    $r = join(',', $#bar, @bar);
+    is($r, "2,0,,2");
+}
 reset 'b' if $^O ne 'VMS';
 @bar = ();
 $bar[0] = '0';
 $r = join(',', $#bar, @bar);
 is($r, "0,0");
 $bar[2] = '2';
-$r = join(',', $#bar, @bar);
-is($r, "2,0,,2");
+{
+    no warnings 'uninitialized';
+    $r = join(',', $#bar, @bar);
+    is($r, "2,0,,2");
+}
 
 my $foo = 'now is the time';
 my ($F1,$F2,$Etc);
@@ -88,8 +97,11 @@ is($foo, 'abcdef');
 $foo = join('',('a','b','c','d','e','f')[0..1]);
 is($foo, 'ab');
 
-$foo = join('',('a','b','c','d','e','f')[6]);
-is($foo, '');
+{
+    no warnings 'uninitialized';
+    $foo = join('',('a','b','c','d','e','f')[6]);
+    is($foo, '');
+}
 
 @foo = ('a','b','c','d','e','f')[0,2,4];
 @bar = ('a','b','c','d','e','f')[1,3,5];
