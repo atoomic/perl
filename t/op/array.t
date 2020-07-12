@@ -458,7 +458,13 @@ sub test_arylen {
 }
 
 
-*trit = *scile;  $trit[0];
+{
+    no warnings 'once';
+    *trit = *scile;
+    use warnings 'once';
+    no warnings 'void';
+    $trit[0];
+}
 ok(1, 'aelem_fast on a nonexistent array does not crash');
 
 # [perl #107440]
