@@ -417,11 +417,13 @@ sub test_arylen {
 
 {
     our($x,$y,$z) = (1..3);
+    no warnings 'shadow';
     our($y,$z) = ($x,$y);
     is("$x $y $z", "1 1 2");
 }
 {
     our($x,$y,$z) = (1..3);
+    no warnings 'shadow';
     (our $y, our $z) = ($x,$y);
     is("$x $y $z", "1 1 2");
 }
@@ -429,6 +431,7 @@ sub test_arylen {
     # AASSIGN_COMMON detection with logical operators
     my $true = 1;
     our($x,$y,$z) = (1..3);
+    no warnings 'shadow';
     (our $y, our $z) = $true && ($x,$y);
     is("$x $y $z", "1 1 2");
 }
