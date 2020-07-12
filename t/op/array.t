@@ -440,8 +440,10 @@ sub test_arylen {
     no strict 'refs';
     my ($i, $ra, $rh);
   again:
+    no warnings 'uninitialized';
     my @a = @$ra; # common assignment on 2nd attempt
     my %h = %$rh; # common assignment on 2nd attempt
+    use warnings 'uninitialized';
     @a = qw(1 2 3 4);
     %h = qw(a 1 b 2 c 3 d 4);
     $ra = \@a;
