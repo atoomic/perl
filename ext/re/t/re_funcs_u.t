@@ -6,6 +6,14 @@ BEGIN {
 	print "1..0 # Skip -- Perl configured without re module\n";
 	    exit 0;
     }
+
+    my $lib = $^X;
+    $lib =~ s{(\b)perl[^/]*$}{${1}lib};
+
+    my $t = $^X;
+    $t =~ s{(\b)perl[^/]*$}{${1}t};
+    local @INC = ( $lib, $t );
+
     require 'test.pl';      # For watchdog
     require 'loc_tools.pl'; # To see if platform has locales
 }
