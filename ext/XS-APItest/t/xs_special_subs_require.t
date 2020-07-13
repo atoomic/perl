@@ -7,7 +7,7 @@ BEGIN {
 
 use strict;
 use warnings;
-use Test::More tests => 103;
+use Test::More tests => 104;
 
 # Doing this longhand cut&paste makes it clear
 # BEGIN and INIT are FIFO, CHECK and END are LIFO
@@ -81,6 +81,7 @@ is($XS::APItest::END_called_PP, undef, "END not yet called");
 
 {
     my @trap;
+    is $INC{'XS/APItest.pm'}, undef, "XS::APItest is not loaded";
     local $SIG{__WARN__} = sub { push @trap, join "!", @_ };
     require XS::APItest;
 
