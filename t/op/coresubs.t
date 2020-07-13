@@ -48,6 +48,7 @@ open my $kh, $keywords_file
 while(<$kh>) {
   if (m?__END__?..${\0} and /^[+-]/) {
     chomp(my $word = $');
+    note("Testing $word ...");
     if($unsupported{$word}) {
       $tests ++;
       ok !defined &{"CORE::$word"}, "no CORE::$word";
@@ -65,14 +66,19 @@ while(<$kh>) {
       is prototype \&{"my$word"}, $proto, "prototype of &CORE::$word";
 
       CORE::state $protochar = qr/([^\\]|\\(?:[^[]|\[[^]]+\]))/;
-      my $numargs =
-            $word eq 'delete' || $word eq 'exists' ? 1 :
-            (() = $proto =~ s/;.*//r =~ /\G$protochar/g);
+      my $numargs;
+      {
+          no warnings 'uninitialized';
+          $numargs =
+                $word eq 'delete' || $word eq 'exists' ? 1 :
+                (() = $proto =~ s/;.*//r =~ /\G$protochar/g);
+      }
 
       inlinable_ok($word, $args_for{$word} || join ",", map "\$$_", 1..$numargs);
 
       # High-precedence tests
       my $hpcode;
+      no warnings 'uninitialized';
       if (!$proto && defined $proto) { # nullary
          $hpcode = "sub { () = my$word + 1 }";
       }
@@ -81,6 +87,7 @@ while(<$kh>) {
                            . ($args_for{$word}||'$a') . ' > $b'
                        .'}';
       }
+      use warnings 'uninitialized';
       if ($hpcode) {
          $tests ++;
          # __FILE__ won’t fold with warnings on, and then we get
@@ -91,7 +98,9 @@ while(<$kh>) {
          is $my, $core, "precedence of CORE::$word without parens";
       }
 
+      no warnings 'uninitialized';
       next if ($proto =~ /\@/);
+      use warnings 'uninitialized';
       # These ops currently accept any number of args, despite their
       # prototypes, if they have any:
       next if $word =~ /^(?:chom?p|exec|keys|each|not
@@ -99,6 +108,7 @@ while(<$kh>) {
                            |reset|system|values|l?stat)|evalbytes/x;
 
       $tests ++;
+      use warnings 'uninitialized';
       my $code =
          "sub { () = (my$word("
              . (
@@ -111,6 +121,7 @@ while(<$kh>) {
                    )
                )
        . "))}";
+      use warnings 'uninitialized';
       {
         no strict 'refs';
         eval $code;
@@ -154,7 +165,7 @@ sub inlinable_ok {
 $tests++;
 # This subroutine is outside the warnings scope:
 sub foo { goto &CORE::abs }
-use warnings;
+
 $SIG{__WARN__} = sub { like shift, qr\^Use of uninitialized\ };
 foo(undef);
 
