@@ -11,7 +11,7 @@ BEGIN {
 
     my $t = $^X;
     $t =~ s{(\b)perl[^/]*$}{${1}t};
-    local @INC = ( $lib, $t );
+    @INC = ( $lib, $t );
 
     require 'test.pl';
 }
