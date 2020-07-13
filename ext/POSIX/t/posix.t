@@ -1,7 +1,8 @@
 #!./perl
 
+use Config;
+
 BEGIN {
-    require Config; Config->import;
     if ($^O ne 'VMS' and $Config{'extensions'} !~ /\bPOSIX\b/) {
 	print "1..0\n";
 	exit 0;
@@ -23,12 +24,12 @@ sub next_test {
 
 $| = 1;
 
-$Is_W32     = $^O eq 'MSWin32';
-$Is_Dos     = $^O eq 'dos';
-$Is_VMS     = $^O eq 'VMS';
-$Is_OS2     = $^O eq 'os2';
-$Is_UWin    = $^O eq 'uwin';
-$Is_OS390   = $^O eq 'os390';
+my $Is_W32     = $^O eq 'MSWin32';
+my $Is_Dos     = $^O eq 'dos';
+my $Is_VMS     = $^O eq 'VMS';
+my $Is_OS2     = $^O eq 'os2';
+my $Is_UWin    = $^O eq 'uwin';
+my $Is_OS390   = $^O eq 'os390';
 
 my $vms_unix_rpt = 0;
 my $vms_efs = 0;
@@ -53,6 +54,7 @@ if ($Is_VMS) {
 
 my $testfd = open("Makefile.PL", O_RDONLY, 0);
 like($testfd, qr/\A\d+\z/, 'O_RDONLY with open');
+my $buffer;
 read($testfd, $buffer, 4) if $testfd > 2;
 is( $buffer, "# Ex",                      '    with read' );
 
@@ -60,6 +62,7 @@ TODO:
 {
     local $TODO = "read to array element not working";
 
+    my @buffer;
     read($testfd, $buffer[1], 5) if $testfd > 2;
     is( $buffer[1], "perl\n",	               '    read to array element' );
 }
@@ -67,14 +70,16 @@ TODO:
 my $test = next_test();
 write(1,"ok $test\nnot ok $test\n", 5);
 
+my @fds;
 SKIP: {
     skip("no pipe() support on DOS", 2) if $Is_Dos;
 
     @fds = POSIX::pipe();
     cmp_ok($fds[0], '>', $testfd, 'POSIX::pipe');
 
-    CORE::open($reader = \*READER, "<&=".$fds[0]);
-    CORE::open($writer = \*WRITER, ">&=".$fds[1]);
+    no warnings 'once';
+    CORE::open(my $reader = \*READER, "<&=".$fds[0]);
+    CORE::open(my $writer = \*WRITER, ">&=".$fds[1]);
     my $test = next_test();
     print $writer "ok $test\n";
     close $writer;
@@ -85,15 +90,15 @@ SKIP: {
 SKIP: {
     skip("no sigaction support on win32/dos", 6) if $Is_W32 || $Is_Dos;
 
-    my $sigset = new POSIX::SigSet 1, 3;
+    my $sigset = POSIX::SigSet->new( 1, 3 );
     $sigset->delset(1);
     ok(! $sigset->ismember(1),  'POSIX::SigSet->delset' );
     ok(  $sigset->ismember(3),  'POSIX::SigSet->ismember' );
 
     my $sigint_called = 0;
 
-    my $mask   = new POSIX::SigSet &SIGINT;
-    my $action = new POSIX::SigAction 'main::SigHUP', $mask, 0;
+    my $mask   = POSIX::SigSet->new( &SIGINT );
+    my $action = POSIX::SigAction->new( 'main::SigHUP', $mask, 0 );
     sigaction(&SIGHUP, $action);
     $SIG{'INT'} = 'SigINT';
 
@@ -160,13 +165,14 @@ my $weasel_words = "(though differences may be beyond the displayed digits)";
 SKIP: { 
     skip("strtod() not present", 3) unless $Config{d_strtod};
 
+    my $lc;
     if (locales_enabled('LC_NUMERIC')) {
         $lc = &POSIX::setlocale(&POSIX::LC_NUMERIC);
         &POSIX::setlocale(&POSIX::LC_NUMERIC, 'C');
     }
 
     # we're just checking that strtod works, not how accurate it is
-    ($n, $x) = &POSIX::strtod('3.14159_OR_SO');
+    my ($n, $x) = &POSIX::strtod('3.14159_OR_SO');
     cmp_ok(abs("3.14159" - $n), '<', 1e-6, 'strtod works');
     is($x, 6, 'strtod works');
 
@@ -190,13 +196,14 @@ SKIP: {
 SKIP: {
     skip("strtold() not present", 3) unless $Config{d_strtold};
 
+    my $lc;
     if (locales_enabled('LC_NUMERIC')) {
         $lc = &POSIX::setlocale(&POSIX::LC_NUMERIC);
         &POSIX::setlocale(&POSIX::LC_NUMERIC, 'C');
     }
 
     # we're just checking that strtold works, not how accurate it is
-    ($n, $x) = &POSIX::strtold('2.718_ISH');
+    my ($n, $x) = &POSIX::strtold('2.718_ISH');
     cmp_ok(abs("2.718" - $n), '<', 1e-6, 'strtold works');
     is($x, 4, 'strtold works');
 
@@ -241,7 +248,7 @@ SKIP: {
 SKIP: {
     skip("strtol() not present", 2) unless $Config{d_strtol};
 
-    ($n, $x) = &POSIX::strtol('21_PENGUINS');
+    my ($n, $x) = &POSIX::strtol('21_PENGUINS');
     is($n, 21, 'strtol() number');
     is($x, 9,  '         unparsed chars');
 }
@@ -249,7 +256,7 @@ SKIP: {
 SKIP: {
     skip("strtoul() not present", 2) unless $Config{d_strtoul};
 
-    ($n, $x) = &POSIX::strtoul('88_TEARS');
+    my ($n, $x) = &POSIX::strtoul('88_TEARS');
     is($n, 88, 'strtoul() number');
     is($x, 6,  '          unparsed chars');
 }
@@ -272,6 +279,7 @@ sub try_strftime {
     is($got, $expect, "validating mini_mktime() and strftime(): $expect");
 }
 
+my $lc;
 if (locales_enabled('LC_TIME')) {
     $lc = &POSIX::setlocale(&POSIX::LC_TIME);
     &POSIX::setlocale(&POSIX::LC_TIME, 'C');
