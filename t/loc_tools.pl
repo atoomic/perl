@@ -62,7 +62,7 @@ if ($has_locale_h) {
     }
 }
 
-sub _my_diag($) {
+sub _my_diag :prototype($) {
     my $message = shift;
     if (defined &main::diag) {
         diag($message);
@@ -73,7 +73,7 @@ sub _my_diag($) {
     }
 }
 
-sub _my_fail($) {
+sub _my_fail :prototype($) {
     my $message = shift;
     if (defined &main::fail) {
         fail($message);
@@ -84,7 +84,7 @@ sub _my_fail($) {
     }
 }
 
-sub _trylocale ($$$$) { # For use only by other functions in this file!
+sub _trylocale :prototype($$$$) { # For use only by other functions in this file!
 
     # Adds the locale given by the first parameter to the list given by the
     # 3rd iff the platform supports the locale in each of the category numbers
@@ -185,7 +185,7 @@ sub valid_locale_categories() {
     return @platform_categories;
 }
 
-sub locales_enabled(;$) {
+sub locales_enabled :prototype(;$) {
     # Returns 0 if no locale handling is available on this platform; otherwise
     # 1.
     #
@@ -303,7 +303,7 @@ sub locales_enabled(;$) {
 }
 
 
-sub find_locales ($;$) {
+sub find_locales :prototype($;$) {
 
     # Returns an array of all the locales we found on the system.  If the
     # optional 2nd parameter is non-zero, the list includes all found locales;
@@ -467,7 +467,7 @@ sub find_locales ($;$) {
     return @Locale;
 }
 
-sub is_locale_utf8 ($) { # Return a boolean as to if core Perl thinks the input
+sub is_locale_utf8 :prototype($) { # Return a boolean as to if core Perl thinks the input
                          # is a UTF-8 locale
 
     # On z/OS, even locales marked as UTF-8 aren't.
@@ -513,7 +513,7 @@ sub is_locale_utf8 ($) { # Return a boolean as to if core Perl thinks the input
     return $ret;
 }
 
-sub find_utf8_ctype_locales (;$) { # Return the names of the locales that core
+sub find_utf8_ctype_locales :prototype(;$) { # Return the names of the locales that core
                                   # Perl thinks are UTF-8 LC_CTYPE locales.
                                   # Optional parameter is a reference to a
                                   # list of locales to try; if omitted, this
@@ -538,7 +538,7 @@ sub find_utf8_ctype_locales (;$) { # Return the names of the locales that core
 }
 
 
-sub find_utf8_ctype_locale (;$) { # Return the name of a locale that core Perl
+sub find_utf8_ctype_locale :prototype(;$) { # Return the name of a locale that core Perl
                                   # thinks is a UTF-8 LC_CTYPE non-turkic
                                   # locale.
                                   # Optional parameter is a reference to a
@@ -562,7 +562,7 @@ sub find_utf8_ctype_locale (;$) { # Return the name of a locale that core Perl
     return;
 }
 
-sub find_utf8_turkic_locales (;$) {
+sub find_utf8_turkic_locales :prototype(;$) {
 
     # Return the name of all the locales that core Perl thinks are UTF-8
     # Turkic LC_CTYPE.  Optional parameter is a reference to a list of locales
