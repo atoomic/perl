@@ -6,7 +6,7 @@ BEGIN {
     set_up_inc(qw(. ../lib)); # ../lib needed for test.deparse
 }
 
-plan tests => 48;
+plan tests => 55;
 
 # Note that t/op/ord.t already tests for chr() <-> ord() rountripping.
 
@@ -20,21 +20,25 @@ is(chr(128), "\x80");
 is(chr(255), "\xFF");
 
 {
-    my @these_warnings = ();
-    local $SIG{__WARN__} = sub { push @these_warnings, $_[0]; };
     for my $arg ( -0.1, -1, -2, -3.0 ) {
+        my @these_warnings = ();
+        local $SIG{__WARN__} = sub { push @these_warnings, $_[0]; };
+            is(
+                chr($arg),
+                "\x{FFFD}",
+                "For '$arg' got Unicode replacement character (U+FFFD)"
+            );
+        my $expected = 1;
         is(
-            chr($arg),
-            "\x{FFFD}",
-            "For '$arg' got Unicode replacement character (U+FFFD)"
+            @these_warnings,
+            $expected,
+            "Got $expected number of warnings: $expected",
+        );
+        like($these_warnings[0],
+            qr/Invalid negative number \($arg\) in chr/,
+            "Got 'invalid negative number in chr' warning",
         );
     }
-    my $expected = 4;
-    is(
-        @these_warnings,
-        $expected,
-        "Got $expected 'invalid negative number' warnings, as expected"
-    );
 }
 {
     use bytes; # Backward compatibility.
