@@ -694,10 +694,8 @@ is($foo, 'b');
     @a[1..5] = 1..5;
     $#a++;
 
-    undef $count;
-    undef @existing_elements;
+    $count = 0;
     @existing_elements = map { exists $a[$count++] ? $_ : () } @a;
-    use warnings 'shadow';
     is join(",", @existing_elements), "1,2,3,4,5",
        'map {} @a does not vivify elements';
     $#a = -1;
