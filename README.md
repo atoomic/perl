@@ -4,7 +4,7 @@ You can read more about [the Proposal for Perl 7](https://github.com/Perl/perl5/
 
 # About this 'core-p7' branch
 
-The branch `p7` is **experimental** and based on top of [v5.32.0](https://github.com/Perl/perl5/tree/v5.32.0). It tries to show what could looks like a `perl` binary compiled with `strict, warnings` and several features like `signature, no indirect...` as described in [the Proposal for Perl 7](https://github.com/Perl/perl5/wiki/The-Proposal-for-Perl-7).
+The branch `p7` is **experimental**.  It is based on top of [v5.32.0](https://github.com/Perl/perl5/tree/v5.32.0). It tries to show what a `perl` binary compiled with `strict, warnings` and several features like `signature, no indirect ...` (as described in [the Proposal for Perl 7](https://github.com/Perl/perl5/wiki/The-Proposal-for-Perl-7)) would look like.
 
 The goal is to identify issues with the proposal and to provide a **proof of concept**.
 
