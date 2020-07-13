@@ -131,15 +131,17 @@ sub run_tests {
 
     SKIP: {
         skip("Not a 64-bit machine", 3) if length sprintf("%x", ~0) <= 8;
-        no warnings qw(non_unicode portable);
-        my $a = eval q{"\x{80000000}"};
-        my $s = $a.'defxyz';
-        is(index($s, 'def'), 1, "0x80000000 is a single character");
+        my $t;
+        {
+            no warnings qw(non_unicode portable);
+            my $a = eval q{"\x{80000000}"};
+            my $s = $a.'defxyz';
+            is(index($s, 'def'), 1, "0x80000000 is a single character");
 
-        my $b = eval q{"\x{fffffffd}"};
-        my $t = $b.'pqrxyz';
-        is(index($t, 'pqr'), 1, "0xfffffffd is a single character");
-        use warnings;
+            my $b = eval q{"\x{fffffffd}"};
+            $t = $b.'pqrxyz';
+            is(index($t, 'pqr'), 1, "0xfffffffd is a single character");
+        }
 
         local ${^UTF8CACHE} = -1;
         is(index($t, 'xyz'), 4, "0xfffffffd and utf8cache");
