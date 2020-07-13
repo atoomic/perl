@@ -27,9 +27,12 @@ my $foo;
 {
 local $.;
 
-open(of,'harness') or die "Can't open harness: $!";
-while (<of>) {
-    (3 .. 5) && ($foo .= $_);
+{
+    no warnings 'reserved';
+    open(of,'harness') or die "Can't open harness: $!";
+    while (<of>) {
+        (3 .. 5) && ($foo .= $_);
+    }
 }
 $x = ($foo =~ y/\n/\n/);
 
@@ -40,6 +43,7 @@ ok(($x...$x) eq "1");
 
 {
     # coredump reported in bug 20001018.008 (#4474)
+    no warnings 'unopened';
     readline(UNKNOWN);
     $. = 1;
     $x = 1..10;
