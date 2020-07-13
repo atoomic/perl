@@ -155,37 +155,46 @@ for my $num_chain (1..$max_chain) {
 	    #next if $num_chain > 1
 	    #  and "$tmp" ne "$tmp1"; # Already the coercion gives problems...
 
-	    for my $curop (@{$curops[$short]}) {
-	      if ($curop < 5) {
-		if ($curop < 3) {
-		  if ($curop == 0) {
+    for my $curop (@{$curops[$short]}) {
+      if ($curop < 5) {
+        if ($curop < 3) {
+          if ($curop == 0) {
             no warnings 'imprecision';
-		    --$inpt;	# - 0
-		  } elsif ($curop == 1) {
+            --$inpt;  # - 0
+          }
+          elsif ($curop == 1) {
             no warnings 'imprecision';
-		    ++$inpt;	# + 1
-		  } else {
-		    $inpt = $max_uv & $inpt; # U 2
-		  }
-		} elsif ($curop == 3) {
-		  use integer; $inpt += $zero;
-		} else {
-		  $inpt += $zero; # N 4
-		}
-	      } elsif ($curop < 8) {
-		if ($curop == 5) {
-		  $inpt = "$inpt"; # P 5
-		} elsif ($curop == 6) {
-		  my $dummy = $max_uv & $inpt; # u 6
-		} else {
-		  use integer; my $dummy = $inpt + $zero;
-		}
-	      } elsif ($curop == 8) {
-		my $dummy = $inpt + $zero;	# n 8
-	      } else {
-		my $dummy = $inpt . "";	# p 9
-	      }
-	    }
+            ++$inpt;  # + 1
+          }
+          else {
+            $inpt = $max_uv & $inpt; # U 2
+          }
+        }
+        elsif ($curop == 3) {
+          use integer; $inpt += $zero;
+        }
+        else {
+          $inpt += $zero; # N 4
+        }
+      }
+      elsif ($curop < 8) {
+        if ($curop == 5) {
+          $inpt = "$inpt"; # P 5
+        }
+        elsif ($curop == 6) {
+          my $dummy = $max_uv & $inpt; # u 6
+        }
+        else {
+          use integer; my $dummy = $inpt + $zero;
+        }
+      }
+      elsif ($curop == 8) {
+        my $dummy = $inpt + $zero;  # n 8
+      }
+      else {
+        my $dummy = $inpt . "";  # p 9
+      }
+    }
 
 	    if ($last == 2) {
 	      $inpt = sprintf "%u", $inpt; # U 2
