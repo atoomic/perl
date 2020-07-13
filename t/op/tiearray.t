@@ -93,9 +93,10 @@ our @ISA = 'Implement';
 
 # simulate indices -2 .. 2
 my $offset = 2;
-no warnings 'once';
-$NegIndex::NEGATIVE_INDICES = 1;
-use warnings 'once';
+{
+    no warnings 'once';
+    $NegIndex::NEGATIVE_INDICES = 1;
+}
 
 sub FETCH {
     my ($ob,$id) = @_;
