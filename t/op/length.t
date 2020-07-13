@@ -172,17 +172,17 @@ $SIG{__WARN__} = sub {
 };
 
 is(length(undef), undef, "Length of literal undef");
-undef $u;
 
-is(length($u), undef, "Length of regular scalar");
+my $q;
+is(length($q), undef, "Length of regular scalar");
 
-$u = "Gotcha!";
+$q = "Gotcha!";
 
-tie $u, 'Tie::StdScalar';
+tie $q, 'Tie::StdScalar';
 
-is(length($u), undef, "Length of tied scalar (MAGIC)");
+is(length($q), undef, "Length of tied scalar (MAGIC)");
 
-is($u, undef);
+is($q, undef);
 
 {
     package U;
@@ -204,7 +204,7 @@ is(($ul = length(undef)), undef,
 is($ul, undef, "Assigned length of undef with result in TARG");
 
 $ul = 3;
-is(($ul = length($u)), undef,
+is(($ul = length($q)), undef,
                 "Returned length of tied undef with result in TARG");
 is($ul, undef, "Assigned length of tied undef with result in TARG");
 
