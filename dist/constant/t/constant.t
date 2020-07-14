@@ -270,7 +270,7 @@ is THREE**3, SPIT->(@{+FAMILY}**3);
     ok( $@ eq '' );
 }
 
-sub slotch ();
+sub slotch :prototype();
 
 {
     my @warnings;
