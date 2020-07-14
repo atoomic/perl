@@ -40,12 +40,12 @@ sigtrap->import('normal-signals');
 is( (grep { ref $_ } @SIG{@normal}), @normal, 'check normal-signals set' );
 
 my @error = qw( ABRT BUS EMT FPE ILL QUIT SEGV SYS TRAP );
-@SIG{@error} = 1 x @error;
+{ no warnings 'signal'; @SIG{@error} = 1 x @error; }
 sigtrap->import('error-signals');
 is( (grep { ref $_ } @SIG{@error}), @error, 'check error-signals set' );
 
 my @old = qw( ABRT BUS EMT FPE ILL PIPE QUIT SEGV SYS TERM TRAP );
-@SIG{@old} = 1 x @old;
+{ no warnings 'signal'; @SIG{@old} = 1 x @old; }
 sigtrap->import('old-interface-signals');
 is( (grep { ref $_ } @SIG{@old}), @old, 'check old-interface-signals set' );
 
@@ -53,7 +53,7 @@ my $handler = sub {};
 sigtrap->import(handler => $handler, 'FAKE3');
 is( $SIG{FAKE3}, $handler, 'install custom handler' );
 
-$SIG{FAKE} = 'IGNORE';
+{ no warnings 'signal'; $SIG{FAKE} = 'IGNORE'; }
 sigtrap->import('untrapped', 'FAKE');
 is( $SIG{FAKE}, 'IGNORE', 'respect existing handler set to IGNORE' );
 
@@ -70,10 +70,11 @@ fresh_perl_like
 ;
 
 my $out = tie *STDOUT, 'TieOut';
-$SIG{FAKE} = 'DEFAULT';
-$sigtrap::Verbose = 1;
+{ no warnings 'signal'; $SIG{FAKE} = 'DEFAULT'; }
+{ no warnings 'once'; $sigtrap::Verbose = 1; }
 sigtrap->import('any', 'FAKE');
 my $read = $out->read;
+undef $out;
 untie *STDOUT;
 is( $SIG{FAKE}, \&sigtrap::handler_traceback, 'should set default handler' );
 like( $read, qr/^Installing handler/, 'does it talk with $Verbose set?' );
