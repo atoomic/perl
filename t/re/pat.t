@@ -1625,7 +1625,7 @@ EOP
     }
 
     {
-	is runperl(prog => 'delete $::{qq-\cR-}; //; print qq-ok\n-'),
+	is runperl(prog => 'no warnings q|uninitialized|; delete $::{qq-\cR-}; //; print qq-ok\n-'),
 	   "ok\n",
 	   'deleting *^R does not result in crashes';
 	no warnings 'once';
