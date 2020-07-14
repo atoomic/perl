@@ -15,7 +15,6 @@ use Test::More tests => 96;
 
 use POSIX qw(fcntl_h signal_h limits_h _exit getcwd open read strftime write
 	     errno localeconv dup dup2 lseek access);
-use strict 'subs';
 
 sub next_test {
     my $builder = Test::More->builder;
@@ -358,11 +357,14 @@ is ($result, undef, "fgets should fail");
 like ($@, qr/^Unimplemented: POSIX::fgets\(\): Use method IO::Handle::gets\(\) instead/,
       "check its redef message");
 
-eval { use strict; POSIX->import("S_ISBLK"); my $x = S_ISBLK };
+eval { POSIX->import("S_ISBLK"); no warnings 'uninitialized'; my $x = S_ISBLK };
 unlike( $@, qr/Can't use string .* as a symbol ref/, "Can import autoloaded constants" );
 
 SKIP: {
-    skip("locales not available", 26) unless locales_enabled(qw(NUMERIC MONETARY));
+    {
+        no warnings 'void';
+        skip("locales not available", 26) unless locales_enabled(qw(NUMERIC MONETARY));
+    }
     skip("localeconv() not available", 26) unless $Config{d_locconv};
     my $conv = localeconv;
     is(ref $conv, 'HASH', 'localeconv returns a hash reference');
