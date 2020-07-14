@@ -4,10 +4,11 @@
 # You need to number them manually. Don't forget to update this line for the
 # next kind hacker.
 
-END {print "not ok 1\n" unless $loaded;}
+package main;
+END {print "not ok 1\n" unless $main::loaded;}
 use v5.6.0;
 use Attribute::Handlers;
-$loaded = 1;
+our $loaded = 1;
 
 CHECK { $main::phase++ }
 
@@ -139,10 +140,12 @@ package main;
 
 eval 'sub x7 :ATTR(SCALAR) :ATTR(CODE) {}' and ::ok(0,40) or ::ok(1,40);
 
+no strict 'subs';
 use Attribute::Handlers autotie => {      Other::Loud => Tie::Loud,
 				                Noisy => Tie::Noisy,
 				     UNIVERSAL::Rowdy => Tie::Row::dy,
                                    };
+use strict 'subs';
 
 my Other $loud : Loud;
 $loud++;
