@@ -43,7 +43,7 @@ eval q{
 	push @t, arrayfullexpr myneg 1, 2, 3;
 	push @t, arrayfullexpr map { -$_ } 1, 2, 3;
 	push @t, arrayfullexpr mymap { -$_[0] } 1, 2, 3;
-	push @t, arrayfullexpr AA->listmeth(1, 2), 3;	
+	push @t, arrayfullexpr AA->listmeth(1, 2), 3;
 	push @t, arrayfullexpr listmeth AA (1, 2), 3;
 	push @t, arrayfullexpr listmeth AA 1, 2, 3;
 	push @t, arrayfullexpr not 1, 2;

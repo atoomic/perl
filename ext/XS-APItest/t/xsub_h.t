@@ -10,7 +10,7 @@ our ($XS_VERSION, $VERSION);
 # This is what the code expects
 my $real_version = $XS::APItest::VERSION;
 
-sub default {
+sub xdefault {
     return ($_[0], undef) if @_;
     return ($XS_VERSION, 'XS_VERSION') if defined $XS_VERSION;
     return ($VERSION, 'VERSION');
@@ -70,7 +70,7 @@ my @versions = ($real_version, version->new($real_version),
 # Package variables
 foreach $XS_VERSION (undef, @versions) {
     foreach $VERSION (undef, @versions) {
-	my ($expect, $what) = default();
+	my ($expect, $what) = xdefault();
 	if (defined $expect) {
 	    if ($expect eq $real_version) {
 		expect_good('main');
@@ -79,7 +79,7 @@ foreach $XS_VERSION (undef, @versions) {
 	    }
 	}
 	foreach my $param (@versions) {
-	    my ($expect, $what) = default($param);
+	    my ($expect, $what) = xdefault($param);
 	    if ($expect eq $real_version) {
 		expect_good('main', $param);
 	    } else {
@@ -117,7 +117,7 @@ foreach $XS_VERSION (undef, @versions) {
 is_deeply([XS_APIVERSION_valid("Pie")], [], "XS_APIVERSION_BOOTCHECK passes");
 is(eval {XS_APIVERSION_invalid("Pie"); 1}, undef,
    "XS_APIVERSION_BOOTCHECK croaks for an invalid version");
-like($@, qr/Perl API version v1.0.16 of Pie does not match v5\.\d+\.\d+/,
+like($@, qr/Perl API version v1.0.16 of Pie does not match v[57]\.\d+\.\d+/a,
      "expected error");
 
 my @xsreturn;
