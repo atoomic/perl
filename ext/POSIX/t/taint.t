@@ -1,7 +1,7 @@
 #!./perl -Tw
 
-BEGIN {
-    require Config; Config->import;
+use Config;
+BEGIN {    
     if ($^O ne 'VMS' and $Config{'extensions'} !~ /\bPOSIX\b/) {
 	print "1..0\n";
 	exit 0;

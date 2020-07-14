@@ -30,8 +30,8 @@ sub foo {
     ++$ok;
 }
 
-my $newaction=POSIX::SigAction->new('::foo', new POSIX::SigSet(SIGUSR1), 0);
-my $oldaction=POSIX::SigAction->new('::bar', new POSIX::SigSet(), 0);
+my $newaction=POSIX::SigAction->new('::foo', POSIX::SigSet->new(SIGUSR1), 0);
+my $oldaction=POSIX::SigAction->new('::bar', POSIX::SigSet->new(), 0);
 
 {
 	my $bad;
@@ -115,7 +115,7 @@ SKIP: {
     skip("SIGCONT not trappable in $^O", 1)
 	if ($^O eq 'VMS');
     $newaction=POSIX::SigAction->new(sub { ++$ok10; });
-    if (eval { SIGCONT; 1 }) {
+    if (eval { no warnings 'void'; SIGCONT; 1 }) {
 	sigaction(SIGCONT, POSIX::SigAction->new('DEFAULT'));
 	{
 	    local($^W)=0;
@@ -218,7 +218,7 @@ SKIP: {
         for my $field (sort keys %{{ %siginfo, %opt_val }}) {
             SKIP: {
                 skip("siginfo_t has no $field field", 1)
-                    unless %always{$field} or ($Config{"d_siginfo_si_$field"} || '') eq 'define';
+                    unless $always{$field} or ($Config{"d_siginfo_si_$field"} || '') eq 'define';
                 skip("no constant defined for SA_SIGINFO $field value $opt_val{$field}", 1)
                     unless defined $siginfo{$field};
                 skip("SA_SIGINFO $field value is wrong on $^O: $skip{$field}{$^O}", 1)

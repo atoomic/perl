@@ -6,7 +6,6 @@ BEGIN {
     plan skip_all => "POSIX is unavailable" if $Config{'extensions'} !~ m!\bPOSIX\b!;
 }
 
-use strict;
 use File::Spec;
 use POSIX;
 
@@ -123,7 +122,10 @@ SKIP: {
 			  "calling fpathconf($fd, $constant) ($TTY)");
     }
     
-    close($fd);
+    {
+        no warnings 'unopened';
+        close($fd);
+    }
     # testing pathconf() on a terminal file
     for my $constant (@path_consts_terminal) {
 	_check_and_report(sub { pathconf($TTY, shift) }, $constant,
