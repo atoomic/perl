@@ -24,9 +24,10 @@ BEGIN {
 }
 
 
+our @Exporter_Methods;
 BEGIN {
     # Methods which Exporter says it implements.
-    our @Exporter_Methods = qw(import
+    @Exporter_Methods = qw(import
                            export_to_level
                            require_version
                            export_fail
