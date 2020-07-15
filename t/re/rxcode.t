@@ -6,7 +6,7 @@ BEGIN {
     set_up_inc('../lib');
 }
 
-plan tests => 42;
+plan tests => 44;
 
 $^R = undef;
 like( 'a',  qr/^a(?{1})(?:b(?{2}))?/, 'a =~ ab?' );
@@ -89,12 +89,32 @@ cmp_ok( scalar(@var), '==', 0, '..still nothing pushed (package)' );
 {
     use re 'eval';
     my $x = "(?{})";
-    is eval { "a" =~ /a++(?{})+$x/x } || $@, '1', '/a++(?{})+$code_block/'
+    {
+        my @warnings;
+        local $SIG{__WARN__} = sub { push @warnings, @_; };
+        is eval { "a" =~ /a++(?{})+$x/x } || $@, '1', '/a++(?{})+$code_block/';
+        is @warnings, 2, "Got 2 warnings as expected";
+        my $seen = 0;
+        my %expected = map {$_ => 1} (
+            q|(?==)+ matches null string many times in regex|,
+            q|(?{})+ matches null string many times in regex|,
+        );
+        for my $w (@warnings) {
+            for my $k (keys %expected) {
+                $seen++ if $w =~ m|\Q$k\E|;
+            }
+        }
+        is $seen, 2,
+            "Got expected warnings 'matches null string many times in regex'";
+    }
 }
 
 # [perl #78194] $_ in code block aliasing op return values
-"$_" =~ /(?{ is \$_, \$_,
-               '[perl #78194] \$_ == \$_ when $_ aliases "$x"' })/;
+{
+    no warnings 'uninitialized';
+    "$_" =~ /(?{ is \$_, \$_,
+        '[perl #78194] \$_ == \$_ when $_ aliases "$x"' })/;
+}
 
 my @a = (1..3);
 like eval { qr/@a(?{})/ }, qr/1 2 3\(\?\{\}\)/, 'qr/@a(?{})/';
