@@ -2,7 +2,7 @@
 
 # Can't use Test::Simple/More, they depend on Exporter.
 my $test;
-sub ok ($;$) {
+sub ok {
     my($ok, $name) = @_;
 
     # You have to do it this way or VMS will get confused.
@@ -25,7 +25,7 @@ BEGIN {
 
 package Foo;
 Exporter->import("import");
-@EXPORT_OK = "bar";
+our @EXPORT_OK = "bar";
 
 package main;
 
