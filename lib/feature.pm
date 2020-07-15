@@ -32,7 +32,7 @@ our %feature_bundle = (
     "5.15"    => [qw(current_sub evalbytes fc indirect say state switch unicode_eval unicode_strings)],
     "5.23"    => [qw(current_sub evalbytes fc indirect postderef_qq say state switch unicode_eval unicode_strings)],
     "5.27"    => [qw(bitwise current_sub evalbytes fc indirect postderef_qq say state switch unicode_eval unicode_strings)],
-    "7.0"     => [qw(bitwise current_sub declared_refs evalbytes fc indirect isa postderef_qq refaliasing say signatures state switch unicode_eval)],
+    "7.0"     => [qw(bitwise current_sub declared_refs evalbytes fc isa postderef_qq refaliasing say signatures state switch unicode_eval)],
     "all"     => [qw(bitwise current_sub declared_refs evalbytes fc indirect isa postderef_qq refaliasing say signatures state switch unicode_eval unicode_strings)],
     "default" => [qw()],
 );
