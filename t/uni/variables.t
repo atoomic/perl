@@ -15,7 +15,7 @@ use utf8;
 use open qw( :utf8 :std );
 no warnings qw(misc reserved);
 
-plan (tests => 66881);
+plan (tests => 66874);
 
 # ${single:colon} should not be treated as a simple variable, but as a
 # block with a label inside.
@@ -71,7 +71,8 @@ for my $v (qw( ^V ; < > ( ) {^GLOBAL_PHASE} ^W _ 1 4 0 ] ! @ / \ = )) {
 
 # Checking if the Latin-1 range behaves as expected, and that the behavior is the
 # same whenever under strict or not.
-for ( 0x0 .. 0xff ) {
+# The "holes" in the list below are checked in the next 'for' loop below.
+for ( 0x1 .. 0x8, 0xe .. 0x1f, 0x21 .. 0xff ) {
     my @warnings;
     local $SIG {__WARN__} = sub {push @warnings, @_ };
     my $ord = utf8::unicode_to_native($_);
@@ -242,14 +243,6 @@ for ( 0x0 .. 0xff ) {
         $message = "  # TODO $message" if    $ord == 0
                                         || $chr =~ /\s/a;
 
-        # next block is inserted temporarily for debugging
-        # https://github.com/atoomic/perl/issues/57
-        if (@warnings) {
-            for my $w (@warnings) {
-                chomp $w;
-                say STDERR "YYY: $w";
-            }
-        }
         if (! ok(@warnings == 0, $message)) {
             note join "\n", @warnings;
         }
@@ -269,7 +262,48 @@ for ( 0x0 .. 0xff ) {
         die "Wrong max count for tests" if $tests > $max_tests;
         skip("untaken tests", $max_tests - $tests) if $max_tests > $tests;
     }
-} # END latin-1 range 'for' loop
+} # END latin-1 range 'for' loop for all but 7 characters
+
+for ( 0x0, 0x9 .. 0xd, 0x20 ) {
+    my $ord = utf8::unicode_to_native($_);
+    my $chr = chr $ord;
+    my $name;
+
+    # A different number of tests are run depending on the branches in this
+    # loop iteration.  This allows us to add skips to make the reported total
+    # the same for each iteration.
+    my $tests = 0;
+
+    next unless ($ord eq '0' or $chr =~ /[[:space:]]/a);
+
+    $name = sprintf "\\x%02x", $ord;
+
+    utf8::downgrade($chr);
+    evalbytes "\$$chr";
+    like($@, qr/ syntax\ error | Unrecognized\ character /x,
+        "$name as a length-1 variable generates a syntax error");
+    $tests++;
+
+    utf8::upgrade($chr);
+    my @warnings_raw = ();
+    {
+        local $@;
+        local $SIG{__WARN__} = sub { push @warnings_raw, @_; };
+        eval "no strict; \$$chr = 4;",
+        like($@, qr/ syntax\ error | Unrecognized\ character /x,
+             "  ... and the same under 'use utf8'");
+        $tests++;
+    }
+    chomp @warnings_raw;
+    is(@warnings_raw, 2, "Got 2 lines of warning as expected");
+    $tests++;
+    like($warnings_raw[0], qr/Number found where operator expected/,
+        "Got first part of warning: 'number found where operator expected'");
+    $tests++;
+    like($warnings_raw[1], qr/\Q(Missing operator before 4?)\E/,
+        "Got second part of warning: missing operator inquiry");
+    $tests++;
+} # END latin-1 range 'for' loop for 7 characters
 
 {
     use utf8;
