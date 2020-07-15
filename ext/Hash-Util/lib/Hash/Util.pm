@@ -1,5 +1,4 @@
 package Hash::Util;
-use p5;
 require 5.007003;
 use strict;
 use Carp;
