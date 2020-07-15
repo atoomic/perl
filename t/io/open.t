@@ -496,8 +496,7 @@ pass("no crash when open autovivifies glob in freed package");
         if (is_miniperl && !eval 'require Errno') {
             skip "Errno not built yet", 8;
         }
-        require Errno;
-        import Errno 'ENOENT';
+        require Errno; Errno->import('ENOENT');
         # check handling of multiple arguments, which the original patch
         # mis-handled
         $! = 0;
