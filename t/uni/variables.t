@@ -15,7 +15,7 @@ use utf8;
 use open qw( :utf8 :std );
 no warnings qw(misc reserved);
 
-plan (tests => 66881);
+plan (tests => 66839);
 
 # ${single:colon} should not be treated as a simple variable, but as a
 # block with a label inside.
@@ -71,7 +71,8 @@ for my $v (qw( ^V ; < > ( ) {^GLOBAL_PHASE} ^W _ 1 4 0 ] ! @ / \ = )) {
 
 # Checking if the Latin-1 range behaves as expected, and that the behavior is the
 # same whenever under strict or not.
-for ( 0x0 .. 0xff ) {
+#for ( 0x0 .. 0xff ) {
+for ( 0x1 .. 0x8, 0xe .. 0x1f, 0x21 .. 0xff ) {
     my @warnings;
     local $SIG {__WARN__} = sub {push @warnings, @_ };
     my $ord = utf8::unicode_to_native($_);
