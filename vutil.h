@@ -75,15 +75,7 @@ Perl_ck_warner(pTHX_ U32 err, const char* pat, ...)
 #  endif
 #endif
 
-#define PERL_CORE_MINOR_DECIMAL(r,v,s) (r*1000000 + v*1000 + s)
-#define PERL_DECIMAL_VERSION \
-	PERL_CORE_MINOR_DECIMAL(PERL_CORE_MAJOR,PERL_CORE_MINOR,PERL_CORE_RELEASE)
-#define PERL_CORE_MINOR_LT(r,v,s) \
-	(PERL_DECIMAL_VERSION < PERL_CORE_MINOR_DECIMAL(r,v,s))
-#define PERL_CORE_MINOR_GE(r,v,s) \
-	(PERL_DECIMAL_VERSION >= PERL_CORE_MINOR_DECIMAL(r,v,s))
-
-#if PERL_CORE_MINOR_LT(5,15,4)
+#if PERL_VERSION_LT(5,15,4)
 #  define ISA_VERSION_OBJ(v) (sv_isobject(v) && sv_derived_from(v,"version"))
 #else
 #  define ISA_VERSION_OBJ(v) (sv_isobject(v) && sv_derived_from_pvn(v,"version",7,0))
