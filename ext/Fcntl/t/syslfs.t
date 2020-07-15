@@ -3,13 +3,14 @@
 # If you modify/add tests here, remember to update also t/op/lfs.t.
 
 BEGIN {
+    no strict 'vars';
 	require Config; Config->import;
 	# Don't bother if there are no quad offsets.
 	if ($Config{lseeksize} < 8) {
 		print "1..0 # Skip: no 64-bit file offsets\n";
 		exit(0);
 	}
-	require Fcntl; import Fcntl qw(/^O_/ /^SEEK_/);
+	require Fcntl; Fcntl->import( qw(/^O_/ /^SEEK_/) );
 }
 
 use strict;
@@ -24,7 +25,7 @@ our @s;
 
 my $explained;
 
-sub explain {
+sub inform {
     unless ($explained++) {
 	print <<EOM;
 #
@@ -118,6 +119,7 @@ unless (-x $perl) {
     fail("can't find perl: expected $perl");
 }
 my $r = system $perl, '-I../lib', '-e', <<"EOF";
+my \$big;
 use Fcntl qw(/^O_/ /^SEEK_/);
 sysopen \$big, q{$big0}, O_WRONLY|O_CREAT|O_TRUNC or die qq{sysopen $big0 $!};
 sysseek \$big, 5_000_000_000, SEEK_SET or die qq{sysseek $big0 $!};
@@ -133,7 +135,7 @@ binmode BIG;
 my $sysseek = sysseek(BIG, 5_000_000_000, SEEK_SET);
 unless (! $r && defined $sysseek && $sysseek == 5_000_000_000) {
     $sysseek = 'undef' unless defined $sysseek;
-    explain("seeking past 2GB failed: ",
+    inform("seeking past 2GB failed: ",
 	    $r ? 'signal '.($r & 0x7f) : "$! (sysseek returned $sysseek)");
 }
 
@@ -146,11 +148,11 @@ my $close     = close BIG;
 print "# close failed: $!\n" unless $close;
 unless($syswrite && $close) {
     if ($! =~/too large/i) {
-	explain("writing past 2GB failed: process limits?");
+	inform("writing past 2GB failed: process limits?");
     } elsif ($! =~ /quota/i) {
-	explain("filesystem quota limits?");
+	inform("filesystem quota limits?");
     } else {
-	explain("error: $!");
+	inform("error: $!");
     }
 }
 
@@ -159,10 +161,10 @@ unless($syswrite && $close) {
 print "# @s\n";
 
 unless ($s[7] == 5_000_000_003) {
-    explain("kernel/fs not configured to use large files?");
+    inform("kernel/fs not configured to use large files?");
 }
 
-sub offset ($$) {
+sub offset :prototype($$) {
     local $Test::Builder::Level = $Test::Builder::Level + 1;
     my ($offset_will_be, $offset_want) = @_;
     my $offset_is = eval $offset_will_be;
@@ -232,7 +234,7 @@ is(read(BIG, $zero, 3), 3);
 
 is($zero, "\0\0\0");
 
-explain() unless Test::Builder->new()->is_passing();
+inform() unless Test::Builder->new()->is_passing();
 
 END {
     # unlink may fail if applied directly to a large file
