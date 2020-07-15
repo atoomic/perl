@@ -1,7 +1,5 @@
 package sigtrap;
 
-use p5;
-
 =head1 NAME
 
 sigtrap - Perl pragma to enable simple signal handling

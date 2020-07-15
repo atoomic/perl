@@ -60,8 +60,7 @@ is( $SIG{FAKE}, 'IGNORE', 'respect existing handler set to IGNORE' );
 fresh_perl_like
   '
     BEGIN { *CORE::GLOBAL::kill = sub {} }
-    require sigtrap;
-    import sigtrap "INT";
+    require sigtrap; sigtrap->import("INT");
     sub { $SIG{INT}->("INT") } -> (3)
   ',
    qr/\$ = main::__ANON__\(3\) called/,
