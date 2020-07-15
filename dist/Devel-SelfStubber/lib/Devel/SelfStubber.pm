@@ -1,4 +1,3 @@
-use p5;
 package Devel::SelfStubber;
 use File::Spec;
 require SelfLoader;
