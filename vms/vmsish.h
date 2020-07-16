@@ -319,7 +319,7 @@ struct interp_intern {
 #ifndef PERL_CORE
 #  define PERL_FS_VER_FMT	"%d_%d_%d"
 #endif
-#define PERL_FS_VERSION		STRINGIFY(PERL_REVISION) "_" \
+#define PERL_FS_VERSION		STRINGIFY(__PERL_CORE_MAJOR__) "_" \
 				STRINGIFY(PERL_VERSION) "_" \
 				STRINGIFY(PERL_SUBVERSION)
 /* Temporary; we need to add support for this to Configure.Com */

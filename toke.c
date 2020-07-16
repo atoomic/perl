@@ -8724,7 +8724,7 @@ yyl_try(pTHX_ char *s)
 	    }
 	    if (PL_minus_E)
 		sv_catpvs(PL_linestr,
-			  "use feature ':" STRINGIFY(PERL_REVISION) "." STRINGIFY(PERL_VERSION) "';");
+			  "use feature ':" STRINGIFY(__PERL_CORE_MAJOR__) "." STRINGIFY(PERL_VERSION) "';");
 
         if (!PL_minus_5) /* by default load p7 feature */
             sv_catpvs(PL_linestr, P7_TOKE_SETUP); /* try avoiding loading a module... */

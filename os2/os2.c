@@ -2411,14 +2411,14 @@ perllib_mangle(char *s, unsigned int l)
     if (perllib_mangle_installed && (name = perllib_mangle_installed(s,l)))
 	return name;
     if (!newp && !notfound) {
-	newp = getenv(name = "PERLLIB_" STRINGIFY(PERL_REVISION)
+	newp = getenv(name = "PERLLIB_" STRINGIFY(__PERL_CORE_MAJOR__)
 		      STRINGIFY(PERL_VERSION) STRINGIFY(PERL_SUBVERSION)
 		      "_PREFIX");
 	if (!newp)
-	    newp = getenv(name = "PERLLIB_" STRINGIFY(PERL_REVISION)
+	    newp = getenv(name = "PERLLIB_" STRINGIFY(__PERL_CORE_MAJOR__)
 			  STRINGIFY(PERL_VERSION) "_PREFIX");
 	if (!newp)
-	    newp = getenv(name = "PERLLIB_" STRINGIFY(PERL_REVISION) "_PREFIX");
+	    newp = getenv(name = "PERLLIB_" STRINGIFY(__PERL_CORE_MAJOR__) "_PREFIX");
 	if (!newp)
 	    newp = getenv(name = "PERLLIB_PREFIX");
 	if (newp) {

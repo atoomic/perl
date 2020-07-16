@@ -305,7 +305,7 @@ is runperl(stderr => 1, prog => '#!perl -M'),
         skip "Win32 miniperl produces a default archname in -v", 1
 	  if $^O eq 'MSWin32' && is_miniperl;
         my $v = sprintf "%vd", $^V;
-        my $rev = $Config{PERL_REVISION};
+        my $rev = $Config{__PERL_CORE_MAJOR__};
         my $ver = $Config{PERL_VERSION};
         my $rel = $Config{PERL_SUBVERSION};
         like( runperl( switches => ['-v'] ),

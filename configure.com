@@ -6026,7 +6026,7 @@ $ WC "# Target system     : " + myuname
 $ WC ""
 $ WC "Makefile_SH='" + Makefile_SH + "'"
 $ WC "Mcc='" + Mcc + "'"
-$ WC "PERL_REVISION='" + revision + "'"
+$ WC "__PERL_CORE_MAJOR__='" + revision + "'"
 $ WC "PERL_VERSION='" + patchlevel + "'" 
 $ WC "PERL_SUBVERSION='" + subversion + "'" 
 $ WC "PERL_API_REVISION='" + api_revision + "'"

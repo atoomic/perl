@@ -2794,9 +2794,9 @@ See L<perlguts/"Memory Allocation"> for further information about that.
 
 =item C<PATCHLEVEL> is now C<PERL_VERSION>
 
-The cpp macros C<PERL_REVISION>, C<PERL_VERSION>, and C<PERL_SUBVERSION>
+The cpp macros C<__PERL_CORE_MAJOR__>, C<PERL_VERSION>, and C<PERL_SUBVERSION>
 are now available by default from perl.h, and reflect the base revision,
-patchlevel, and subversion respectively.  C<PERL_REVISION> had no
+patchlevel, and subversion respectively.  C<__PERL_CORE_MAJOR__> had no
 prior equivalent, while C<PERL_VERSION> and C<PERL_SUBVERSION> were
 previously available as C<PATCHLEVEL> and C<SUBVERSION>.
 

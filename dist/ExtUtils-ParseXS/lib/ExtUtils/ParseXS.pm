@@ -911,7 +911,7 @@ EOF
   #-Wall: if there is no $self->{Full_func_name} there are no xsubs in this .xs
   #so 'file' is unused
   print Q(<<"EOF") if $self->{Full_func_name};
-##if (PERL_REVISION == 5 && PERL_VERSION < 9)
+##if (__PERL_CORE_MAJOR__ == 5 && PERL_VERSION < 9)
 #    char* file = __FILE__;
 ##else
 #    const char* file = __FILE__;
@@ -954,7 +954,7 @@ EOF
 
   print Q(<<"EOF") if ($self->{Overload});
 #    /* register the overloading (type 'A') magic */
-##if (PERL_REVISION == 5 && PERL_VERSION < 9)
+##if (__PERL_CORE_MAJOR__ == 5 && PERL_VERSION < 9)
 #    PL_amagic_generation++;
 ##endif
 #    /* The magic for overload gets a GV* via gv_fetchmeth as */

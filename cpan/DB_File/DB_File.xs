@@ -161,7 +161,7 @@ int DB_File___unused() { return 0; }
 
 /* Wall starts with 5.7.x */
 
-#if PERL_REVISION > 5 || (PERL_REVISION == 5 && PERL_VERSION >= 7)
+#if __PERL_CORE_MAJOR__ > 5 || (__PERL_CORE_MAJOR__ == 5 && PERL_VERSION >= 7)
 
 /* Since we dropped the gccish definition of __attribute__ we will want
  * to redefine dNOOP, however (so that dTHX continues to work).  Yes,

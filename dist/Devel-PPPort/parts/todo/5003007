@@ -455,7 +455,7 @@ PERL_PV_PRETTY_QUOTE           # T
 PERL_PV_PRETTY_REGPROP         # T
 PERL_QUAD_MAX                  # T
 PERL_QUAD_MIN                  # T
-PERL_REVISION                  # T
+__PERL_CORE_MAJOR__                  # T
 perl_run                       # T
 PERL_SCAN_ALLOW_UNDERSCORES    # T
 PERL_SCAN_DISALLOW_PREFIX      # T

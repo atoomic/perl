@@ -26,7 +26,7 @@
 
 #define oDWORD DWORD
 
-#if (PERL_REVISION <= 5 && PERL_VERSION < 5) || defined(__CYGWIN__)
+#if (__PERL_CORE_MAJOR__ <= 5 && PERL_VERSION < 5) || defined(__CYGWIN__)
 # define win32_get_osfhandle _get_osfhandle
 # ifdef __CYGWIN__
 #  define win32_open_osfhandle(handle,mode) \

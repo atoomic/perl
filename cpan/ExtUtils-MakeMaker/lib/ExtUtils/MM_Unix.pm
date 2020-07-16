@@ -3239,7 +3239,7 @@ PPD_PERLVERS
         # archname did not change from 5.6 to 5.8, but those versions may
         # not be not binary compatible so now we append the part of the
         # version that changes when binary compatibility may change
-        $archname .= "-$Config{PERL_REVISION}.$Config{PERL_VERSION}";
+        $archname .= "-$Config{__PERL_CORE_MAJOR__}.$Config{PERL_VERSION}";
     }
     push @ppd_chunks, sprintf <<'PPD_OUT', $archname;
         <ARCHITECTURE NAME="%s" />
