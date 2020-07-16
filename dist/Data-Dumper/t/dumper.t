@@ -3,8 +3,8 @@
 # testsuite for Data::Dumper
 #
 
-our %Config;
 BEGIN {
+    no strict 'vars';
     require Config; Config->import;
     if ($Config{'extensions'} !~ /\bData\/Dumper\b/) {
 	print "1..0 # Skip: Data::Dumper was not built\n";
@@ -16,7 +16,6 @@ BEGIN {
 local $Data::Dumper::Sortkeys = 1;
 
 use Data::Dumper;
-use Config;
 
 $Data::Dumper::Pad = "#";
 my $TMAX;
@@ -97,6 +96,7 @@ sub convert_to_native($) {
 sub TEST {
   my $string = shift;
   my $name = shift;
+  no strict 'vars';
   my $t = eval $string;
   warn __LINE__ . " - $@" if $@;
   ++$TNUM;
@@ -271,7 +271,7 @@ $WANT = <<'EOT';
 EOT
 
 $Data::Dumper::Indent = 1;
-my $d;
+our $d;
 TEST (q(
        $d = Data::Dumper->new([$a,$b], [qw(a b)]);
        $d->Seen({'*c' => $c});
@@ -1552,7 +1552,7 @@ EOT
 $WANT = <<'EOT';
 #$VAR1 = [];
 EOT
-TEST q(join " ", new Data::Dumper [[]],[] =>->Dumpxs),
+TEST q|Data::Dumper->new([[]],[]=>)->Dumpxs|,
     '$obj->Dumpxs in list context'
  if $XS;
 
@@ -1617,6 +1617,7 @@ VSTRINGS_CORRECT
           ? $no_vstrings
           : $vstrings_corr;
 
+  no warnings 'numeric';
   @::_v = (
     \v65.66.67,
     \($] < 5.007 ? v65.66.67 : eval 'v65.66.067'),
@@ -1761,8 +1762,12 @@ EOT
         TEST (qq(Data::Dumper::DumperX("\n")), '\n alone') if $XS;
 }
 #############
-our @globs = map { $_, \$_ } map { *$_ } map { $_, "s::$_" }
+our @globs;
+{
+    no strict 'refs';
+    @globs = map { $_, \$_ } map { *$_ } map { $_, "s::$_" }
 		"foo", "\1bar", "L\x{e9}on", "m\x{100}cron", "snow\x{2603}";
+}
 $WANT = change_glob_expectation(<<'EOT');
 #$globs = [
 #  *::foo,
@@ -1818,9 +1823,13 @@ $WANT = change_glob_expectation(<<'EOT');
 EOT
 {
   *ppp = { a => 1 };
-  *{"a/b"} = { b => 3 };
-  *{"a\x{2603}b"} = { c => 5 };
-  our $v = { a => \*ppp, b => \*{"a/b"}, c => \*{"a\x{2603}b"} };
+  {
+    no strict 'refs';
+    *{"a/b"} = { b => 3 };
+    no warnings 'utf8';
+    *{"a\x{2603}b"} = { c => 5 };
+    our $v = { a => \*ppp, b => \*{"a/b"}, c => \*{"a\x{2603}b"} };
+  }
   local $Data::Dumper::Purity = 1;
   TEST (q(Data::Dumper->Dump([$v], ["v"])), 'glob purity: Dump()');
   TEST (q(Data::Dumper->Dumpxs([$v], ["v"])), 'glob purity: Dumpxs()') if $XS;
