@@ -334,7 +334,7 @@ is not a complete listing, but only excerpts.
   in  $=Config::FETCH(ref(Config), 'package') from lib/Config.pm:574
   in  $=Config::FETCH(ref(Config), 'baserev') from lib/Config.pm:574
   in  $=Config::FETCH(ref(Config), '__PERL_CORE_MINOR__') from lib/Config.pm:574
-  in  $=Config::FETCH(ref(Config), 'PERL_SUBVERSION') from lib/Config.pm:574
+  in  $=Config::FETCH(ref(Config), '__PERL_CORE_RELEASE__') from lib/Config.pm:574
   in  $=Config::FETCH(ref(Config), 'osname') from lib/Config.pm:574
   in  $=Config::FETCH(ref(Config), 'osvers') from lib/Config.pm:574
 
@@ -360,7 +360,7 @@ is not a complete listing, but only excerpts.
   out $=Config::FETCH(ref(Config), 'baserev') from lib/Config.pm:574
   in  $=Config::FETCH(ref(Config), '__PERL_CORE_MINOR__') from lib/Config.pm:574
   out $=Config::FETCH(ref(Config), '__PERL_CORE_MINOR__') from lib/Config.pm:574
-  in  $=Config::FETCH(ref(Config), 'PERL_SUBVERSION') from lib/Config.pm:574
+  in  $=Config::FETCH(ref(Config), '__PERL_CORE_RELEASE__') from lib/Config.pm:574
 
 =item 5
 

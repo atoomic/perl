@@ -1,5 +1,5 @@
 /__PERL_CORE_MINOR__/ {base = $3}
-/PERL_SUBVERSION/ {subvers = $3}
+/__PERL_CORE_RELEASE__/ {subvers = $3}
 END {
 if (subvers == 0) 
 	printf "p9pvers = 5.%03d\n", base> "buildinfo";

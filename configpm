@@ -242,7 +242,7 @@ my %seen_quotes;
 	if ($k eq '__PERL_CORE_MINOR__') {
 	    push @v_others, "PATCHLEVEL='$v'\n";
 	}
-	elsif ($k eq 'PERL_SUBVERSION') {
+	elsif ($k eq '__PERL_CORE_RELEASE__') {
 	    push @v_others, "SUBVERSION='$v'\n";
 	}
 	elsif ($k eq 'PERL_CONFIG_SH') {

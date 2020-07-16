@@ -15,7 +15,7 @@
 
 #define __PERL_CORE_MAJOR__	7		/* age */
 #define __PERL_CORE_MINOR__	0		/* epoch */
-#define PERL_SUBVERSION	0		/* generation */
+#define __PERL_CORE_RELEASE__	0		/* generation */
 
 /* The following numbers describe the earliest compatible version of
    Perl ("compatibility" here being defined as sufficient binary/API
@@ -149,5 +149,5 @@ static const char * const local_patches[] = {
 /* the old terms of reference, add them only when explicitly included */
 #define PATCHLEVEL		__PERL_CORE_MINOR__
 #undef  SUBVERSION		/* OS/390 has a SUBVERSION in a system header */
-#define SUBVERSION		PERL_SUBVERSION
+#define SUBVERSION		__PERL_CORE_RELEASE__
 #endif

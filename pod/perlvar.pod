@@ -717,7 +717,7 @@ like as good a place as any to give notice that they are documented.
 
 =for apidoc hAmn|int|__PERL_CORE_MINOR__
 =for apidoc hAmn|int|__PERL_CORE_MAJOR__
-=for apidoc hAmn|int|PERL_SUBVERSION
+=for apidoc hAmn|int|__PERL_CORE_RELEASE__
 
 The revision, version, and subversion of the Perl interpreter,
 represented as a L<version> object.

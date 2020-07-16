@@ -2050,7 +2050,7 @@ mod2fname(pTHX_ SV *sv)
       different DLL, even if a DLL with the same basename is loaded already.
       Thus there is no need to include the version into the mangling scheme. */
 #if 0
-    sum += __PERL_CORE_MINOR__ * 200 + PERL_SUBVERSION * 2;  /* Up to 5.6.1 */
+    sum += __PERL_CORE_MINOR__ * 200 + __PERL_CORE_RELEASE__ * 2;  /* Up to 5.6.1 */
 #else
 #  ifndef COMPATIBLE_VERSION_SUM  /* Binary compatibility with the 5.00553 binary */
 #    define COMPATIBLE_VERSION_SUM (5 * 200 + 53 * 2)
@@ -2412,7 +2412,7 @@ perllib_mangle(char *s, unsigned int l)
 	return name;
     if (!newp && !notfound) {
 	newp = getenv(name = "PERLLIB_" STRINGIFY(__PERL_CORE_MAJOR__)
-		      STRINGIFY(__PERL_CORE_MINOR__) STRINGIFY(PERL_SUBVERSION)
+		      STRINGIFY(__PERL_CORE_MINOR__) STRINGIFY(__PERL_CORE_RELEASE__)
 		      "_PREFIX");
 	if (!newp)
 	    newp = getenv(name = "PERLLIB_" STRINGIFY(__PERL_CORE_MAJOR__)

@@ -3823,7 +3823,7 @@ S_minus_v(pTHX)
 	    PerlIO_printf(PIO_stdout,
 		"\nThis is perl "	STRINGIFY(__PERL_CORE_MAJOR__)
 		", version "		STRINGIFY(__PERL_CORE_MINOR__)
-		", subversion "		STRINGIFY(PERL_SUBVERSION)
+		", subversion "		STRINGIFY(__PERL_CORE_RELEASE__)
 		" (%" SVf ") built for "	ARCHNAME, SVfARG(level)
 		);
 	    SvREFCNT_dec_NN(level);

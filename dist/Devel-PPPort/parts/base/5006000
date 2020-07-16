@@ -91,7 +91,7 @@ PERL_LOADMOD_IMPORT_OPS        # E
 PERL_LOADMOD_NOIMPORT          # E
 perl_parse                     # E (perl_parse)
 __PERL_CORE_MAJOR__                  # E
-PERL_SUBVERSION                # E
+__PERL_CORE_RELEASE__                # E
 PERL_SYS_INIT3                 # E
 __PERL_CORE_MINOR__                   # E
 PL_exit_flags                  # E

@@ -54,7 +54,7 @@ if (-e $pl_h) {
 else {
     die "Can't find $pl_h: $!";
 }
-$opt{VERSION} = "$opt{__PERL_CORE_MAJOR__}.$opt{__PERL_CORE_MINOR__}.$opt{PERL_SUBVERSION}";
+$opt{VERSION} = "$opt{__PERL_CORE_MAJOR__}.$opt{__PERL_CORE_MINOR__}.$opt{__PERL_CORE_RELEASE__}";
 $opt{INST_VER} =~ s|~VERSION~|$opt{VERSION}|g;
 
 $opt{'cf_by'} = $ENV{USERNAME} unless $opt{'cf_by'};

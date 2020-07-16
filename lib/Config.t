@@ -32,7 +32,7 @@ is($Config{__PERL_CORE_MAJOR__}, 7, "__PERL_CORE_MAJOR__ is 7");
 
 # Check that old config variable names are aliased to their new ones.
 my %grandfathers = ( __PERL_CORE_MINOR__       => 'PATCHLEVEL',
-                     PERL_SUBVERSION    => 'SUBVERSION',
+                     __PERL_CORE_RELEASE__    => 'SUBVERSION',
                      PERL_CONFIG_SH     => 'CONFIG'
                    );
 while( my($new, $old) = each %grandfathers ) {

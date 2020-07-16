@@ -1213,7 +1213,7 @@ $     line = F$EDIT(line,"COMPRESS, TRIM")
 $     patchlevel = F$ELEMENT(2," ",line)
 $     got_patch = "true"
 $   ENDIF
-$   IF ((F$LOCATE("#define PERL_SUBVERSION",line).NE.F$LENGTH(line)).AND.(.NOT.got_sub))
+$   IF ((F$LOCATE("#define __PERL_CORE_RELEASE__",line).NE.F$LENGTH(line)).AND.(.NOT.got_sub))
 $   THEN
 $     line = F$EDIT(line,"COMPRESS, TRIM")
 $     subversion = F$ELEMENT(2," ",line)
@@ -6028,7 +6028,7 @@ $ WC "Makefile_SH='" + Makefile_SH + "'"
 $ WC "Mcc='" + Mcc + "'"
 $ WC "__PERL_CORE_MAJOR__='" + revision + "'"
 $ WC "__PERL_CORE_MINOR__='" + patchlevel + "'" 
-$ WC "PERL_SUBVERSION='" + subversion + "'" 
+$ WC "__PERL_CORE_RELEASE__='" + subversion + "'" 
 $ WC "PERL_API_REVISION='" + api_revision + "'"
 $ WC "PERL_API_VERSION='" + api_version + "'" 
 $ WC "PERL_API_SUBVERSION='" + api_subversion + "'"

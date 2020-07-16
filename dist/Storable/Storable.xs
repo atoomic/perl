@@ -20,7 +20,7 @@
 #include <patchlevel.h>		/* Perl's one, needed since 5.6 */
 #endif
 
-#if !defined(__PERL_CORE_MINOR__) || __PERL_CORE_MAJOR__ == 5 && ( __PERL_CORE_MINOR__ < 10 || (__PERL_CORE_MINOR__ == 10 && PERL_SUBVERSION < 1))
+#if !defined(__PERL_CORE_MINOR__) || __PERL_CORE_MAJOR__ == 5 && ( __PERL_CORE_MINOR__ < 10 || (__PERL_CORE_MINOR__ == 10 && __PERL_CORE_RELEASE__ < 1))
 #define NEED_PL_parser
 #define NEED_sv_2pv_flags
 #define NEED_load_module
@@ -3413,7 +3413,7 @@ static int store_code(pTHX_ stcxt_t *cxt, CV *cv)
 #if __PERL_CORE_MAJOR__ == 5 && __PERL_CORE_MINOR__ < 8
 #   define PERL_MAGIC_qr                  'r' /* precompiled qr// regex */
 #   define BFD_Svs_SMG_OR_RMG SVs_RMG
-#elif __PERL_CORE_MAJOR__ > 5 || (__PERL_CORE_MAJOR__ == 5 && ((__PERL_CORE_MINOR__==8) && (PERL_SUBVERSION >= 1) || (__PERL_CORE_MINOR__>8)))
+#elif __PERL_CORE_MAJOR__ > 5 || (__PERL_CORE_MAJOR__ == 5 && ((__PERL_CORE_MINOR__==8) && (__PERL_CORE_RELEASE__ >= 1) || (__PERL_CORE_MINOR__>8)))
 #   define BFD_Svs_SMG_OR_RMG SVs_SMG
 #   define MY_PLACEHOLDER PL_sv_placeholder
 #else

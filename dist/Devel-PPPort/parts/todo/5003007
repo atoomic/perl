@@ -464,7 +464,7 @@ PERL_SCAN_SILENT_ILLDIGIT      # T
 PERL_SHORT_MAX                 # T
 PERL_SHORT_MIN                 # T
 PERL_SIGNALS_UNSAFE_FLAG       # T
-PERL_SUBVERSION                # T
+__PERL_CORE_RELEASE__                # T
 PERL_SYS_INIT                  # T
 PERL_SYS_TERM                  # T
 PERL_UCHAR_MAX                 # T
