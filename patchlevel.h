@@ -13,6 +13,12 @@
 /* do not adjust the whitespace! Configure expects the numbers to be
  * exactly on the third column */
 
+/* hardcoded versions never change them */
+/* view define GCC_DIAG_PRAGMA(x) _Pragma (#x) */
+#define PERL_REVISION	5		/* age */
+#define PERL_VERSION	777		/* epoch */
+#define PERL_SUBVERSION	0		/* generation */
+
 #define __PERL_CORE_MAJOR__	7		/* age */
 #define __PERL_CORE_MINOR__	0		/* epoch */
 #define __PERL_CORE_RELEASE__	0		/* generation */
