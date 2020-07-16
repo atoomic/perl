@@ -306,7 +306,7 @@ is runperl(stderr => 1, prog => '#!perl -M'),
 	  if $^O eq 'MSWin32' && is_miniperl;
         my $v = sprintf "%vd", $^V;
         my $rev = $Config{__PERL_CORE_MAJOR__};
-        my $ver = $Config{PERL_VERSION};
+        my $ver = $Config{__PERL_CORE_MINOR__};
         my $rel = $Config{PERL_SUBVERSION};
         like( runperl( switches => ['-v'] ),
 	      qr/This is perl \Q$rev\E, version \Q$ver\E, subversion \Q$rel\E \(v\Q$v\E(?:[-*\w]+| \([^)]+\))?\) built for \Q$Config{archname}\E.+Copyright.+Larry Wall.+Artistic License.+GNU General Public License/s,

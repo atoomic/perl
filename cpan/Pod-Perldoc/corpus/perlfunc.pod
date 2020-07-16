@@ -5143,7 +5143,7 @@ specified by EXPR or by C<$_> if EXPR is not supplied.
 
 VERSION may be either a numeric argument such as 5.006, which will be
 compared to C<$]>, or a literal of the form v5.6.1, which will be compared
-to C<$^V> (aka $PERL_VERSION).  An exception is raised if
+to C<$^V> (aka $__PERL_CORE_MINOR__).  An exception is raised if
 VERSION is greater than the version of the current Perl interpreter.
 Compare with L</use>, which can do a similar check at compile time.
 
@@ -7679,7 +7679,7 @@ The importation can be made conditional; see L<if>.
 
 In the peculiar C<use VERSION> form, VERSION may be either a positive
 decimal fraction such as 5.006, which will be compared to C<$]>, or a v-string
-of the form v5.6.1, which will be compared to C<$^V> (aka $PERL_VERSION).  An
+of the form v5.6.1, which will be compared to C<$^V> (aka $__PERL_CORE_MINOR__).  An
 exception is raised if VERSION is greater than the version of the
 current Perl interpreter; Perl will not attempt to parse the rest of the
 file.  Compare with L</require>, which can do a similar check at run time.

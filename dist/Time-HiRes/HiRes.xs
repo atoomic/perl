@@ -42,11 +42,11 @@ extern "C" {
 }
 #endif
 
-#define PERL_VERSION_DECIMAL(r,v,s) (r*1000000 + v*1000 + s)
+#define __PERL_CORE_MINOR___DECIMAL(r,v,s) (r*1000000 + v*1000 + s)
 #define PERL_DECIMAL_VERSION \
-        PERL_VERSION_DECIMAL(__PERL_CORE_MAJOR__,PERL_VERSION,PERL_SUBVERSION)
-#define PERL_VERSION_GE(r,v,s) \
-        (PERL_DECIMAL_VERSION >= PERL_VERSION_DECIMAL(r,v,s))
+        __PERL_CORE_MINOR___DECIMAL(__PERL_CORE_MAJOR__,__PERL_CORE_MINOR__,PERL_SUBVERSION)
+#define __PERL_CORE_MINOR___GE(r,v,s) \
+        (PERL_DECIMAL_VERSION >= __PERL_CORE_MINOR___DECIMAL(r,v,s))
 
 #ifndef GCC_DIAG_IGNORE
 #  define GCC_DIAG_IGNORE(x)
@@ -57,7 +57,7 @@ extern "C" {
 #  define GCC_DIAG_RESTORE_STMT GCC_DIAG_RESTORE NOOP
 #endif
 
-#if PERL_VERSION_GE(5,7,3) && !PERL_VERSION_GE(5,10,1)
+#if __PERL_CORE_MINOR___GE(5,7,3) && !__PERL_CORE_MINOR___GE(5,10,1)
 #  undef SAVEOP
 #  define SAVEOP() SAVEVPTR(PL_op)
 #endif
@@ -1086,7 +1086,7 @@ nsec_without_unslept(struct timespec *sleepfor,
 /* In case Perl and/or Devel::PPPort are too old, minimally emulate
  * IS_SAFE_PATHNAME() (which looks for zero bytes in the pathname). */
 #ifndef IS_SAFE_PATHNAME
-#  if PERL_VERSION >= 12 /* Perl_ck_warner is 5.10.0 -> */
+#  if __PERL_CORE_MINOR__ >= 12 /* Perl_ck_warner is 5.10.0 -> */
 #    ifdef WARN_SYSCALLS
 #      define WARNEMUCAT WARN_SYSCALLS /* 5.22.0 -> */
 #    else

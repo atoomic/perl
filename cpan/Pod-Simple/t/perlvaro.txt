@@ -302,7 +302,7 @@ Current state of the interpreter. Undefined if parsing of the current module/eva
 $BASETIME
 $^T
 The time at which the program began running, in seconds since the epoch (beginning of 1970). The values returned by the -M, -A, and -C filetests are based on this value.
-$PERL_VERSION
+$__PERL_CORE_MINOR__
 $^V
 The revision, version, and subversion of the Perl interpreter, represented as a string composed of characters with those ordinals. Thus in Perl v5.6.0 it equals chr(5) . chr(6) . chr(0) and will return true for $^V eq v5.6.0. Note that the characters in this string value can potentially be in Unicode range.
 This can be used to determine whether the Perl interpreter executing a script is in the right range of versions. (Mnemonic: use ^V for Version Control.) Example:

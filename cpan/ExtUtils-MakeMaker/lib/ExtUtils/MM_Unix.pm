@@ -3209,8 +3209,8 @@ sub ppd {
 PPD_HTML
 
     push @ppd_chunks, "    <IMPLEMENTATION>\n";
-    if ( $self->{MIN_PERL_VERSION} ) {
-        my $min_perl_version = $self->_ppd_version($self->{MIN_PERL_VERSION});
+    if ( $self->{MIN___PERL_CORE_MINOR__} ) {
+        my $min_perl_version = $self->_ppd_version($self->{MIN___PERL_CORE_MINOR__});
         push @ppd_chunks, sprintf <<'PPD_PERLVERS', $min_perl_version;
         <PERLCORE VERSION="%s" />
 PPD_PERLVERS
@@ -3239,7 +3239,7 @@ PPD_PERLVERS
         # archname did not change from 5.6 to 5.8, but those versions may
         # not be not binary compatible so now we append the part of the
         # version that changes when binary compatibility may change
-        $archname .= "-$Config{__PERL_CORE_MAJOR__}.$Config{PERL_VERSION}";
+        $archname .= "-$Config{__PERL_CORE_MAJOR__}.$Config{__PERL_CORE_MINOR__}";
     }
     push @ppd_chunks, sprintf <<'PPD_OUT', $archname;
         <ARCHITECTURE NAME="%s" />

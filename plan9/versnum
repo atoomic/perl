@@ -1,4 +1,4 @@
-/PERL_VERSION/ {base = $3}
+/__PERL_CORE_MINOR__/ {base = $3}
 /PERL_SUBVERSION/ {subvers = $3}
 END {
 if (subvers == 0) 

@@ -12,14 +12,14 @@
 =provides
 
 __PERL_CORE_MAJOR__
-PERL_VERSION
+__PERL_CORE_MINOR__
 PERL_SUBVERSION
 PERL_BCDVERSION
 
-PERL_VERSION_DECIMAL
+__PERL_CORE_MINOR___DECIMAL
 PERL_DECIMAL_VERSION
-PERL_VERSION_GE
-PERL_VERSION_LT
+__PERL_CORE_MINOR___GE
+__PERL_CORE_MINOR___LT
 
 =dontwarn
 
@@ -32,41 +32,41 @@ PERL_PATCHLEVEL_H_IMPLICIT
 #    define PERL_PATCHLEVEL_H_IMPLICIT
 #    include <patchlevel.h>
 #  endif
-#  if !(defined(PERL_VERSION) || (defined(SUBVERSION) && defined(PATCHLEVEL)))
+#  if !(defined(__PERL_CORE_MINOR__) || (defined(SUBVERSION) && defined(PATCHLEVEL)))
 #    include <could_not_find_Perl_patchlevel.h>
 #  endif
 #  ifndef __PERL_CORE_MAJOR__
 #    define __PERL_CORE_MAJOR__       (7)
      /* Replace: 1 */
-#    define PERL_VERSION        PATCHLEVEL
+#    define __PERL_CORE_MINOR__        PATCHLEVEL
 #    define PERL_SUBVERSION     SUBVERSION
-     /* Replace PERL_PATCHLEVEL with PERL_VERSION */
+     /* Replace PERL_PATCHLEVEL with __PERL_CORE_MINOR__ */
      /* Replace: 0 */
 #  endif
 #endif
 
 #define D_PPP_DEC2BCD(dec) ((((dec)/100)<<8)|((((dec)%100)/10)<<4)|((dec)%10))
-#define PERL_BCDVERSION ((D_PPP_DEC2BCD(__PERL_CORE_MAJOR__)<<24)|(D_PPP_DEC2BCD(PERL_VERSION)<<12)|D_PPP_DEC2BCD(PERL_SUBVERSION))
+#define PERL_BCDVERSION ((D_PPP_DEC2BCD(__PERL_CORE_MAJOR__)<<24)|(D_PPP_DEC2BCD(__PERL_CORE_MINOR__)<<12)|D_PPP_DEC2BCD(PERL_SUBVERSION))
 
 #if __PERL_CORE_MAJOR__ < 5
 #  error ppport.h only works with Perl version 5
 #endif
 
-#ifndef PERL_VERSION_DECIMAL
-#	define PERL_VERSION_DECIMAL(r,v,s) (r*1000000 + v*1000 + s)
+#ifndef __PERL_CORE_MINOR___DECIMAL
+#	define __PERL_CORE_MINOR___DECIMAL(r,v,s) (r*1000000 + v*1000 + s)
 #endif
 
 #ifndef PERL_DECIMAL_VERSION
 # define PERL_DECIMAL_VERSION \
-     PERL_VERSION_DECIMAL(__PERL_CORE_MAJOR__,PERL_VERSION,PERL_SUBVERSION)
+     __PERL_CORE_MINOR___DECIMAL(__PERL_CORE_MAJOR__,__PERL_CORE_MINOR__,PERL_SUBVERSION)
 #endif
 
-#ifndef PERL_VERSION_LT
-# define PERL_VERSION_LT(r,v,s) \
-     (PERL_DECIMAL_VERSION < PERL_VERSION_DECIMAL(r,v,s))
+#ifndef __PERL_CORE_MINOR___LT
+# define __PERL_CORE_MINOR___LT(r,v,s) \
+     (PERL_DECIMAL_VERSION < __PERL_CORE_MINOR___DECIMAL(r,v,s))
 #endif
 
-#ifndef PERL_VERSION_GE
-# define PERL_VERSION_GE(r,v,s) \
-     (PERL_DECIMAL_VERSION >= PERL_VERSION_DECIMAL(r,v,s))
+#ifndef __PERL_CORE_MINOR___GE
+# define __PERL_CORE_MINOR___GE(r,v,s) \
+     (PERL_DECIMAL_VERSION >= __PERL_CORE_MINOR___DECIMAL(r,v,s))
 #endif

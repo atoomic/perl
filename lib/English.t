@@ -88,8 +88,8 @@ is( $EGID, $), '$EGID' );
 is( $PROGRAM_NAME, $0, '$PROGRAM_NAME' );
 is( $BASETIME, $^T, '$BASETIME' );
 
-is( $PERL_VERSION, $^V, '$PERL_VERSION' );
-is( $OLD_PERL_VERSION, $], '$OLD_PERL_VERSION' );
+is( $__PERL_CORE_MINOR__, $^V, '$__PERL_CORE_MINOR__' );
+is( $OLD___PERL_CORE_MINOR__, $], '$OLD___PERL_CORE_MINOR__' );
 is( $DEBUGGING, $^D, '$DEBUGGING' );
 
 is( $WARNING, 0, '$WARNING' );

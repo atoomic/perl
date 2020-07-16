@@ -119,11 +119,11 @@ my @GENERIC_OUT = (
     }, '_add vs _merge';
 }
 
-# Test MIN_PERL_VERSION meta-spec 1.4
+# Test MIN___PERL_CORE_MINOR__ meta-spec 1.4
 {
     my $mm = $new_mm->(
         @GENERIC_IN,
-        MIN_PERL_VERSION => 5.006,
+        MIN___PERL_CORE_MINOR__ => 5.006,
     );
     is_deeply $mm->metafile_data( {}, { @METASPEC14 }, ), {
         @GENERIC_OUT,
@@ -131,14 +131,14 @@ my @GENERIC_OUT = (
             @REQ20,
             runtime => { requires => { perl => 5.006, }, },
         },
-    }, 'MIN_PERL_VERSION meta-spec 1.4';
+    }, 'MIN___PERL_CORE_MINOR__ meta-spec 1.4';
 }
 
-# Test MIN_PERL_VERSION meta-spec 2.0
+# Test MIN___PERL_CORE_MINOR__ meta-spec 2.0
 {
     my $mm = $new_mm->(
         @GENERIC_IN,
-        MIN_PERL_VERSION => 5.006,
+        MIN___PERL_CORE_MINOR__ => 5.006,
     );
     is_deeply $mm->metafile_data, {
         prereqs => {
@@ -146,14 +146,14 @@ my @GENERIC_OUT = (
             runtime => { requires => { 'perl' => '5.006', }, },
         },
         @GENERIC_OUT,
-    }, 'MIN_PERL_VERSION meta-spec 2.0';
+    }, 'MIN___PERL_CORE_MINOR__ meta-spec 2.0';
 }
 
-# Test MIN_PERL_VERSION meta-spec 1.4
+# Test MIN___PERL_CORE_MINOR__ meta-spec 1.4
 {
     my $mm = $new_mm->(
         @GENERIC_IN,
-        MIN_PERL_VERSION => 5.006,
+        MIN___PERL_CORE_MINOR__ => 5.006,
         PREREQ_PM => { 'Foo::Bar' => 1.23, },
     );
     is_deeply $mm->metafile_data, {
@@ -167,7 +167,7 @@ my @GENERIC_OUT = (
                 },
             },
         },
-    }, 'MIN_PERL_VERSION and PREREQ_PM meta-spec 1.4';
+    }, 'MIN___PERL_CORE_MINOR__ and PREREQ_PM meta-spec 1.4';
 }
 
 # Test CONFIGURE_REQUIRES meta-spec 1.4

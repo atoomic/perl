@@ -170,7 +170,7 @@ the C<system()> function instead.
 For portability, when using features that may not be implemented on
 every machine, test the construct in an eval to see if it fails.  If
 you know what version or patchlevel a particular feature was
-implemented, you can test C<$]> (C<$PERL_VERSION> in C<English>) to see if it
+implemented, you can test C<$]> (C<$__PERL_CORE_MINOR__> in C<English>) to see if it
 will be there.  The C<Config> module will also let you interrogate values
 determined by the B<Configure> program when Perl was installed.
 

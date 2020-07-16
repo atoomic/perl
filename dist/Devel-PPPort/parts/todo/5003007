@@ -479,7 +479,7 @@ PERL_UQUAD_MAX                 # T
 PERL_UQUAD_MIN                 # T
 PERL_USHORT_MAX                # T
 PERL_USHORT_MIN                # T
-PERL_VERSION                   # T
+__PERL_CORE_MINOR__                   # T
 PL_bufend                      # T
 PL_bufptr                      # T
 PL_compiling                   # T

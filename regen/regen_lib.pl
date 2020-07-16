@@ -240,11 +240,11 @@ sub perl_version {
     my ($v1,$v2,$v3);
     while (<$fh>) {
         $v1 = $1 if /__PERL_CORE_MAJOR__\s+(\d+)/;
-        $v2 = $1 if /PERL_VERSION\s+(\d+)/;
+        $v2 = $1 if /__PERL_CORE_MINOR__\s+(\d+)/;
         $v3 = $1 if /PERL_SUBVERSION\s+(\d+)/;
     }
     die "can't locate __PERL_CORE_MAJOR__ in '$plh'"   unless defined $v1;
-    die "can't locate PERL_VERSION in '$plh'"    unless defined $v2;
+    die "can't locate __PERL_CORE_MINOR__ in '$plh'"    unless defined $v2;
     die "can't locate PERL_SUBVERSION in '$plh'" unless defined $v3;
     return ($v1,$v2,$v3, sprintf("%d.%03d%03d", $v1, $v2, $v3));
 }

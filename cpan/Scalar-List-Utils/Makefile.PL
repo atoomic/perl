@@ -34,7 +34,7 @@ my %params = (
         'Test::More' => 0,
       },
       (eval { ExtUtils::MakeMaker->VERSION(6.31) } ? (LICENSE => 'perl') : ()),
-      (eval { ExtUtils::MakeMaker->VERSION(6.48) } ? (MIN_PERL_VERSION => '5.006') : ()),
+      (eval { ExtUtils::MakeMaker->VERSION(6.48) } ? (MIN___PERL_CORE_MINOR__ => '5.006') : ()),
       ( eval { ExtUtils::MakeMaker->VERSION(6.46) } ? (
           META_MERGE => {
             'meta-spec' => { version => 2 },

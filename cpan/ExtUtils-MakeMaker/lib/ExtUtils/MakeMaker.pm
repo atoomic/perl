@@ -311,7 +311,7 @@ sub full_setup {
 
     INC INCLUDE_EXT LDFROM LIBS LICENSE
     LINKTYPE MAKEAPERL MAKEFILE MAKEFILE_OLD MAN1PODS MAN3PODS MAP_TARGET
-    META_ADD META_MERGE MIN_PERL_VERSION BUILD_REQUIRES CONFIGURE_REQUIRES
+    META_ADD META_MERGE MIN___PERL_CORE_MINOR__ BUILD_REQUIRES CONFIGURE_REQUIRES
     MYEXTLIB NAME NEEDS_LINKING NOECHO NO_META NO_MYMETA NO_PACKLIST NO_PERLLOCAL
     NORECURS NO_VC OBJECT OPTIMIZE PERL_MALLOC_OK PERL PERLMAINCC PERLRUN
     PERLRUNINST PERL_CORE
@@ -511,22 +511,22 @@ sub new {
 
     check_hints($self);
 
-    if ( defined $self->{MIN_PERL_VERSION}
-          && $self->{MIN_PERL_VERSION} !~ /^v?[\d_\.]+$/ ) {
+    if ( defined $self->{MIN___PERL_CORE_MINOR__}
+          && $self->{MIN___PERL_CORE_MINOR__} !~ /^v?[\d_\.]+$/ ) {
       require version;
       my $normal = eval {
         local $SIG{__WARN__} = sub {
             # simulate "use warnings FATAL => 'all'" for vintage perls
             die @_;
         };
-        version->new( $self->{MIN_PERL_VERSION} )
+        version->new( $self->{MIN___PERL_CORE_MINOR__} )
       };
-      $self->{MIN_PERL_VERSION} = $normal if defined $normal && !$@;
+      $self->{MIN___PERL_CORE_MINOR__} = $normal if defined $normal && !$@;
     }
 
     # Translate X.Y.Z to X.00Y00Z
-    if( defined $self->{MIN_PERL_VERSION} ) {
-        $self->{MIN_PERL_VERSION} =~ s{ ^v? (\d+) \. (\d+) \. (\d+) $ }
+    if( defined $self->{MIN___PERL_CORE_MINOR__} ) {
+        $self->{MIN___PERL_CORE_MINOR__} =~ s{ ^v? (\d+) \. (\d+) \. (\d+) $ }
                                       {sprintf "%d.%03d%03d", $1, $2, $3}ex;
     }
 
@@ -535,17 +535,17 @@ sub new {
             # simulate "use warnings FATAL => 'all'" for vintage perls
             die @_;
         };
-        !$self->{MIN_PERL_VERSION} or $self->{MIN_PERL_VERSION} <= "$]"
+        !$self->{MIN___PERL_CORE_MINOR__} or $self->{MIN___PERL_CORE_MINOR__} <= "$]"
     };
     if (!$perl_version_ok) {
         if (!defined $perl_version_ok) {
             die <<'END';
-Warning: MIN_PERL_VERSION is not in a recognized format.
+Warning: MIN___PERL_CORE_MINOR__ is not in a recognized format.
 Recommended is a quoted numerical value like '5.005' or '5.008001'.
 END
         }
         elsif ($self->{PREREQ_FATAL}) {
-            die sprintf <<"END", $self->{MIN_PERL_VERSION}, $];
+            die sprintf <<"END", $self->{MIN___PERL_CORE_MINOR__}, $];
 MakeMaker FATAL: perl version too low for this distribution.
 Required is %s. We run %s.
 END
@@ -553,7 +553,7 @@ END
         else {
             warn sprintf
                 "Warning: Perl version %s or higher required. We run %s.\n",
-                $self->{MIN_PERL_VERSION}, $];
+                $self->{MIN___PERL_CORE_MINOR__}, $];
         }
     }
 
@@ -2367,7 +2367,7 @@ you want to use.
 
   },
 
-=item MIN_PERL_VERSION
+=item MIN___PERL_CORE_MINOR__
 
 Available in version 6.48 and above.
 
@@ -2776,7 +2776,7 @@ ref.
 If a distribution defines a minimal required perl version, this is
 added to the output as an additional line of the form:
 
-  $MIN_PERL_VERSION = '5.008001';
+  $MIN___PERL_CORE_MINOR__ = '5.008001';
 
 If BUILD_REQUIRES is not empty, it will be dumped as $BUILD_REQUIRES hashref.
 

@@ -109,7 +109,7 @@ for my $test (@tests) {
 __DATA__
 # semi-colon separated:
 # perl version range; regexp qr; match string; name
-# - version range is PERL_VERSION, ie 22 for 5.22 as from-to with both from
+# - version range is __PERL_CORE_MINOR__, ie 22 for 5.22 as from-to with both from
 #   and to optional (so "-" is all versions.
 # - match string is , separated match strings
 # - if a match string starts with ! it mustn't match, otherwise it must

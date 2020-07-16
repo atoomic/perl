@@ -93,7 +93,7 @@ perl_parse                     # E (perl_parse)
 __PERL_CORE_MAJOR__                  # E
 PERL_SUBVERSION                # E
 PERL_SYS_INIT3                 # E
-PERL_VERSION                   # E
+__PERL_CORE_MINOR__                   # E
 PL_exit_flags                  # E
 PL_runops                      # E
 pmop_dump                      # E

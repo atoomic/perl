@@ -6553,7 +6553,7 @@ Demands a version of Perl specified by VERSION, or demands some semantics
 specified by EXPR or by L<C<$_>|perlvar/$_> if EXPR is not supplied.
 
 VERSION may be either a literal such as v5.24.1, which will be
-compared to L<C<$^V>|perlvar/$^V> (or C<$PERL_VERSION> in L<English>),
+compared to L<C<$^V>|perlvar/$^V> (or C<$__PERL_CORE_MINOR__> in L<English>),
 or a numeric argument of the form 5.024001, which will be compared to
 L<C<$]>|perlvar/$]>. An exception is raised if VERSION is greater than
 the version of the current Perl interpreter.  Compare with
@@ -9526,7 +9526,7 @@ The importation can be made conditional by using the L<if> module.
 
 In the C<use VERSION> form, VERSION may be either a v-string such as
 v5.24.1, which will be compared to L<C<$^V>|perlvar/$^V> (aka
-$PERL_VERSION), or a numeric argument of the form 5.024001, which will
+$__PERL_CORE_MINOR__), or a numeric argument of the form 5.024001, which will
 be compared to L<C<$]>|perlvar/$]>.  An exception is raised if VERSION
 is greater than the version of the current Perl interpreter; Perl will
 not attempt to parse the rest of the file.  Compare with

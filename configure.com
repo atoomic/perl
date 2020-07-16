@@ -735,7 +735,7 @@ $ IF F$TYPE(usedevel) .EQS. "" THEN usedevel = "undef"
 $ patchlevel_h = F$SEARCH("[-]patchlevel.h")
 $ IF (patchlevel_h.NES."")
 $ THEN
-$   SEARCH 'patchlevel_h' "define","PERL_VERSION","epoch"/match=and/out=[]ver.out
+$   SEARCH 'patchlevel_h' "define","__PERL_CORE_MINOR__","epoch"/match=and/out=[]ver.out
 $   IF .NOT. usedevel .AND. usedevel .NES. "define"
 $   THEN
 $     OPEN/READ CONFIG []ver.out
@@ -1207,7 +1207,7 @@ $   got_perl_patchlevel= "false"
 $   OPEN/READONLY CONFIG 'patchlevel_h' 
 $Patchlevel_h_loop:
 $   READ/END_Of_File=Close_patch/ERROR=Close_patch CONFIG line
-$   IF ((F$LOCATE("#define PERL_VERSION",line).NE.F$LENGTH(line)).AND.(.NOT.got_patch))
+$   IF ((F$LOCATE("#define __PERL_CORE_MINOR__",line).NE.F$LENGTH(line)).AND.(.NOT.got_patch))
 $   THEN
 $     line = F$EDIT(line,"COMPRESS, TRIM")
 $     patchlevel = F$ELEMENT(2," ",line)
@@ -6027,7 +6027,7 @@ $ WC ""
 $ WC "Makefile_SH='" + Makefile_SH + "'"
 $ WC "Mcc='" + Mcc + "'"
 $ WC "__PERL_CORE_MAJOR__='" + revision + "'"
-$ WC "PERL_VERSION='" + patchlevel + "'" 
+$ WC "__PERL_CORE_MINOR__='" + patchlevel + "'" 
 $ WC "PERL_SUBVERSION='" + subversion + "'" 
 $ WC "PERL_API_REVISION='" + api_revision + "'"
 $ WC "PERL_API_VERSION='" + api_version + "'" 

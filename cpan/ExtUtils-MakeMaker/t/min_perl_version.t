@@ -1,7 +1,7 @@
 #!/usr/bin/perl -w
 
 # This is a test checking various aspects of the optional argument
-# MIN_PERL_VERSION to WriteMakefile.
+# MIN___PERL_CORE_MINOR__ to WriteMakefile.
 
 BEGIN {
     unshift @INC, 't/lib';
@@ -32,7 +32,7 @@ WriteMakefile(
     AUTHOR           => 'John Doe <jd@example.com>',
     VERSION_FROM     => 'lib/Min/PerlVers.pm',
     PREREQ_PM        => { strict => 0 },
-    MIN_PERL_VERSION => '5.005',
+    MIN___PERL_CORE_MINOR__ => '5.005',
 );
 END
 
@@ -83,10 +83,10 @@ note "Argument verification"; {
     eval {
         WriteMakefile(
             NAME             => 'Min::PerlVers',
-            MIN_PERL_VERSION => '5',
+            MIN___PERL_CORE_MINOR__ => '5',
         );
     };
-    is( $warnings, '', 'MIN_PERL_VERSION=5 does not trigger a warning' );
+    is( $warnings, '', 'MIN___PERL_CORE_MINOR__=5 does not trigger a warning' );
     is( $@, '',        '  nor a hard failure' );
 
 
@@ -94,10 +94,10 @@ note "Argument verification"; {
     eval {
         WriteMakefile(
             NAME             => 'Min::PerlVers',
-            MIN_PERL_VERSION => '5.4.4',
+            MIN___PERL_CORE_MINOR__ => '5.4.4',
         );
     };
-    is( $warnings, '', 'MIN_PERL_VERSION=X.Y.Z does not trigger a warning' );
+    is( $warnings, '', 'MIN___PERL_CORE_MINOR__=X.Y.Z does not trigger a warning' );
     is( $@, '',        '  nor a hard failure' );
 
 
@@ -105,10 +105,10 @@ note "Argument verification"; {
     eval {
         WriteMakefile(
             NAME             => 'Min::PerlVers',
-            MIN_PERL_VERSION => 5.4.4,
+            MIN___PERL_CORE_MINOR__ => 5.4.4,
         );
     };
-    is( $warnings, '', 'MIN_PERL_VERSION=X.Y.Z does not trigger a warning' );
+    is( $warnings, '', 'MIN___PERL_CORE_MINOR__=X.Y.Z does not trigger a warning' );
     is( $@, '',        '  nor a hard failure' );
 
 
@@ -116,10 +116,10 @@ note "Argument verification"; {
     eval {
         WriteMakefile(
             NAME             => 'Min::PerlVers',
-            MIN_PERL_VERSION => v5.4.4,
+            MIN___PERL_CORE_MINOR__ => v5.4.4,
         );
     };
-    is( $warnings, '', 'MIN_PERL_VERSION=X.Y.Z does not trigger a warning' );
+    is( $warnings, '', 'MIN___PERL_CORE_MINOR__=X.Y.Z does not trigger a warning' );
     is( $@, '',        '  nor a hard failure' );
 
 
@@ -127,10 +127,10 @@ note "Argument verification"; {
     eval {
         WriteMakefile(
             NAME             => 'Min::PerlVers',
-            MIN_PERL_VERSION => '999999',
+            MIN___PERL_CORE_MINOR__ => '999999',
         );
     };
-    ok( '' ne $warnings, 'MIN_PERL_VERSION=999999 triggers a warning' );
+    ok( '' ne $warnings, 'MIN___PERL_CORE_MINOR__=999999 triggers a warning' );
     is( $warnings,
         "Warning: Perl version 999999 or higher required. We run $].\n",
                          '  with expected message text' );
@@ -140,11 +140,11 @@ note "Argument verification"; {
     eval {
         WriteMakefile(
             NAME             => 'Min::PerlVers',
-            MIN_PERL_VERSION => '999999',
+            MIN___PERL_CORE_MINOR__ => '999999',
             PREREQ_FATAL     => 1,
         );
     };
-    is( $warnings, '', 'MIN_PERL_VERSION=999999 and PREREQ_FATAL: no warning' );
+    is( $warnings, '', 'MIN___PERL_CORE_MINOR__=999999 and PREREQ_FATAL: no warning' );
     is( $@, <<"END",   '  correct exception' );
 MakeMaker FATAL: perl version too low for this distribution.
 Required is 999999. We run $].
@@ -154,11 +154,11 @@ END
     eval {
         WriteMakefile(
             NAME             => 'Min::PerlVers',
-            MIN_PERL_VERSION => 'foobar',
+            MIN___PERL_CORE_MINOR__ => 'foobar',
         );
     };
-    is( $@, <<'END', 'Invalid MIN_PERL_VERSION is fatal' );
-Warning: MIN_PERL_VERSION is not in a recognized format.
+    is( $@, <<'END', 'Invalid MIN___PERL_CORE_MINOR__ is fatal' );
+Warning: MIN___PERL_CORE_MINOR__ is not in a recognized format.
 Recommended is a quoted numerical value like '5.005' or '5.008001'.
 END
 
@@ -177,7 +177,7 @@ note "PREREQ_PRINT output"; {
         skip 'not going to evaluate rubbish', 3 if !$prereq_out_sane;
 
         package _Prereq::Print::WithMPV;          ## no critic
-        our($PREREQ_PM, $BUILD_REQUIRES, $MIN_PERL_VERSION, $ERR);
+        our($PREREQ_PM, $BUILD_REQUIRES, $MIN___PERL_CORE_MINOR__, $ERR);
         $BUILD_REQUIRES = undef; # suppress "used only once"
         $ERR = '';
         eval {
@@ -186,7 +186,7 @@ note "PREREQ_PRINT output"; {
         };
         ::is( $@ . $ERR, '',                      'prereqs evaluable' );
         ::is_deeply( $PREREQ_PM, { strict => 0 }, '  and looking correct' );
-        ::is( $MIN_PERL_VERSION, '5.005',         'min version also correct' );
+        ::is( $MIN___PERL_CORE_MINOR__, '5.005',         'min version also correct' );
     }
 }
 

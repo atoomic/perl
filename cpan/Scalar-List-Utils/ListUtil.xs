@@ -30,31 +30,31 @@
 #  define NV_IS_DOUBLEDOUBLE
 #endif  
 
-#ifndef PERL_VERSION_DECIMAL
-#  define PERL_VERSION_DECIMAL(r,v,s) (r*1000000 + v*1000 + s)
+#ifndef __PERL_CORE_MINOR___DECIMAL
+#  define __PERL_CORE_MINOR___DECIMAL(r,v,s) (r*1000000 + v*1000 + s)
 #endif
 #ifndef PERL_DECIMAL_VERSION
 #  define PERL_DECIMAL_VERSION \
-        PERL_VERSION_DECIMAL(__PERL_CORE_MAJOR__,PERL_VERSION,PERL_SUBVERSION)
+        __PERL_CORE_MINOR___DECIMAL(__PERL_CORE_MAJOR__,__PERL_CORE_MINOR__,PERL_SUBVERSION)
 #endif
-#ifndef PERL_VERSION_GE
-#  define PERL_VERSION_GE(r,v,s) \
-        (PERL_DECIMAL_VERSION >= PERL_VERSION_DECIMAL(r,v,s))
+#ifndef __PERL_CORE_MINOR___GE
+#  define __PERL_CORE_MINOR___GE(r,v,s) \
+        (PERL_DECIMAL_VERSION >= __PERL_CORE_MINOR___DECIMAL(r,v,s))
 #endif
-#ifndef PERL_VERSION_LE
-#  define PERL_VERSION_LE(r,v,s) \
-        (PERL_DECIMAL_VERSION <= PERL_VERSION_DECIMAL(r,v,s))
+#ifndef __PERL_CORE_MINOR___LE
+#  define __PERL_CORE_MINOR___LE(r,v,s) \
+        (PERL_DECIMAL_VERSION <= __PERL_CORE_MINOR___DECIMAL(r,v,s))
 #endif
-#ifndef PERL_VERSION_LT
-#  define PERL_VERSION_LT(r,v,s) \
-        (PERL_DECIMAL_VERSION < PERL_VERSION_DECIMAL(r,v,s))
+#ifndef __PERL_CORE_MINOR___LT
+#  define __PERL_CORE_MINOR___LT(r,v,s) \
+        (PERL_DECIMAL_VERSION < __PERL_CORE_MINOR___DECIMAL(r,v,s))
 #endif
 
-#if PERL_VERSION_GE(5,6,0)
+#if __PERL_CORE_MINOR___GE(5,6,0)
 #  include "multicall.h"
 #endif
 
-#if !PERL_VERSION_GE(5,23,8)
+#if !__PERL_CORE_MINOR___GE(5,23,8)
 #  define UNUSED_VAR_newsp PERL_UNUSED_VAR(newsp)
 #else
 #  define UNUSED_VAR_newsp NOOP
@@ -92,7 +92,7 @@
 #define sv_catpvn_flags(b,n,l,f) sv_catpvn(b,n,l)
 #endif
 
-#if !PERL_VERSION_GE(5,8,0)
+#if !__PERL_CORE_MINOR___GE(5,8,0)
 static NV Perl_ceil(NV nv) {
     return -Perl_floor(-nv);
 }
@@ -102,7 +102,7 @@ static NV Perl_ceil(NV nv) {
    was not exported. Therefore platforms like win32, VMS etc have problems
    so we redefine it here -- GMB
 */
-#if !PERL_VERSION_GE(5,7,0)
+#if !__PERL_CORE_MINOR___GE(5,7,0)
 /* Not in 5.6.1. */
 #  ifdef cxinc
 #    undef cxinc
@@ -138,11 +138,11 @@ my_sv_copypv(pTHX_ SV *const dsv, SV *const ssv)
 #  define slu_sv_value(sv) (SvIOK(sv)) ? (NV)(SvIVX(sv)) : (SvNV(sv))
 #endif
 
-#if PERL_VERSION_LE(5,13,8)
+#if __PERL_CORE_MINOR___LE(5,13,8)
 #  define PERL_HAS_BAD_MULTICALL_REFCOUNT
 #endif
 
-#if PERL_VERSION_LT(5,13,14)
+#if __PERL_CORE_MINOR___LT(5,13,14)
 #  define croak_no_modify() croak("%s", PL_no_modify)
 #endif
 
@@ -150,7 +150,7 @@ my_sv_copypv(pTHX_ SV *const dsv, SV *const ssv)
 #  define SvNV_nomg SvNV
 #endif
 
-#if PERL_VERSION_GE(5,16,0)
+#if __PERL_CORE_MINOR___GE(5,16,0)
 #  define HAVE_UNICODE_PACKAGE_NAMES
 
 #  ifndef sv_sethek
@@ -203,7 +203,7 @@ static MGVTBL subname_vtbl;
 
 static void MY_initrand(pTHX)
 {
-#if PERL_VERSION_LT(5,9,0)
+#if __PERL_CORE_MINOR___LT(5,9,0)
     struct op dmy_op;
     struct op *old_op = PL_op;
 
@@ -1118,7 +1118,7 @@ PPCODE:
 /* This MULTICALL-based code appears to fail on perl 5.10.0 and 5.8.9
  * Skip it on those versions (RT#87857)
  */
-#if defined(dMULTICALL) && (PERL_VERSION_GE(5,10,1) || PERL_VERSION_LE(5,8,8))
+#if defined(dMULTICALL) && (__PERL_CORE_MINOR___GE(5,10,1) || __PERL_CORE_MINOR___LE(5,8,8))
     assert(cv);
     if(!CvISXSUB(cv)) {
         /* Since MULTICALL is about to move it */
@@ -1361,7 +1361,7 @@ CODE:
         if(ix == 0) {
             /* uniqint */
             /* coerce to integer */
-#if PERL_VERSION_GE(5,8,0)
+#if __PERL_CORE_MINOR___GE(5,8,0)
             /* int_amg only appeared in perl 5.8.0 */
             if(SvAMAGIC(arg) && (arg = AMG_CALLun(arg, int)))
                 ; /* nothing to do */
@@ -1446,7 +1446,7 @@ CODE:
             arg = sv_mortalcopy(arg);
 
         if(SvOK(arg) && !(SvUOK(arg) || SvIOK(arg) || SvNOK(arg))) {
-#if PERL_VERSION_GE(5,8,0)
+#if __PERL_CORE_MINOR___GE(5,8,0)
             SvIV(arg); /* sets SVf_IOK/SVf_IsUV if it's an integer */
 #else
             SvNV(arg); /* SvIV() sets SVf_IOK even on floats on 5.6 */
@@ -1703,7 +1703,7 @@ CODE:
     else if (SvREADONLY(sv)) croak_no_modify();
 
     tsv = SvRV(sv);
-#if PERL_VERSION_GE(5,14,0)
+#if __PERL_CORE_MINOR___GE(5,14,0)
     SvWEAKREF_off(sv); SvROK_on(sv);
     SvREFCNT_inc_NN(tsv);
     Perl_sv_del_backref(aTHX_ tsv, sv);
@@ -1774,7 +1774,7 @@ CODE:
     if(SvAMAGIC(sv) && (tempsv = AMG_CALLun(sv, numer))) {
         sv = tempsv;
     }
-#if !PERL_VERSION_GE(5,8,5)
+#if !__PERL_CORE_MINOR___GE(5,8,5)
     if(SvPOK(sv) || SvPOKp(sv)) {
         RETVAL = looks_like_number(sv) ? &PL_sv_yes : &PL_sv_no;
     }
