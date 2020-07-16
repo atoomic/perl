@@ -17,7 +17,7 @@ BEGIN {
 use strict;
 use Config;
 
-plan tests => 1052;
+plan tests => 1054;
 
 $| = 1;
 
@@ -103,7 +103,7 @@ sub taint_these :prototype(@) {
 # How to identify taint when you see it
 sub tainted :prototype($) {
     local $@;   # Don't pollute caller's value.
-    not eval { join("",@_), kill 0; 1 };
+    not eval { no warnings; join("", @_), kill 0; 1 };
 }
 
 sub is_tainted {
@@ -1185,7 +1185,7 @@ SKIP: {
     my $arg = tempfile();
     open $fh, '>', $arg or die "Can't create $arg: $!";
     print $fh q{
-	eval { join('', @ARGV), kill 0 };
+	eval { my $x = join('', @ARGV), kill 0 };
 	exit 0 if $@ =~ /^Insecure dependency/;
 	print "# Oops: \$@ was [$@]\n";
 	exit 1;
@@ -1508,6 +1508,7 @@ violates_taint(sub { link $TAINT, '' }, 'link');
 
 # test bitwise ops (regression bug)
 {
+    no warnings 'numeric';
     my $why = "y";
     my $j = "x" | $why;
     isnt_tainted($j);
@@ -2074,14 +2075,15 @@ SKIP:
 		   q/sprintf doesn't like tainted formats/);
     violates_taint(sub { sprintf($TAINT . "# %s\n", "foo") }, 'sprintf',
 		   q/sprintf doesn't like tainted format expressions/);
-    eval { sprintf("# %s\n", $TAINT . "foo") };
+    eval { my $str = sprintf("# %s\n", $TAINT . "foo") };
     is($@, '', q/sprintf accepts other tainted args/);
 }
 
 {
     # 40708
     my $n  = 7e9;
-    8e9 - $n;
+    my $sub = 8e9 - $n;
+    is ( $sub, 1000000000, '8e9 - 7e9' );
 
     my $val = $n;
     is ($val, '7000000000', 'Assignment to untainted variable');
@@ -2102,6 +2104,7 @@ SKIP:
     seek $fh, 0, 2 or die $!;
     $tainted = <$fh>;
 
+    no warnings 'uninitialized';
     eval 'eval $tainted';
     like ($@, qr/^Insecure dependency in eval/);
 }
@@ -2139,7 +2142,7 @@ foreach my $ord (78, 163, 256) {
           my $x = crypt($_[0], $alg . $_[1]);
           $x
       }
-      sub co { my $x = ~$_[0]; $x }
+      sub co { no warnings 'numeric'; my $x = ~$_[0]; $x }
       my ($a, $b);
       $a = cr('hello', 'foo' . $TAINT);
       $b = cr('hello', 'foo');
@@ -2251,6 +2254,7 @@ foreach my $ord (78, 163, 256) {
 {
     for my $var1 ($TAINT, "123") {
 	for my $var2 ($TAINT0, "456") {
+        no warnings q(redundant);
 	    is( tainted(sprintf '%s', $var1, $var2), tainted($var1),
 		"sprintf '%s', '$var1', '$var2'" );
 	    is( tainted(sprintf ' %s', $var1, $var2), tainted($var1),
@@ -2268,7 +2272,7 @@ foreach my $ord (78, 163, 256) {
 
 {
     use re 'taint';
-    "abc".$TAINT =~ /(.*)/; # make $1 tainted
+    my $x = "abc".$TAINT =~ /(.*)/; # make $1 tainted
     is_tainted($1, '$1 should be tainted');
 
     my $untainted = "abcdef";
@@ -2302,17 +2306,17 @@ end
     is_tainted($^A, "tainted formline argument makes a tainted accumulator");
     $^A = "";
     isnt_tainted($^A, "accumulator can be explicitly untainted");
-    formline('@' .('<'*5) . ' | @*', 'hallo', 'welt');
+    formline('@' .('<'x5) . ' | @*', 'hallo', 'welt');
     isnt_tainted($^A, "accumulator still untainted");
     $^A = "" . $TAINT;
     is_tainted($^A, "accumulator can be explicitly tainted");
-    formline('@' .('<'*5) . ' | @*', 'hallo', 'welt');
+    formline('@' .('<'x5) . ' | @*', 'hallo', 'welt');
     is_tainted($^A, "accumulator still tainted");
     $^A = "";
     isnt_tainted($^A, "accumulator untainted again");
-    formline('@' .('<'*5) . ' | @*', 'hallo', 'welt');
+    formline('@' .('<'x5) . ' | @*', 'hallo', 'welt');
     isnt_tainted($^A, "accumulator still untainted");
-    formline('@' .('<'*(5+$TAINT0)) . ' | @*', 'hallo', 'welt');
+    formline('@' .('<'x(5+$TAINT0)) . ' | @*', 'hallo', 'welt');
     is_tainted($^A, "the accumulator should be tainted already");
     is_tainted($^A, "tainted formline picture makes a tainted accumulator");
 }
@@ -2450,7 +2454,9 @@ EOF
     BEGIN { no strict 'refs'; my $v = $old_env_path; *{"::C"} = sub () { $v }; }
     ok(tainted C, "constant is tainted properly");
     ok(!tainted "", "tainting not broken yet");
-    index(undef, C);
+    no warnings 'uninitialized';
+    my $ix = index(undef, C);
+    is( $ix, -1, q[index(undef, C)] );
     ok(!tainted "", "tainting still works after index() of the constant");
 }
 
@@ -2511,7 +2517,7 @@ SKIP: {
 # reset() and tainted undef (?!)
 $::x = "foo";
 $_ = "$TAINT".reset "x";
-is eval { eval $::x.1 }, 1, 'reset does not taint undef';
+is eval { no warnings; eval $::x.1 }, 1, 'reset does not taint undef';
 
 # [perl #122669]
 {
