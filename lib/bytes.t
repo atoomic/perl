@@ -9,6 +9,8 @@ plan tests => 24;
 
 my $a = chr(0x100);
 
+use bytes (); # define bytes functions without importing it
+
 is(ord($a), 0x100, "ord sanity check");
 is(length($a), 1,  "length sanity check");
 is(substr($a, 0, 1), "\x{100}",  "substr sanity check");
