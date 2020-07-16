@@ -79,7 +79,7 @@ if ("$]" >= 7.00000) {
 }
 else {
     # perls from beginning of time until Perl 7
-    my $message = "In Perl 5, without 'use warnings' but with '$^W = 0' ";
+    my $message = "In Perl 5, without 'use warnings' but with \$^W = 0' ";
     $message .= "ckWARN() returns empty string";
     is($warning, '', $message);
 }
