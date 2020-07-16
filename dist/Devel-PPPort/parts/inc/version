@@ -11,7 +11,7 @@
 
 =provides
 
-__PERL_CORE_MAJOR__
+PERL_REVISION
 PERL_VERSION
 PERL_SUBVERSION
 PERL_BCDVERSION
@@ -27,7 +27,7 @@ PERL_PATCHLEVEL_H_IMPLICIT
 
 =implementation
 
-#ifndef __PERL_CORE_MAJOR__
+#ifndef PERL_REVISION
 #  if !defined(__PATCHLEVEL_H_INCLUDED__) && !(defined(PATCHLEVEL) && defined(SUBVERSION))
 #    define PERL_PATCHLEVEL_H_IMPLICIT
 #    include <patchlevel.h>
@@ -35,8 +35,8 @@ PERL_PATCHLEVEL_H_IMPLICIT
 #  if !(defined(PERL_VERSION) || (defined(SUBVERSION) && defined(PATCHLEVEL)))
 #    include <could_not_find_Perl_patchlevel.h>
 #  endif
-#  ifndef __PERL_CORE_MAJOR__
-#    define __PERL_CORE_MAJOR__       (7)
+#  ifndef PERL_REVISION
+#    define PERL_REVISION       (7)
      /* Replace: 1 */
 #    define PERL_VERSION        PATCHLEVEL
 #    define PERL_SUBVERSION     SUBVERSION
@@ -46,9 +46,9 @@ PERL_PATCHLEVEL_H_IMPLICIT
 #endif
 
 #define D_PPP_DEC2BCD(dec) ((((dec)/100)<<8)|((((dec)%100)/10)<<4)|((dec)%10))
-#define PERL_BCDVERSION ((D_PPP_DEC2BCD(__PERL_CORE_MAJOR__)<<24)|(D_PPP_DEC2BCD(PERL_VERSION)<<12)|D_PPP_DEC2BCD(PERL_SUBVERSION))
+#define PERL_BCDVERSION ((D_PPP_DEC2BCD(PERL_REVISION)<<24)|(D_PPP_DEC2BCD(PERL_VERSION)<<12)|D_PPP_DEC2BCD(PERL_SUBVERSION))
 
-#if __PERL_CORE_MAJOR__ < 5
+#if PERL_REVISION < 5
 #  error ppport.h only works with Perl version 5
 #endif
 
@@ -58,7 +58,7 @@ PERL_PATCHLEVEL_H_IMPLICIT
 
 #ifndef PERL_DECIMAL_VERSION
 # define PERL_DECIMAL_VERSION \
-     PERL_VERSION_DECIMAL(__PERL_CORE_MAJOR__,PERL_VERSION,PERL_SUBVERSION)
+     PERL_VERSION_DECIMAL(PERL_REVISION,PERL_VERSION,PERL_SUBVERSION)
 #endif
 
 #ifndef PERL_VERSION_LT

@@ -4,7 +4,7 @@
 #include "XSUB.h"
 
 #ifdef SvPVbyte
-	#if __PERL_CORE_MAJOR__ == 5 && PERL_VERSION < 8
+	#if PERL_REVISION == 5 && PERL_VERSION < 8
 		#undef SvPVbyte
 		#define SvPVbyte(sv, lp) \
 			(sv_utf8_downgrade((sv), 0), SvPV((sv), (lp)))
