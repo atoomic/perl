@@ -159,7 +159,17 @@ ok("$]" >= 5.004 ? $warning =~ /^Perl_warner_nocontext bar:42/ : $warning eq '')
 
 $warning = '';
 Devel::PPPort::ckWARN();
-is($warning, '');
+if ("$]" >= 7.00000) {
+    my $message = "With warnings on (by default in Perl 7), ";
+    $message .= "ckWARN() captures warning even with \$^W set to 0";
+    ok($warning =~ /^ckWARN bar:42/, $message);
+}
+else {
+    # perls from beginning of time until Perl 7
+    my $message = "In Perl 5, without 'use warnings' but with \$^W = 0' ";
+    $message .= "ckWARN() returns empty string";
+    is($warning, '', $message);
+}
 
 $^W = 1;
 
