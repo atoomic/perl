@@ -96,7 +96,7 @@ multicall_pad_push(pTHX_ AV *padlist, int depth)
 #define HAS_RETSTACK (\
   __PERL_CORE_MAJOR__ < 5 || \
   (__PERL_CORE_MAJOR__ == 5 && __PERL_CORE_MINOR__ < 9) || \
-  (__PERL_CORE_MAJOR__ == 5 && __PERL_CORE_MINOR__ == 9 && __PERL_CORE_RELEASE__ < 2) \
+  (__PERL_CORE_MAJOR__ == 5 && __PERL_CORE_MINOR__ == 9 && PERL_SUBVERSION < 2) \
 )
 
 

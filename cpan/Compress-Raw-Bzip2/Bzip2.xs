@@ -21,7 +21,7 @@
 #  include "ppport.h" 
 #endif
 
-#if __PERL_CORE_MAJOR__ > 5 || ( __PERL_CORE_MAJOR__ == 5 && (__PERL_CORE_MINOR__ < 8 || (__PERL_CORE_MINOR__ == 8 && __PERL_CORE_RELEASE__ < 4 )) )
+#if __PERL_CORE_MAJOR__ > 5 || ( __PERL_CORE_MAJOR__ == 5 && (__PERL_CORE_MINOR__ < 8 || (__PERL_CORE_MINOR__ == 8 && PERL_SUBVERSION < 4 )) )
 
 #    ifdef SvPVbyte_force
 #        undef SvPVbyte_force
@@ -36,7 +36,7 @@
 #endif
 
 
-#if __PERL_CORE_MAJOR__ > 5 || ( __PERL_CORE_MAJOR__ == 5 && (__PERL_CORE_MINOR__ >= 8 || (__PERL_CORE_MINOR__ == 8 && __PERL_CORE_RELEASE__ < 4 )) )
+#if __PERL_CORE_MAJOR__ > 5 || ( __PERL_CORE_MAJOR__ == 5 && (__PERL_CORE_MINOR__ >= 8 || (__PERL_CORE_MINOR__ == 8 && PERL_SUBVERSION < 4 )) )
 #    define UTF8_AVAILABLE
 #endif
 

@@ -569,7 +569,7 @@ Amnhd||PERL_SCAN_SILENT_ILLDIGIT
 Amnhd||PERL_SCAN_TRAILING
 AmnUhd||PERL_SHORT_MAX
 AmnUhd||PERL_SHORT_MIN
-hAmnd|int|__PERL_CORE_RELEASE__
+hAmnd|int|PERL_SUBVERSION
 Amd|void|PERL_SYS_INIT|int *argc|char*** argv
 Amd|void|PERL_SYS_INIT3|int *argc|char*** argv|char*** env
 Amd|void|PERL_SYS_TERM|
