@@ -72,6 +72,7 @@ my %feature_bundle = (
     "5.31"   =>	[qw(say state switch unicode_strings unicode_eval
 		    evalbytes current_sub fc postderef_qq bitwise indirect)],
     "7.0"   => [ grep { $_ !~ qr{^(?:indirect|unicode_strings)$} } @all_features ],
+    # qw(say state evalbytes current_sub fc postderef)
 );
 
 my @noops = qw( postderef lexical_subs );

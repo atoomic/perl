@@ -87,24 +87,32 @@ my %VARS = (
 ###########################################################################
 # Generate lib/p7.pm
 {
-
     my $hints_strict = sprintf( "0x%08X", $HintStrict );    # convert back to hex
     $VARS{P7_HINTS_STRICT} = $hints_strict;
+
+    # default features != v7 bundle package
+    my @p7_default_features = qw{say state evalbytes current_sub fc postderef};
+    my $p7_features_str = join ' ', @p7_default_features;
+    $VARS{P7_DEFAULT_FEATURES} = $p7_features_str;
 
     my $oneliner = <<'EOS';
 my ( $a, $b );
 BEGIN { $a = $^H }
 use strict;
-use feature ":7.0";
+use feature qw{~P7_DEFAULT_FEATURES~};
 BEGIN { $b = $^H };
 my $hints = $b - $a;
 printf( "0x%08X", $hints );
 EOS
     $oneliner =~ s{\n+}{ }g;
+    $oneliner =~ s{#.*$}{ }g;
+    $oneliner =~ s{~(\w+)~}{$VARS{$1}}g;
 
     my $hints_v7
         = qx|$miniperl -Ilib -5 '$oneliner'|;  # force to use current miniperl
     die q[Fail to generate hints for 7.0] unless $? == 0;
+
+    die q[Fail to generate hints for p7] unless length $hints_v7;
 
     chomp $hints_v7;
 
@@ -127,9 +135,10 @@ EOS
 #╰─> ./miniperl -Ilib -5 'print( "$^H\n"); BEGIN { require feature; feature->import(":7.0"); print "$^H\n"; map { print "$_ $^H{$_}\n"; } keys %^H; }'
 {
     my $oneliner = <<'EOS';
-BEGIN { require feature; feature->import(":7.0"); map { print "$_\n" if $^H{$_} } sort keys %^H; }
+BEGIN { require feature; feature->import(qw{~P7_DEFAULT_FEATURES~}); map { print "$_\n" if $^H{$_} } sort keys %^H; }
 EOS
     $oneliner =~ s{\n+}{ }g;
+    $oneliner =~ s{~(\w+)~}{$VARS{$1}}g;
 
     my $features
         = qx|$miniperl -Ilib -5 '$oneliner'|;  # force to use current miniperl
@@ -255,7 +264,7 @@ sub import {
     $^H |= ~P7_HINTS_STRICT~;
 
     require feature;
-    feature->import(':7.0');
+    feature->import(qw{~P7_DEFAULT_FEATURES~});
 }
 
 1;

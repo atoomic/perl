@@ -19,9 +19,8 @@ BEGIN { # Get the time the script started running; do it at compilation to
     $start_time= time;
 }
 
-require 5.010_001;
-use strict;
-use warnings;
+use v7;
+
 use Carp;
 use Config;
 use File::Find;

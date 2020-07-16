@@ -1,5 +1,4 @@
-use strict;
-use warnings;
+use v7;
 
 use Getopt::Long;
 use File::Spec;
