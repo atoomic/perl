@@ -897,7 +897,7 @@ EOF
 #XS_EXTERNAL(boot_$self->{Module_cname}); /* prototype to pass -Wmissing-prototypes */
 #XS_EXTERNAL(boot_$self->{Module_cname})
 #[[
-##if __PERL_CORE_MINOR___LE(5, 21, 5)
+##if PERL_VERSION_LE(5, 21, 5)
 #    dVAR; dXSARGS;
 ##else
 #    dVAR; ${\($self->{WantVersionChk} ?
@@ -911,7 +911,7 @@ EOF
   #-Wall: if there is no $self->{Full_func_name} there are no xsubs in this .xs
   #so 'file' is unused
   print Q(<<"EOF") if $self->{Full_func_name};
-##if (__PERL_CORE_MAJOR__ == 5 && __PERL_CORE_MINOR__ < 9)
+##if (__PERL_CORE_MAJOR__ == 5 && PERL_VERSION < 9)
 #    char* file = __FILE__;
 ##else
 #    const char* file = __FILE__;
@@ -929,7 +929,7 @@ EOF
 
   if( $self->{WantVersionChk}){
     print Q(<<"EOF") ;
-##if __PERL_CORE_MINOR___LE(5, 21, 5)
+##if PERL_VERSION_LE(5, 21, 5)
 #    XS_VERSION_BOOTCHECK;
 ##  ifdef XS_APIVERSION_BOOTCHECK
 #    XS_APIVERSION_BOOTCHECK;
@@ -939,7 +939,7 @@ EOF
 EOF
   } else {
     print Q(<<"EOF") ;
-##if __PERL_CORE_MINOR___LE(5, 21, 5) && defined(XS_APIVERSION_BOOTCHECK)
+##if PERL_VERSION_LE(5, 21, 5) && defined(XS_APIVERSION_BOOTCHECK)
 #  XS_APIVERSION_BOOTCHECK;
 ##endif
 
@@ -954,7 +954,7 @@ EOF
 
   print Q(<<"EOF") if ($self->{Overload});
 #    /* register the overloading (type 'A') magic */
-##if (__PERL_CORE_MAJOR__ == 5 && __PERL_CORE_MINOR__ < 9)
+##if (__PERL_CORE_MAJOR__ == 5 && PERL_VERSION < 9)
 #    PL_amagic_generation++;
 ##endif
 #    /* The magic for overload gets a GV* via gv_fetchmeth as */
@@ -980,8 +980,8 @@ EOF
   }
 
   print Q(<<'EOF');
-##if __PERL_CORE_MINOR___LE(5, 21, 5)
-##  if __PERL_CORE_MINOR___GE(5, 9, 0)
+##if PERL_VERSION_LE(5, 21, 5)
+##  if PERL_VERSION_GE(5, 9, 0)
 #    if (PL_unitcheckav)
 #        call_list(PL_scopestack_ix, PL_unitcheckav);
 ##  endif

@@ -1373,8 +1373,8 @@ sub _add_requirements_to_meta {
         if $self->{ARGS}{TEST_REQUIRES};
     $meta->{prereqs}{runtime}{requires} = $self->{PREREQ_PM}
         if $self->{ARGS}{PREREQ_PM};
-    $meta->{prereqs}{runtime}{requires}{perl} = _normalize_version($self->{MIN___PERL_CORE_MINOR__})
-        if $self->{MIN___PERL_CORE_MINOR__};
+    $meta->{prereqs}{runtime}{requires}{perl} = _normalize_version($self->{MIN_PERL_VERSION})
+        if $self->{MIN_PERL_VERSION};
 }
 
 # spec version of given fragment - if not given, assume 1.4
@@ -1412,8 +1412,8 @@ sub _add_requirements_to_meta_v1_4 {
     }
     $meta->{requires} = $self->{PREREQ_PM}
         if defined $self->{PREREQ_PM};
-    $meta->{requires}{perl} = _normalize_version($self->{MIN___PERL_CORE_MINOR__})
-        if $self->{MIN___PERL_CORE_MINOR__};
+    $meta->{requires}{perl} = _normalize_version($self->{MIN_PERL_VERSION})
+        if $self->{MIN_PERL_VERSION};
 }
 
 # Adapted from Module::Build::Base
@@ -2987,7 +2987,7 @@ sub _PREREQ_PRINT {
 
     require Data::Dumper;
     my @what = ('PREREQ_PM');
-    push @what, 'MIN___PERL_CORE_MINOR__' if $self->{MIN___PERL_CORE_MINOR__};
+    push @what, 'MIN_PERL_VERSION' if $self->{MIN_PERL_VERSION};
     push @what, 'BUILD_REQUIRES'   if $self->{BUILD_REQUIRES};
     print Data::Dumper->Dump([@{$self}{@what}], \@what);
     exit 0;
@@ -3017,8 +3017,8 @@ sub _PRINT_PREREQ {
     my $prereqs= $self->{PREREQ_PM};
     my @prereq = map { [$_, $prereqs->{$_}] } keys %$prereqs;
 
-    if ( $self->{MIN___PERL_CORE_MINOR__} ) {
-        push @prereq, ['perl' => $self->{MIN___PERL_CORE_MINOR__}];
+    if ( $self->{MIN_PERL_VERSION} ) {
+        push @prereq, ['perl' => $self->{MIN_PERL_VERSION}];
     }
 
     print join(" ", map { "perl($_->[0])>=$_->[1] " }

@@ -1,7 +1,7 @@
 #!/usr/bin/perl -w
 
 # This is a test checking various aspects of the optional argument
-# MIN___PERL_CORE_MINOR__ to WriteMakefile.
+# MIN_PERL_VERSION to WriteMakefile.
 
 BEGIN {
     unshift @INC, 't/lib';

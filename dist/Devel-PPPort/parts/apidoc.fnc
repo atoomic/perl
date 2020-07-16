@@ -582,7 +582,7 @@ AmnUhd||PERL_UQUAD_MAX
 AmnUhd||PERL_UQUAD_MIN
 AmnUhd||PERL_USHORT_MAX
 AmnUhd||PERL_USHORT_MIN
-hAmnd|int|__PERL_CORE_MINOR__
+hAmnd|int|PERL_VERSION
 AmnUd|Perl_check_t *|PL_check
 AmnxUd|PAD *|PL_comppad
 AmnxUd|PADNAMELIST *|PL_comppad_name

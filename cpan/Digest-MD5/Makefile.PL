@@ -23,7 +23,7 @@ WriteMakefile(
     'ABSTRACT'     => 'Perl interface to the MD-5 algorithm',
     'AUTHOR'       => 'Gisle Aas <gisle@activestate.com>',
     'LICENSE'      => 'perl',
-    'MIN___PERL_CORE_MINOR__' => 5.006,
+    'MIN_PERL_VERSION' => 5.006,
     'PREREQ_PM'    => {
 			'Digest::base' => '1.00',
 			'XSLoader' => 0,
@@ -45,7 +45,7 @@ BEGIN {
         LICENCE => 6.31,
         META_MERGE => 6.45,
         META_ADD => 6.45,
-        MIN___PERL_CORE_MINOR__ => 6.48,
+        MIN_PERL_VERSION => 6.48,
     );
     undef(*WriteMakefile);
     *WriteMakefile = sub {

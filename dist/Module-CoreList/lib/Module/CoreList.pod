@@ -76,7 +76,7 @@ Takes a regex as an argument, returns a list of modules that match the regex giv
 If only a regex is provided applies to all modules in all perl versions. Optionally
 you may provide a list of perl versions to limit the regex search.
 
-=item C<find_version( __PERL_CORE_MINOR__ )>
+=item C<find_version( PERL_VERSION )>
 
 Takes a perl version as an argument. Upon successful completion, returns a
 reference to a hash.  Each element of that hash has a key which is the name of
@@ -84,7 +84,7 @@ a module (I<e.g.,> 'File::Path') shipped with that version of perl and a value
 which is the version number (I<e.g.,> '2.09') of that module which shipped
 with that version of perl .  Returns C<undef> otherwise.
 
-=item C<is_core( MODULE, [ MODULE_VERSION, [ __PERL_CORE_MINOR__ ] ] )>
+=item C<is_core( MODULE, [ MODULE_VERSION, [ PERL_VERSION ] ] )>
 
 Available in version 2.99 and above.
 
@@ -97,11 +97,11 @@ C<is_core()> will use the numeric version of Perl that is running (ie C<$]>).
 If you want to specify the version of Perl, but don't care about
 the version of the module, pass C<undef> for the module version:
 
-=item C<is_deprecated( MODULE, __PERL_CORE_MINOR__ )>
+=item C<is_deprecated( MODULE, PERL_VERSION )>
 
 Available in version 2.22 and above.
 
-Returns true if MODULE is marked as deprecated in __PERL_CORE_MINOR__.  If __PERL_CORE_MINOR__ is
+Returns true if MODULE is marked as deprecated in PERL_VERSION.  If PERL_VERSION is
 omitted, it defaults to the current version of Perl.
 
 =item C<deprecated_in( MODULE )>
@@ -127,7 +127,7 @@ Takes a module name as an argument, returns the first perl version by release da
 was removed from core. Returns undef if the given module was never in core or remains
 in core.
 
-=item C<changes_between( __PERL_CORE_MINOR__, __PERL_CORE_MINOR__ )>
+=item C<changes_between( PERL_VERSION, PERL_VERSION )>
 
 Available in version 2.66 and above.
 

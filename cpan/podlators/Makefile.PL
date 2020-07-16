@@ -89,7 +89,7 @@ my %metadata     = (
     LICENSE          => 'perl_5',
     EXE_FILES        => [scripts('pod2text', 'pod2man')],
     VERSION_FROM     => 'lib/Pod/Man.pm',
-    MIN___PERL_CORE_MINOR__ => '5.008',
+    MIN_PERL_VERSION => '5.008',
 
     # Use *.PL files to generate the driver scripts so that we get the correct
     # invocation of Perl on non-UNIX platforms.
@@ -171,7 +171,7 @@ my %metadata     = (
 my %supported = (
     LICENSE          => 6.31,
     META_ADD         => 6.46,
-    MIN___PERL_CORE_MINOR__ => 6.48,
+    MIN_PERL_VERSION => 6.48,
 );
 for my $key (keys(%supported)) {
     if ($ExtUtils::MakeMaker::VERSION < $supported{$key}) {

@@ -360,20 +360,20 @@ sub standard_XS_defs {
 
 
 /* This stuff is not part of the API! You have been warned. */
-#ifndef __PERL_CORE_MINOR___DECIMAL
-#  define __PERL_CORE_MINOR___DECIMAL(r,v,s) (r*1000000 + v*1000 + s)
+#ifndef PERL_VERSION_DECIMAL
+#  define PERL_VERSION_DECIMAL(r,v,s) (r*1000000 + v*1000 + s)
 #endif
 #ifndef PERL_DECIMAL_VERSION
 #  define PERL_DECIMAL_VERSION \\
-	  __PERL_CORE_MINOR___DECIMAL(__PERL_CORE_MAJOR__,__PERL_CORE_MINOR__,PERL_SUBVERSION)
+	  PERL_VERSION_DECIMAL(__PERL_CORE_MAJOR__,PERL_VERSION,PERL_SUBVERSION)
 #endif
-#ifndef __PERL_CORE_MINOR___GE
-#  define __PERL_CORE_MINOR___GE(r,v,s) \\
-	  (PERL_DECIMAL_VERSION >= __PERL_CORE_MINOR___DECIMAL(r,v,s))
+#ifndef PERL_VERSION_GE
+#  define PERL_VERSION_GE(r,v,s) \\
+	  (PERL_DECIMAL_VERSION >= PERL_VERSION_DECIMAL(r,v,s))
 #endif
-#ifndef __PERL_CORE_MINOR___LE
-#  define __PERL_CORE_MINOR___LE(r,v,s) \\
-	  (PERL_DECIMAL_VERSION <= __PERL_CORE_MINOR___DECIMAL(r,v,s))
+#ifndef PERL_VERSION_LE
+#  define PERL_VERSION_LE(r,v,s) \\
+	  (PERL_DECIMAL_VERSION <= PERL_VERSION_DECIMAL(r,v,s))
 #endif
 
 /* XS_INTERNAL is the explicit static-linkage variant of the default
@@ -388,7 +388,7 @@ sub standard_XS_defs {
 
 
 /* TODO: This might be compatible further back than 5.10.0. */
-#if __PERL_CORE_MINOR___GE(5, 10, 0) && __PERL_CORE_MINOR___LE(5, 15, 1)
+#if PERL_VERSION_GE(5, 10, 0) && PERL_VERSION_LE(5, 15, 1)
 #  undef XS_EXTERNAL
 #  undef XS_INTERNAL
 #  if defined(__CYGWIN__) && defined(USE_DYNAMIC_LOADING)
@@ -490,7 +490,7 @@ S_croak_xs_usage(const CV *const cv, const char *const params)
 #define newXSproto_portable(name, c_impl, file, proto) (PL_Sv=(SV*)newXS(name, c_impl, file), sv_setpv(PL_Sv, proto), (CV*)PL_Sv)
 #endif /* !defined(newXS_flags) */
 
-#if __PERL_CORE_MINOR___LE(5, 21, 5)
+#if PERL_VERSION_LE(5, 21, 5)
 #  define newXS_deffile(a,b) Perl_newXS(aTHX_ a,b,file)
 #else
 #  define newXS_deffile(a,b) Perl_newXS_deffile(aTHX_ a,b)

@@ -213,7 +213,7 @@ like the following in the C language sections.
 
 instead of
 
-  #if __PERL_CORE_MINOR___LT(5,9,3)
+  #if PERL_VERSION_LT(5,9,3)
 
 The version number can be either of the new form C<5.x.x> or the older
 form C<5.00x_yy>. Both are translated into the correct preprocessor

@@ -1501,7 +1501,7 @@ XS(w32_GetFullPathName)
     else {
         fullname = PerlDir_mapA(SvPV_nolen(ST(0)));
     }
-#  if __PERL_CORE_MAJOR__ == 5 && __PERL_CORE_MINOR__ < 8
+#  if __PERL_CORE_MAJOR__ == 5 && PERL_VERSION < 8
     {
         /* PerlDir_mapX() in Perl 5.6 used to return forward slashes */
         char *str = fullname;

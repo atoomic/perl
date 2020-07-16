@@ -157,7 +157,7 @@ WriteMakefile(
 	'ExtUtils::CBuilder' => 0,
 	'ExtUtils::Constant' => '0.23',
     },
-    MIN___PERL_CORE_MINOR__ => '5.006001',
+    MIN_PERL_VERSION => '5.006001',
     LICENSE       => 'perl',
     %makefile_args,
 );

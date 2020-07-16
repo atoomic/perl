@@ -901,7 +901,7 @@ sub doMakefile {
     }
 
     if ($ExtUtils::MakeMaker::VERSION >= 6.48) {
-        push @makefileopts, (MIN___PERL_CORE_MINOR__ => '5.006',);
+        push @makefileopts, (MIN_PERL_VERSION => '5.006',);
     }
 
     if ($ExtUtils::MakeMaker::VERSION >= 6.31) {

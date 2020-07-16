@@ -95,8 +95,8 @@ multicall_pad_push(pTHX_ AV *padlist, int depth)
    return op is now stored on the cxstack. */
 #define HAS_RETSTACK (\
   __PERL_CORE_MAJOR__ < 5 || \
-  (__PERL_CORE_MAJOR__ == 5 && __PERL_CORE_MINOR__ < 9) || \
-  (__PERL_CORE_MAJOR__ == 5 && __PERL_CORE_MINOR__ == 9 && PERL_SUBVERSION < 2) \
+  (__PERL_CORE_MAJOR__ == 5 && PERL_VERSION < 9) || \
+  (__PERL_CORE_MAJOR__ == 5 && PERL_VERSION == 9 && PERL_SUBVERSION < 2) \
 )
 
 

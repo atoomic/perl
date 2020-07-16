@@ -134,7 +134,7 @@ unlike( $ppd_html, qr{^\s*<REQUIRE NAME="warnings::" />}m,  'no <REQUIRE> for bu
 my $archname = $Config{archname};
 if( "$]" >= 5.008 ) {
     # XXX This is a copy of the internal logic, so it's not a great test
-    $archname .= "-$Config{__PERL_CORE_MAJOR__}.$Config{__PERL_CORE_MINOR__}";
+    $archname .= "-$Config{__PERL_CORE_MAJOR__}.$Config{PERL_VERSION}";
 }
 like( $ppd_html, qr{^\s*<ARCHITECTURE NAME="$archname" />}m,
                                                            '  <ARCHITECTURE>');

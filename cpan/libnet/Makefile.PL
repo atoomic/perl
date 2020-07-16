@@ -173,7 +173,7 @@ MAIN: {
             }
         },
 
-        MIN___PERL_CORE_MINOR__ => '5.008001',
+        MIN_PERL_VERSION => '5.008001',
 
         CONFIGURE_REQUIRES => {
             'ExtUtils::MakeMaker' => '6.64',

@@ -27,7 +27,7 @@ WriteMakefile1(
     (  ! $Config{libperl}  ?  ()  :  ( LIBPERL_A => $Config{libperl} )  ),
     'INSTALLDIRS' => (($] >= 5.008009 and $] < 5.012) ? 'perl' : 'site'),
     'LICENSE'	=> 'perl',
-    'MIN___PERL_CORE_MINOR__' => 5.001,
+    'MIN_PERL_VERSION' => 5.001,
     'PREREQ_PM'	=> {
         'Math::BigInt' => 0,
         'Win32' => 0,
@@ -180,7 +180,7 @@ sub WriteMakefile1 {  #Compatibility code for old versions of EU::MM. Written by
 		delete $params{BUILD_REQUIRES};
 	}
 	delete $params{CONFIGURE_REQUIRES} if $eumm_version < 6.52;
-	delete $params{MIN___PERL_CORE_MINOR__} if $eumm_version < 6.48;
+	delete $params{MIN_PERL_VERSION} if $eumm_version < 6.48;
 	delete $params{META_MERGE} if $eumm_version < 6.46;
 	delete $params{META_ADD} if $eumm_version < 6.46;
 	delete $params{LICENSE} if $eumm_version < 6.31;
