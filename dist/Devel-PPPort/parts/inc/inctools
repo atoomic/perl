@@ -93,22 +93,26 @@ sub format_version_line
     return $version;
 }
 
-sub dictionary_order    # Sort caselessly, ignoring punct
-{
-    my ($lc_a, $lc_b);
-    my ($squeezed_a, $squeezed_b);
-    my ($valid_a, $valid_b);    # Meaning valid for all releases
-
+BEGIN {
+  if ("$]" < "5.006" ) {
     # On early perls, the implicit pass by reference doesn't work, so we have
     # to use the globals to initialize.
-    if ("$]" < "5.006" ) {
-        $valid_a = $a; $valid_b = $b;
-    }
-    else {
-        ($valid_a, $valid_b) = @_;
-    }
+    eval q[sub dictionary_order($$) { _dictionary_order($a, $b) } ];
+  } elsif ("$]" < "5.022" ) {
+    eval q[sub dictionary_order($$) { _dictionary_order(@_) } ];
+  } else {
+    eval q[sub dictionary_order :prototype($$) { _dictionary_order(@_) } ];
+  }
+}
 
-    no if "$]" >= 7, "warnings", "uninitialized";
+sub _dictionary_order { # Sort caselessly, ignoring punct
+    my ($valid_a, $valid_b) = @_;
+
+    my ($lc_a, $lc_b);
+    my ($squeezed_a, $squeezed_b);
+
+    $valid_a = '' unless defined $valid_a;
+    $valid_b = '' unless defined $valid_b;
 
     $lc_a = lc $valid_a;
     $lc_b = lc $valid_b;
