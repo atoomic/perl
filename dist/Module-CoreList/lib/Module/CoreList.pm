@@ -366,6 +366,7 @@ sub changes_between {
     5.028003 => '2020-06-01',
     5.030003 => '2020-06-01',
     5.032000 => '2020-06-20',
+    5.033000 => '2020-07-17',
     7.000000 => '2020-12-07',
   );
 
@@ -17512,6 +17513,18 @@ for my $version ( sort { $a <=> $b } keys %released ) {
             'perlfaq'               => '5.20200523',
             're'                    => '0.40',
             'threads'               => '2.25',
+        },
+        removed => {
+        }
+    },
+    5.033000 => {
+        delta_from => 5.032000,
+        changed => {
+            'B::Op_private'         => '5.033000',
+            'Config'                => '5.033',
+            'Module::CoreList'      => '5.20200717',
+            'Module::CoreList::Utils'=> '5.20200717',
+            'feature'               => '1.59',
         },
         removed => {
         }
