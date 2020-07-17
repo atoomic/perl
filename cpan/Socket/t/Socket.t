@@ -1,5 +1,9 @@
 #!./perl
 
+use v5.6.1;
+use strict;
+use warnings;
+
 our %Config;
 my $has_alarm;
 BEGIN {
