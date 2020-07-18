@@ -1,6 +1,6 @@
 #!./perl
 
-use p5;
+
 
 sub BEGIN {
     if ($] < 5.007) {
