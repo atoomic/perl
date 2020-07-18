@@ -24,70 +24,84 @@ use Storable qw(store retrieve store_fd nstore_fd fd_retrieve);
 
 use Test::More tests => 25;
 
-$a = 'toto';
-$b = \$a;
-$c = bless {}, CLASS;
+my $a = 'toto';
+my $b = \$a;
+my $c;
+{ no strict 'subs'; $c = bless {}, CLASS; }
 $c->{attribute} = 'attrval';
-%a = ('key', 'value', 1, 0, $a, $b, 'cvar', \$c);
-@a = ('first', undef, 3, -4, -3.14159, 456, 4.5,
+my %a = ('key', 'value', 1, 0, $a, $b, 'cvar', \$c);
+my @a = ('first', undef, 3, -4, -3.14159, 456, 4.5,
 	$b, \$a, $a, $c, \$c, \%a);
 
 isnt(store(\@a, "store$$"), undef);
 
-$dumped = &dump(\@a);
+my $dumped = &dump(\@a);
 isnt($dumped, undef);
 
-$root = retrieve("store$$");
+my $root = retrieve("store$$");
 isnt($root, undef);
 
-$got = &dump($root);
+my $got = &dump($root);
 isnt($got, undef);
 
 is($got, $dumped);
 
 1 while unlink "store$$";
 
-package FOO; @ISA = qw(Storable);
+package FOO; our @ISA = qw(Storable);
 
 sub make {
 	my $self = bless {};
+    no warnings 'once';
 	$self->{key} = \%main::a;
 	return $self;
 };
 
 package main;
 
-$foo = FOO->make;
+my $foo = FOO->make;
 isnt($foo->store("store$$"), undef);
 
 isnt(open(OUT, '>>', "store$$"), undef);
 binmode OUT;
 
+no strict 'subs';
 isnt(store_fd(\@a, ::OUT), undef);
 isnt(nstore_fd($foo, ::OUT), undef);
 isnt(nstore_fd(\%a, ::OUT), undef);
+use strict 'subs';
 
 isnt(close(OUT), undef);
 
 isnt(open(OUT, "store$$"), undef);
 
-$r = fd_retrieve(::OUT);
+no strict 'subs';
+my $r = fd_retrieve(::OUT);
+use strict 'subs';
 isnt($r, undef);
 is(&dump($r), &dump($foo));
 
+no strict 'subs';
 $r = fd_retrieve(::OUT);
+use strict 'subs';
 isnt($r, undef);
 is(&dump($r), &dump(\@a));
 
+no strict 'subs';
 $r = fd_retrieve(main::OUT);
+use strict 'subs';
 isnt($r, undef);
 is(&dump($r), &dump($foo));
 
+no strict 'subs';
 $r = fd_retrieve(::OUT);
+use strict 'subs';
 isnt($r, undef);
 is(&dump($r), &dump(\%a));
 
+no strict 'subs';
 eval { $r = fd_retrieve(::OUT); };
+use strict 'subs';
 isnt($@, '');
 
 {
