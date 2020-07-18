@@ -118,7 +118,7 @@ sub test_locked_hash {
   my $hash = shift;
   my @keys = keys %$hash;
   my ($key, $value) = each %$hash;
-  eval {$hash->{$key} = reverse $value};
+  eval {no warnings 'uninitialized'; $hash->{$key} = reverse $value};
   like( $@, "/^Modification of a read-only value attempted/",
         'trying to change a locked key' );
   is ($hash->{$key}, $value, "hash should not change?");
@@ -132,14 +132,17 @@ sub test_restricted_hash {
   my $hash = shift;
   my @keys = keys %$hash;
   my ($key, $value) = each %$hash;
-  eval {$hash->{$key} = reverse $value};
+  eval {no warnings 'uninitialized'; $hash->{$key} = reverse $value};
   is( $@, '',
         'trying to change a restricted key' );
-  is ($hash->{$key}, reverse ($value), "hash should change");
-  eval {$hash->{use} = 'perl'};
-  like( $@, "/^Attempt to access disallowed key 'use' in a restricted hash/",
+  {
+    no warnings 'uninitialized';
+    is ($hash->{$key}, reverse ($value), "hash should change");
+    eval {$hash->{use} = 'perl'};
+    like( $@, "/^Attempt to access disallowed key 'use' in a restricted hash/",
         'trying to add another key' );
-  ok (eq_array([keys %$hash], \@keys), "Still the same keys?");
+    ok (eq_array([keys %$hash], \@keys), "Still the same keys?");
+  }
 }
 
 sub test_placeholder {
