@@ -144,7 +144,7 @@ use Storable ();
 	# and creating a STORABLE_attach.
 	*My::BadThaw::STORABLE_attach = *My::BadThaw::STORABLE_thaw;
 	*My::BadThaw::STORABLE_attach = *My::BadThaw::STORABLE_thaw; # Suppress a warning
-	delete ${'My::BadThaw::'}{STORABLE_thaw};
+    { no strict 'refs'; delete ${'My::BadThaw::'}{STORABLE_thaw}; }
 
 	# Trigger the error condition
 	my $thawed = undef;
@@ -209,7 +209,7 @@ use Storable ();
 	package My::GoodAttach::Subclass;
 
 	BEGIN {
-		@ISA = 'My::GoodAttach';
+		our @ISA = 'My::GoodAttach';
 	}
 }
 
