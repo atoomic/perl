@@ -1,6 +1,6 @@
 #!perl -w
 
-use p5;
+
 
 BEGIN {
     unshift @INC, 't';
