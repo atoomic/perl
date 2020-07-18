@@ -8,12 +8,13 @@
 
 sub BEGIN {
     if ($ENV{PERL_CORE}) {
-	require Config; Config->import;
-	%Config=%Config if 0; # cease -w
-	if ($Config{'extensions'} !~ /\bStorable\b/) {
-	    print "1..0 # Skip: Storable was not built\n";
-	    exit 0;
-	}
+        no strict 'vars';
+        require Config; Config->import;
+        %Config=%Config if 0; # cease -w
+        if ($Config{'extensions'} !~ /\bStorable\b/) {
+            print "1..0 # Skip: Storable was not built\n";
+            exit 0;
+        }
     }
 }
 
