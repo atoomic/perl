@@ -54,9 +54,11 @@ sub make {
 
 package ROOT;
 
+our %hash;
 sub make {
 	my $self = bless {}, shift;
-	my $h = tie %hash, TIED_HASH;
+	my $h;
+	{ no strict 'subs'; $h = tie %hash, TIED_HASH; }
 	$self->{h} = $h;
 	$self->{ref} = \%hash;
 	my @pool;
@@ -79,6 +81,7 @@ sub obj { $_[0]->{obj} }
 
 package main;
 
+our $hash_fetch;
 my $is_EBCDIC = (ord('A') == 193) ? 1 : 0;
  
 my $r = ROOT->make;
