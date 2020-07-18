@@ -56,7 +56,7 @@ is_deeply( \@Foo::order, [ 'Bar', 'Foo' ], 'thaw order is correct (depth first)'
 
 package Foo;
 
-@order = ();
+our @order = ();
 
 sub STORABLE_freeze {
 	my ($self, $clone) = @_;
@@ -83,7 +83,7 @@ sub STORABLE_thaw {
 package Bar;
 
 BEGIN {
-@ISA = 'Foo';
+our @ISA = 'Foo';
 }
 
 1;
