@@ -24,7 +24,7 @@ $Storable::flags = Storable::FLAGS_COMPAT;
 
 use Test::More tests => 25;
 
-($scalar_fetch, $array_fetch, $hash_fetch) = (0, 0, 0);
+our ($scalar_fetch, $array_fetch, $hash_fetch) = (0, 0, 0);
 
 package TIED_HASH;
 
@@ -104,7 +104,7 @@ sub STORE {
 
 package FAULT;
 
-$fault = 0;
+my $fault = 0;
 
 sub TIESCALAR {
 	my $pkg = shift;
@@ -121,12 +121,16 @@ sub FETCH {
 
 package main;
 
-$a = 'toto';
-$b = \$a;
+my $a = 'toto';
+my $b = \$a;
 
-$c = tie %hash, TIED_HASH;
-$d = tie @array, TIED_ARRAY;
-tie $scalar, TIED_SCALAR;
+my ($c, $d, %hash, @array, $scalar);
+{
+    no strict 'subs';
+    $c = tie %hash, TIED_HASH;
+    $d = tie @array, TIED_ARRAY;
+    tie $scalar, TIED_SCALAR;
+}
 
 #$scalar = 'foo';
 #$hash{'attribute'} = \$d;
@@ -144,21 +148,21 @@ $array[0] = \$scalar;
 $array[1] = $c;
 $array[2] = \@array;
 
-@tied = (\$scalar, \@array, \%hash);
-%a = ('key', 'value', 1, 0, $a, $b, 'cvar', \$a, 'scalarref', \$scalar);
-@a = ('first', 3, -4, -3.14159, 456, 4.5, $d, \$d,
+my @tied = (\$scalar, \@array, \%hash);
+my %a = ('key', 'value', 1, 0, $a, $b, 'cvar', \$a, 'scalarref', \$scalar);
+my @a = ('first', 3, -4, -3.14159, 456, 4.5, $d, \$d,
 	$b, \$a, $a, $c, \$c, \%a, \@array, \%hash, \@tied);
 
 my $f = freeze(\@a);
 isnt($f, undef);
 
-$dumped = &dump(\@a);
+my $dumped = &dump(\@a);
 isnt($dumped, undef);
 
-$root = thaw($f);
+my $root = thaw($f);
 isnt($root, undef);
 
-$got = &dump($root);
+my $got = &dump($root);
 isnt($got, undef);
 
 ### Used to see the manifestation of the bug documented above.
@@ -169,23 +173,24 @@ isnt($got, undef);
 
 is($got, $dumped);
 
-$g = freeze($root);
+my $g = freeze($root);
 is(length $f, length $g);
 
 # Ensure the tied items in the retrieved image work
-@old = ($scalar_fetch, $array_fetch, $hash_fetch);
+my @old = ($scalar_fetch, $array_fetch, $hash_fetch);
+my ($tscalar, $tarray, $thash);
 @tied = ($tscalar, $tarray, $thash) = @{$root->[$#{$root}]};
-@type = qw(SCALAR  ARRAY  HASH);
+my @type = qw(SCALAR  ARRAY  HASH);
 
 is(ref tied $$tscalar, 'TIED_SCALAR');
 is(ref tied @$tarray, 'TIED_ARRAY');
 is(ref tied %$thash, 'TIED_HASH');
 
-@new = ($$tscalar, $tarray->[0], $thash->{'attribute'});
+my @new = ($$tscalar, $tarray->[0], $thash->{'attribute'});
 @new = ($scalar_fetch, $array_fetch, $hash_fetch);
 
 # Tests 10..15
-for ($i = 0; $i < @new; $i++) {
+for (my $i = 0; $i < @new; $i++) {
 	is($new[$i], $old[$i] + 1);
 	is(ref $tied[$i], $type[$i]);
 }
@@ -210,6 +215,7 @@ is($FAULT::fault, 2);
     our ($a, $b);
     $b = "not ok ";
     sub TIESCALAR { bless \$a } sub FETCH { "ok " }
+    no strict 'subs';
     tie $a, P; my $r = thaw freeze \$a; $b = $$r;
     main::is($b, "ok ");
 }
@@ -217,7 +223,7 @@ is($FAULT::fault, 2);
 {
     # blessed ref to tied object should be thawed blessed
     my @a;
-    tie @a, TIED_ARRAY;
+    { no strict 'subs'; tie @a, TIED_ARRAY; }
     my $r = bless \@a, 'FOO99';
     my $f = freeze($r);
     my $t = thaw($f);
