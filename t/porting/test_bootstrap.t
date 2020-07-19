@@ -23,6 +23,7 @@ my %exceptions = (
     parser_run => "require './test.pl'",
     proto => 'use strict',
     redef => 'use p5',
+    'redef-old' => 'use v5',
  );
 
 while (my $file = <$fh>) {
