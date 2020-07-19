@@ -7,7 +7,7 @@ BEGIN {
     chdir 't' if -d 't';
 }
 
-# use p5; # without loading p5 itself...
+
 BEGIN {
     ${^WARNING_BITS} = 0;
     $^W = 0;

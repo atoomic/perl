@@ -4,7 +4,7 @@
 # reads through invalid pointers.
 # Note that this should still be runnable under miniperl.
 
-# use p5; # without loading p5 itself...
+
 BEGIN {
     ${^WARNING_BITS} = 0;
     $^W = 0;
