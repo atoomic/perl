@@ -52,6 +52,8 @@ $feature_bundle{"5.29"} = $feature_bundle{"5.27"};
 $feature_bundle{"5.30"} = $feature_bundle{"5.27"};
 $feature_bundle{"5.31"} = $feature_bundle{"5.27"};
 $feature_bundle{"5.32"} = $feature_bundle{"5.27"};
+$feature_bundle{"5.33"} = $feature_bundle{"5.27"};
+$feature_bundle{"5.34"} = $feature_bundle{"5.27"};
 my %noops = (
     postderef => 1,
     lexical_subs => 1,
@@ -419,6 +421,10 @@ The following feature bundles are available:
             postderef_qq bitwise indirect
 
   :5.32     say state switch unicode_strings
+            unicode_eval evalbytes current_sub fc
+            postderef_qq bitwise indirect
+
+  :5.34     say state switch unicode_strings
             unicode_eval evalbytes current_sub fc
             postderef_qq bitwise indirect
 
