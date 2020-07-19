@@ -76,7 +76,7 @@ under the same terms as Perl itself.
 
 =cut
 
-use p5;
+
 
 package FindBin;
 use Carp;
