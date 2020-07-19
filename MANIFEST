@@ -5565,6 +5565,7 @@ t/comp/parser.t			See if the parser works in edge cases
 t/comp/parser_run.t			See if parser works in additional edge case
 t/comp/proto.t			See if function prototypes work
 t/comp/redef.t			See if we get correct warnings on redefined subs
+t/comp/redef-old.t			See if we get correct warnings on redefined subs (older semantics)
 t/comp/require.t		See if require works
 t/comp/retainedlines.t		See if the debugger can retain eval's lines
 t/comp/term.t			See if more terms work
