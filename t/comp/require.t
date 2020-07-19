@@ -6,6 +6,10 @@ BEGIN {
     push @INC, '../lib', '../ext/re';
 }
 
+# 2020-07-19:  This is one of the very few test programs where, for the time being, we
+# have to retain 'use p5;' in order to preserve the original objective of the
+# program.  The program tests the functioning of 'require' under some very
+# early versions of Perl 5.
 use p5;
 
 sub do_require {
@@ -15,6 +19,7 @@ sub do_require {
     my @a; # magic guard for scope violations (must be first lexical in file)
 }
 
+# Comment by Gurusamy Sarathy in f46d017c815 Feb 10 1998
 # don't make this lexical
 $i = 1;
 
