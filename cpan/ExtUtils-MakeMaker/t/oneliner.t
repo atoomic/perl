@@ -37,7 +37,10 @@ sub try_oneliner {
 try_oneliner(q{print "foo'o", ' bar"ar'}, [],  q{foo'o bar"ar},  'quotes');
 
 # How about dollar signs?
-try_oneliner(q{$PATH = 'foo'; print $PATH},[], q{foo},   'dollar signs' );
+try_oneliner(q{my $XYZ = 42; print 42},[], q{42},   'dollar signs' );
+try_oneliner(q{my %h = ( akey => 123 ); print $h{akey}},[], q{123},   'percent signs' );
+try_oneliner(q{my $PATH = 'foo'; print $PATH},[], q{foo},   'dollar signs' );
+# allow_variables
 
 # switches?
 try_oneliner(q{print 'foo'}, ['-l'],           "foo\n",       'switches' );
