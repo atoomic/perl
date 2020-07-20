@@ -119,7 +119,7 @@ S_croak_xs_usage(pTHX_ const CV *const cv, const char *const params)
 
 #endif
 
-#if __PERL_CORE_MINOR___GE(5,9,0) && !defined(PERL_CORE)
+#if PERL_VERSION_GE(5,9,0) && !defined(PERL_CORE)
 
 #  define VUTIL_REPLACE_CORE 1
 
@@ -183,7 +183,7 @@ const char * Perl_prescan_version(pTHX_ const char *s, bool strict, const char**
 
 #endif
 
-#if __PERL_CORE_MINOR___LT(5,11,4)
+#if PERL_VERSION_LT(5,11,4)
 #  define BADVERSION(a,b,c) \
 	if (b) { \
 	    *b = c; \
@@ -215,10 +215,10 @@ const char * Perl_prescan_version(pTHX_ const char *s, bool strict, const char**
 #endif
 
 
-#if __PERL_CORE_MINOR___LT(5,27,9)
+#if PERL_VERSION_LT(5,27,9)
 #  define LC_NUMERIC_LOCK
 #  define LC_NUMERIC_UNLOCK
-#  if __PERL_CORE_MINOR___LT(5,19,0)
+#  if PERL_VERSION_LT(5,19,0)
 #    undef STORE_LC_NUMERIC_SET_STANDARD
 #    undef RESTORE_LC_NUMERIC
 #    undef DECLARATION_FOR_LC_NUMERIC_MANIPULATION

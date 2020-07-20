@@ -393,7 +393,7 @@ perl_construct(pTHXx)
 
     PL_stashcache = newHV();
 
-    PL_patchlevel = newSVpvs("v" __PERL_CORE_MINOR___STRING);
+    PL_patchlevel = newSVpvs("v" PERL_VERSION_STRING);
 
 #ifdef HAS_MMAP
     if (!PL_mmap_page_size) {
@@ -3791,8 +3791,8 @@ S_minus_v(pTHX)
 {
 	PerlIO * PIO_stdout;
 	{
-	    const char * const level_str = "v" __PERL_CORE_MINOR___STRING;
-	    const STRLEN level_len = sizeof("v" __PERL_CORE_MINOR___STRING)-1;
+	    const char * const level_str = "v" PERL_VERSION_STRING;
+	    const STRLEN level_len = sizeof("v" PERL_VERSION_STRING)-1;
 #ifdef PERL_PATCHNUM
 	    SV* level;
 #  ifdef PERL_GIT_UNCOMMITTED_CHANGES
