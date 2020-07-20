@@ -91,17 +91,17 @@ my %VARS = (
     $VARS{P7_HINTS_STRICT} = $hints_strict;
 
     # default features != v7 bundle package
-    my @p7_default_features = qw{say state evalbytes current_sub fc postderef};
+    my @p7_default_features = qw{say state evalbytes current_sub fc postderef indirect};
     my $p7_features_str = join ' ', @p7_default_features;
     $VARS{P7_DEFAULT_FEATURES} = $p7_features_str;
 
     my $oneliner = <<'EOS';
-my ( $a, $b );
-BEGIN { $a = $^H }
+my ( $before, $after );
+BEGIN { $before = $^H }
 use strict;
 use feature qw{~P7_DEFAULT_FEATURES~};
-BEGIN { $b = $^H };
-my $hints = $b - $a;
+BEGIN { $after = $^H };
+my $hints = $after - $before;
 printf( "0x%08X", $hints );
 EOS
     $oneliner =~ s{\n+}{ }g;

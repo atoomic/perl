@@ -27,7 +27,7 @@
 #define P7_TOKE_SETUP "BEGIN { "\
                       "   ${^WARNING_BITS} = pack( 'H*', '555555555555555555555555150001500101' );"\
                       "   $^H |= 0x1C0206E2;"\
-                      "   $^H{feature___SUB__} = 1; $^H{feature_evalbytes} = 1; $^H{feature_fc} = 1; $^H{feature_say} = 1; $^H{feature_state} = 1;"\
+                      "   $^H{feature___SUB__} = 1; $^H{feature_evalbytes} = 1; $^H{feature_fc} = 1; $^H{feature_indirect} = 1; $^H{feature_say} = 1; $^H{feature_state} = 1;"\
                       "}"
 
 /*

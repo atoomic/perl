@@ -28,7 +28,7 @@ sub import {
     $^H |= 0x00000602;
 
     require feature;
-    feature->import(qw{say state evalbytes current_sub fc postderef});
+    feature->import(qw{say state evalbytes current_sub fc postderef indirect});
 }
 
 1;
