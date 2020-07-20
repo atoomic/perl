@@ -3,7 +3,7 @@
 # Checks if the parser behaves correctly in edge cases
 # (including weird syntax errors)
 
-# use p5; # without loading p5 itself...
+
 BEGIN {
     ${^WARNING_BITS} = 0;
     $^W = 0;

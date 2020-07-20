@@ -6,7 +6,7 @@ BEGIN {
     $INC{"feature.pm"} = 1; # so we don't attempt to load feature.pm
 }
 
-# use p5; # without loading p5 itself...
+
 BEGIN {
     ${^WARNING_BITS} = 0;
     $^W = 0;

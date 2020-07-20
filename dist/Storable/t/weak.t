@@ -6,12 +6,13 @@
 #  in the README file that comes with the distribution.
 #
 
-use p5;
+
 
 sub BEGIN {
   # This lets us distribute Test::More in t/
   unshift @INC, 't';
   unshift @INC, 't/compat' if $] < 5.006002;
+  no strict 'vars';
   require Config; Config->import;
   if ($ENV{PERL_CORE} and $Config{'extensions'} !~ /\bStorable\b/) {
     print "1..0 # Skip: Storable was not built\n";

@@ -1920,7 +1920,8 @@ STMT_START {                                                                    
 
 /* Like FBC_UTF8_A, but TEST_UV is a macro which takes a UV as its input, and
  * TEST_UTF8 is a macro that for the same input code points returns identically
- * to TEST_UV, but takes a pointer to a UTF-8 encoded string instead */
+ * to TEST_UV, but takes a pointer to a UTF-8 encoded string instead (and an
+ * end pointer as well) */
 #define FBC_UTF8(TEST_UV, TEST_UTF8, IF_SUCCESS, IF_FAIL)                      \
     if (s == reginfo->strbeg) {                                                \
         tmp = '\n';                                                            \
@@ -10158,7 +10159,7 @@ S_reginclass(pTHX_ regexp * const prog, const regnode * const n, const U8* const
 	}
 	else if (flags & ANYOF_LOCALE_FLAGS) {
 	    if (  (flags & ANYOFL_FOLD)
-                && c < sizeof(PL_fold_locale)
+                && c < 256
 		&& ANYOF_BITMAP_TEST(n, PL_fold_locale[c]))
             {
                 match = TRUE;

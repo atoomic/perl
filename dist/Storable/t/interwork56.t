@@ -12,10 +12,11 @@
 # This test checks whether the kludge to interwork with 5.6 Storables compiled
 # on Unix systems with IV as long long works.
 
-use p5;
+
 sub BEGIN {
     unshift @INC, 't';
     unshift @INC, 't/compat' if $] < 5.006002;
+    no strict 'vars';
     require Config; Config->import;
     if ($ENV{PERL_CORE} and $Config{'extensions'} !~ /\bStorable\b/) {
         print "1..0 # Skip: Storable was not built\n";

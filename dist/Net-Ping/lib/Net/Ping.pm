@@ -1,6 +1,6 @@
 package Net::Ping;
 
-use p5;
+
 
 require 5.002;
 require Exporter;

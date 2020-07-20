@@ -821,16 +821,6 @@ out of them.
 
 #include <sys/types.h>
 
-/* EVC 4 SDK headers includes a bad definition of MB_CUR_MAX in stdlib.h
-  which is included from stdarg.h. Bad definition not present in SD 2008
-  SDK headers. wince.h is not yet included, so we cant fix this from there
-  since by then MB_CUR_MAX will be defined from stdlib.h.
-  cewchar.h includes a correct definition of MB_CUR_MAX and it is copied here
-  since cewchar.h can't be included this early */
-#if defined(UNDER_CE) && (_MSC_VER < 1300)
-#  define MB_CUR_MAX 1uL
-#endif
-
 #  ifdef I_WCHAR
 #    include <wchar.h>
 #  endif
@@ -921,6 +911,12 @@ out of them.
 #   endif
 #   if !defined(NO_LOCALE_TELEPHONE) && defined(LC_TELEPHONE)
 #	define USE_LOCALE_TELEPHONE
+#   endif
+#   if !defined(NO_LOCALE_SYNTAX) && defined(LC_SYNTAX)
+#	define USE_LOCALE_SYNTAX
+#   endif
+#   if !defined(NO_LOCALE_TOD) && defined(LC_TOD)
+#	define USE_LOCALE_TOD
 #   endif
 
 /* XXX The next few defines are unfortunately duplicated in makedef.pl, and
@@ -4791,7 +4787,7 @@ EXTCONST int         PL_sig_num[];
  * folds such as outside the range or to multiple characters. */
 
 #ifdef DOINIT
-#ifndef EBCDIC
+#  ifndef EBCDIC
 
 /* The EBCDIC fold table depends on the code page, and hence is found in
  * utfebcdic.h */
@@ -4830,6 +4826,44 @@ EXTCONST  unsigned char PL_fold[] = {
 	240,	241,	242,	243,	244,	245,	246,	247,
 	248,	249,	250,	251,	252,	253,	254,	255
 };
+
+#    ifndef PERL_GLOBAL_STRUCT /* or perlvars.h */
+EXT unsigned char PL_fold_locale[] = { /* Unfortunately not EXTCONST. */
+	0,	1,	2,	3,	4,	5,	6,	7,
+	8,	9,	10,	11,	12,	13,	14,	15,
+	16,	17,	18,	19,	20,	21,	22,	23,
+	24,	25,	26,	27,	28,	29,	30,	31,
+	32,	33,	34,	35,	36,	37,	38,	39,
+	40,	41,	42,	43,	44,	45,	46,	47,
+	48,	49,	50,	51,	52,	53,	54,	55,
+	56,	57,	58,	59,	60,	61,	62,	63,
+	64,	'a',	'b',	'c',	'd',	'e',	'f',	'g',
+	'h',	'i',	'j',	'k',	'l',	'm',	'n',	'o',
+	'p',	'q',	'r',	's',	't',	'u',	'v',	'w',
+	'x',	'y',	'z',	91,	92,	93,	94,	95,
+	96,	'A',	'B',	'C',	'D',	'E',	'F',	'G',
+	'H',	'I',	'J',	'K',	'L',	'M',	'N',	'O',
+	'P',	'Q',	'R',	'S',	'T',	'U',	'V',	'W',
+	'X',	'Y',	'Z',	123,	124,	125,	126,	127,
+	128,	129,	130,	131,	132,	133,	134,	135,
+	136,	137,	138,	139,	140,	141,	142,	143,
+	144,	145,	146,	147,	148,	149,	150,	151,
+	152,	153,	154,	155,	156,	157,	158,	159,
+	160,	161,	162,	163,	164,	165,	166,	167,
+	168,	169,	170,	171,	172,	173,	174,	175,
+	176,	177,	178,	179,	180,	181,	182,	183,
+	184,	185,	186,	187,	188,	189,	190,	191,
+	192,	193,	194,	195,	196,	197,	198,	199,
+	200,	201,	202,	203,	204,	205,	206,	207,
+	208,	209,	210,	211,	212,	213,	214,	215,
+	216,	217,	218,	219,	220,	221,	222,	223,
+	224,	225,	226,	227,	228,	229,	230,	231,
+	232,	233,	234,	235,	236,	237,	238,	239,
+	240,	241,	242,	243,	244,	245,	246,	247,
+	248,	249,	250,	251,	252,	253,	254,	255
+};
+#    endif
+
 EXTCONST  unsigned char PL_fold_latin1[] = {
     /* Full latin1 complement folding, except for three problematic code points:
      *	Micro sign (181 = 0xB5) and y with diearesis (255 = 0xFF) have their
@@ -4942,143 +4976,27 @@ EXTCONST  unsigned char PL_mod_latin1_uc[] = {
 	200,	201,	202,	203,	204,	205,	206,	207,
 	208,	209,	210,	211,	212,	213,	214,	215,
 	216,	217,	218,	219,	220,	221,	222,
-#if    UNICODE_MAJOR_VERSION > 2                                        \
-   || (UNICODE_MAJOR_VERSION == 2 && UNICODE_DOT_VERSION >= 1		\
-                                  && UNICODE_DOT_DOT_VERSION >= 8)
+#    if    UNICODE_MAJOR_VERSION > 2                                        \
+       || (UNICODE_MAJOR_VERSION == 2 && UNICODE_DOT_VERSION >= 1           \
+                                      && UNICODE_DOT_DOT_VERSION >= 8)
 	                                                        255 /*sharp s*/,
-#else   /* uc(sharp s) is 'sharp s' itself in early unicode */
+#    else   /* uc(sharp s) is 'sharp s' itself in early unicode */
 	                                                        223,
-#endif
+#    endif
 	224-32,	225-32,	226-32,	227-32,	228-32,	229-32,	230-32,	231-32,
 	232-32,	233-32,	234-32,	235-32,	236-32,	237-32,	238-32,	239-32,
 	240-32,	241-32,	242-32,	243-32,	244-32,	245-32,	246-32,	247,
 	248-32,	249-32,	250-32,	251-32,	252-32,	253-32,	254-32,	255
 };
-#endif  /* !EBCDIC, but still in DOINIT */
+#  endif  /* !EBCDIC, but still in DOINIT */
 #else	/* ! DOINIT */
-#   ifndef EBCDIC
+#  ifndef EBCDIC
 EXTCONST unsigned char PL_fold[];
 EXTCONST unsigned char PL_fold_latin1[];
 EXTCONST unsigned char PL_mod_latin1_uc[];
 EXTCONST unsigned char PL_latin1_lc[];
+EXT      unsigned char PL_fold_locale[]; /* Unfortunately not EXTCONST. */
 #   endif
-#endif
-
-#ifndef PERL_GLOBAL_STRUCT /* or perlvars.h */
-#ifdef DOINIT
-EXT unsigned char PL_fold_locale[256] = { /* Unfortunately not EXTCONST. */
-	0,	1,	2,	3,	4,	5,	6,	7,
-	8,	9,	10,	11,	12,	13,	14,	15,
-	16,	17,	18,	19,	20,	21,	22,	23,
-	24,	25,	26,	27,	28,	29,	30,	31,
-	32,	33,	34,	35,	36,	37,	38,	39,
-	40,	41,	42,	43,	44,	45,	46,	47,
-	48,	49,	50,	51,	52,	53,	54,	55,
-	56,	57,	58,	59,	60,	61,	62,	63,
-	64,	'a',	'b',	'c',	'd',	'e',	'f',	'g',
-	'h',	'i',	'j',	'k',	'l',	'm',	'n',	'o',
-	'p',	'q',	'r',	's',	't',	'u',	'v',	'w',
-	'x',	'y',	'z',	91,	92,	93,	94,	95,
-	96,	'A',	'B',	'C',	'D',	'E',	'F',	'G',
-	'H',	'I',	'J',	'K',	'L',	'M',	'N',	'O',
-	'P',	'Q',	'R',	'S',	'T',	'U',	'V',	'W',
-	'X',	'Y',	'Z',	123,	124,	125,	126,	127,
-	128,	129,	130,	131,	132,	133,	134,	135,
-	136,	137,	138,	139,	140,	141,	142,	143,
-	144,	145,	146,	147,	148,	149,	150,	151,
-	152,	153,	154,	155,	156,	157,	158,	159,
-	160,	161,	162,	163,	164,	165,	166,	167,
-	168,	169,	170,	171,	172,	173,	174,	175,
-	176,	177,	178,	179,	180,	181,	182,	183,
-	184,	185,	186,	187,	188,	189,	190,	191,
-	192,	193,	194,	195,	196,	197,	198,	199,
-	200,	201,	202,	203,	204,	205,	206,	207,
-	208,	209,	210,	211,	212,	213,	214,	215,
-	216,	217,	218,	219,	220,	221,	222,	223,	
-	224,	225,	226,	227,	228,	229,	230,	231,
-	232,	233,	234,	235,	236,	237,	238,	239,
-	240,	241,	242,	243,	244,	245,	246,	247,
-	248,	249,	250,	251,	252,	253,	254,	255
-};
-#else
-EXT unsigned char PL_fold_locale[256]; /* Unfortunately not EXTCONST. */
-#endif
-#endif /* !PERL_GLOBAL_STRUCT */
-
-#ifdef DOINIT
-#ifdef EBCDIC
-EXTCONST unsigned char PL_freq[] = {/* EBCDIC frequencies for mixed English/C */
-    1,      2,      84,     151,    154,    155,    156,    157,
-    165,    246,    250,    3,      158,    7,      18,     29,
-    40,     51,     62,     73,     85,     96,     107,    118,
-    129,    140,    147,    148,    149,    150,    152,    153,
-    255,      6,      8,      9,     10,     11,     12,     13,
-     14,     15,     24,     25,     26,     27,     28,    226,
-     29,     30,     31,     32,     33,     43,     44,     45,
-     46,     47,     48,     49,     50,     76,     77,     78,
-     79,     80,     81,     82,     83,     84,     85,     86,
-     87,     94,     95,    234,    181,    233,    187,    190,
-    180,     96,     97,     98,     99,    100,    101,    102,
-    104,    112,    182,    174,    236,    232,    229,    103,
-    228,    226,    114,    115,    116,    117,    118,    119,
-    120,    121,    122,    235,    176,    230,    194,    162,
-    130,    131,    132,    133,    134,    135,    136,    137,
-    138,    139,    201,    205,    163,    217,    220,    224,
-    5,      248,    227,    244,    242,    255,    241,    231,
-    240,    253,    16,     197,    19,     20,     21,     187,
-    23,     169,    210,    245,    237,    249,    247,    239,
-    168,    252,    34,     196,    36,     37,     38,     39,
-    41,     42,     251,    254,    238,    223,    221,    213,
-    225,    177,    52,     53,     54,     55,     56,     57,
-    58,     59,     60,     61,     63,     64,     65,     66,
-    67,     68,     69,     70,     71,     72,     74,     75,
-    205,    208,    186,    202,    200,    218,    198,    179,
-    178,    214,    88,     89,     90,     91,     92,     93,
-    217,    166,    170,    207,    199,    209,    206,    204,
-    160,    212,    105,    106,    108,    109,    110,    111,
-    203,    113,    216,    215,    192,    175,    193,    243,
-    172,    161,    123,    124,    125,    126,    127,    128,
-    222,    219,    211,    195,    188,    193,    185,    184,
-    191,    183,    141,    142,    143,    144,    145,    146
-};
-#else  /* ascii rather than ebcdic */
-EXTCONST unsigned char PL_freq[] = {	/* letter frequencies for mixed English/C */
-	1,	2,	84,	151,	154,	155,	156,	157,
-	165,	246,	250,	3,	158,	7,	18,	29,
-	40,	51,	62,	73,	85,	96,	107,	118,
-	129,	140,	147,	148,	149,	150,	152,	153,
-	255,	182,	224,	205,	174,	176,	180,	217,
-	233,	232,	236,	187,	235,	228,	234,	226,
-	222,	219,	211,	195,	188,	193,	185,	184,
-	191,	183,	201,	229,	181,	220,	194,	162,
-	163,	208,	186,	202,	200,	218,	198,	179,
-	178,	214,	166,	170,	207,	199,	209,	206,
-	204,	160,	212,	216,	215,	192,	175,	173,
-	243,	172,	161,	190,	203,	189,	164,	230,
-	167,	248,	227,	244,	242,	255,	241,	231,
-	240,	253,	169,	210,	245,	237,	249,	247,
-	239,	168,	252,	251,	254,	238,	223,	221,
-	213,	225,	177,	197,	171,	196,	159,	4,
-	5,	6,	8,	9,	10,	11,	12,	13,
-	14,	15,	16,	17,	19,	20,	21,	22,
-	23,	24,	25,	26,	27,	28,	30,	31,
-	32,	33,	34,	35,	36,	37,	38,	39,
-	41,	42,	43,	44,	45,	46,	47,	48,
-	49,	50,	52,	53,	54,	55,	56,	57,
-	58,	59,	60,	61,	63,	64,	65,	66,
-	67,	68,	69,	70,	71,	72,	74,	75,
-	76,	77,	78,	79,	80,	81,	82,	83,
-	86,	87,	88,	89,	90,	91,	92,	93,
-	94,	95,	97,	98,	99,	100,	101,	102,
-	103,	104,	105,	106,	108,	109,	110,	111,
-	112,	113,	114,	115,	116,	117,	119,	120,
-	121,	122,	123,	124,	125,	126,	127,	128,
-	130,	131,	132,	133,	134,	135,	136,	137,
-	138,	139,	141,	142,	143,	144,	145,	146
-};
-#endif
-#else
-EXTCONST unsigned char PL_freq[];
 #endif
 
 /* Although only used for debugging, these constants must be available in

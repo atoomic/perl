@@ -7,7 +7,7 @@
 #  
 use Config;
 
-use p5;
+
 sub BEGIN {
     unshift @INC, 't';
     unshift @INC, 't/compat' if $] < 5.006002;
@@ -27,7 +27,7 @@ package OBJ_REAL;
 
 use Storable qw(freeze thaw);
 
-@x = ('a', 1);
+our @x = ('a', 1);
 
 sub make { bless [], shift }
 
@@ -53,7 +53,7 @@ sub STORABLE_thaw {
 
 package OBJ_SYNC;
 
-@x = ('a', 1);
+our @x = ('a', 1);
 
 sub make { bless {}, shift }
 
@@ -107,9 +107,9 @@ package OBJ_REAL2;
 
 use Storable qw(freeze thaw);
 
-$MAX = 20;
-$recursed = 0;
-$hook_called = 0;
+our $MAX = 20;
+my $recursed = 0;
+my $hook_called = 0;
 
 sub make { bless [], shift }
 
@@ -217,7 +217,7 @@ sub STORABLE_thaw {
 
 package main;
 
-my $bar = new Bar;
+my $bar = Bar->new ;
 my $bar2 = thaw freeze $bar;
 
 is(ref($bar2), 'Bar');
@@ -322,10 +322,11 @@ is($refcount_ok, 1, "check refcount");
 
 local $Storable::recursion_limit = 30;
 local $Storable::recursion_limit_hash = 20;
-sub MAX_DEPTH () { Storable::stack_depth() }
-sub MAX_DEPTH_HASH () { Storable::stack_depth_hash() }
+sub MAX_DEPTH { Storable::stack_depth() }
+sub MAX_DEPTH_HASH { Storable::stack_depth_hash() }
 {
     my $t;
+    no strict 'subs';
     print "# max depth ", MAX_DEPTH, "\n";
     $t = [$t] for 1 .. MAX_DEPTH;
     dclone $t;

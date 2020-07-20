@@ -9,7 +9,7 @@
 
 package Data::Dumper;
 
-use p5;
+
 
 BEGIN {
     $VERSION = '2.174'; # Don't forget to set version and release

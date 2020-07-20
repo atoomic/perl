@@ -1,6 +1,6 @@
 #!./perl
 
-use p5;
+
 
 sub BEGIN {
     if ($] < 5.007) {
@@ -8,6 +8,7 @@ sub BEGIN {
 	exit 0;
     }
     unshift @INC, 't';
+    no strict 'vars';
     require Config; Config->import;
     if ($ENV{PERL_CORE}){
 	if($Config{'extensions'} !~ /\bStorable\b/) {

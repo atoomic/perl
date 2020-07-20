@@ -12,10 +12,11 @@
 # This test checks downgrade behaviour on pre-5.8 perls when new 5.8 features
 # are encountered.
 
-use p5;
+
 sub BEGIN {
     unshift @INC, 't';
     unshift @INC, 't/compat' if $] < 5.006002;
+    no strict 'vars';
     require Config; Config->import;
     if ($ENV{PERL_CORE} and $Config{'extensions'} !~ /\bStorable\b/) {
         print "1..0 # Skip: Storable was not built\n";

@@ -6,7 +6,7 @@
 # we've not yet verified that use works.
 # use strict;
 
-# use p5; # without loading p5 itself...
+
 BEGIN {
     ${^WARNING_BITS} = 0;
     $^W = 0;

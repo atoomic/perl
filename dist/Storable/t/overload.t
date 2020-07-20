@@ -6,10 +6,11 @@
 #  in the README file that comes with the distribution.
 #  
 
-use p5;
+
 sub BEGIN {
     unshift @INC, 't';
     unshift @INC, 't/compat' if $] < 5.006002;
+    no strict 'vars';
     require Config; Config->import;
     if ($ENV{PERL_CORE} and $Config{'extensions'} !~ /\bStorable\b/) {
         print "1..0 # Skip: Storable was not built\n";
@@ -30,18 +31,19 @@ use overload
 
 package main;
 
-$a = bless [77], OVERLOADED;
+my $a;
+{ no strict 'subs'; $a = bless [77], OVERLOADED; }
 
-$b = thaw freeze $a;
+my $b = thaw freeze $a;
 is(ref $b, 'OVERLOADED');
 is("$b", "77");
 
-$c = thaw freeze \$a;
+my $c = thaw freeze \$a;
 is(ref $c, 'REF');
 is(ref $$c, 'OVERLOADED');
 is("$$c", "77");
 
-$d = thaw freeze [$a, $a];
+my $d = thaw freeze [$a, $a];
 is("$d->[0]", "77");
 $d->[0][0]++;
 is("$d->[1]", "78");
