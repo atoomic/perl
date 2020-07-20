@@ -44,7 +44,7 @@ my $msq = sub {
     return $code->();
   }
   return $code->();
-}->(sub { new IPC::Msg(IPC_PRIVATE, S_IRWXU | S_IRWXG | S_IRWXO) });
+}->(sub { IPC::Msg->new(IPC_PRIVATE, S_IRWXU | S_IRWXG | S_IRWXO) });
 
 unless (defined $msq) {
   my $info = "IPC::Msg->new failed: $!";

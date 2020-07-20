@@ -42,7 +42,7 @@ my $N = do { my $foo = eval { pack "L!", 0 }; $@ ? '' : '!' };
 }
 
 sub new {
-    @_ == 3 || croak 'new IPC::Msg ( KEY , FLAGS )';
+    @_ == 3 || croak 'IPC::Msg->new( KEY , FLAGS )';
     my $class = shift;
 
     my $id = msgget($_[0],$_[1]);
