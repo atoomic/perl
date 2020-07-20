@@ -37,7 +37,7 @@ sub try_oneliner {
 try_oneliner(q{print "foo'o", ' bar"ar'}, [],  q{foo'o bar"ar},  'quotes');
 
 # How about dollar signs?
-try_oneliner(q{$PATH = 'foo'; print $PATH},[], q{foo},   'dollar signs' );
+try_oneliner(q{no strict; $PATH = 'foo'; print $PATH},[], q{foo},   'dollar signs' );
 
 # switches?
 try_oneliner(q{print 'foo'}, ['-l'],           "foo\n",       'switches' );

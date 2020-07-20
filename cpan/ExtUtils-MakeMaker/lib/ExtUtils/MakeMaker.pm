@@ -1,7 +1,7 @@
 # $Id$
 package ExtUtils::MakeMaker;
 
-use p5;
+
 use strict;
 
 BEGIN {require 5.006;}
@@ -535,7 +535,10 @@ sub new {
             # simulate "use warnings FATAL => 'all'" for vintage perls
             die @_;
         };
-        !$self->{MIN_PERL_VERSION} or $self->{MIN_PERL_VERSION} <= "$]"
+        return 1 unless defined $self->{MIN_PERL_VERSION};
+        return 0 unless $self->{MIN_PERL_VERSION};
+        die unless $self->{MIN_PERL_VERSION} =~ m{^\d+(\.\d+)?$}a;
+        $self->{MIN_PERL_VERSION} <= "$]"
     };
     if (!$perl_version_ok) {
         if (!defined $perl_version_ok) {

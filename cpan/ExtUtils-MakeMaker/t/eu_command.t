@@ -5,6 +5,7 @@ BEGIN {
 }
 chdir 't';
 
+my $Testfile;
 BEGIN {
     $Testfile = 'testfile.foo';
 }
@@ -22,7 +23,7 @@ use File::Spec;
 BEGIN {
     # bad neighbor, but test_f() uses exit()
     *CORE::GLOBAL::exit = '';   # quiet 'only once' warning.
-    *CORE::GLOBAL::exit = sub (;$) { return $_[0] };
+    *CORE::GLOBAL::exit = sub { return $_[0] };
     use_ok( 'ExtUtils::Command' );
 }
 
