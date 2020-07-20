@@ -5,6 +5,7 @@ BEGIN {
 }
 chdir 't';
 
+my @Methods;
 BEGIN {
     @Methods = (qw(wraplist
                    rootdir
