@@ -54,7 +54,7 @@ Null SV pointer.  (No longer available when C<PERL_CORE> is defined.)
  */
 
 #if defined(__GNUC__) && !defined(PERL_GCC_BRACE_GROUPS_FORBIDDEN)
-#  define MUTABLE_PTR(p) ({ void *_p = (p); _p; })
+#  define MUTABLE_PTR(p) ({ void *p_ = (p); p_; })
 #else
 #  define MUTABLE_PTR(p) ((void *) (p))
 #endif
@@ -244,7 +244,10 @@ typedef U64TYPE U64;
 #endif
 
 /* log(2) (i.e., log base 10 of 2) is pretty close to 0.30103, just in case
- * anyone is grepping for it */
+ * anyone is grepping for it.  So BIT_DIGITS gives the number of decimal digits
+ * required to represent any possible unsigned number containing N bits.
+ * TYPE_DIGITS gives the number of decimal digits required to represent any
+ * possible unsigned number of type T. */
 #define BIT_DIGITS(N)   (((N)*146)/485 + 1)  /* log10(2) =~ 146/485 */
 #define TYPE_DIGITS(T)  BIT_DIGITS(sizeof(T) * 8)
 #define TYPE_CHARS(T)   (TYPE_DIGITS(T) + 2) /* sign, NUL */
@@ -268,6 +271,12 @@ typedef U64TYPE U64;
 #if defined(PERL_CORE) || defined(PERL_EXT)
 #  define isPOWER_OF_2(n) ((n) && ((n) & ((n)-1)) == 0)
 #endif
+
+/* Returns a mask with the lowest n bits set */
+#define nBIT_MASK(n) ((UINTMAX_C(1) << (n)) - 1)
+
+/* The largest unsigned number that will fit into n bits */
+#define nBIT_UMAX(n)  nBIT_MASK(n)
 
 /*
 =for apidoc Am|void|__ASSERT_|bool expr
@@ -1372,7 +1381,7 @@ or casts
 /* This next group is only used on EBCDIC platforms, so theoretically could be
  * shared with something entirely different that's only on ASCII platforms */
 #  define _CC_UTF8_START_BYTE_IS_FOR_AT_LEAST_SURROGATE 31
-/* Unused: 24-30
+/* Unused: 26-30
  * If more bits are needed, one could add a second word for non-64bit
  * QUAD_IS_INT systems, using some #ifdefs to distinguish between having a 2nd
  * word or not.  The IS_IN_SOME_FOLD bit is the most easily expendable, as it

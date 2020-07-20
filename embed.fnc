@@ -285,23 +285,23 @@
 :      pod, such as perlguts or warnings.h.  This flag is useful for downstream
 :      programs, such as Devel::PPPort.
 :
+:   i  inline static.  This is used for functions that the compiler is being
+:      requested to inline.  If the function is in a header file its
+:      definition will be visible (unless guarded by #if..#endif) to all
+:      XS code.  (A typical guard will be that it is being included in a
+:      particular C file(s) or in the perl core.)  Therefore, all
+:      non-guarded functions should also have the 'p' flag specified to avoid
+:      polluting the XS code name space.  Otherwise an error is generated if
+:      the 'S' flag is not also specified.
+:
+:         proto.h: function is declared as PERL_STATIC_INLINE
+:
 :   I  This flag works exactly the same as 'i' but it also adds
 :      __attribute__((always_inline)) or __forceinline if either of them is
 :      supported by the compiler.
 :
 :         proto.h: function is declared as PERL_STATIC_FORCE_INLINE and
 :                  __attribute__always_inline__ is added
-:
-:   i  inline static.  This is used for functions that the compiler is being
-:      requested to inline.  If the function is in a header file its
-:      definition will be visible (unless guarded by #if..#endif) to all
-:      XS code.  (A typical guard will be that it is being included in a
-:      particular C file(s) or in the perl core.)  Therefore, all
-:      non-guarded function should also have the 'p' flag specified to avoid
-:      polluting the XS code name space.  Otherwise an error is generated if
-:      the 'S' flag is not also specified.
-:
-:         proto.h: function is declared as PERL_STATIC_INLINE
 :
 :   m  Implemented as a macro; there is no function associated with this name,
 :      and hence no long Perl_ or S_ name.  However, if the macro name itself
@@ -385,7 +385,8 @@
 :
 :	gcc has a bug (which they claim is a feature) in which casting the
 :       result of one of these to (void) doesn't silence the warning that the
-:	result is ignored.
+:	result is ignored.  (Perl has a workaround for this bug, see
+:       PERL_UNUSED_RESULT docs)
 :
 :        proto.h: add __attribute__warn_unused_result__
 :
@@ -1462,10 +1463,10 @@ p	|void	|rpeep		|NULLOK OP* o
 : Defined in doio.c, used only in pp_hot.c
 dopx	|PerlIO*|start_glob	|NN SV *tmpglob|NN IO *io
 
-Ap	|void	|reentrant_size
-Ap	|void	|reentrant_init
-Ap	|void	|reentrant_free
-AFTp	|void*	|reentrant_retry|NN const char *f|...
+Cp	|void	|reentrant_size
+Cp	|void	|reentrant_init
+Cp	|void	|reentrant_free
+CFTp	|void*	|reentrant_retry|NN const char *f|...
 
 : "Very" special - can't use the O flag for this one:
 : (The rename from perl_atexit to Perl_call_atexit was in 864dbfa3ca8032ef)
@@ -1649,8 +1650,8 @@ Ap	|I32	|start_subparse	|I32 is_format|U32 flags
 Xp	|void	|init_named_cv	|NN CV *cv|NN OP *nameop
 : Used in pp_ctl.c
 p	|void	|sub_crush_depth|NN CV* cv
-ApbMd	|bool	|sv_2bool	|NN SV *const sv
-Apd	|bool	|sv_2bool_flags	|NN SV *sv|I32 flags
+CpbMd	|bool	|sv_2bool	|NN SV *const sv
+Cpd	|bool	|sv_2bool_flags	|NN SV *sv|I32 flags
 Apd	|CV*	|sv_2cv		|NULLOK SV* sv|NN HV **const st|NN GV **const gvp \
 				|const I32 lref
 Apd	|IO*	|sv_2io		|NN SV *const sv
@@ -1672,13 +1673,13 @@ Ap	|char*	|sv_2pvbyte_flags	|NN SV *sv|NULLOK STRLEN *const lp|const U32 flags
 AbpD	|char*	|sv_pvn_nomg	|NN SV* sv|NULLOK STRLEN* lp
 ApMb	|UV	|sv_2uv		|NN SV *sv
 Apd	|UV	|sv_2uv_flags	|NN SV *const sv|const I32 flags
-AbpdD	|IV	|sv_iv		|NN SV* sv
-AbpdD	|UV	|sv_uv		|NN SV* sv
-AbpdD	|NV	|sv_nv		|NN SV* sv
-AbpdD	|char*	|sv_pvn		|NN SV *sv|NN STRLEN *lp
-AbpdD	|char*	|sv_pvutf8n	|NN SV *sv|NN STRLEN *lp
-AbpdD	|char*	|sv_pvbyten	|NN SV *sv|NN STRLEN *lp
-Apd	|I32	|sv_true	|NULLOK SV *const sv
+CbpdD	|IV	|sv_iv		|NN SV* sv
+CbpdD	|UV	|sv_uv		|NN SV* sv
+CbpdD	|NV	|sv_nv		|NN SV* sv
+CbpdD	|char*	|sv_pvn		|NN SV *sv|NN STRLEN *lp
+CbpdD	|char*	|sv_pvutf8n	|NN SV *sv|NN STRLEN *lp
+CbpdD	|char*	|sv_pvbyten	|NN SV *sv|NN STRLEN *lp
+Cpd	|I32	|sv_true	|NULLOK SV *const sv
 #if defined(PERL_IN_SV_C)
 Sd	|void	|sv_add_arena	|NN char *const ptr|const U32 size \
 				|const U32 flags
@@ -1738,7 +1739,7 @@ poxX	|void	|sv_free2	|NN SV *const sv|const U32 refcnt
 : Used only in perl.c
 pd	|void	|sv_free_arenas
 Apd	|char*	|sv_gets	|NN SV *const sv|NN PerlIO *const fp|I32 append
-Apd	|char*	|sv_grow	|NN SV *const sv|STRLEN newlen
+Cpd	|char*	|sv_grow	|NN SV *const sv|STRLEN newlen
 Apd	|void	|sv_inc		|NULLOK SV *const sv
 Apd	|void	|sv_inc_nomg	|NULLOK SV *const sv
 ApMdb	|void	|sv_insert	|NN SV *const bigstr|const STRLEN offset \
@@ -1762,7 +1763,7 @@ EXp	|MAGIC *|sv_magicext_mglob|NN SV *sv
 ApdbMR	|SV*	|sv_mortalcopy	|NULLOK SV *const oldsv
 ApdR	|SV*	|sv_mortalcopy_flags|NULLOK SV *const oldsv|U32 flags
 ApdR	|SV*	|sv_newmortal
-Apd	|SV*	|sv_newref	|NULLOK SV *const sv
+Cpd	|SV*	|sv_newref	|NULLOK SV *const sv
 Ap	|char*	|sv_peek	|NULLOK SV* sv
 Apd	|void	|sv_pos_u2b	|NULLOK SV *const sv|NN I32 *const offsetp|NULLOK I32 *const lenp
 Apd	|STRLEN	|sv_pos_u2b_flags|NN SV *const sv|STRLEN uoffset \
@@ -1770,9 +1771,9 @@ Apd	|STRLEN	|sv_pos_u2b_flags|NN SV *const sv|STRLEN uoffset \
 Apd	|void	|sv_pos_b2u	|NULLOK SV *const sv|NN I32 *const offsetp
 Apd	|STRLEN	|sv_pos_b2u_flags|NN SV *const sv|STRLEN const offset \
 				 |U32 flags
-ApMdb	|char*	|sv_pvn_force	|NN SV* sv|NULLOK STRLEN* lp
-Apd	|char*	|sv_pvutf8n_force|NN SV *const sv|NULLOK STRLEN *const lp
-Apd	|char*	|sv_pvbyten_force|NN SV *const sv|NULLOK STRLEN *const lp
+CpMdb	|char*	|sv_pvn_force	|NN SV* sv|NULLOK STRLEN* lp
+Cpd	|char*	|sv_pvutf8n_force|NN SV *const sv|NULLOK STRLEN *const lp
+Cpd	|char*	|sv_pvbyten_force|NN SV *const sv|NULLOK STRLEN *const lp
 Apd	|char*	|sv_recode_to_utf8	|NN SV* sv|NN SV *encoding
 Apd	|bool	|sv_cat_decode	|NN SV* dsv|NN SV *encoding|NN SV *ssv|NN int *offset \
 				|NN char* tstr|int tlen
@@ -1801,13 +1802,13 @@ Apd	|void	|sv_setpvn	|NN SV *const sv|NULLOK const char *const ptr|const STRLEN 
 Apd	|char  *|sv_setpv_bufsize|NN SV *const sv|const STRLEN cur|const STRLEN len
 Xp	|void	|sv_sethek	|NN SV *const sv|NULLOK const HEK *const hek
 ApMdb	|void	|sv_setsv	|NN SV *dstr|NULLOK SV *sstr
-ApMdb	|void	|sv_taint	|NN SV* sv
-ApdR	|bool	|sv_tainted	|NN SV *const sv
+CpMdb	|void	|sv_taint	|NN SV* sv
+CpdR	|bool	|sv_tainted	|NN SV *const sv
 Apd	|int	|sv_unmagic	|NN SV *const sv|const int type
 Apd	|int	|sv_unmagicext	|NN SV *const sv|const int type|NULLOK MGVTBL *vtbl
 ApdMb	|void	|sv_unref	|NN SV* sv
 Apd	|void	|sv_unref_flags	|NN SV *const ref|const U32 flags
-Apd	|void	|sv_untaint	|NN SV *const sv
+Cpd	|void	|sv_untaint	|NN SV *const sv
 Apd	|void	|sv_upgrade	|NN SV *const sv|svtype new_type
 ApdMb	|void	|sv_usepvn	|NN SV* sv|NULLOK char* ptr|STRLEN len
 Apd	|void	|sv_usepvn_flags|NN SV *const sv|NULLOK char* ptr|const STRLEN len\
@@ -2441,7 +2442,7 @@ AdMTp	|UV	|utf8n_to_uvchr_error|NN const U8 *s			    \
 				|NULLOK STRLEN *retlen			    \
 				|const U32 flags			    \
 				|NULLOK U32 * errors
-AxTdip	|UV	|utf8n_to_uvchr_msgs|NN const U8 *s			    \
+ATdip	|UV	|utf8n_to_uvchr_msgs|NN const U8 *s			    \
 				|STRLEN curlen				    \
 				|NULLOK STRLEN *retlen			    \
 				|const U32 flags			    \
@@ -2460,7 +2461,7 @@ CdbDp	|UV	|utf8n_to_uvuni|NN const U8 *s|STRLEN curlen|NULLOK STRLEN *retlen|U32
 Adm	|U8*	|uvchr_to_utf8	|NN U8 *d|UV uv
 Cp	|U8*	|uvuni_to_utf8	|NN U8 *d|UV uv
 Adm	|U8*	|uvchr_to_utf8_flags	|NN U8 *d|UV uv|UV flags
-Admx	|U8*	|uvchr_to_utf8_flags_msgs|NN U8 *d|UV uv|UV flags|NULLOK HV ** msgs
+Adm	|U8*	|uvchr_to_utf8_flags_msgs|NN U8 *d|UV uv|UV flags|NULLOK HV ** msgs
 CMpd	|U8*	|uvoffuni_to_utf8_flags	|NN U8 *d|UV uv|const UV flags
 Cp	|U8*	|uvoffuni_to_utf8_flags_msgs|NN U8 *d|UV uv|const UV flags|NULLOK HV** msgs
 CdpbD	|U8*	|uvuni_to_utf8_flags	|NN U8 *d|UV uv|UV flags
@@ -2601,12 +2602,12 @@ Ap	|void	|do_sv_dump	|I32 level|NN PerlIO *file|NULLOK SV *sv|I32 nest \
 				|I32 maxnest|bool dumpops|STRLEN pvlim
 Ap	|void	|magic_dump	|NULLOK const MAGIC *mg
 Ap	|void	|reginitcolors
-ApdRMb	|char*	|sv_2pv_nolen	|NN SV* sv
-ApdRMb	|char*	|sv_2pvutf8_nolen|NN SV* sv
-ApdRMb	|char*	|sv_2pvbyte_nolen|NN SV* sv
-ApMdbR	|char*	|sv_pv		|NN SV *sv
-ApMdbR	|char*	|sv_pvutf8	|NN SV *sv
-ApMdbR	|char*	|sv_pvbyte	|NN SV *sv
+CpdRMb	|char*	|sv_2pv_nolen	|NN SV* sv
+CpdRMb	|char*	|sv_2pvutf8_nolen|NN SV* sv
+CpdRMb	|char*	|sv_2pvbyte_nolen|NN SV* sv
+CpMdbR	|char*	|sv_pv		|NN SV *sv
+CpMdbR	|char*	|sv_pvutf8	|NN SV *sv
+CpMdbR	|char*	|sv_pvbyte	|NN SV *sv
 ApMdb	|STRLEN	|sv_utf8_upgrade|NN SV *sv
 Amd	|STRLEN	|sv_utf8_upgrade_nomg|NN SV *sv
 ApdMb	|bool	|sv_utf8_downgrade|NN SV *const sv|const bool fail_ok
@@ -3293,7 +3294,7 @@ Sd	|PADOFFSET|pad_findlex	|NN const char *namepv|STRLEN namelen|U32 flags \
 				|NN PADNAME** out_name|NN int *out_flags
 #endif
 #ifdef DEBUGGING
-Apd	|SV*	|pad_sv		|PADOFFSET po
+Cpd	|SV*	|pad_sv		|PADOFFSET po
 Apd	|void	|pad_setsv	|PADOFFSET po|NN SV* sv
 #endif
 pd	|void	|pad_block_start|int full
@@ -3532,28 +3533,28 @@ Apx	|void	|leave_adjust_stacks|NN SV **from_sp|NN SV **to_sp \
 
 #ifndef PERL_NO_INLINE_FUNCTIONS
 Aixp	|U8	|gimme_V         |
-Aixp	|PERL_CONTEXT *	|cx_pushblock|U8 type|U8 gimme|NN SV** sp|I32 saveix
-Aixp	|void	|cx_popblock|NN PERL_CONTEXT *cx
-Aixp	|void	|cx_topblock|NN PERL_CONTEXT *cx
-Aixp	|void	|cx_pushsub      |NN PERL_CONTEXT *cx|NN CV *cv \
+Cixp	|PERL_CONTEXT *	|cx_pushblock|U8 type|U8 gimme|NN SV** sp|I32 saveix
+Cixp	|void	|cx_popblock|NN PERL_CONTEXT *cx
+Cixp	|void	|cx_topblock|NN PERL_CONTEXT *cx
+Cixp	|void	|cx_pushsub      |NN PERL_CONTEXT *cx|NN CV *cv \
 				 |NULLOK OP *retop|bool hasargs
-Aixp	|void	|cx_popsub_common|NN PERL_CONTEXT *cx
-Aixp	|void	|cx_popsub_args  |NN PERL_CONTEXT *cx
-Aixp	|void	|cx_popsub       |NN PERL_CONTEXT *cx
-Aixp	|void	|cx_pushformat   |NN PERL_CONTEXT *cx|NN CV *cv \
+Cixp	|void	|cx_popsub_common|NN PERL_CONTEXT *cx
+Cixp	|void	|cx_popsub_args  |NN PERL_CONTEXT *cx
+Cixp	|void	|cx_popsub       |NN PERL_CONTEXT *cx
+Cixp	|void	|cx_pushformat   |NN PERL_CONTEXT *cx|NN CV *cv \
 				 |NULLOK OP *retop|NULLOK GV *gv
-Aixp	|void	|cx_popformat    |NN PERL_CONTEXT *cx
-Aixp	|void	|cx_pusheval     |NN PERL_CONTEXT *cx \
+Cixp	|void	|cx_popformat    |NN PERL_CONTEXT *cx
+Cixp	|void	|cx_pusheval     |NN PERL_CONTEXT *cx \
 				 |NULLOK OP *retop|NULLOK SV *namesv
-Aixp	|void	|cx_popeval      |NN PERL_CONTEXT *cx
-Aixp	|void	|cx_pushloop_plain|NN PERL_CONTEXT *cx
-Aixp	|void	|cx_pushloop_for |NN PERL_CONTEXT *cx \
+Cixp	|void	|cx_popeval      |NN PERL_CONTEXT *cx
+Cixp	|void	|cx_pushloop_plain|NN PERL_CONTEXT *cx
+Cixp	|void	|cx_pushloop_for |NN PERL_CONTEXT *cx \
 				 |NN void *itervarp|NULLOK SV *itersave
-Aixp	|void	|cx_poploop      |NN PERL_CONTEXT *cx
-Aixp	|void	|cx_pushwhen     |NN PERL_CONTEXT *cx
-Aixp	|void	|cx_popwhen      |NN PERL_CONTEXT *cx
-Aixp	|void	|cx_pushgiven    |NN PERL_CONTEXT *cx|NULLOK SV *orig_defsv
-Aixp	|void	|cx_popgiven     |NN PERL_CONTEXT *cx
+Cixp	|void	|cx_poploop      |NN PERL_CONTEXT *cx
+Cixp	|void	|cx_pushwhen     |NN PERL_CONTEXT *cx
+Cixp	|void	|cx_popwhen      |NN PERL_CONTEXT *cx
+Cixp	|void	|cx_pushgiven    |NN PERL_CONTEXT *cx|NULLOK SV *orig_defsv
+Cixp	|void	|cx_popgiven     |NN PERL_CONTEXT *cx
 #endif
 
 #ifdef USE_DTRACE
