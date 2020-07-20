@@ -27,6 +27,7 @@ sub BEGIN {
 use Test::More;
 use Storable qw (dclone store retrieve freeze thaw nstore nfreeze);
 use strict;
+use warnings;
 
 my $max_uv = ~0;
 my $max_uv_m1 = ~0 ^ 1;
@@ -37,7 +38,7 @@ my $max_iv_p1 = $max_uv ^ ($max_uv >> 1);
 my $lots_of_9C = do {
   my $temp = sprintf "%#x", ~0;
   $temp =~ s/ff/9c/g;
-  local $^W;
+  no warnings 'portable';
   eval $temp;
 };
 
