@@ -1063,13 +1063,28 @@ SKIP: {
 }
 
 # Freeing of trans ops prior to pmtrans() [perl #102858].
-eval q{ $alpha ~= tr/a/b/; };
-ok 1;
-SKIP: {
-    no warnings "deprecated";
-    skip "no encoding", 1 unless eval { require encoding; 1 };
-    eval q{ use encoding "utf8"; $alpha ~= tr/a/b/; };
-    ok 1;
+# Ticket is now https://github.com/Perl/perl5/issues/11730
+{
+    my $beta;
+    {
+        local $@;
+        eval q{ $beta ~= tr/a/b/; };
+        ok (!$@, "No error from eval -- GH 11730");
+    }
+    # TODO: 'require encoding' crashes progam on threaded builds
+    fail("'require encoding' crashes progam on threaded builds");
+#    {
+#        todo_skip("'require encoding' crashing in threaded builds", 2);
+#        local $@;
+#        no warnings "deprecated";
+#        my $rv = eval { require encoding; 1 };
+#        ok(! $@, "Was able to 'require encoding'");
+#        SKIP: {
+#            skip "no encoding", 1 unless $rv;
+#            eval q{ use encoding "utf8"; $beta ~= tr/a/b/; };
+#            ok 1;
+#        }
+#    }
 }
 
 { # [perl #113584]
