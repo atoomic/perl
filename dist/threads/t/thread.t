@@ -116,11 +116,11 @@ sub threaded {
     my $longe  = " short.";
     my $foo = "This is bar bar bar.";
     my $fooe = " bar bar bar.";
-    my $thr3 = new threads \&threaded, $short, $shorte;
-    my $thr4 = new threads \&threaded, $long, $longe;
-    my $thr5 = new threads \&testsprintf, 19;
-    my $thr6 = new threads \&testsprintf, 20;
-    my $thr7 = new threads \&threaded, $foo, $fooe;
+    my $thr3 = threads->new( \&threaded, $short, $shorte );
+    my $thr4 = threads->new( \&threaded, $long, $longe );
+    my $thr5 = threads->new( \&testsprintf, 19 );
+    my $thr6 = threads->new( \&testsprintf, 20 );
+    my $thr7 = threads->new( \&threaded, $foo, $fooe );
 
     ok($thr1->join());
     ok($thr2->join());

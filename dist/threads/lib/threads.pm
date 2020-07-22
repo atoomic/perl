@@ -59,7 +59,7 @@ sub import
             }
 
         } elsif ($sym =~ /^str/i) {
-            import overload ('""' => \&tid);
+            overload->import('""' => \&tid);
 
         } elsif ($sym =~ /^(?::all|yield)$/) {
             push(@EXPORT, qw(yield));
