@@ -27,7 +27,7 @@ use Cwd 'getcwd';
 # Basic sanity check: make sure this does not crash
 fresh_perl_is <<'# this is no comment', 'ok', {}, 'crash when duping dirh';
    use threads;
-   opendir dir, 'op';
+   opendir my $dir, 'op';
    async{}->join for 1..2;
    print "ok";
 # this is no comment
