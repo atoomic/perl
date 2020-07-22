@@ -763,151 +763,152 @@ like($@, qr|^Can't modify constant item in transliteration \(tr///\)|,
 
 # Transliterate a byte to a byte, all four ways.
 
-($a = v300.196.172.300.196.172) =~ tr/\xc4/\xc5/;
-is($a, v300.197.172.300.197.172,    'byte2byte transliteration');
+my $alpha;
+($alpha = v300.196.172.300.196.172) =~ tr/\xc4/\xc5/;
+is($alpha, v300.197.172.300.197.172,    'byte2byte transliteration');
 
-($a = v300.196.172.300.196.172) =~ tr/\xc4/\x{c5}/;
-is($a, v300.197.172.300.197.172);
+($alpha = v300.196.172.300.196.172) =~ tr/\xc4/\x{c5}/;
+is($alpha, v300.197.172.300.197.172);
 
-($a = v300.196.172.300.196.172) =~ tr/\x{c4}/\xc5/;
-is($a, v300.197.172.300.197.172);
+($alpha = v300.196.172.300.196.172) =~ tr/\x{c4}/\xc5/;
+is($alpha, v300.197.172.300.197.172);
 
-($a = v300.196.172.300.196.172) =~ tr/\x{c4}/\x{c5}/;
-is($a, v300.197.172.300.197.172);
-
-
-($a = v300.196.172.300.196.172) =~ tr/\xc4/\x{12d}/;
-is($a, v300.301.172.300.301.172,    'byte2wide transliteration');
-
-($a = v300.196.172.300.196.172) =~ tr/\x{12c}/\xc3/;
-is($a, v195.196.172.195.196.172,    '   wide2byte');
-
-($a = v300.196.172.300.196.172) =~ tr/\x{12c}/\x{12d}/;
-is($a, v301.196.172.301.196.172,    '   wide2wide');
+($alpha = v300.196.172.300.196.172) =~ tr/\x{c4}/\x{c5}/;
+is($alpha, v300.197.172.300.197.172);
 
 
-($a = v300.196.172.300.196.172) =~ tr/\xc4\x{12c}/\x{12d}\xc3/;
-is($a, v195.301.172.195.301.172,    'byte2wide & wide2byte');
+($alpha = v300.196.172.300.196.172) =~ tr/\xc4/\x{12d}/;
+is($alpha, v300.301.172.300.301.172,    'byte2wide transliteration');
+
+($alpha = v300.196.172.300.196.172) =~ tr/\x{12c}/\xc3/;
+is($alpha, v195.196.172.195.196.172,    '   wide2byte');
+
+($alpha = v300.196.172.300.196.172) =~ tr/\x{12c}/\x{12d}/;
+is($alpha, v301.196.172.301.196.172,    '   wide2wide');
 
 
-($a = v300.196.172.300.196.172.400.198.144) =~
+($alpha = v300.196.172.300.196.172) =~ tr/\xc4\x{12c}/\x{12d}\xc3/;
+is($alpha, v195.301.172.195.301.172,    'byte2wide & wide2byte');
+
+
+($alpha = v300.196.172.300.196.172.400.198.144) =~
 	tr/\xac\xc4\x{12c}\x{190}/\xad\x{12d}\xc5\x{191}/;
-is($a, v197.301.173.197.301.173.401.198.144,    'all together now!');
+is($alpha, v197.301.173.197.301.173.401.198.144,    'all together now!');
 
 
-is((($a = v300.196.172.300.196.172) =~ tr/\xc4/\xc5/), 2,
+is((($alpha = v300.196.172.300.196.172) =~ tr/\xc4/\xc5/), 2,
                                      'transliterate and count');
 
-is((($a = v300.196.172.300.196.172) =~ tr/\x{12c}/\x{12d}/), 2);
+is((($alpha = v300.196.172.300.196.172) =~ tr/\x{12c}/\x{12d}/), 2);
 
 
-($a = v300.196.172.300.196.172) =~ tr/\xc4/\x{12d}/c;
-is($a, v301.196.301.301.196.301,    'translit w/complement');
+($alpha = v300.196.172.300.196.172) =~ tr/\xc4/\x{12d}/c;
+is($alpha, v301.196.301.301.196.301,    'translit w/complement');
 
-($a = v300.196.172.300.196.172) =~ tr/\x{12c}/\xc5/c;
-is($a, v300.197.197.300.197.197, 'more translit w/complement');
-
-
-($a = v300.196.172.300.196.172) =~ tr/\xc4//d;
-is($a, v300.172.300.172,            'translit w/deletion');
-
-($a = v300.196.172.300.196.172) =~ tr/\x{12c}//d;
-is($a, v196.172.196.172);
+($alpha = v300.196.172.300.196.172) =~ tr/\x{12c}/\xc5/c;
+is($alpha, v300.197.197.300.197.197, 'more translit w/complement');
 
 
-($a = v196.196.172.300.300.196.172) =~ tr/\xc4/\xc5/s;
-is($a, v197.172.300.300.197.172,    'translit w/squeeze');
+($alpha = v300.196.172.300.196.172) =~ tr/\xc4//d;
+is($alpha, v300.172.300.172,            'translit w/deletion');
 
-($a = v196.172.300.300.196.172.172) =~ tr/\x{12c}/\x{12d}/s;
-is($a, v196.172.301.196.172.172);
+($alpha = v300.196.172.300.196.172) =~ tr/\x{12c}//d;
+is($alpha, v196.172.196.172);
+
+
+($alpha = v196.196.172.300.300.196.172) =~ tr/\xc4/\xc5/s;
+is($alpha, v197.172.300.300.197.172,    'translit w/squeeze');
+
+($alpha = v196.172.300.300.196.172.172) =~ tr/\x{12c}/\x{12d}/s;
+is($alpha, v196.172.301.196.172.172);
 
 
 # Tricky cases (When Simon Cozens Attacks)
-($a = v196.172.200) =~ tr/\x{12c}/a/;
-is(sprintf("%vd", $a), '196.172.200');
+($alpha = v196.172.200) =~ tr/\x{12c}/a/;
+is(sprintf("%vd", $alpha), '196.172.200');
 
-($a = v196.172.200) =~ tr/\x{12c}/\x{12c}/;
-is(sprintf("%vd", $a), '196.172.200');
+($alpha = v196.172.200) =~ tr/\x{12c}/\x{12c}/;
+is(sprintf("%vd", $alpha), '196.172.200');
 
-($a = v196.172.200) =~ tr/\x{12c}//d;
-is(sprintf("%vd", $a), '196.172.200');
+($alpha = v196.172.200) =~ tr/\x{12c}//d;
+is(sprintf("%vd", $alpha), '196.172.200');
 
 
 # UTF8 range tests from Inaba Hiroto
 
-($a = v300.196.172.302.197.172) =~ tr/\x{12c}-\x{130}/\xc0-\xc4/;
-is($a, v192.196.172.194.197.172,    'UTF range');
+($alpha = v300.196.172.302.197.172) =~ tr/\x{12c}-\x{130}/\xc0-\xc4/;
+is($alpha, v192.196.172.194.197.172,    'UTF range');
 
-($a = v300.196.172.302.197.172) =~ tr/\xc4-\xc8/\x{12c}-\x{130}/;
-is($a, v300.300.172.302.301.172);
+($alpha = v300.196.172.302.197.172) =~ tr/\xc4-\xc8/\x{12c}-\x{130}/;
+is($alpha, v300.300.172.302.301.172);
 
 
 # UTF8 range tests from Karsten Sperling (patch #9008 required)
 
-($a = "\x{0100}") =~ tr/\x00-\x{100}/X/;
-is($a, "X");
+($alpha = "\x{0100}") =~ tr/\x00-\x{100}/X/;
+is($alpha, "X");
 
-($a = "\x{0100}") =~ tr/\x{0000}-\x{00ff}/X/c;
-is($a, "X");
+($alpha = "\x{0100}") =~ tr/\x{0000}-\x{00ff}/X/c;
+is($alpha, "X");
 
-($a = "\x{0100}") =~ tr/\x{0000}-\x{00ff}\x{0101}/X/c;
-is($a, "X");
+($alpha = "\x{0100}") =~ tr/\x{0000}-\x{00ff}\x{0101}/X/c;
+is($alpha, "X");
  
-($a = v256) =~ tr/\x{0000}-\x{00ff}\x{0101}/X/c;
-is($a, "X");
+($alpha = v256) =~ tr/\x{0000}-\x{00ff}\x{0101}/X/c;
+is($alpha, "X");
 
 
 # UTF8 range tests from Inaba Hiroto
 
-($a = "\x{200}") =~ tr/\x00-\x{100}/X/c;
-is($a, "X");
+($alpha = "\x{200}") =~ tr/\x00-\x{100}/X/c;
+is($alpha, "X");
 
-($a = "\x{200}") =~ tr/\x00-\x{100}/X/cs;
-is($a, "X");
+($alpha = "\x{200}") =~ tr/\x00-\x{100}/X/cs;
+is($alpha, "X");
 
 # Tricky on EBCDIC: while [a-z] [A-Z] must not match the gap characters (as
 # well as i-j, r-s, I-J, R-S), [\x89-\x91] [\xc9-\xd1] has to match them,
 # from Karsten Sperling.
 
-my $c = ($a = "\x89\x8a\x8b\x8c\x8d\x8f\x90\x91") =~ tr/\x89-\x91/X/;
+my $c = ($alpha = "\x89\x8a\x8b\x8c\x8d\x8f\x90\x91") =~ tr/\x89-\x91/X/;
 is($c, 8);
-is($a, "XXXXXXXX");
+is($alpha, "XXXXXXXX");
 
-$c = ($a = "\xc9\xca\xcb\xcc\xcd\xcf\xd0\xd1") =~ tr/\xc9-\xd1/X/;
+$c = ($alpha = "\xc9\xca\xcb\xcc\xcd\xcf\xd0\xd1") =~ tr/\xc9-\xd1/X/;
 is($c, 8);
-is($a, "XXXXXXXX");
+is($alpha, "XXXXXXXX");
 
 SKIP: {
     skip "EBCDIC-centric tests", 4 unless $::IS_EBCDIC;
 
-    $c = ($a = "\x89\x8a\x8b\x8c\x8d\x8f\x90\x91") =~ tr/i-j/X/;
+    $c = ($alpha = "\x89\x8a\x8b\x8c\x8d\x8f\x90\x91") =~ tr/i-j/X/;
     is($c, 2);
-    is($a, "X\x8a\x8b\x8c\x8d\x8f\x90X");
+    is($alpha, "X\x8a\x8b\x8c\x8d\x8f\x90X");
    
-    $c = ($a = "\xc9\xca\xcb\xcc\xcd\xcf\xd0\xd1") =~ tr/I-J/X/;
+    $c = ($alpha = "\xc9\xca\xcb\xcc\xcd\xcf\xd0\xd1") =~ tr/I-J/X/;
     is($c, 2);
-    is($a, "X\xca\xcb\xcc\xcd\xcf\xd0X");
+    is($alpha, "X\xca\xcb\xcc\xcd\xcf\xd0X");
 }
 
-($a = "\x{100}") =~ tr/\x00-\xff/X/c;
-is(ord($a), ord("X"));
+($alpha = "\x{100}") =~ tr/\x00-\xff/X/c;
+is(ord($alpha), ord("X"));
 
-($a = "\x{100}") =~ tr/\x00-\xff/X/cs;
-is(ord($a), ord("X"));
+($alpha = "\x{100}") =~ tr/\x00-\xff/X/cs;
+is(ord($alpha), ord("X"));
 
-($a = "\x{100}\x{100}") =~ tr/\x{101}-\x{200}//c;
-is($a, "\x{100}\x{100}");
+($alpha = "\x{100}\x{100}") =~ tr/\x{101}-\x{200}//c;
+is($alpha, "\x{100}\x{100}");
 
-($a = "\x{100}\x{100}") =~ tr/\x{101}-\x{200}//cs;
-is($a, "\x{100}");
+($alpha = "\x{100}\x{100}") =~ tr/\x{101}-\x{200}//cs;
+is($alpha, "\x{100}");
 
-$a = "\xfe\xff"; $a =~ tr/\xfe\xff/\x{1ff}\x{1fe}/;
-is($a, "\x{1ff}\x{1fe}");
+$alpha = "\xfe\xff"; $alpha =~ tr/\xfe\xff/\x{1ff}\x{1fe}/;
+is($alpha, "\x{1ff}\x{1fe}");
 
 
 # From David Dyck
-($a = "R0_001") =~ tr/R_//d;
-is(hex($a), 1);
+($alpha = "R0_001") =~ tr/R_//d;
+is(hex($alpha), 1);
 
 # From Inaba Hiroto
 my @a = (1,2); map { y/1/./ for $_ } @a;
@@ -918,8 +919,8 @@ is("@a", "1 2");
 
 
 # Additional test for Inaba Hiroto patch (robin@kitsite.com)
-($a = "\x{100}\x{102}\x{101}") =~ tr/\x00-\377/XYZ/c;
-is($a, "XZY");
+($alpha = "\x{100}\x{102}\x{101}") =~ tr/\x00-\377/XYZ/c;
+is($alpha, "XZY");
 
 
 # Used to fail with "Modification of a read-only value attempted"
@@ -1062,12 +1063,12 @@ SKIP: {
 }
 
 # Freeing of trans ops prior to pmtrans() [perl #102858].
-eval q{ $a ~= tr/a/b/; };
+eval q{ $alpha ~= tr/a/b/; };
 ok 1;
 SKIP: {
     no warnings "deprecated";
     skip "no encoding", 1 unless eval { require encoding; 1 };
-    eval q{ use encoding "utf8"; $a ~= tr/a/b/; };
+    eval q{ use encoding "utf8"; $alpha ~= tr/a/b/; };
     ok 1;
 }
 
