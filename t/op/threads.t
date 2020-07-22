@@ -208,10 +208,10 @@ fresh_perl_is(
 # leaks), and we don't want to break it.
 fresh_perl_is(<<'EOJ', 'foo', {}, 'returning a closure');
 use threads;
-print create threads sub {
+print threads->create( sub {
  my $x = 'foo';
  sub{sub{$x}}
-}=>->join->()()
+}=> )->join->()()
  //"undef"
 EOJ
 
