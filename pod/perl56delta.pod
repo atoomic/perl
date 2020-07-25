@@ -2794,10 +2794,10 @@ See L<perlguts/"Memory Allocation"> for further information about that.
 
 =item C<PATCHLEVEL> is now C<PERL_CORE_MINOR>
 
-The cpp macros C<PERL_CORE_MAJOR>, C<PERL_CORE_MINOR>, and C<PERL_SUBVERSION>
+The cpp macros C<PERL_CORE_MAJOR>, C<PERL_CORE_MINOR>, and C<PERL_CORE_RELEASE>
 are now available by default from perl.h, and reflect the base revision,
 patchlevel, and subversion respectively.  C<PERL_CORE_MAJOR> had no
-prior equivalent, while C<PERL_CORE_MINOR> and C<PERL_SUBVERSION> were
+prior equivalent, while C<PERL_CORE_MINOR> and C<PERL_CORE_RELEASE> were
 previously available as C<PATCHLEVEL> and C<SUBVERSION>.
 
 The new names cause less pollution of the B<cpp> namespace and reflect what

@@ -2040,7 +2040,7 @@ assumption at termination time.
 All compile time options which affect binary compatibility have been grouped
 together into a global variable (C<PL_bincompat_options>).
 
-The values of C<PERL_CORE_MAJOR>, C<PERL_CORE_MINOR> and C<PERL_SUBVERSION> are
+The values of C<PERL_CORE_MAJOR>, C<PERL_CORE_MINOR> and C<PERL_CORE_RELEASE> are
 now baked into global variables (and hence into any shared perl library).
 Additionally under C<MULTIPLICITY>, the perl executable now records the size of
 the interpreter structure (total, and for this version). Coupled with

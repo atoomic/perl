@@ -31,7 +31,7 @@
 # all of the changes at once and then edit the results via git).
 
 # This utility 'knows' about certain files and formats, and so can spot
-# 'hidden' version numbers, like PERL_SUBVERSION=9.
+# 'hidden' version numbers, like PERL_CORE_RELEASE=9.
 #
 # A third variant makes use of this knowledge to check that all the things
 # it knows about are at the current version:
@@ -63,7 +63,7 @@ usage: $0 -c <C.C.C>
 	  -i <C.C.C> <N.N.N>
 
     -c check files and warn if any known string values (eg
-	PERL_SUBVERSION) don't match the specified version
+	PERL_CORE_RELEASE) don't match the specified version
 
     -s scan files and produce list of possible change lines to stdout
 
@@ -147,7 +147,7 @@ my @maps =  (
 	$oldy,
     ],
     [
-	qr{\b (PERL_SUBVERSION(?:=|\s+)'?) (\d+) ('?)  (?!\.)}x,
+	qr{\b (PERL_CORE_RELEASE(?:=|\s+)'?) (\d+) ('?)  (?!\.)}x,
 	sub { $2, "$1$newz$3"},
 	($oldy % 2) ? $oldz : 0,
     ],

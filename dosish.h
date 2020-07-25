@@ -31,7 +31,7 @@
 #  endif
 #  define PERL_FS_VERSION	STRINGIFY(PERL_CORE_MAJOR) "_" \
 				STRINGIFY(PERL_CORE_MINOR) "_" \
-				STRINGIFY(PERL_SUBVERSION)
+				STRINGIFY(PERL_CORE_RELEASE)
 #elif defined(WIN32)
 #  define PERL_SYS_INIT_BODY(c,v)					\
       MALLOC_CHECK_TAINT2(*c,*v) Perl_win32_init(c,v); PERLIO_INIT
