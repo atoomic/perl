@@ -1901,7 +1901,7 @@ fi
 touch posthint.sh
 
 : set package name
-package='perl5'
+package='perl7'
 first=`echo $package | sed -e 's/^\(.\).*/\1/'`
 last=`echo $package | sed -e 's/^.\(.*\)/\1/'`
 case "`echo AbyZ | tr '[:lower:]' '[:upper:]' 2>/dev/null`"-"`echo AbyZ | tr '[:upper:]' '[:lower:]' 2>/dev/null`" in
