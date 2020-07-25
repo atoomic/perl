@@ -30,7 +30,7 @@
 #    define PERL_FS_VER_FMT	"%d_%d_%d"
 #  endif
 #  define PERL_FS_VERSION	STRINGIFY(PERL_CORE_MAJOR) "_" \
-				STRINGIFY(PERL_VERSION) "_" \
+				STRINGIFY(PERL_CORE_MINOR) "_" \
 				STRINGIFY(PERL_SUBVERSION)
 #elif defined(WIN32)
 #  define PERL_SYS_INIT_BODY(c,v)					\

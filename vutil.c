@@ -581,7 +581,7 @@ Perl_upg_version(pTHX_ SV *ver, bool qv)
     const MAGIC *mg;
 #endif
 
-#if PERL_VERSION_LT(5,19,8) && defined(USE_ITHREADS)
+#if PERL_CORE_MINOR_LT(5,19,8) && defined(USE_ITHREADS)
     ENTER;
 #endif
     PERL_ARGS_ASSERT_UPG_VERSION;
@@ -598,7 +598,7 @@ Perl_upg_version(pTHX_ SV *ver, bool qv)
 		       "Integer overflow in version %d",VERSION_MAX);
     }
     else if ( SvUOK(ver) || SvIOK(ver))
-#if PERL_VERSION_LT(5,17,2)
+#if PERL_CORE_MINOR_LT(5,17,2)
 VER_IV:
 #endif
     {
@@ -606,7 +606,7 @@ VER_IV:
 	SAVEFREEPV(version);
     }
     else if (SvNOK(ver) && !( SvPOK(ver) && SvCUR(ver) == 3 ) )
-#if PERL_VERSION_LT(5,17,2)
+#if PERL_CORE_MINOR_LT(5,17,2)
 VER_NV:
 #endif
     {
@@ -617,7 +617,7 @@ VER_NV:
 	SV *sv = SvNVX(ver) > 10e50 ? newSV(64) : 0;
 	char *buf;
 
-#if PERL_VERSION_GE(5,19,0)
+#if PERL_CORE_MINOR_GE(5,19,0)
 	if (SvPOK(ver)) {
 	    /* dualvar? */
 	    goto VER_PV;
@@ -764,7 +764,7 @@ VER_PV:
 	version = savepvn(SvPV(ver,len), SvCUR(ver));
 	SAVEFREEPV(version);
 #ifndef SvVOK
-#  if PERL_VERSION > 5
+#  if PERL_CORE_MINOR > 5
 	/* This will only be executed for 5.6.0 - 5.8.0 inclusive */
 	if ( len >= 3 && !instr(version,".") && !instr(version,"_")) {
 	    /* may be a v-string */
@@ -800,7 +800,7 @@ VER_PV:
 #  endif
 #endif
     }
-#if PERL_VERSION_LT(5,17,2)
+#if PERL_CORE_MINOR_LT(5,17,2)
     else if (SvIOKp(ver)) {
 	goto VER_IV;
     }
@@ -823,7 +823,7 @@ VER_PV:
 		       "Version string '%s' contains invalid data; "
 		       "ignoring: '%s'", version, s);
 
-#if PERL_VERSION_LT(5,19,8) && defined(USE_ITHREADS)
+#if PERL_CORE_MINOR_LT(5,19,8) && defined(USE_ITHREADS)
     LEAVE;
 #endif
 
@@ -1047,7 +1047,7 @@ Perl_vstringify(pTHX_ SV *vs)
 	SV *pv;
 	pv = *svp;
 	if ( SvPOK(pv)
-#if PERL_VERSION_LT(5,17,2)
+#if PERL_CORE_MINOR_LT(5,17,2)
 	    || SvPOKp(pv)
 #endif
 	)

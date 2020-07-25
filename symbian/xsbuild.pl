@@ -24,7 +24,7 @@ if (exists $ENV{EPOCROOT}) {
 $SymbianVersion = $ENV{XSBUILD_SYMBIAN_VERSION}
   if exists $ENV{XSBUILD_SYMBIAN_VERSION};
 
-my $PerlVersion    = $ENV{XSBUILD_PERL_VERSION};
+my $PerlVersion    = $ENV{XSBUILD_PERL_CORE_MINOR};
 my $CSuffix        = '.c';
 my $CPlusPlus;
 my $Config;

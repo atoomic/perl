@@ -398,7 +398,7 @@ void CPerlAppAppUi::DoHandleCommandL(TInt aCommand) {
         {
             message.Format(KAboutFormat,
                            PERL_CORE_MAJOR,
-                           PERL_VERSION,
+                           PERL_CORE_MINOR,
                            PERL_SUBVERSION,
                            PERL_SYMBIANPORT_MAJOR,
                            PERL_SYMBIANPORT_MINOR,
@@ -486,7 +486,7 @@ void CPerlAppAppUi::DoHandleCommandL(TInt aCommand) {
             TMessageBuffer m2;
             m1.Format(KAboutFormat,
                       PERL_CORE_MAJOR,
-                      PERL_VERSION,
+                      PERL_CORE_MINOR,
                       PERL_SUBVERSION,
                       PERL_SYMBIANPORT_MAJOR,
                       PERL_SYMBIANPORT_MINOR,

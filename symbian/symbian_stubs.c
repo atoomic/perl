@@ -37,7 +37,7 @@ _sig_func_ptr signal(int signum, _sig_func_ptr handler) { return (_sig_func_ptr)
 int   kill(pid_t pid, int signum) { return setENOSYS(); }
 pid_t wait(int *status) { return setENOSYS(); }
 
-#if PERL_VERSION <= 8
+#if PERL_CORE_MINOR <= 8
 void Perl_my_setenv(pTHX_ char *var, char *val) { }
 #else
 void Perl_my_setenv(pTHX_ const char *var, const char *val) { }
