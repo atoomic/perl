@@ -273,8 +273,8 @@ if (open(PL,'<',"${outdir}patchlevel.h")) {
       print OUT "PERL_CORE_MINOR='$1'\n";
       print OUT "PATCHLEVEL='$1'\n";		# XXX compat
     }
-    elsif (/^#define PERL_SUBVERSION\s+(\S+)/) {
-      print OUT "PERL_SUBVERSION='$1'\n";
+    elsif (/^#define PERL_CORE_RELEASE\s+(\S+)/) {
+      print OUT "PERL_CORE_RELEASE='$1'\n";
       print OUT "SUBVERSION='$1'\n";		# XXX compat
     }
   }

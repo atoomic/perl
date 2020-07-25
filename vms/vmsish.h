@@ -321,7 +321,7 @@ struct interp_intern {
 #endif
 #define PERL_FS_VERSION		STRINGIFY(PERL_CORE_MAJOR) "_" \
 				STRINGIFY(PERL_CORE_MINOR) "_" \
-				STRINGIFY(PERL_SUBVERSION)
+				STRINGIFY(PERL_CORE_RELEASE)
 /* Temporary; we need to add support for this to Configure.Com */
 #ifdef PERL_INC_VERSION_LIST
 #  undef PERL_INC_VERSION_LIST

@@ -125,7 +125,7 @@ $     line = f$edit(line,"TRIM,COMPRESS")
 $     $PATCHLEVEL = f$element(2," ",line)
 $     if f$type($SUBVERSION).nes."" then goto patchlevel_h_Done
 $ endif
-$ if f$locate("PERL_SUBVERSION",line).ne.f$length(line)
+$ if f$locate("PERL_CORE_RELEASE",line).ne.f$length(line)
 $   then
 $     line = f$edit(line,"TRIM,COMPRESS")
 $     $SUBVERSION = f$element(2," ",line)
