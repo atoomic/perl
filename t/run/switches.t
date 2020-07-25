@@ -7,18 +7,19 @@
 BEGIN {
     chdir 't' if -d 't';
     @INC = '../lib';
-    require Config; import Config;
+    require Config; Config->import;
 }
 
 BEGIN { require "./test.pl";  require "./loc_tools.pl"; }
 
-plan(tests => 137);
+plan(tests => 133);
 
 use Config;
 
 # due to a bug in VMS's piping which makes it impossible for runperl()
 # to emulate echo -n (ie. stdin always winds up with a newline), these 
 # tests almost totally fail.
+our $TODO;
 $TODO = "runperl() unable to emulate echo -n due to pipe bug" if $^O eq 'VMS';
 
 my $r;
@@ -121,7 +122,7 @@ SKIP: {
     # Win32 won't let us open the directory, so we never get to die with
     # EISDIR, which happens after open.
     require Errno;
-    import Errno qw(EACCES EISDIR);
+    Errno->import( qw(EACCES EISDIR) );
     my $error  = do {
         local $! = $^O eq 'MSWin32' ? &EACCES : &EISDIR; "$!"
     };
@@ -267,7 +268,7 @@ is runperl(stderr => 1, prog => '#!perl -M'),
           '-V generates 20+ lines' );
 
     like( runperl( switches => ['-V'] ),
-	  qr/\ASummary of my perl5 .*configuration:/,
+	  qr/\ASummary of my perl7 .*configuration:/,
           '-V looks okay' );
 
     # lookup a known config var
@@ -301,10 +302,11 @@ is runperl(stderr => 1, prog => '#!perl -M'),
         skip "Win32 miniperl produces a default archname in -v", 1
 	  if $^O eq 'MSWin32' && is_miniperl;
         my $v = sprintf "%vd", $^V;
-        my $ver = $Config{PERL_CORE_MINOR};
+        my $rev = $Config{PERL_CORE_MINOR};
+        my $ver = $Config{PERL_VERSION};
         my $rel = $Config{PERL_CORE_RELEASE};
         like( runperl( switches => ['-v'] ),
-	      qr/This is perl 5, version \Q$ver\E, subversion \Q$rel\E \(v\Q$v\E(?:[-*\w]+| \([^)]+\))?\) built for \Q$Config{archname}\E.+Copyright.+Larry Wall.+Artistic License.+GNU General Public License/s,
+	      qr/This is perl \Q$rev\E, version \Q$ver\E, subversion \Q$rel\E \(v\Q$v\E(?:[-*\w]+| \([^)]+\))?\) built for \Q$Config{archname}\E.+Copyright.+Larry Wall.+Artistic License.+GNU General Public License/s,
               '-v looks okay' );
     }
 }
@@ -322,7 +324,7 @@ is runperl(stderr => 1, prog => '#!perl -M'),
 
 # Tests for switches which do not exist
 
-foreach my $switch (split //, "ABbGgHJjKkLNOoPQqRrYyZz123456789_")
+foreach my $switch (split //, "ABbGgHJjKkLNOoPQqRrYyZz12346789_")
 {
     local $TODO = '';   # these ones should work on VMS
 
