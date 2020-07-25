@@ -3527,7 +3527,7 @@ EXTERN_C int perl_tsa_mutex_unlock(perl_mutex* mutex)
 #endif
 
 #ifndef PERL_FS_VERSION
-#  define PERL_FS_VERSION	PERL_CORE_MINOR_STRING
+#  define PERL_FS_VERSION	PERL_VERSION_STRING
 #endif
 
 /* This defines a way to flush all output buffers.  This may be a
@@ -4659,7 +4659,7 @@ EXTERN_C char **environ;  /* environment variables supplied via exec */
 #include "patchlevel.h"
 #undef PERL_PATCHLEVEL_H_IMPLICIT
 
-#define PERL_CORE_MINOR_STRING	STRINGIFY(PERL_CORE_MAJOR) "." \
+#define PERL_VERSION_STRING	STRINGIFY(PERL_CORE_MAJOR) "." \
 				STRINGIFY(PERL_CORE_MINOR) "." \
 				STRINGIFY(PERL_CORE_RELEASE)
 
