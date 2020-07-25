@@ -17,40 +17,40 @@ sub _ok {
 
     my $result;
     if ($type eq 'is') {
-	$result = $got eq $expected;
+        $result = $got eq $expected;
     } elsif ($type eq 'isnt') {
-	$result = $got ne $expected;
+        $result = $got ne $expected;
     } elsif ($type eq 'like') {
-	$result = $got =~ $expected;
+        $result = $got =~ $expected;
     } elsif ($type eq 'ok') {
-	$result = not not $got;
+        $result = not not $got;
     } else {
-	die "Unexpected type '$type'$name";
+        die "Unexpected type '$type'$name";
     }
     if ($result) {
-	if ($name) {
-	    print "ok $test - $name\n";
-	} else {
-	    print "ok $test\n";
-	}
+        if ($name) {
+            print "ok $test - $name\n";
+        } else {
+            print "ok $test\n";
+        }
     } else {
-	if ($name) {
-	    print "not ok $test - $name\n";
-	} else {
-	    print "not ok $test\n";
-	}
-	my @caller = caller(1);
-	print "# Failed test at $caller[1] line $caller[2]\n";
-	print "# Got      '$got'\n";
-	if ($type eq 'is') {
-	    print "# Expected '$expected'\n";
-	} elsif ($type eq 'isnt') {
-	    print "# Expected not '$expected'\n";
-	} elsif ($type eq 'like') {
-	    print "# Expected $expected\n";
-	} elsif ($type eq 'ok') {
-	    print "# Expected a true value\n";
-	}
+        if ($name) {
+            print "not ok $test - $name\n";
+        } else {
+            print "not ok $test\n";
+        }
+        my @caller = caller(1);
+        print "# Failed test at $caller[1] line $caller[2]\n";
+        print "# Got      '$got'\n";
+        if ($type eq 'is') {
+            print "# Expected '$expected'\n";
+        } elsif ($type eq 'isnt') {
+            print "# Expected not '$expected'\n";
+        } elsif ($type eq 'like') {
+            print "# Expected $expected\n";
+        } elsif ($type eq 'ok') {
+            print "# Expected a true value\n";
+        }
     }
     $test = $test + 1;
     $result;
@@ -89,7 +89,7 @@ is ($@, '');
 eval q{ use 10.0.2; };
 like ($@, qr/^Perl v10\.0\.2 required/);
 
-eval "use 5.000";	# implicit semicolon
+eval "use 5.000";    # implicit semicolon
 is ($@, '');
 
 eval "use 5.000;";
@@ -165,7 +165,7 @@ eval 'no strict "vars"; use 5.012; ursine_word';
 ok $@, 'no strict vars allows ver decl to enable subs';
 
 
-{ use test_use }	# check that subparse saves pending tokens
+{ use test_use }    # check that subparse saves pending tokens
 
 use test_use { () };
 is ref $test_use::got[0], 'HASH', 'use parses arguments in term lexing cx';
@@ -239,7 +239,7 @@ is("@test_use::got", "joe");
 
 
 {
-    # Regression test for patch 14937: 
+    # Regression test for patch 14937:
     #   Check that a .pm file with no package or VERSION doesn't core.
     # (git commit 2658f4d9934aba5f8b23afcc078dc12b3a40223)
     eval "use test_use_14937 3";
@@ -250,50 +250,50 @@ my @ver = split /\./, sprintf "%vd", $^V;
 
 foreach my $index (-3..+3) {
     foreach my $v (0, 1) {
-	my @parts = @ver;
-	if ($index) {
-	    if ($index < 0) {
-		# Jiggle one of the parts down
-		--$parts[-$index - 1];
-		if ($parts[-$index - 1] < 0) {
-		    # perl's version number ends with '.0'
-		    $parts[-$index - 1] = 0;
-		    $parts[-$index - 2] -= 2;
-		}
-	    } else {
-		# Jiggle one of the parts up
-		++$parts[$index - 1];
-	    }
-	}
-	my $v_version = sprintf "v%d.%d.%d", @parts;
-	my $version;
-	if ($v) {
-	    $version = $v_version;
-	} else {
-	    $version = $parts[0] + $parts[1] / 1000 + $parts[2] / 1000000;
-	}
+        my @parts = @ver;
+        if ($index) {
+            if ($index < 0) {
+                # Jiggle one of the parts down
+                --$parts[-$index - 1];
+                if ($parts[-$index - 1] < 0) {
+                    # perl's version number ends with '.0'
+                    $parts[-$index - 1] = 0;
+                    $parts[-$index - 2] -= 2;
+                }
+            } else {
+                # Jiggle one of the parts up
+                ++$parts[$index - 1];
+            }
+        }
+        my $v_version = sprintf "v%d.%d.%d", @parts;
+        my $version;
+        if ($v) {
+            $version = $v_version;
+        } else {
+            $version = $parts[0] + $parts[1] / 1000 + $parts[2] / 1000000;
+        }
 
-	eval "use $version";
-	if ($index > 0) {
-	    # The future
-	    like ($@,
-		  qr/Perl $v_version required--this is only \Q$^V\E, stopped/,
-		  "use $version");
-	} else {
-	    # The present or past
-	    is ($@, '', "use $version");
-	}
+        eval "use $version";
+        if ($index > 0) {
+            # The future
+            like ($@,
+              qr/Perl $v_version required--this is only \Q$^V\E, stopped/,
+              "use $version");
+        } else {
+            # The present or past
+            is ($@, '', "use $version");
+        }
 
-	eval "no $version";
-	if ($index <= 0) {
-	    # The present or past
-	    like ($@,
-		  qr/Perls since $v_version too modern--this is \Q$^V\E, stopped/,
-		  "no $version");
-	} else {
-	    # future
-	    is ($@, '', "no $version");
-	}
+        eval "no $version";
+        if ($index <= 0) {
+            # The present or past
+            like ($@,
+              qr/Perls since $v_version too modern--this is \Q$^V\E, stopped/,
+              "no $version");
+        } else {
+            # future
+            is ($@, '', "no $version");
+        }
     }
 }
 
