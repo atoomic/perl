@@ -56,6 +56,7 @@ $feature_bundle{"5.32"} = $feature_bundle{"5.27"};
 $feature_bundle{"5.33"} = $feature_bundle{"5.27"};
 $feature_bundle{"5.34"} = $feature_bundle{"5.27"};
 $feature_bundle{"5.9.5"} = $feature_bundle{"5.10"};
+$feature_bundle{"7.0"} = $feature_bundle{"5.27"};
 my %noops = (
     postderef => 1,
     lexical_subs => 1,
