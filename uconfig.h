@@ -7,7 +7,7 @@
  * For a more permanent change edit uconfig.sh and rerun config_h.SH.
  */
 
-/* Package name      : perl5
+/* Package name      : perl7
  * Source directory  : .
  * Configuration time: Thu Jan  1 00:00:00 GMT 1970
  * Configured by     : root@localhost
@@ -1219,7 +1219,7 @@
 /* ARCHLIB:
  *	This variable, if defined, holds the name of the directory in
  *	which the user wants to put architecture-dependent public
- *	library files for perl5.  It is most often a local directory
+ *	library files for perl7.  It is most often a local directory
  *	such as /usr/local/lib.  Programs using this variable must be
  *	prepared to deal with filename expansion.  If ARCHLIB is the
  *	same as PRIVLIB, it is not defined, since presumably the
@@ -5261,5 +5261,5 @@
 
 /* Generated from:
  * 14796a77fb4ae3335f5e589a98445bc6e838b688194f6f112537495f0814f5d5 config_h.SH
- * a7ac6c2ac503d49e490f214ea6bafccc729066df936db1fed04c4006aa6ac164 uconfig.sh
+ * 75888278408fbe5089b5eb3c0422717dc353081108a235eda2acb15ca316adc9 uconfig.sh
  * ex: set ro: */
