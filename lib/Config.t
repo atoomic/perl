@@ -28,7 +28,7 @@ ok(exists($Config{$first_each}), "First key exists");
 ok(!exists($Config{"\n$first"}),
    "Check that first key with prepended newline isn't falsely existing");
 
-is($Config{PERL_REVISION}, 5, "PERL_REVISION is 5");
+is($Config{PERL_CORE_MAJOR}, 5, "PERL_CORE_MAJOR is 5");
 
 # Check that old config variable names are aliased to their new ones.
 my %grandfathers = ( PERL_VERSION       => 'PATCHLEVEL',
