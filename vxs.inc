@@ -133,27 +133,16 @@ VXS(universal_version)
 	if (undef) {
 	    if (pkg) {
 		const HVNAME* const name = HvNAME_HEK(pkg);
-#if PERL_CORE_MINOR == 5
-		Perl_croak(aTHX_ "%s version %s required--this is only version ",
-			    name, SvPVx_nolen_const(req));
-#else
 		Perl_croak(aTHX_
 			   "%" HEKf " does not define $%" HEKf
 			   "::VERSION--version check failed",
 			   HEKfARG(name), HEKfARG(name));
-#endif
 	    }
 	    else {
-#if PERL_CORE_MINOR >= 8
 		Perl_croak(aTHX_
 			     "%" SVf " defines neither package nor VERSION--"
                              "version check failed",
 			     (void*)(ST(0)) );
-#else
-		Perl_croak(aTHX_ "%s does not define $%s::VERSION--version check failed",
-			   SvPVx_nolen_const(ST(0)),
-			   SvPVx_nolen_const(ST(0)) );
-#endif
 	    }
 	}
 
@@ -206,11 +195,7 @@ VXS(version_new)
         SV * svarg2;
         vs = sv_newmortal();
         svarg2 = ST(2);
-#if PERL_CORE_MINOR == 5
-        sv_setpvf(vs,"v%s",SvPV_nolen_const(svarg2));
-#else
         Perl_sv_setpvf(aTHX_ vs,"v%s",SvPV_nolen_const(svarg2));
-#endif
         break;
     }
     case 2:
@@ -249,11 +234,7 @@ VXS(version_new)
     rv = NEW_VERSION(vs);
     if ( len != sizeof(VXS_CLASS)-1
       || strcmp(classname,VXS_CLASS) != 0 ) /* inherited new() */
-#if PERL_CORE_MINOR == 5
-        sv_bless(rv, gv_stashpv((char *)classname, GV_ADD));
-#else
         sv_bless(rv, gv_stashpvn(classname, len, GV_ADD | flags));
-#endif
 
     VXS_RETURN_M_SV(rv);
 }
@@ -445,11 +426,7 @@ VXS(version_qv)
 	}
 	if ( items == 2 && (len != 7
                 || strcmp(classname,"version")) ) { /* inherited new() */
-#if PERL_CORE_MINOR == 5
-	    sv_bless(rv, gv_stashpv((char *)classname, GV_ADD));
-#else
 	    sv_bless(rv, gv_stashpvn(classname, len, GV_ADD | flags));
-#endif
         }
 	PUSHs(rv);
     }
