@@ -1278,7 +1278,7 @@
  *	in programs that are not prepared to deal with ~ expansion at run-time.
  */
 #define PRIVLIB "c:\\perl\\lib"		/**/
-#define PRIVLIB_EXP (PerlEnv_lib_path(PERL_CORE_MINOR_STRING, NULL))	/**/
+#define PRIVLIB_EXP (PerlEnv_lib_path(PERL_VERSION_STRING, NULL))	/**/
 
 /* SITEARCH:
  *	This symbol contains the name of the private library for this package.
@@ -1319,7 +1319,7 @@
  *	be tacked onto this variable to generate a list of directories to search.
  */
 #define SITELIB "c:\\perl\\site\\lib"		/**/
-#define SITELIB_EXP (PerlEnv_sitelib_path(PERL_CORE_MINOR_STRING, NULL))	/**/
+#define SITELIB_EXP (PerlEnv_sitelib_path(PERL_VERSION_STRING, NULL))	/**/
 #define SITELIB_STEM ""		/**/
 
 /* PERL_VENDORARCH:

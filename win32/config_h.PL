@@ -68,7 +68,7 @@ while (<SH>)
        $1 eq 'SITELIB' ? 'PerlEnv_sitelib_path' :
        $1 eq 'VENDORLIB' ? 'PerlEnv_vendorlib_path' :
        die "unknown *LIB_EXP define \"$1\""
-       ). "(PERL_CORE_MINOR_STRING, NULL))\t/**/\n";
+       ). "(PERL_VERSION_STRING, NULL))\t/**/\n";
    }
   # incpush() handles archlibs, so disable them
   elsif (/^\s*#define\s+(ARCHLIB|SITEARCH|VENDORARCH)_EXP/)
