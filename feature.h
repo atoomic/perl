@@ -29,11 +29,12 @@
 #define FEATURE_UNICODE_BIT         0x4000
 
 #define FEATURE_BUNDLE_DEFAULT	0
-#define FEATURE_BUNDLE_510	1
-#define FEATURE_BUNDLE_511	2
-#define FEATURE_BUNDLE_515	3
-#define FEATURE_BUNDLE_523	4
-#define FEATURE_BUNDLE_527	5
+#define FEATURE_BUNDLE_50	1
+#define FEATURE_BUNDLE_510	2
+#define FEATURE_BUNDLE_511	3
+#define FEATURE_BUNDLE_515	4
+#define FEATURE_BUNDLE_523	5
+#define FEATURE_BUNDLE_527	6
 #define FEATURE_BUNDLE_CUSTOM	(HINT_FEATURE_MASK >> HINT_FEATURE_SHIFT)
 
 #define CURRENT_HINTS \
@@ -95,7 +96,8 @@
 
 #define FEATURE_INDIRECT_IS_ENABLED \
     ( \
-	CURRENT_FEATURE_BUNDLE <= FEATURE_BUNDLE_527 \
+	(CURRENT_FEATURE_BUNDLE >= FEATURE_BUNDLE_50 && \
+	 CURRENT_FEATURE_BUNDLE <= FEATURE_BUNDLE_527) \
      || (CURRENT_FEATURE_BUNDLE == FEATURE_BUNDLE_CUSTOM && \
 	 FEATURE_IS_ENABLED_MASK(FEATURE_INDIRECT_BIT)) \
     )
@@ -196,6 +198,9 @@ S_enable_feature_bundle(pTHX_ SV *ver)
 		  (sv_setnv(comp_ver, 5.009005),
 		   vcmp(ver, upg_version(comp_ver, FALSE)) >= 0)
 			? FEATURE_BUNDLE_510 :
+		  (sv_setnv(comp_ver, 5.00),
+		   vcmp(ver, upg_version(comp_ver, FALSE)) >= 0)
+			? FEATURE_BUNDLE_50 :
 			  FEATURE_BUNDLE_DEFAULT
 	       ) << HINT_FEATURE_SHIFT;
     /* special case */

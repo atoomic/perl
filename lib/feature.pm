@@ -26,13 +26,13 @@ our %feature = (
 );
 
 our %feature_bundle = (
-    "5.10"    => [qw(indirect say state switch)],
-    "5.11"    => [qw(indirect say state switch unicode_strings)],
-    "5.15"    => [qw(current_sub evalbytes fc indirect say state switch unicode_eval unicode_strings)],
-    "5.23"    => [qw(current_sub evalbytes fc indirect postderef_qq say state switch unicode_eval unicode_strings)],
-    "5.27"    => [qw(bitwise current_sub evalbytes fc indirect postderef_qq say state switch unicode_eval unicode_strings)],
-    "all"     => [qw(bitwise current_sub declared_refs evalbytes fc indirect isa postderef_qq refaliasing say signatures state switch unicode_eval unicode_strings)],
-    "default" => [qw(indirect)],
+    "5.0"  => [qw(indirect)],
+    "5.10" => [qw(indirect say state switch)],
+    "5.11" => [qw(indirect say state switch unicode_strings)],
+    "5.15" => [qw(current_sub evalbytes fc indirect say state switch unicode_eval unicode_strings)],
+    "5.23" => [qw(current_sub evalbytes fc indirect postderef_qq say state switch unicode_eval unicode_strings)],
+    "5.27" => [qw(bitwise current_sub evalbytes fc indirect postderef_qq say state switch unicode_eval unicode_strings)],
+    "all"  => [qw(bitwise current_sub declared_refs evalbytes fc indirect isa postderef_qq refaliasing say signatures state switch unicode_eval unicode_strings)],
 );
 
 $feature_bundle{"5.12"} = $feature_bundle{"5.11"};
@@ -57,6 +57,7 @@ $feature_bundle{"5.33"} = $feature_bundle{"5.27"};
 $feature_bundle{"5.34"} = $feature_bundle{"5.27"};
 $feature_bundle{"5.9.5"} = $feature_bundle{"5.10"};
 $feature_bundle{"7.0"} = $feature_bundle{"5.27"};
+$feature_bundle{"default"} = $feature_bundle{"5.0"};
 my %noops = (
     postderef => 1,
     lexical_subs => 1,
@@ -67,7 +68,7 @@ my %removed = (
 
 our $hint_shift   = 26;
 our $hint_mask    = 0x1c000000;
-our @hint_bundles = qw( default 5.10 5.11 5.15 5.23 5.27 );
+our @hint_bundles = qw( default 5.0 5.10 5.11 5.15 5.23 5.27 );
 
 # This gets set (for now) in $^H as well as in %^H,
 # for runtime speed of the uc/lc/ucfirst/lcfirst functions.
