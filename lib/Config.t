@@ -31,7 +31,7 @@ ok(!exists($Config{"\n$first"}),
 is($Config{PERL_CORE_MAJOR}, 5, "PERL_CORE_MAJOR is 5");
 
 # Check that old config variable names are aliased to their new ones.
-my %grandfathers = ( PERL_VERSION       => 'PATCHLEVEL',
+my %grandfathers = ( PERL_CORE_MINOR       => 'PATCHLEVEL',
                      PERL_SUBVERSION    => 'SUBVERSION',
                      PERL_CONFIG_SH     => 'CONFIG'
                    );

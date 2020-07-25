@@ -740,7 +740,7 @@ L<encoding> has been upgraded from version 2.6_01 to 2.12.
 
 L<English> has been upgraded from version 1.06 to 1.09.
 
-C<$OLD_PERL_VERSION> was added as an alias of C<$]>.
+C<$OLD_PERL_CORE_MINOR> was added as an alias of C<$]>.
 
 =item *
 
@@ -1456,9 +1456,9 @@ workarounds and changes in different versions of Perl, has been added.
 
 Three L<English> variable names which have long been documented but do not
 actually exist have been removed from the documentation.  These were
-C<$OLD_PERL_VERSION>, C<$OFMT>, and C<$ARRAY_BASE>.
+C<$OLD_PERL_CORE_MINOR>, C<$OFMT>, and C<$ARRAY_BASE>.
 
-(Actually, C<OLD_PERL_VERSION> I<does> exist, starting with this revision, but
+(Actually, C<OLD_PERL_CORE_MINOR> I<does> exist, starting with this revision, but
 remained undocumented until perl 5.22.0.)
 
 =back

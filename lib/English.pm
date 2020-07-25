@@ -118,8 +118,8 @@ sub import {
 	*EFFECTIVE_GROUP_ID
 	*EGID
 	*PROGRAM_NAME
-	*PERL_VERSION
-	*OLD_PERL_VERSION
+	*PERL_CORE_MINOR
+	*OLD_PERL_CORE_MINOR
 	*ACCUMULATOR
 	*COMPILING
 	*DEBUGGING
@@ -214,8 +214,8 @@ sub import {
 
 # Internals.
 
-	*PERL_VERSION				= *^V	;
-	*OLD_PERL_VERSION			= *]	;
+	*PERL_CORE_MINOR				= *^V	;
+	*OLD_PERL_CORE_MINOR			= *]	;
 	*ACCUMULATOR				= *^A	;
 	*COMPILING				= *^C	;
 	*DEBUGGING				= *^D	;

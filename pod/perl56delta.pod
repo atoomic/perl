@@ -141,7 +141,7 @@ The next development series following v5.6.0 will be numbered v5.7.x,
 beginning with v5.7.0, and the next major production release following
 v5.6.0 will be v5.8.0.
 
-The English module now sets $PERL_VERSION to $^V (a string value) rather
+The English module now sets $PERL_CORE_MINOR to $^V (a string value) rather
 than C<$]> (a numeric value).  (This is a potential incompatibility.
 Send us a report via perlbug if you are affected by this.)
 
@@ -928,7 +928,7 @@ using Apache with mod_perl.)
 
 =item English
 
-$PERL_VERSION now stands for C<$^V> (a string value) rather than for C<$]>
+$PERL_CORE_MINOR now stands for C<$^V> (a string value) rather than for C<$]>
 (a numeric value).
 
 =item Env
@@ -2572,9 +2572,9 @@ There is a potential incompatibility in the behavior of list slices
 that are comprised entirely of undefined values.
 See L</"Behavior of list slices is more consistent">.
 
-=item Format of $English::PERL_VERSION is different
+=item Format of $English::PERL_CORE_MINOR is different
 
-The English module now sets $PERL_VERSION to $^V (a string value) rather
+The English module now sets $PERL_CORE_MINOR to $^V (a string value) rather
 than C<$]> (a numeric value).  This is a potential incompatibility.
 Send us a report via perlbug if you are affected by this.
 
@@ -2792,12 +2792,12 @@ See L<perlguts/"Memory Allocation"> for further information about that.
 
 =over 4
 
-=item C<PATCHLEVEL> is now C<PERL_VERSION>
+=item C<PATCHLEVEL> is now C<PERL_CORE_MINOR>
 
-The cpp macros C<PERL_CORE_MAJOR>, C<PERL_VERSION>, and C<PERL_SUBVERSION>
+The cpp macros C<PERL_CORE_MAJOR>, C<PERL_CORE_MINOR>, and C<PERL_SUBVERSION>
 are now available by default from perl.h, and reflect the base revision,
 patchlevel, and subversion respectively.  C<PERL_CORE_MAJOR> had no
-prior equivalent, while C<PERL_VERSION> and C<PERL_SUBVERSION> were
+prior equivalent, while C<PERL_CORE_MINOR> and C<PERL_SUBVERSION> were
 previously available as C<PATCHLEVEL> and C<SUBVERSION>.
 
 The new names cause less pollution of the B<cpp> namespace and reflect what

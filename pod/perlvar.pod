@@ -425,10 +425,10 @@ Previously, only child processes received stringified values:
 This happens because you can't really share arbitrary data structures with
 foreign processes.
 
-=item $OLD_PERL_VERSION
+=item $OLD_PERL_CORE_MINOR
 
 =item $]
-X<$]> X<$OLD_PERL_VERSION>
+X<$]> X<$OLD_PERL_CORE_MINOR>
 
 The revision, version, and subversion of the Perl interpreter, represented
 as a decimal of the form 5.XXXYYY, where XXX is the version / 1e3 and YYY
@@ -457,9 +457,9 @@ floating point representation; it's good for numeric literal version
 checks and bad for comparing to a variable that hasn't been
 sanity-checked.
 
-The C<$OLD_PERL_VERSION> form was added in Perl v5.20.0 for historical
+The C<$OLD_PERL_CORE_MINOR> form was added in Perl v5.20.0 for historical
 reasons but its use is discouraged. (If your reason to use C<$]> is to
-run code on old perls then referring to it as C<$OLD_PERL_VERSION> would
+run code on old perls then referring to it as C<$OLD_PERL_CORE_MINOR> would
 be self-defeating.)
 
 Mnemonic: Is this version of perl in the right bracket?
@@ -706,16 +706,16 @@ The time at which the program began running, in seconds since the
 epoch (beginning of 1970).  The values returned by the B<-M>, B<-A>,
 and B<-C> filetests are based on this value.
 
-=item $PERL_VERSION
+=item $PERL_CORE_MINOR
 
 =item $^V
-X<$^V> X<$PERL_VERSION>
+X<$^V> X<$PERL_CORE_MINOR>
 
 =for comment
 These are documented in the generated file lib/Config.pod.  This looks
 like as good a place as any to give notice that they are documented.
 
-=for apidoc hAmn|int|PERL_VERSION
+=for apidoc hAmn|int|PERL_CORE_MINOR
 =for apidoc hAmn|int|PERL_CORE_MAJOR
 =for apidoc hAmn|int|PERL_SUBVERSION
 

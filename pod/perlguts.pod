@@ -1037,7 +1037,7 @@ check is incorrect.  You just want:
 
 If you need to do this check often, define your own macro like this:
 
-    #if PERL_VERSION >= 18
+    #if PERL_CORE_MINOR >= 18
     # define SvTRULYREADONLY(sv) SvREADONLY(sv)
     #else
     # define SvTRULYREADONLY(sv) (SvREADONLY(sv) && !SvIsCOW(sv))

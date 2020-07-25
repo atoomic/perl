@@ -9,7 +9,7 @@
 
 # Configure hasn't figured out the version number yet.  Bummer.
 perl_revision=`awk '/define[ 	]+PERL_CORE_MAJOR/ {print $3}' $src/patchlevel.h`
-perl_version=`awk '/define[ 	]+PERL_VERSION/ {print $3}' $src/patchlevel.h`
+perl_version=`awk '/define[ 	]+PERL_CORE_MINOR/ {print $3}' $src/patchlevel.h`
 perl_subversion=`awk '/define[ 	]+PERL_SUBVERSION/ {print $3}' $src/patchlevel.h`
 version="${perl_revision}.${perl_version}.${perl_subversion}"
 

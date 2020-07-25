@@ -14,7 +14,7 @@
  * exactly on the third column */
 
 #define PERL_CORE_MAJOR	5		/* age */
-#define PERL_VERSION	0		/* epoch */
+#define PERL_CORE_MINOR	0		/* epoch */
 #define PERL_SUBVERSION	0		/* generation */
 
 /* The following numbers describe the earliest compatible version of
@@ -147,7 +147,7 @@ static const char * const local_patches[] = {
 	((int)(C_ARRAY_LENGTH(local_patches)-2))
 
 /* the old terms of reference, add them only when explicitly included */
-#define PATCHLEVEL		PERL_VERSION
+#define PATCHLEVEL		PERL_CORE_MINOR
 #undef  SUBVERSION		/* OS/390 has a SUBVERSION in a system header */
 #define SUBVERSION		PERL_SUBVERSION
 #endif

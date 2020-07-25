@@ -1005,7 +1005,7 @@ subject to change and not guaranteed.
 
 =item *
 
-Use of C<$OLD_PERL_VERSION> is now discouraged.
+Use of C<$OLD_PERL_CORE_MINOR> is now discouraged.
 
 =back
 
