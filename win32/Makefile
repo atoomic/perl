@@ -5,7 +5,7 @@
 #	Windows SDK 64-bit compiler and tools
 #
 # This is set up to build a perl.exe that runs off a shared library
-# (perl533.dll).  Also makes individual DLLs for the XS extensions.
+# (perl70.dll).  Also makes individual DLLs for the XS extensions.
 #
 
 ##
@@ -191,7 +191,7 @@ DEFAULT_INC_EXCLUDES_DOT = define
 # set this to additionally provide a statically linked perl-static.exe.
 # Note that dynamic loading will not work with this perl, so you must
 # include required modules statically using the STATIC_EXT or ALL_STATIC
-# variables below. A static library perl533s.lib will also be created.
+# variables below. A static library perl70s.lib will also be created.
 # Ordinary perl.exe is not affected by this option.
 #
 #BUILD_STATIC	= define
@@ -665,9 +665,9 @@ $(o).dll:
 
 # makedef.pl must be updated if this changes, and this should normally
 # only change when there is an incompatible revision of the public API.
-PERLIMPLIB	= ..\perl533.lib
-PERLSTATICLIB	= ..\perl533s.lib
-PERLDLL		= ..\perl533.dll
+PERLIMPLIB	= ..\perl70.lib
+PERLSTATICLIB	= ..\perl70s.lib
+PERLDLL		= ..\perl70.dll
 
 MINIPERL	= ..\miniperl.exe
 MINIDIR		= .\mini
