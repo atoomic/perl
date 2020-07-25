@@ -105,27 +105,27 @@ is ($@, '', "No error for 'no 6.000'"); # PROBLEM
 
 eval "no 5.000;";
 like ($@, qr/Perls since v5\.0\.0 too modern--this is \Q$^V\E, stopped/,
-    "Got expected error message: 'no 5.000'"); # PROBLEM
+    "Got expected error message: 'no 5.000'");
 
 eval "use 5.6;";
 like ($@, qr/Perl v5\.600\.0 required \(did you mean v5\.6\.0\?\)--this is only \Q$^V\E, stopped/,
-    "Got expected error message: 'use 5.6;'");
+    "Got expected error message: 'use 5.6;'"); # PROBLEM
 
 eval "use 5.8;";
 like ($@, qr/Perl v5\.800\.0 required \(did you mean v5\.8\.0\?\)--this is only \Q$^V\E, stopped/,
-    "Got expected error message: 'use 5.8;'");
+    "Got expected error message: 'use 5.8;'"); # PROBLEM
 
 eval "use 5.9;";
 like ($@, qr/Perl v5\.900\.0 required \(did you mean v5\.9\.0\?\)--this is only \Q$^V\E, stopped/,
-    "Got expected error message: 'use 5.9;'");
+    "Got expected error message: 'use 5.9;'"); # PROBLEM
 
 eval "use 5.10;";
 like ($@, qr/Perl v5\.100\.0 required \(did you mean v5\.10\.0\?\)--this is only \Q$^V\E, stopped/,
-    "Got expected error message: 'use 5.10;'");
+    "Got expected error message: 'use 5.10;'"); # PROBLEM
 
 eval "use 5.11;";
 like ($@, qr/Perl v5\.110\.0 required \(did you mean v5\.11\.0\?\)--this is only \Q$^V\E, stopped/,
-    "Got expected error message: 'use 5.11;'");
+    "Got expected error message: 'use 5.11;'"); # PROBLEM
 
 eval sprintf "use %.6f;", $];
 is ($@, '', "No error message on: 'use %.6f;'");
@@ -136,11 +136,11 @@ is ($@, '', "No error message on: 'use %.6f;'");
 
 eval sprintf("use %.6f;", $] + 1);
 like ($@, qr/Perl v6.\d+.\d+ required--this is only \Q$^V\E, stopped/,
-    "Got expected error message: 'use %.6f;'");
+    "Got expected error message: 'use %.6f;'"); # PROBLEM
 
 eval sprintf "use %.6f;", $] + 0.00001;
 like ($@, qr/Perl v5.\d+.\d+ required--this is only \Q$^V\E, stopped/,
-    "Got expected error message: 'use %.6f;'");
+    "Got expected error message: 'use %.6f;'"); # PROBLEM
 
 # check that "use 5.11.0" (and higher) loads strictures
 eval 'use 5.11.0; ${"foo"} = "bar";';
