@@ -4659,7 +4659,7 @@ EXTERN_C char **environ;  /* environment variables supplied via exec */
 #include "patchlevel.h"
 #undef PERL_PATCHLEVEL_H_IMPLICIT
 
-#define PERL_VERSION_STRING	STRINGIFY(PERL_REVISION) "." \
+#define PERL_VERSION_STRING	STRINGIFY(PERL_CORE_MAJOR) "." \
 				STRINGIFY(PERL_VERSION) "." \
 				STRINGIFY(PERL_SUBVERSION)
 
@@ -4747,7 +4747,7 @@ EXTCONST char PL_cshname[]
    library we're linking against.  */
 
 EXTCONST U8 PL_revision
-  INIT(PERL_REVISION);
+  INIT(PERL_CORE_MAJOR);
 EXTCONST U8 PL_version
   INIT(PERL_VERSION);
 EXTCONST U8 PL_subversion

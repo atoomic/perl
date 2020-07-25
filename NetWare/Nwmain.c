@@ -1337,10 +1337,10 @@ void fnGetPerlScreenName(char *sPerlScreenName)
 	char sPerlVersion[32 * sizeof(char)] = {'\0'};
 	char sPerlSubVersion[32 * sizeof(char)] = {'\0'};
 
-	// The defines for PERL_REVISION, PERL_VERSION, PERL_SUBVERSION are available in
+	// The defines for PERL_CORE_MAJOR, PERL_VERSION, PERL_SUBVERSION are available in
 	// patchlevel.h  under root and gets included when  perl.h  is included.
 	// The number 10 below indicates base 10.
-	itoa(PERL_REVISION, sPerlRevision, 10);
+	itoa(PERL_CORE_MAJOR, sPerlRevision, 10);
 	itoa(PERL_VERSION, sPerlVersion, 10);
 	itoa(PERL_SUBVERSION, sPerlSubVersion, 10);
 
