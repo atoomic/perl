@@ -4,7 +4,7 @@
 # $! may not be set if EOF was reached without any error.
 # https://github.com/Perl/perl5/issues/8431
 
-use strict;
+
 use Config;
 
 chdir 't' if -d 't';
