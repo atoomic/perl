@@ -88,6 +88,7 @@ close PIPE;
     # This has to be *outside* the fork
     next_test();
 
+    my $pid;
     SKIP: {
         skip "fork required", 2 unless $Config{d_fork};
 
@@ -165,6 +166,7 @@ SKIP: {
 # VMS doesn't like spawning subprocesses that are still connected to
 # STDOUT.  Someone should modify these tests to work with VMS.
 
+our $NO_ENDING;
 SKIP: {
     skip "doesn't like spawning subprocesses that are still connected", 10
       if $^O eq 'VMS';
