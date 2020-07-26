@@ -774,13 +774,14 @@ ok(ref(CORE::state $y = "a $o b") eq 'o',
     # while that same typeglob also appearing on the RHS returns
     # a stringified value
 
-#    package QPR {
-#        no strict 'vars';
-#        no strict 'refs';
-#        ${'*QPR::Bar*QPR::BarBaz'} = 'myfoobarbaz';
-#        *Bar = (*Bar  . *Bar . "Baz");
-#        ::is($::Bar, "myfoobarbaz", '*Bar =  (*Bar  . *Bar . "Baz")');
-#    }
+    # TODO
+    package QPR {
+        no strict 'vars';
+        no strict 'refs';
+        ${'*QPR::Bar*QPR::BarBaz'} = 'myfoobarbaz';
+        *Bar = (*Bar  . *Bar . "Baz");
+        ::is($::Bar, "myfoobarbaz", '*Bar =  (*Bar  . *Bar . "Baz")');
+    }
 }
 
 # distinguish between '=' and  '.=' where the LHS has the OPf_MOD flag
