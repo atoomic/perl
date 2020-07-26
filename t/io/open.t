@@ -361,13 +361,17 @@ eval { open $99, "foo" };
 like($@, qr/Modification of a read-only value attempted/, "readonly fh");
 # But we do not want that exception applying to close(), since it does not
 # modify the fh.
-eval {
-   no warnings "uninitialized";
-   # make sure $+ is undefined
-   "a" =~ /(b)?/;
-   close $+
-};
-is($@, '', 'no "Modification of a read-only value" when closing');
+{
+    local $@;
+    eval {
+       no warnings "uninitialized";
+       no strict 'refs';
+       # make sure $+ is undefined
+       "a" =~ /(b)?/;
+       close $+
+    };
+    is($@, '', 'no "Modification of a read-only value" when closing');
+}
 
 # [perl#73626] mg_get wasn't run on the pipe arg
 
