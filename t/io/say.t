@@ -13,7 +13,6 @@ BEGIN {
 # a print opcode, so it's more or less guaranteed to behave
 # the same way as print in any case.
 
-use strict 'vars';
 use feature "say";
 
 say "1..13";
