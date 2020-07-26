@@ -15,6 +15,7 @@ sub run {
     return system($^X, "-e", $code);
 }
 
+my $numtests;
 BEGIN {
     $numtests = ($^O eq 'VMS') ? 16 : 17;
 }
