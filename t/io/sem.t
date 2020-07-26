@@ -16,7 +16,7 @@ BEGIN {
   }
 }
 
-use strict;
+
 our $TODO;
 
 use sigtrap qw/die normal-signals error-signals/;
