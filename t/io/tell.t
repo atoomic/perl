@@ -14,9 +14,12 @@ my $Is_Dosish = ($^O eq 'MSWin32' or $^O eq 'NetWare' or $^O eq 'dos' or
               $^O eq 'os2' or $^O eq 'cygwin' or
               $^O =~ /^uwin/);
 
-open($TST, 'harness') || (die "Can't open harness");
-binmode $TST if $Is_Dosish;
-ok(!eof(TST), "eof is false after open() non-empty file");
+{
+    no strict 'refs';
+    open($TST, 'harness') || (die "Can't open harness");
+    binmode $TST if $Is_Dosish;
+    ok(!eof($TST), "eof is false after open() non-empty file");
+}
 
 my $firstline = <$TST>;
 my $secondpos = tell;
