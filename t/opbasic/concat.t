@@ -776,11 +776,12 @@ ok(ref(CORE::state $y = "a $o b") eq 'o',
 
     # TODO
     package QPR {
-        no strict 'vars';
-        no strict 'refs';
+        no strict;
+        my $caution = " - TODO: Must still be adapted to strict-by-default";
         ${'*QPR::Bar*QPR::BarBaz'} = 'myfoobarbaz';
         *Bar = (*Bar  . *Bar . "Baz");
-        ::is($::Bar, "myfoobarbaz", '*Bar =  (*Bar  . *Bar . "Baz")');
+        my $description = '*Bar =  (*Bar  . *Bar . "Baz")';
+        ::is($Bar, "myfoobarbaz", "${description}${caution}");
     }
 }
 
