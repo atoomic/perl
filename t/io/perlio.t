@@ -155,6 +155,7 @@ sub find_filename {
 }
 
 # in-memory open
+our $TODO;
 SKIP: {
     eval { require PerlIO::scalar };
     unless (find PerlIO::Layer 'scalar') {
