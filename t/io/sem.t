@@ -5,13 +5,13 @@ BEGIN {
 
   require "./test.pl";
   set_up_inc( '../lib' ) if -d '../lib' && -d '../ext';
-  require Config; import Config;
+  require Config; Config->import;
 
-  if ($ENV{'PERL_CORE'} && $Config{'extensions'} !~ m[\bIPC/SysV\b]) {
+  if ($ENV{'PERL_CORE'} && $Config::Config{'extensions'} !~ m[\bIPC/SysV\b]) {
     skip_all('-- IPC::SysV was not built');
   }
   skip_all_if_miniperl();
-  if ($Config{'d_sem'} ne 'define') {
+  if ($Config::Config{'d_sem'} ne 'define') {
     skip_all('-- $Config{d_sem} undefined');
   }
 }
