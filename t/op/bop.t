@@ -71,12 +71,12 @@ is (($foo ^ $bar), ($Axz x 75 . $zap));
 sub _and($) { $_[0] & native_to_uni("+0") }
 sub _oar($) { $_[0] | native_to_uni("+0") }
 sub _xor($) { $_[0] ^ native_to_uni("+0") }
-is _and native_to_uni("waf"), native_to_uni('# '),  'str var & const str'; # [perl #20661]
-is _and native_to_uni("waf"), native_to_uni('# '),  'str var & const str again'; # [perl #20661]
-is _oar native_to_uni("yit"), native_to_uni('{yt'), 'str var | const str';
-is _oar native_to_uni("yit"), native_to_uni('{yt'), 'str var | const str again';
-is _xor native_to_uni("yit"), native_to_uni('RYt'), 'str var ^ const str';
-is _xor native_to_uni("yit"), native_to_uni('RYt'), 'str var ^ const str again';
+is (_and native_to_uni("waf")), native_to_uni('# '),  'str var & const str'; # [perl #20661]
+is (_and native_to_uni("waf")), native_to_uni('# '),  'str var & const str again'; # [perl #20661]
+is (_oar native_to_uni("yit")), native_to_uni('{yt'), 'str var | const str';
+is (_oar native_to_uni("yit")), native_to_uni('{yt'), 'str var | const str again';
+is (_xor native_to_uni("yit")), native_to_uni('RYt'), 'str var ^ const str';
+is (_xor native_to_uni("yit")), native_to_uni('RYt'), 'str var ^ const str again';
 
 SKIP: {
     skip "Converting a numeric doesn't work with EBCDIC unlike the above tests",
