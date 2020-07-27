@@ -16,7 +16,7 @@
 #include <perl.h>
 #include <XSUB.h>
 
-#if !PERL_VERSION || PERL_VERSION < 7
+#ifndef PERL_CORE
 #include "ppport.h"             /* handle old perls */
 #endif
 
