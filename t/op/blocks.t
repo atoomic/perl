@@ -258,6 +258,7 @@ fresh_perl_like(
     "INIT{die} should exit"
 );
 
+our $TODO;
 TODO: {
     local $TODO = 'RT #2917: INIT{} in eval is wrongly considered too late';
     fresh_perl_is('eval "INIT { print qq(in init); };";', 'in init', {}, 'RT #2917: No constraint on how late INIT blocks can run');
