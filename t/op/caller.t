@@ -81,6 +81,7 @@ sub show_bits
     return $out;
 }
 
+our $Level;
 sub check_bits
 {
     local $Level = $Level + 2;
@@ -200,7 +201,7 @@ EOP
     sub fwib::DESTROY { ++$gone }
     package DB;
     sub { () = caller(0) }->(); # initialise PL_dbargs
-    @args = bless[],'fwib';
+    our @args = bless[],'fwib';
     sub { () = caller(0) }->(); # clobber @args without initialisation
     ::is $gone, 1, 'caller does not leak @DB::args elems when AvREAL';
 }
@@ -222,6 +223,7 @@ sub CLEAR    {        }
 sub FETCH    { $_[0][$_[1]] }
 sub STORE    { $_[0][$_[1]] = $_[2] }
 package DB;
+our @args;
 tie @args, 'glelp';
 eval { sub { () = caller 0; } ->(1..3) };
 ::like $@, qr "^Cannot set tied \@DB::args at ",
@@ -231,7 +233,7 @@ untie @args;
 package main;
 
 # [perl #113486]
-fresh_perl_is <<'END', "ok\n", {},
+fresh_perl_is <<'END', "ok\n", { run_as_five => 1 },
   { package foo; sub bar { main::bar() } }
   sub bar {
     delete $::{"foo::"};
@@ -296,7 +298,7 @@ my $line = eval "\n#line 3000000000\ngetlineno();";
 is $line, "3000000000", "check large line numbers are preserved";
 
 # This was fixed with commit d4d03940c58a0177, which fixed bug #78742
-fresh_perl_is <<'END', "__ANON__::doof\n", {},
+fresh_perl_is <<'END', "__ANON__::doof\n", { run_as_five => 1 },
 package foo;
 BEGIN {undef %foo::}
 sub doof { caller(0) }
@@ -305,7 +307,7 @@ END
     "caller should not SEGV when the current package is undefined";
 
 # caller should not SEGV when the eval entry has been cleared #120998
-fresh_perl_is <<'END', 'main', {},
+fresh_perl_is <<'END', 'main', { run_as_five => 1 },
 $SIG{__DIE__} = \&dbdie;
 eval '/x';
 sub dbdie {
@@ -317,7 +319,7 @@ END
 
 TODO: {
     local $::TODO = 'RT #7165: line number should be consistent for multiline subroutine calls';
-    fresh_perl_is(<<'EOP', "6\n9\n", {}, 'RT #7165: line number should be consistent for multiline subroutine calls');
+    fresh_perl_is(<<'EOP', "6\n9\n", { run_as_five => 1 }, 'RT #7165: line number should be consistent for multiline subroutine calls');
       sub tagCall {
         my ($package, $file, $line) = caller;
         print "$line\n";
