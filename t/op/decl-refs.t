@@ -1,3 +1,4 @@
+#!perl
 BEGIN {
     chdir 't';
     require './test.pl';
@@ -38,8 +39,8 @@ for my $decl (qw< my CORE::state our local >) {
 use feature 'declared_refs', 'state';
 no warnings 'experimental::declared_refs';
 
-for $decl ('my', 'state', 'our', 'local') {
-for $sigl ('$', '@', '%') {
+for my $decl ('my', 'state', 'our', 'local') {
+for my $sigl ('$', '@', '%') {
     # The weird code that follows uses ~ as a sigil placeholder and MY
     # as a declarator placeholder.
     my $code = '#line ' . (__LINE__+1) . ' ' . __FILE__ . "\n" . <<'END';
@@ -106,8 +107,8 @@ END
 }}
 
 use feature 'refaliasing'; no warnings "experimental::refaliasing";
-for $decl ('my', 'state', 'our') {
-for $sigl ('$', '@', '%') {
+for my $decl ('my', 'state', 'our') {
+for my $sigl ('$', '@', '%') {
     my $code = '#line ' . (__LINE__+1) . ' ' . __FILE__ . "\n" . <<'ENE';
     for MY \~x (\~::y) {
         is \~x, \~::y, '\~x aliased by for MY \~x';
