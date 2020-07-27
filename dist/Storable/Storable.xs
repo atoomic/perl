@@ -16,10 +16,6 @@
 #include <perl.h>
 #include <XSUB.h>
 
-#ifndef PATCHLEVEL
-#include <patchlevel.h>		/* Perl's one, needed since 5.6 */
-#endif
-
 #if !defined(PERL_VERSION) || (PERL_REVISION == 5 && PERL_VERSION < 10) || (PERL_REVISION == 5 && PERL_VERSION == 10 && PERL_SUBVERSION < 1)
 #define NEED_PL_parser
 #define NEED_sv_2pv_flags
@@ -521,7 +517,7 @@ static MAGIC *THX_sv_magicext(pTHX_
 
 #if defined(MULTIPLICITY) || defined(PERL_OBJECT) || defined(PERL_CAPI)
 
-#if (PATCHLEVEL <= 4) && (SUBVERSION < 68)
+#if PERL_VERSION_LT(5,4,68)
 #define dSTCXT_SV                                               \
     SV *perinterp_sv = get_sv(MY_VERSION, 0)
 #else	/* >= perl5.004_68 */
@@ -1012,22 +1008,22 @@ static const char byteorderstr_56[] = {BYTEORDER_BYTES_56, 0};
 #define STORABLE_BIN_MAJOR	2		/* Binary major "version" */
 #define STORABLE_BIN_MINOR	11		/* Binary minor "version" */
 
-#if (PATCHLEVEL <= 5)
+#if PERL_VERSION_LT(5,6,0)
 #define STORABLE_BIN_WRITE_MINOR	4
 #elif !defined (SvVOK)
 /*
  * Perl 5.6.0-5.8.0 can do weak references, but not vstring magic.
 */
 #define STORABLE_BIN_WRITE_MINOR	8
-#elif PATCHLEVEL >= 19
+#elif PERL_VERSION_GE(5,19,0)
 /* Perl 5.19 takes away the special meaning of PL_sv_undef in arrays. */
 /* With 3.x we added LOBJECT */
 #define STORABLE_BIN_WRITE_MINOR	11
 #else
 #define STORABLE_BIN_WRITE_MINOR	9
-#endif /* (PATCHLEVEL <= 5) */
+#endif /* PERL_VERSION_LT(5,6,0) */
 
-#if (PATCHLEVEL < 8 || (PATCHLEVEL == 8 && SUBVERSION < 1))
+#if PERL_VERSION_LT(5,8,1)
 #define PL_sv_placeholder PL_sv_undef
 #endif
 
@@ -1354,7 +1350,7 @@ static U32 Sntohl(U32 x) {
  * sortsv is not available ( <= 5.6.1 ).
  */
 
-#if (PATCHLEVEL <= 6)
+#if PERL_VERSION_LT(5,7,0)
 
 #if defined(USE_ITHREADS)
 
@@ -1373,12 +1369,12 @@ static U32 Sntohl(U32 x) {
 
 #endif  /* USE_ITHREADS */
 
-#else /* PATCHLEVEL > 6 */
+#else /* PERL >= 5.7.0 */
 
 #define STORE_HASH_SORT \
     sortsv(AvARRAY(av), len, Perl_sv_cmp);
 
-#endif /* PATCHLEVEL <= 6 */
+#endif /* PERL_VERSION_LT(5,7,0) */
 
 static int store(pTHX_ stcxt_t *cxt, SV *sv);
 static SV *retrieve(pTHX_ stcxt_t *cxt, const char *cname);
@@ -2498,7 +2494,7 @@ static int store_scalar(pTHX_ stcxt_t *cxt, SV *sv)
         /* public string - go direct to string read.  */
         goto string_readlen;
     } else if (
-#if (PATCHLEVEL <= 6)
+#if PERL_VERSION_LT(5,7,0)
                /* For 5.6 and earlier NV flag trumps IV flag, so only use integer
                   direct if NV flag is off.  */
                (flags & (SVf_NOK | SVf_IOK)) == SVf_IOK
@@ -2576,7 +2572,7 @@ static int store_scalar(pTHX_ stcxt_t *cxt, SV *sv)
         */
         Zero(&nv, 1, NV_bytes);
 #endif
-#if (PATCHLEVEL <= 6)
+#if PERL_VERSION_LT(5,7,0)
         nv.nv = SvNV(sv);
         /*
          * Watch for number being an integer in disguise.
@@ -2717,7 +2713,7 @@ static int store_array(pTHX_ stcxt_t *cxt, AV *av)
             STORE_SV_UNDEF();
             continue;
         }
-#if PATCHLEVEL >= 19
+#if PERL_VERSION_GE(5,19,0)
         /* In 5.19.3 and up, &PL_sv_undef can actually be stored in
          * an array; it no longer represents nonexistent elements.
          * Historically, we have used SX_SV_UNDEF in arrays for
@@ -2748,7 +2744,7 @@ static int store_array(pTHX_ stcxt_t *cxt, AV *av)
 }
 
 
-#if (PATCHLEVEL <= 6)
+#if PERL_VERSION_LT(5,7,0)
 
 /*
  * sortcmp
@@ -2765,7 +2761,7 @@ sortcmp(const void *a, const void *b)
     return sv_cmp(*(SV * const *) a, *(SV * const *) b);
 }
 
-#endif /* PATCHLEVEL <= 6 */
+#endif /* PERL_VERSION_LT(5,7,0) */
 
 /*
  * store_hash
@@ -4286,7 +4282,7 @@ static int sv_type(pTHX_ SV *sv)
 {
     switch (SvTYPE(sv)) {
     case SVt_NULL:
-#if PERL_VERSION_LE(5,10,0)
+#if PERL_VERSION_LT(5,11,0)
     case SVt_IV:
 #endif
     case SVt_NV:
@@ -4296,7 +4292,7 @@ static int sv_type(pTHX_ SV *sv)
          */
         return svis_SCALAR;
     case SVt_PV:
-#if PERL_VERSION_LE(5,10,0)
+#if PERL_VERSION_LT(5,11,0)
     case SVt_RV:
 #else
     case SVt_IV:
@@ -4314,7 +4310,7 @@ static int sv_type(pTHX_ SV *sv)
          */
         return SvROK(sv) ? svis_REF : svis_SCALAR;
     case SVt_PVMG:
-#if PERL_VERSION_LE(5,10,0)
+#if PERL_VERSION_LT(5,11,0)
         if ((SvFLAGS(sv) & (SVs_OBJECT|SVf_OK|SVs_GMG|SVs_SMG|SVs_RMG))
 	          == (SVs_OBJECT|BFD_Svs_SMG_OR_RMG)
 	    && mg_find(sv, PERL_MAGIC_qr)) {
@@ -4345,10 +4341,10 @@ static int sv_type(pTHX_ SV *sv)
         return svis_HASH;
     case SVt_PVCV:
         return svis_CODE;
-#if PERL_VERSION_GT(5,8,0)
+#if PERL_VERSION_GE(5,9,0)
 	/* case SVt_INVLIST: */
 #endif
-#if PERL_VERSION_GT(5,10,0)
+#if PERL_VERSION_GE(5,11,0)
     case SVt_REGEXP:
         return svis_REGEXP;
 #endif
@@ -7582,7 +7578,7 @@ static SV *do_retrieve(
 
     if (!sv) {
         TRACEMED(("retrieve ERROR"));
-#if (PATCHLEVEL <= 4)
+#if PERL_VERSION_LT(5,5,0)
         /* perl 5.00405 seems to screw up at this point with an
            'attempt to modify a read only value' error reported in the
            eval { $self = pretrieve(*FILE) } in _retrieve.
