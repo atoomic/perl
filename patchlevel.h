@@ -153,7 +153,7 @@ static const char * const local_patches[] = {
 	((int)(C_ARRAY_LENGTH(local_patches)-2))
 
 /* the old terms of reference, add them only when explicitly included */
-#define PATCHLEVEL		PERL_CORE_MINOR
+#define PATCHLEVEL		PERL_VERSION
 #undef  SUBVERSION		/* OS/390 has a SUBVERSION in a system header */
-#define SUBVERSION		PERL_CORE_RELEASE
+#define SUBVERSION		PERL_SUBVERSION
 #endif
