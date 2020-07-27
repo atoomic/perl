@@ -33,9 +33,11 @@ sub import {
     ${^WARNING_BITS} = 0;
     $^W = 0;
 
-    # perl  -e'my $h; BEGIN {  $h = $^H } printf("\$^H = 0x%08X\n", $h); '
-    $^H = 0x0; # FIXME only reset the features...
-    %^H = ();
+    $^H = 0x00000100;
+
+    foreach my $f ( qw{indirect} ) {
+        $^H{$f} = 1;
+    }
 
     return;
 }

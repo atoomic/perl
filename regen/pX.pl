@@ -71,6 +71,25 @@ my %VARS = (
 ###########################################################################
 # Generate lib/p5.pm
 {
+    my @p5_default_features = qw{indirect};
+    my $p5_features_str = join ' ', @p5_default_features;
+    $VARS{P5_DEFAULT_FEATURES} = $p5_features_str;
+
+    my $oneliner = <<'EOS';
+printf( "0x%08X", $^H );
+EOS
+    $oneliner =~ s{\n+}{ }g;
+    $oneliner =~ s{#.*$}{ }g;
+    $oneliner =~ s{~(\w+)~}{$VARS{$1}}g;
+
+    my $hints_p5
+        = qx|$miniperl -Ilib -5 '$oneliner'|;  # force to use current miniperl
+    chomp $hints_p5;
+    die q[Fail to generate hints for p5] unless $? == 0;
+
+    $VARS{P5_DEFAULT_HINTS} = $hints_p5;
+
+
     while (<DATA>) {    # header
         last if /^# START P5$/;
     }
@@ -200,9 +219,11 @@ sub import {
     ${^WARNING_BITS} = 0;
     $^W = 0;
 
-    # perl  -e'my $h; BEGIN {  $h = $^H } printf("\$^H = 0x%08X\n", $h); '
-    $^H = 0x0; # FIXME only reset the features...
-    %^H = ();
+    $^H = ~P5_DEFAULT_HINTS~;
+
+    foreach my $f ( qw{~P5_DEFAULT_FEATURES~} ) {
+        $^H{$f} = 1;
+    }
 
     return;
 }
@@ -255,16 +276,18 @@ BEGIN {
 
 sub import {
 
-    # use warnings; no warnings qw/experimental/;
-    # perl -e'use warnings; no warnings qw/experimental/;  my $w; BEGIN {$w = ${^WARNING_BITS} } print unpack("H*", $w) . "\n"'
     ${^WARNING_BITS} = pack( "H*", '~P7_WARNINGS~' );
 
-    # use strict; use utf8;
-    # perl  -MData::Dumper -e'my $h; use strict; use utf8; use feature (qw/bitwise current_sub declared_refs evalbytes fc postderef_qq refaliasing say signatures state switch unicode_eval/); BEGIN {  $h = $^H } printf("\$^H = 0x%08X\n", $h); print Dumper \%^H; '
     $^H |= ~P7_HINTS_STRICT~;
 
-    require feature;
-    feature->import(qw{~P7_DEFAULT_FEATURES~});
+    foreach my $f ( qw{~P7_DEFAULT_FEATURES~} ) {
+        $^H{$f} = 1;
+    }
+    # alternatively
+    # require feature;
+    # feature->import(qw{~P7_DEFAULT_FEATURES~});
+
+    return;
 }
 
 1;
