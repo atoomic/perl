@@ -15,13 +15,15 @@
 
 /* hardcoded versions never change them */
 /* view define GCC_DIAG_PRAGMA(x) _Pragma (#x) */
-#define PERL_REVISION  	5               /* age */
-#define PERL_VERSION   	255             /* epoch */
-#define PERL_SUBVERSION 255             /* generation */
+#define PERL_REVISION  	          5
+#define PERL_VERSION   	        255
+#define PERL_SUBVERSION         255
 
-#define PERL_MAJOR_VERSION	7		/* age */
-#define PERL_MINOR_VERSION	0		/* epoch */
-#define PERL_MICRO_VERSION	0		/* generation */
+#define PERL_MAJOR_VERSION	      7
+#define PERL_MINOR_VERSION	      0
+#define PERL_MICRO_VERSION	      0
+#define PERL_RELEASE_LEVEL        0 /* for future usages */
+#define PERL_RELEASE_SERIAL       0 /* for future usages */
 
 /* The following numbers describe the earliest compatible version of
    Perl ("compatibility" here being defined as sufficient binary/API

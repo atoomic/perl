@@ -4659,6 +4659,14 @@ EXTERN_C char **environ;  /* environment variables supplied via exec */
 #include "patchlevel.h"
 #undef PERL_PATCHLEVEL_H_IMPLICIT
 
+/* Version as a single 4-byte hex number
+   Use this for numeric comparisons */
+#define PERL_VERSION_HEX ((PERL_MAJOR_VERSION << 24) | \
+                         (PERL_MINOR_VERSION  << 16) | \
+                         (PERL_MICRO_VERSION  <<  8) | \
+                         (PERL_RELEASE_LEVEL  <<  4) | \
+                         (PERL_RELEASE_SERIAL  << 0))
+
 #define PERL_VERSION_STRING	STRINGIFY(PERL_MAJOR_VERSION) "." \
 				STRINGIFY(PERL_MINOR_VERSION) "." \
 				STRINGIFY(PERL_MICRO_VERSION)
