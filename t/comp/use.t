@@ -6,7 +6,7 @@ BEGIN {
     $INC{"feature.pm"} = 1; # so we don't attempt to load feature.pm
 }
 
-print "1..84\n";
+print "1..100\n";
 
 # Can't require test.pl, as we're testing the use/require mechanism here.
 
@@ -53,7 +53,7 @@ sub _ok {
         }
     }
     $test = $test + 1;
-    $result;
+    return !!$result;
 }
 
 sub like ($$;$) {
@@ -67,6 +67,40 @@ sub isnt ($$;$) {
 }
 sub ok($;$) {
     _ok ('ok', shift, undef, @_);
+}
+
+my @bad = (
+    'use v8', # not sure - need decision
+    'use v6',
+    'use v6.1',
+    'use v6.0.1',
+    'use 6.001',
+    # same with 'no' would be a bonus
+    # use v7.*; # index('v7.')
+    'use 7',
+    'use 7.0',
+    'use 7.42', # index('7')
+    'use 5.10', # => 5.100
+    'use 5.6', #  => 5.600
+    'no v5',
+);
+
+my @good = (
+    'use v7',
+    'no v7',
+    'use v5',
+    'use v5.10',
+    'use 5.010',
+);
+
+foreach my $v ( @good ) {
+    eval qq[ $v; ];
+    is( $@, '', "'$v;' is valid # $@");
+}
+
+foreach my $v ( @bad ) {
+    eval qq[ $v; ];
+    isnt( $@, '', "'$v;' is invalid");
 }
 
 eval "use 5";
@@ -266,56 +300,5 @@ is("@test_use::got", "joe", 'got joe');
     # (git commit 2658f4d9934aba5f8b23afcc078dc12b3a40223)
     eval "use test_use_14937 3";
     like ($@, qr/^test_use_14937 defines neither package nor VERSION--version check failed at/, "test_use_14937");
-}
-
-my @ver = split /\./, sprintf "%vd", $^V;
-
-foreach my $index (-3..+3) {
-    foreach my $v (0, 1) {
-        my @parts = @ver;
-        if ($index) {
-            if ($index < 0) {
-                # Jiggle one of the parts down
-                --$parts[-$index - 1] if $parts[-$index - 1] > 1;
-                if ($parts[-$index - 1] < 0) {
-                    # perl's version number ends with '.0'
-                    $parts[-$index - 1] = 0;
-                    $parts[-$index - 2] -= 2 if $parts[-$index - 2] > 2;
-                }
-            } else {
-                # Jiggle one of the parts up
-                ++$parts[$index - 1];
-            }
-        }
-        my $v_version = sprintf "v%d.%d.%d", @parts;
-        my $version;
-        if ($v) {
-            $version = $v_version;
-        } else {
-            $version = $parts[0] + $parts[1] / 1000 + $parts[2] / 1000000;
-        }
-
-        eval "use $version";
-        if ($index > 0) {
-            # The future
-            like ($@,
-              qr/Perl $v_version required--this is only \Q$^V\E, stopped/,
-              "use $version");
-        } else {
-            # The present or past
-            is ($@, '', "use $version");
-        }
-
-        eval "no $version";
-        if ($index <= 0) {
-            # The present or past
-            like ($@,
-              qr/Perls since $v_version too modern--this is \Q$^V\E, stopped/,
-              "no $version");
-        } else {
-            # future
-            is ($@, '', "no $version");
-        }
-    }
 }
 

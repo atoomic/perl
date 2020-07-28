@@ -3753,11 +3753,46 @@ static OP *
 S_require_version(pTHX_ SV *sv)
 {
     dVAR; dSP;
+    const char *str_version;
+    const char *ptr;
+    SV *sv_legacy;
+    SV *req;
+    SV *pv;
 
     sv = sv_2mortal(new_version(sv));
+
+    {
+        req = SvRV(sv);
+        pv = *hv_fetchs(MUTABLE_HV(req), "original", FALSE);
+
+	    str_version = SvPVx_nolen_const(pv);
+	    ptr = str_version;
+	    if (*str_version == 'v') ++ptr;
+
+	    switch ( *ptr ) {
+	        case '5':
+	            break;
+	        case '6':
+	            DIE(aTHX_ "'use v6' is not supported by Perl 7, please use 'use v5[.x];' or 'use v7;'" );
+	            break;
+	        case '7':
+	            /* use 7* is not supported */
+	            if (ptr == str_version || strlen(ptr) != 1)
+                    DIE(aTHX_ "use v7; is the only supported syntax for using v7." );
+	            RETPUSHYES;
+	            break;
+	        default:
+	            DIE(aTHX_ "Unknown behavior for use vX" );
+	    }
+    }
+
+    /* catch issues like use 5.6 which converts to 5.600 instead of using 5.006 */
+	sv_legacy = sv_2mortal( newSVpvs("v5.32.255.255") ); /* the last available release version */
+
     if (!Perl_sv_derived_from_pvn(aTHX_ PL_patchlevel, STR_WITH_LEN("version"), 0))
         upg_version(PL_patchlevel, TRUE);
     if (cUNOP->op_first->op_type == OP_CONST && cUNOP->op_first->op_private & OPpCONST_NOVER) {
+        /* no 5.000 logic lives here */
         if ( vcmp(sv,PL_patchlevel) <= 0 )
             DIE(aTHX_ "Perls since %" SVf " too modern--this is %" SVf ", stopped",
                 SVfARG(sv_2mortal(vnormal(sv))),
@@ -3768,8 +3803,6 @@ S_require_version(pTHX_ SV *sv)
         if ( vcmp(sv,PL_patchlevel) > 0 ) {
             I32 first = 0;
             AV *lav;
-            SV * const req = SvRV(sv);
-            SV * const pv = *hv_fetchs(MUTABLE_HV(req), "original", FALSE);
 
             /* get the left hand term */
             lav = MUTABLE_AV(SvRV(*hv_fetchs(MUTABLE_HV(req), "version", FALSE)));
