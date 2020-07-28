@@ -13,11 +13,21 @@
 /* do not adjust the whitespace! Configure expects the numbers to be
  * exactly on the third column */
 
+/* pragma: https://gcc.gnu.org/onlinedocs/gcc/Diagnostic-Pragmas.html */
+
 /* hardcoded versions never change them */
 /* view define GCC_DIAG_PRAGMA(x) _Pragma (#x) */
-#define PERL_REVISION  	5               /* age */
-#define PERL_VERSION   	255             /* epoch */
-#define PERL_SUBVERSION 255             /* generation */
+
+#define DEPRECATED(v,msg) \
+	_Pragma ("GCC warning - xxx") \
+	#v
+
+#define PERL_REVISION \
+	DEPRECATED(5, "GCC warning - Usage of deprecated macro: PERL_REVISION")
+#define PERL_VERSION \
+	DEPRECATED(255, "GCC warning - Usage of deprecated macro: PERL_VERSION")
+#define PERL_SUBVERSION \
+	DEPRECATED(255, "WARNING - Usage of deprecated macro: PERL_SUBVERSION")
 
 #define PERL_CORE_MAJOR	7		/* age */
 #define PERL_CORE_MINOR	0		/* epoch */
@@ -153,7 +163,9 @@ static const char * const local_patches[] = {
 	((int)(C_ARRAY_LENGTH(local_patches)-2))
 
 /* the old terms of reference, add them only when explicitly included */
-#define PATCHLEVEL		PERL_VERSION
+#define PATCHLEVEL		PERL_VERSION _Pragma("Warning: Usage of deprecated macro: PATCHLEVEL")
+
 #undef  SUBVERSION		/* OS/390 has a SUBVERSION in a system header */
 #define SUBVERSION		PERL_SUBVERSION
+
 #endif
