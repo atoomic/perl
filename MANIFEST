@@ -5206,7 +5206,6 @@ pod/perl587delta.pod		Perl changes in version 5.8.7
 pod/perl588delta.pod		Perl changes in version 5.8.8
 pod/perl589delta.pod		Perl changes in version 5.8.9
 pod/perl58delta.pod		Perl changes in version 5.8.0
-pod/perl700delta.pod		Perl changes in version 7.0.0
 pod/perlapio.pod		Perl internal IO abstraction interface
 pod/perlartistic.pod		Perl Artistic License
 pod/perlbook.pod		Perl book information
