@@ -2569,12 +2569,12 @@ Firstly, the bare minimum to run this script
 in Linux with perl-5.33.0 is as follows (under $Config{prefix}):
 
   ./bin/perl
-  ./lib/perl5/5.33.0/strict.pm
-  ./lib/perl5/5.33.0/warnings.pm
-  ./lib/perl5/5.33.0/i686-linux/File/Glob.pm
-  ./lib/perl5/5.33.0/feature.pm
-  ./lib/perl5/5.33.0/XSLoader.pm
-  ./lib/perl5/5.33.0/i686-linux/auto/File/Glob/Glob.so
+  ./lib/perl/7.0.0/strict.pm
+  ./lib/perl/7.0.0/warnings.pm
+  ./lib/perl/7.0.0/i686-linux/File/Glob.pm
+  ./lib/perl/7.0.0/feature.pm
+  ./lib/perl/7.0.0/XSLoader.pm
+  ./lib/perl/7.0.0/i686-linux/auto/File/Glob/Glob.so
 
 Secondly, for perl-5.10.1, the Debian perl-base package contains 591
 files, (of which 510 are for lib/unicore) totaling about 3.5MB in its
