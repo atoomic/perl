@@ -338,17 +338,36 @@ XXX
 
 =head1 Internal Changes
 
-XXX Changes which affect the interface available to C<XS> code go here.  Other
-significant internal changes for future core maintainers should be noted as
-well.
+The macros C<PERL_REVISION>, C<PERL_VERSION>, C<PERL_SUBVERSION> are now deprecated.
+They are replaced by C<PERL_MAJOR_VERSION>, C<PERL_MINOR_VERSION>
+and C<PERL_MICRO_VERSION>.
 
-[ List each change as an =item entry ]
+It's recommended to do not use these macros directly but prefer using the
+compare macros instead.
+
+The reasons of their deprecation are due to the incorrect usage of these variables
+when comparing a Perl version, but also the usage of old version of ppport.h in
+multiple distribution which does not support anything else than a PERL_REVISION=5.
 
 =over 4
 
-=item *
+=item C<PERL_REVISION> is now C<PERL_MAJOR_VERSION>
 
-XXX
+=item C<PERL_VERSION> is now C<PERL_MINOR_VERSION>
+
+=item C<PERL_SUVVERSION> is now C<PERL_MICRO_VERSION>
+
+=item Addition of new macro to compare Perl version
+
+Six new macro are now available in core (& Devel-PPPort) to check
+a Perl version.
+
+  #if PERL_VERSION_EQ(5,9,3) /* == */
+  #if PERL_VERSION_NE(5,9,3) /* != */
+  #if PERL_VERSION_LT(5,9,3) /* < */
+  #if PERL_VERSION_GT(5,9,3) /* > */
+  #if PERL_VERSION_LE(5,9,3) /* <= */
+  #if PERL_VERSION_GE(5,9,3) /* >= */
 
 =back
 
