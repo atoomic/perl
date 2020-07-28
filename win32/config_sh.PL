@@ -79,8 +79,8 @@ if (-e $patch_file) {
     close $fh;
 }
 
-$opt{version} = "$opt{PERL_CORE_MAJOR}.$opt{PERL_CORE_MINOR}.$opt{PERL_CORE_RELEASE}";
-$opt{version_patchlevel_string} = "version $opt{PERL_CORE_MINOR} subversion $opt{PERL_CORE_RELEASE}";
+$opt{version} = "$opt{PERL_MAJOR_VERSION}.$opt{PERL_MINOR_VERSION}.$opt{PERL_MICRO_VERSION}";
+$opt{version_patchlevel_string} = "version $opt{PERL_MINOR_VERSION} subversion $opt{PERL_MICRO_VERSION}";
 $opt{version_patchlevel_string} .= " patch $opt{PERL_PATCHLEVEL}" if exists $opt{PERL_PATCHLEVEL};
 
 my $ver = `ver 2>nul`;

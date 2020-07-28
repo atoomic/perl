@@ -3817,9 +3817,9 @@ S_minus_v(pTHX)
 #endif /* #ifdef PERL_PATCHNUM */
 	PIO_stdout =  PerlIO_stdout();
 	    PerlIO_printf(PIO_stdout,
-		"\nThis is perl "	STRINGIFY(PERL_CORE_MAJOR)
-		", version "		STRINGIFY(PERL_CORE_MINOR)
-		", subversion "		STRINGIFY(PERL_CORE_RELEASE)
+		"\nThis is perl "	STRINGIFY(PERL_MAJOR_VERSION)
+		", version "		STRINGIFY(PERL_MINOR_VERSION)
+		", subversion "		STRINGIFY(PERL_MICRO_VERSION)
 		" (%" SVf ") built for "	ARCHNAME, SVfARG(level)
 		);
 	    SvREFCNT_dec_NN(level);

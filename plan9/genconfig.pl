@@ -269,18 +269,18 @@ foreach (sort keys %val_vars) {
 
 if (open(PL,'<',"${outdir}patchlevel.h")) {
   while (<PL>) {
-    if    (/^#define PERL_CORE_MINOR\s+(\S+)/) {
-      print OUT "PERL_CORE_MINOR='$1'\n";
+    if    (/^#define PERL_MINOR_VERSION\s+(\S+)/) {
+      print OUT "PERL_MINOR_VERSION='$1'\n";
       print OUT "PATCHLEVEL='$1'\n";		# XXX compat
     }
-    elsif (/^#define PERL_CORE_RELEASE\s+(\S+)/) {
-      print OUT "PERL_CORE_RELEASE='$1'\n";
+    elsif (/^#define PERL_MICRO_VERSION\s+(\S+)/) {
+      print OUT "PERL_MICRO_VERSION='$1'\n";
       print OUT "SUBVERSION='$1'\n";		# XXX compat
     }
   }
   close PL;
 }
-else { warn "Can't read ${outdir}patchlevel.h - skipping 'PERL_CORE_MINOR'"; }
+else { warn "Can't read ${outdir}patchlevel.h - skipping 'PERL_MINOR_VERSION'"; }
 
 print OUT "pager='/bin/p'\n";
 

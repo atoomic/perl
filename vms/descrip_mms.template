@@ -70,7 +70,7 @@ OBJVAL = $(MMS$TARGET_NAME)$(O)
 .endif
 .endif
 
-PERL_CORE_MINOR = ~PV~
+PERL_MINOR_VERSION = ~PV~
 
 .ifdef MALLOC
 MALLOC_O = malloc$(O)
@@ -81,9 +81,9 @@ MALLOC_C = malloc$(C)
 SOCKET=1
 .endif
 
-ARCHDIR =  [.lib.$(ARCHNAME).$(PERL_CORE_MINOR)]
-ARCHCORE = [.lib.$(ARCHNAME).$(PERL_CORE_MINOR).CORE]
-ARCHAUTO = [.lib.$(ARCHNAME).$(PERL_CORE_MINOR).auto]
+ARCHDIR =  [.lib.$(ARCHNAME).$(PERL_MINOR_VERSION)]
+ARCHCORE = [.lib.$(ARCHNAME).$(PERL_MINOR_VERSION).CORE]
+ARCHAUTO = [.lib.$(ARCHNAME).$(PERL_MINOR_VERSION).auto]
 
 #: >>>>>Compiler-specific options <<<<<
 .ifdef GNUC

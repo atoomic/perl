@@ -1337,12 +1337,12 @@ void fnGetPerlScreenName(char *sPerlScreenName)
 	char sPerlVersion[32 * sizeof(char)] = {'\0'};
 	char sPerlSubVersion[32 * sizeof(char)] = {'\0'};
 
-	// The defines for PERL_CORE_MAJOR, PERL_CORE_MINOR, PERL_CORE_RELEASE are available in
+	// The defines for PERL_MAJOR_VERSION, PERL_MINOR_VERSION, PERL_MICRO_VERSION are available in
 	// patchlevel.h  under root and gets included when  perl.h  is included.
 	// The number 10 below indicates base 10.
-	itoa(PERL_CORE_MAJOR, sPerlRevision, 10);
-	itoa(PERL_CORE_MINOR, sPerlVersion, 10);
-	itoa(PERL_CORE_RELEASE, sPerlSubVersion, 10);
+	itoa(PERL_MAJOR_VERSION, sPerlRevision, 10);
+	itoa(PERL_MINOR_VERSION, sPerlVersion, 10);
+	itoa(PERL_MICRO_VERSION, sPerlSubVersion, 10);
 
 	// Concatenate substrings to get a string like Perl5.6.1 which is used as the screen name.
 	sprintf(sPerlScreenName, "%s%s.%s.%s", PERL_COMMAND_NAME,

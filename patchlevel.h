@@ -19,9 +19,9 @@
 #define PERL_VERSION   	255             /* epoch */
 #define PERL_SUBVERSION 255             /* generation */
 
-#define PERL_CORE_MAJOR	7		/* age */
-#define PERL_CORE_MINOR	0		/* epoch */
-#define PERL_CORE_RELEASE	0		/* generation */
+#define PERL_MAJOR_VERSION	7		/* age */
+#define PERL_MINOR_VERSION	0		/* epoch */
+#define PERL_MICRO_VERSION	0		/* generation */
 
 /* The following numbers describe the earliest compatible version of
    Perl ("compatibility" here being defined as sufficient binary/API

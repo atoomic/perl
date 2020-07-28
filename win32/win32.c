@@ -331,7 +331,7 @@ get_emd_part(SV **prev_pathp, STRLEN *const len, char *trailing_path, ...)
     va_start(ap, trailing_path);
     strip = va_arg(ap, char *);
 
-    sprintf(base, "%d.%d", (int)PERL_CORE_MAJOR, (int)PERL_CORE_MINOR);
+    sprintf(base, "%d.%d", (int)PERL_MAJOR_VERSION, (int)PERL_MINOR_VERSION);
     baselen = strlen(base);
 
     if (!*w32_module_name) {

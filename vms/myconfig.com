@@ -119,13 +119,13 @@ $ endif
 $ open/read RATHER_LONG_CONFIG_FILE_HANDLE 'RATHER_LONG_FILENAME_SEARCH' 
 $read_patchlevel_h:
 $ read/end_of_file = patchlevel_h_Done RATHER_LONG_CONFIG_FILE_HANDLE  line
-$ if f$locate("PERL_CORE_MINOR",line).ne.f$length(line)
+$ if f$locate("PERL_MINOR_VERSION",line).ne.f$length(line)
 $   then
 $     line = f$edit(line,"TRIM,COMPRESS")
 $     $PATCHLEVEL = f$element(2," ",line)
 $     if f$type($SUBVERSION).nes."" then goto patchlevel_h_Done
 $ endif
-$ if f$locate("PERL_CORE_RELEASE",line).ne.f$length(line)
+$ if f$locate("PERL_MICRO_VERSION",line).ne.f$length(line)
 $   then
 $     line = f$edit(line,"TRIM,COMPRESS")
 $     $SUBVERSION = f$element(2," ",line)
@@ -137,7 +137,7 @@ $patchlevel_h_Done:
 $ close RATHER_LONG_CONFIG_FILE_HANDLE 
 $ if $PATCHLEVEL.eqs.""
 $   then
-$     echo "warning: PERL_CORE_MINOR was not found in ''RATHER_LONG_FILENAME_TO_FIND':" 
+$     echo "warning: PERL_MINOR_VERSION was not found in ''RATHER_LONG_FILENAME_TO_FIND':" 
 $ endif
 $!
 $spit_it_out:

@@ -233,16 +233,16 @@ my %seen_quotes;
   while (<CONFIG_SH>) {
     next if m:^#!/bin/sh:;
 
-    # Catch PERL_CONFIG_SH=true and PERL_CORE_MINOR=n line from Configure.
+    # Catch PERL_CONFIG_SH=true and PERL_MINOR_VERSION=n line from Configure.
     s/^(\w+)=(true|\d+)\s*$/$1='$2'\n/ or m/^(\w+)='(.*)'$/;
     my($k, $v) = ($1, $2);
 
     # grandfather PATCHLEVEL and SUBVERSION and CONFIG
     if ($k) {
-	if ($k eq 'PERL_CORE_MINOR') {
+	if ($k eq 'PERL_MINOR_VERSION') {
 	    push @v_others, "PATCHLEVEL='$v'\n";
 	}
-	elsif ($k eq 'PERL_CORE_RELEASE') {
+	elsif ($k eq 'PERL_MICRO_VERSION') {
 	    push @v_others, "SUBVERSION='$v'\n";
 	}
 	elsif ($k eq 'PERL_CONFIG_SH') {

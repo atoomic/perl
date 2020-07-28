@@ -185,8 +185,8 @@ case "$osvers" in
     # the equivalent in the main Configure so we copy a little
     # from Configure XXX Configure should be fixed.
     if $test -r $src/patchlevel.h;then
-       patchlevel=`awk '/define[ 	]+PERL_CORE_MINOR/ {print $3}' $src/patchlevel.h`
-       subversion=`awk '/define[ 	]+PERL_CORE_RELEASE/ {print $3}' $src/patchlevel.h`
+       patchlevel=`awk '/define[ 	]+PERL_MINOR_VERSION/ {print $3}' $src/patchlevel.h`
+       subversion=`awk '/define[ 	]+PERL_MICRO_VERSION/ {print $3}' $src/patchlevel.h`
     else
        patchlevel=0
        subversion=0
