@@ -10,6 +10,12 @@ BEGIN {
     set_up_inc('../lib');
 }
 
+# Because this file is testing global variables, "no strict 'vars'" and "no
+# strict 'refs" are inappropriate here.
+
+no strict 'refs';
+no strict 'vars';
+
 # Hack to allow test counts to be specified piecemeal
 BEGIN { ++$INC{'tests.pm'} }
 sub tests::VERSION { $tests += pop };
