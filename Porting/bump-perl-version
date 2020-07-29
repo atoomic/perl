@@ -91,9 +91,9 @@ else {
 }
 usage('only one of -c, -s, -u and -i') if keys %opts > 1;
 
-my ($oldx, $oldy, $oldz) = $ARGV[0] =~ /^(\d+)\.(\d+)\.(\d+)$/
+my ($oldx, $oldy, $oldz) = $ARGV[0] =~ /^(\d+)\.(\d+)\.(\d+)$/a
 	or usage("bad version: $ARGV[0]");
-my ($newx, $newy, $newz) = $ARGV[1] =~ /^(\d+)\.(\d+)\.(\d+)$/
+my ($newx, $newy, $newz) = $ARGV[1] =~ /^(\d+)\.(\d+)\.(\d+)$/a
 	or usage("bad version: $ARGV[1]");
 
 my $old_decimal = sprintf "%d.%03d%03d", $oldx, $oldy, $oldz; # 5.011001
@@ -142,7 +142,17 @@ my @maps =  (
 	qr/config/,
     ],
     [
-	qr{\b (PERL_(?:API_)?VERSION(?:=|\s+)'?) (\d+) ('?)  (?!\.)}x,
+	qr{\b (PERL_API_VERSION(?:=|\s+)'?) (\d+) ('?)  (?!\.)}x,
+	sub { $2, "$1$newy$3"},
+	$oldy,
+    ],
+    [
+	qr{\b (PERL_MAJOR_VERSION(?:=|\s+)'?) (\d+) ('?)  (?!\.)}x,
+	sub { $2, "$1$newx$3"},
+	$oldy,
+    ],
+	[
+	qr{\b (PERL_MINOR_VERSION(?:=|\s+)'?) (\d+) ('?)  (?!\.)}x,
 	sub { $2, "$1$newy$3"},
 	$oldy,
     ],
