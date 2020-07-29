@@ -17533,13 +17533,13 @@ for my $version ( sort { $a <=> $b } keys %released ) {
         delta_from => 5.033000,
         changed => {
             'B::Op_private'          => '7.001000',
-            'Config'                 => '7.000',
+            'Config'                 => '7.001000',
             'Module::CoreList'       => '7.20200820',
             'Module::CoreList::Utils'=> '7.20200820',
         },
         removed => {
         }
-    }
+    },
 );
 
 sub is_core
@@ -18669,7 +18669,7 @@ sub is_core
         }
     },
     7.001000 => {
-        delta_from => '5.033000',
+        delta_from => 5.033,
         changed => {
         },
         removed => {
