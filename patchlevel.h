@@ -20,7 +20,7 @@
 #define PERL_SUBVERSION         255
 
 #define PERL_MAJOR_VERSION	      7
-#define PERL_MINOR_VERSION	      0
+#define PERL_MINOR_VERSION	      1
 #define PERL_MICRO_VERSION	      0
 #define PERL_RELEASE_LEVEL        0 /* for future usages */
 #define PERL_RELEASE_SERIAL       0 /* for future usages */
@@ -43,7 +43,7 @@
    changing them should not be necessary.
 */
 #define PERL_API_REVISION	7
-#define PERL_API_VERSION	0
+#define PERL_API_VERSION	1
 #define PERL_API_SUBVERSION	0
 /*
    XXX Note:  The selection of non-default Configure options, such
