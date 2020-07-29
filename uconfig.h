@@ -1326,7 +1326,7 @@
  */
 #define SITELIB "/usr/local/lib/perl/7.0"		/**/
 #define SITELIB_EXP "/usr/local/lib/perl/7.0"		/**/
-#define SITELIB_STEM "/usr/local/lib/perl5"		/**/
+#define SITELIB_STEM "/usr/local/lib/perl7"		/**/
 
 /* PERL_VENDORARCH:
  *	If defined, this symbol contains the name of a private library.

@@ -42,14 +42,6 @@ extern "C" {
 }
 #endif
 
-#ifndef PERL_VERSION_GE
-#   define PERL_VERSION_DECIMAL(r,v,s) (r*1000000 + v*1000 + s)
-#   define PERL_DECIMAL_VERSION \
-        PERL_VERSION_DECIMAL(PERL_REVISION,PERL_VERSION,PERL_SUBVERSION)
-#   define PERL_VERSION_GE(r,v,s) \
-        (PERL_DECIMAL_VERSION >= PERL_VERSION_DECIMAL(r,v,s))
-#endif
-
 #ifndef GCC_DIAG_IGNORE
 #  define GCC_DIAG_IGNORE(x)
 #  define GCC_DIAG_RESTORE
