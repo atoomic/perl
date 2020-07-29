@@ -14,8 +14,9 @@ BEGIN {
     require './regen/regen_lib.pl';
     push @INC, './lib';
 }
-use strict ;
 
+use strict;
+use warnings;
 
 ###########################################################################
 # Hand-editable data
@@ -46,35 +47,31 @@ my %feature = (
 # 5.odd implies the next 5.even, but an explicit 5.even can override it.
 my @all_features = sort keys %feature;
 
+# features bundles
+my @fb_5_9_5 = sort qw{say state switch indirect};
+my @fb_5_11  = sort ( @fb_5_9_5, qw{unicode_strings} );
+my @fb_5_15  = sort ( @fb_5_11, qw{unicode_eval evalbytes current_sub fc} );
+my @fb_5_23  = sort ( @fb_5_15, qw{postderef_qq} );
+my @fb_5_27  = sort ( @fb_5_23, qw{bitwise} );
+
 my %feature_bundle = (
-     all     => [ @all_features ],
-     default =>	[ qw(indirect) ],
-    "5.9.5"  =>	[qw(say state switch indirect)],
-    "5.10"   =>	[qw(say state switch indirect)],
-    "5.11"   =>	[qw(say state switch unicode_strings indirect)],
-    "5.13"   =>	[qw(say state switch unicode_strings indirect)],
-    "5.15"   =>	[qw(say state switch unicode_strings unicode_eval
-		    evalbytes current_sub fc indirect)],
-    "5.17"   =>	[qw(say state switch unicode_strings unicode_eval
-		    evalbytes current_sub fc indirect)],
-    "5.19"   =>	[qw(say state switch unicode_strings unicode_eval
-		    evalbytes current_sub fc indirect)],
-    "5.21"   =>	[qw(say state switch unicode_strings unicode_eval
-		    evalbytes current_sub fc indirect)],
-    "5.23"   =>	[qw(say state switch unicode_strings unicode_eval
-		    evalbytes current_sub fc postderef_qq indirect)],
-    "5.25"   =>	[qw(say state switch unicode_strings unicode_eval
-		    evalbytes current_sub fc postderef_qq indirect)],
-    "5.27"   =>	[qw(say state switch unicode_strings unicode_eval
-		    evalbytes current_sub fc postderef_qq bitwise indirect)],
-    "5.29"   =>	[qw(say state switch unicode_strings unicode_eval
-		    evalbytes current_sub fc postderef_qq bitwise indirect)],
-    "5.31"   =>	[qw(say state switch unicode_strings unicode_eval
-		    evalbytes current_sub fc postderef_qq bitwise indirect)],
-    "5.33"   =>        [qw(say state switch unicode_strings unicode_eval
-            evalbytes current_sub fc postderef_qq bitwise indirect)],
-    "7.0"   =>        [qw(say state switch unicode_strings unicode_eval
-            evalbytes current_sub fc postderef_qq bitwise indirect)],
+    all     => [@all_features],
+    default => [qw(indirect)],
+    "5.9.5" => [@fb_5_9_5],
+    "5.10"  => [@fb_5_9_5],
+    "5.11"  => [@fb_5_11],
+    "5.13"  => [@fb_5_11],
+    "5.15"  => [@fb_5_15],
+    "5.17"  => [@fb_5_15],
+    "5.19"  => [@fb_5_15],
+    "5.21"  => [@fb_5_15],
+    "5.23"  => [@fb_5_23],
+    "5.25"  => [@fb_5_23],
+    "5.27"  => [@fb_5_27],
+    "5.29"  => [@fb_5_27],
+    "5.31"  => [@fb_5_27],
+    "5.33"  => [@fb_5_27],
+    "7.0"   => [@fb_5_27],
 );
 
 my @noops = qw( postderef lexical_subs );
