@@ -75,7 +75,7 @@ POD = perl.pod	\
 	perl588delta.pod	\
 	perl589delta.pod	\
 	perl58delta.pod	\
-	perl700delta.pod	\
+	perl710delta.pod	\
 	perlapi.pod	\
 	perlapio.pod	\
 	perlartistic.pod	\
