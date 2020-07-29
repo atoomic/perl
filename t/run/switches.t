@@ -12,7 +12,7 @@ BEGIN {
 
 BEGIN { require "./test.pl";  require "./loc_tools.pl"; }
 
-plan(tests => 135);
+plan(tests => 137);
 
 use Config;
 
@@ -305,6 +305,7 @@ is runperl(stderr => 1, prog => '#!perl -M'),
         my $rev = $Config{PERL_MAJOR_VERSION};
         my $ver = $Config{PERL_MINOR_VERSION};
         my $rel = $Config{PERL_MICRO_VERSION};
+        print STDERR "# $rev-$ver-$rel\n"; 
         like( runperl( switches => ['-v'] ),
 	      qr/This is perl \Q$rev\E, version \Q$ver\E, subversion \Q$rel\E \(v\Q$v\E(?:[-*\w]+| \([^)]+\))?\) built for \Q$Config{archname}\E.+Copyright.+Larry Wall.+Artistic License.+GNU General Public License/s,
               '-v looks okay' );
@@ -324,7 +325,7 @@ is runperl(stderr => 1, prog => '#!perl -M'),
 
 # Tests for switches which do not exist
 
-foreach my $switch (split //, "ABbGgHJjKkLNOoPQqRrYyZz12346789_")
+foreach my $switch (split //, "ABbGgHJjKkLNOoPQqRrYyZz123456789_")
 {
     local $TODO = '';   # these ones should work on VMS
 
