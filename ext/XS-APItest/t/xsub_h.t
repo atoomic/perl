@@ -117,7 +117,8 @@ foreach $XS_VERSION (undef, @versions) {
 is_deeply([XS_APIVERSION_valid("Pie")], [], "XS_APIVERSION_BOOTCHECK passes");
 is(eval {XS_APIVERSION_invalid("Pie"); 1}, undef,
    "XS_APIVERSION_BOOTCHECK croaks for an invalid version");
-like($@, qr/Perl API version v1.0.16 of Pie does not match v[57]\.\d+\.\d+/,
+my $V = int($]);
+like($@, qr/Perl API version v1.0.16 of Pie does not match v$V\.\d+\.\d+/a,
      "expected error");
 
 my @xsreturn;
