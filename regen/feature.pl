@@ -71,6 +71,8 @@ my %feature_bundle = (
 		    evalbytes current_sub fc postderef_qq bitwise indirect)],
     "5.31"   =>	[qw(say state switch unicode_strings unicode_eval
 		    evalbytes current_sub fc postderef_qq bitwise indirect)],
+    "7.0"   =>  [qw(say state switch unicode_strings unicode_eval
+            evalbytes current_sub fc postderef_qq bitwise indirect)],
     "7.1"   =>  [qw(say state switch unicode_strings unicode_eval
             evalbytes current_sub fc postderef_qq bitwise indirect)],
 );
@@ -94,7 +96,7 @@ for my $feature (sort keys %feature) {
 }
 
 for (keys %feature_bundle) {
-    next unless /^(\d+)\.(\d*[13579])\z/;
+    next unless /^(\d+)\.(\d*[13579])\z/a;
     $feature_bundle{"$1.".($2+1)} ||= $feature_bundle{$_};
 }
 
@@ -115,7 +117,7 @@ for my $bund (
     sort { $a eq 'default' ? -1 : $b eq 'default' ? 1 : $a cmp $b }
          values %UniqueBundles
 ) {
-    next if $bund =~ /[^\d.]/ and $bund ne 'default';
+    next if $bund =~ /[^\d.]/a and $bund ne 'default';
     for (@{$feature_bundle{$bund}}) {
 	if (@{$BundleRanges{$_} ||= []} == 2) {
 	    $BundleRanges{$_}[1] = $bund
@@ -157,7 +159,7 @@ die "No HINT_UNI_8_BIT defined in perl.h"    unless $Uni8Bit;
 close "perl.h";
 
 my @HintedBundles =
-    ('default', grep !/[^\d.]/, sort values %UniqueBundles);
+    ('default', grep !/[^\d.]/a, sort values %UniqueBundles);
 
 
 ###########################################################################
@@ -241,9 +243,9 @@ format PODTURES =
 $::bundle, $::feature
 .
 
-for ('default', sort grep /\.\d[02468]/, keys %feature_bundle) {
-    $::bundle = ":$_";
-    $::feature = join ' ', @{$feature_bundle{$_}};
+foreach my $bundle ('default', sort grep /\.\d*[02468]\z/a, keys %feature_bundle) {
+    $::bundle = ":$bundle";
+    $::feature = join ' ', @{$feature_bundle{$bundle}};
     write $pm;
     print $pm "\n";
 }
