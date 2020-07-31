@@ -53,8 +53,6 @@ $feature_bundle{"5.29"} = $feature_bundle{"5.27"};
 $feature_bundle{"5.30"} = $feature_bundle{"5.27"};
 $feature_bundle{"5.31"} = $feature_bundle{"5.27"};
 $feature_bundle{"5.32"} = $feature_bundle{"5.27"};
-$feature_bundle{"5.33"} = $feature_bundle{"5.27"};
-$feature_bundle{"5.34"} = $feature_bundle{"5.27"};
 $feature_bundle{"5.9.5"} = $feature_bundle{"5.10"};
 $feature_bundle{"7.0"} = $feature_bundle{"5.27"};
 $feature_bundle{"7.1"} = $feature_bundle{"5.27"};
@@ -426,10 +424,6 @@ The following feature bundles are available:
             unicode_strings
 
   :5.32     bitwise current_sub evalbytes fc indirect
-            postderef_qq say state switch unicode_eval
-            unicode_strings
-
-  :5.34     bitwise current_sub evalbytes fc indirect
             postderef_qq say state switch unicode_eval
             unicode_strings
 
