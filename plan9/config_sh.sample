@@ -6,7 +6,7 @@
 # instead choose to run each of the .SH files by yourself, or "Configure -S".
 #
 
-# Package name      : perl5
+# Package name      : perl7
 # Source directory  : .
 # Configuration time: Sun Nov 24 20:57:48 EST 2002
 # Configured by     : unknown
@@ -829,7 +829,7 @@ installscript='/usr/bin'
 installsitearch='/sys/lib/perl/7.1.0/site_perl/386'
 installsitebin='/usr/bin'
 installsitelib='/sys/lib/perl/7.1.0/site_perl'
-installstyle='lib/perl5'
+installstyle='lib/perl'
 installusrbinperl='undef'
 installvendorarch=''
 installvendorbin=''
@@ -1037,7 +1037,7 @@ sockethdr=''
 socketlib=''
 socksizetype='int'
 sort='sort'
-spackage='Perl5'
+spackage='Perl7'
 spitshell='cat'
 srand48_r_proto='0'
 srandom_r_proto='0'
