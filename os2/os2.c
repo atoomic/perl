@@ -2050,7 +2050,7 @@ mod2fname(pTHX_ SV *sv)
       different DLL, even if a DLL with the same basename is loaded already.
       Thus there is no need to include the version into the mangling scheme. */
 #if 0
-    sum += PERL_MINOR_VERSION * 200 + PERL_MICRO_VERSION * 2;  /* Up to 5.6.1 */
+    sum += PERL_VERSION_MINOR * 200 + PERL_VERSION_PATCH * 2;  /* Up to 5.6.1 */
 #else
 #  ifndef COMPATIBLE_VERSION_SUM  /* Binary compatibility with the 5.00553 binary */
 #    define COMPATIBLE_VERSION_SUM (5 * 200 + 53 * 2)
@@ -2411,14 +2411,14 @@ perllib_mangle(char *s, unsigned int l)
     if (perllib_mangle_installed && (name = perllib_mangle_installed(s,l)))
 	return name;
     if (!newp && !notfound) {
-	newp = getenv(name = "PERLLIB_" STRINGIFY(PERL_MAJOR_VERSION)
-		      STRINGIFY(PERL_MINOR_VERSION) STRINGIFY(PERL_MICRO_VERSION)
+	newp = getenv(name = "PERLLIB_" STRINGIFY(PERL_VERSION_MAJOR)
+		      STRINGIFY(PERL_VERSION_MINOR) STRINGIFY(PERL_VERSION_PATCH)
 		      "_PREFIX");
 	if (!newp)
-	    newp = getenv(name = "PERLLIB_" STRINGIFY(PERL_MAJOR_VERSION)
-			  STRINGIFY(PERL_MINOR_VERSION) "_PREFIX");
+	    newp = getenv(name = "PERLLIB_" STRINGIFY(PERL_VERSION_MAJOR)
+			  STRINGIFY(PERL_VERSION_MINOR) "_PREFIX");
 	if (!newp)
-	    newp = getenv(name = "PERLLIB_" STRINGIFY(PERL_MAJOR_VERSION) "_PREFIX");
+	    newp = getenv(name = "PERLLIB_" STRINGIFY(PERL_VERSION_MAJOR) "_PREFIX");
 	if (!newp)
 	    newp = getenv(name = "PERLLIB_PREFIX");
 	if (newp) {
