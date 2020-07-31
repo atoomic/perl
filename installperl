@@ -267,7 +267,7 @@ if (($Is_W32 and ! $Is_NetWare) or $Is_Cygwin) {
     if ($Is_Cygwin) {
 	$perldll = $libperl;
     } else {
-	$perldll = 'perl5'.$Config{patchlevel}.'.'.$so;
+	$perldll = 'perl7'.$Config{patchlevel}.'.'.$so;
     }
 
     if ($dlsrc ne "dl_none.xs") {
@@ -729,7 +729,7 @@ sub installlib {
 # Also preserve modification times for .a libraries.
 # On some systems, if you do
 #   ranlib libperl.a
-#   cp libperl.a /usr/local/lib/perl5/archlib/CORE/libperl.a
+#   cp libperl.a /usr/local/lib/perl/archlib/CORE/libperl.a
 # and then try to link against the installed libperl.a, you might
 # get an error message to the effect that the symbol table is older
 # than the library.
