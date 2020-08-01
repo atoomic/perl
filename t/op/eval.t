@@ -633,9 +633,7 @@ EOE
 }
 
 {
-    # TODO: Test not passing under 'use strict';
-    no strict;
-    my $caution = "TODO: Test doesn't pass under 'use strict' in Perl 5, either.";
+    no strict 'vars';
     my $w;
     local $SIG{__WARN__} = sub { $w .= shift };
 
@@ -643,7 +641,7 @@ EOE
     is(
         $w =~ s/eval \d+/eval 1/ra,
         "should be line 3 at (eval 1) line 3.\n",
-        'eval qq{\${\nfoo\n}; warn}' . " updates the line number correctly - but $caution"
+        'eval qq{\${\nfoo\n}; warn}' . " updates the line number correctly"
     );
 }
 
