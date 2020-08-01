@@ -774,14 +774,12 @@ ok(ref(CORE::state $y = "a $o b") eq 'o',
     # while that same typeglob also appearing on the RHS returns
     # a stringified value
 
-    # TODO
     package QPR {
-        no strict;
-        my $caution = " - TODO: Must still be adapted to strict-by-default";
+        no strict 'refs';
         ${'*QPR::Bar*QPR::BarBaz'} = 'myfoobarbaz';
+        no strict 'vars';
         *Bar = (*Bar  . *Bar . "Baz");
-        my $description = '*Bar =  (*Bar  . *Bar . "Baz")';
-        ::is($Bar, "myfoobarbaz", "${description}${caution}");
+        ::is($Bar, "myfoobarbaz", '*Bar =  (*Bar  . *Bar . "Baz")');
     }
 }
 
