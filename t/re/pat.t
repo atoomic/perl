@@ -4,11 +4,6 @@
 # the format supported by re/regexp.t.  If you want to add a test
 # that does fit that format, add it to re/re_tests, not here.
 
-use strict;
-use warnings;
-no warnings 'experimental::vlb';
-use 5.010;
-
 sub run_tests;
 
 $| = 1;
@@ -16,11 +11,16 @@ $| = 1;
 
 BEGIN {
     chdir 't' if -d 't';
-    require Config; import Config;
-    require './test.pl'; require './charset_tools.pl';
-    require './loc_tools.pl';
+    require './test.pl';
+    require './charset_tools.pl';
     set_up_inc('../lib', '.', '../ext/re');
+    require Config; Config->import;
+    require './loc_tools.pl';
 }
+use warnings;
+no warnings 'experimental::vlb';
+use 5.010;
+
 
 skip_all_without_unicode_tables();
 
