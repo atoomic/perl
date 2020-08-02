@@ -91,27 +91,27 @@ CODE
  'qr/(?{})/ is a closure';
 
 "a" =~ do { package foo; qr/(?{ $::pack = __PACKAGE__ })a/ };
-is $pack, 'foo', 'qr// inherits package';
+is $::pack, 'foo', 'qr// inherits package';
 "a" =~ do { use re "/x"; qr/(?{ $::re = qr-- })a/ };
-is $re, '(?^x:)', 'qr// inherits pragmata';
+is $::re, '(?^x:)', 'qr// inherits pragmata';
 
 $::pack = '';
 "ba" =~ /b${\do { package baz; qr|(?{ $::pack = __PACKAGE__ })a| }}/;
-is $pack, 'baz', '/text$qr/ inherits package';
+is $::pack, 'baz', '/text$qr/ inherits package';
 "ba" =~ m+b${\do { use re "/i"; qr|(?{ $::re = qr-- })a| }}+;
-is $re, '(?^i:)', '/text$qr/ inherits pragmata';
+is $::re, '(?^i:)', '/text$qr/ inherits pragmata';
 
 {
   use re 'eval';
   package bar;
   "ba" =~ /${\'(?{ $::pack = __PACKAGE__ })a'}/;
 }
-is $pack, 'bar', '/$text/ containing (?{}) inherits package';
+is $::pack, 'bar', '/$text/ containing (?{}) inherits package';
 {
   use re 'eval', "/m";
   "ba" =~ /${\'(?{ $::re = qr -- })a'}/;
 }
-is $re, '(?^m:)', '/$text/ containing (?{}) inherits pragmata';
+is $::re, '(?^m:)', '/$text/ containing (?{}) inherits pragmata';
 
 fresh_perl_is <<'CODE', '45', { stderr => 1 }, '(?{die})';
 my $a=4; my $b=5;  eval { "a" =~ /(?{die})a/ }; print $a,$b;
