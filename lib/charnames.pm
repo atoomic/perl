@@ -1,5 +1,5 @@
 package charnames;
-use strict;
+
 use warnings;
 our $VERSION = '1.48';
 use unicore::Name;    # mktables-generated algorithmically-defined names
