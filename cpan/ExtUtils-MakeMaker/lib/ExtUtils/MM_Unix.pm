@@ -14,7 +14,7 @@ use ExtUtils::MakeMaker qw($Verbose neatvalue _sprintf562);
 
 # If we make $VERSION an our variable parse_version() breaks
 use vars qw($VERSION);
-$VERSION = '7.44';
+$VERSION = '7.45';
 $VERSION =~ tr/_//d;
 
 require ExtUtils::MM_Any;
@@ -3232,7 +3232,9 @@ PPD_PERLVERS
     }
 
     my $archname = $Config{archname};
-    if ("$]" >= 5.008) {
+    if( "$]" >= 5.010) {
+         $archname .= "-$^V->{version}->[0].$^V->{version}->[1]"; # v5.32.5 => 5.32
+    } elsif ("$]" >= 5.008) {
         # archname did not change from 5.6 to 5.8, but those versions may
         # not be not binary compatible so now we append the part of the
         # version that changes when binary compatibility may change
