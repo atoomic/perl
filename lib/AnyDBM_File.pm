@@ -1,6 +1,6 @@
 package AnyDBM_File;
 use warnings;
-use strict;
+
 
 use 5.006_001;
 our $VERSION = '1.01';
