@@ -72,11 +72,12 @@ $beta = $alpha =~ s/david/rules/r;
 ok( $alpha eq '' && $beta eq '', 's///r on empty string' );
 
 $_ = 'david';
-@b = s/david/rules/r;
+my @b = s/david/rules/r;
 ok( $_ eq 'david' && $b[0] eq 'rules', 's///r in list context' );
 
 # Magic value and s///r
 require Tie::Scalar;
+my $m;
 tie $m, 'Tie::StdScalar';  # makes $alpha magical
 $m = "david";
 $beta = $m =~ s/david/rules/r;
@@ -93,7 +94,7 @@ is (Internals::SvREFCNT($$ref), 1, 's///r does not leak');
 $ref = \("aaa" =~ s/aaa/bbb/rg);
 is (Internals::SvREFCNT($$ref), 1, 's///rg does not leak');
 
-$x = 'foo';
+my $x = 'foo';
 $_ = "x";
 s/x/\$x/;
 ok( $_ eq '$x', ":$_: eq :\$x:" );
@@ -122,7 +123,7 @@ ok( /a/i && s///gi && $_ eq 'BCD' );
 
 $_ = '\\' x 4;
 ok( length($_) == 4 );
-$snum = s/\\/\\\\/g;
+my $snum = s/\\/\\\\/g;
 ok( $_ eq '\\' x 8 && $snum == 4 );
 
 $_ = '\/' x 4;
@@ -363,7 +364,7 @@ $_ = <<'EOL';
 EOL
 $^R = 'junk';
 
-$foo = ' $@%#lowercase $@%# lowercase UPPERCASE$@%#UPPERCASE' .
+my $foo = ' $@%#lowercase $@%# lowercase UPPERCASE$@%#UPPERCASE' .
   ' $@%#lowercase$@%#lowercase$@%# lowercase lowercase $@%#lowercase' .
   ' lowercase $@%#MiXeD$@%# ';
 
@@ -396,7 +397,7 @@ $snum = s/(\d*|x)/<$1>/g;
 $foo = '<>' . ('<x><>' x 20) ;
 ok( $_ eq $foo && $snum == 41 );
 
-$t = 'aaaaaaaaa'; 
+my $t = 'aaaaaaaaa';
 
 $_ = $t;
 pos = 6;
@@ -577,8 +578,8 @@ is($pv1, $pv2);
 }
 
 $_ = 'aaaa';
-$r = 'x';
-$s = s/a(?{})/$r/g;
+my $r = 'x';
+my $s = s/a(?{})/$r/g;
 is("<$_> <$s>", "<xxxx> <4>", "[perl #7806]");
 
 $_ = 'aaaa';
@@ -941,6 +942,7 @@ pass("s/// on tied var returning a cow");
 # Test problems with constant replacement optimisation
 # [perl #26986] logop in repl resulting in incorrect optimisation
 "g" =~ /(.)/;
+my %l;
 @l{'a'..'z'} = 'A'..':';
 $_ = "hello";
 { s/(.)/$l{my $alpha||$1}/g }
@@ -986,9 +988,10 @@ $@ =~ s/eval \d+/eval 11/;
 is $@, "\x{30cb}eval 11",
   'loading utf8 tables does not interfere with matches against $@';
 
-$reftobe = 3;
+my $reftobe = 3;
 $reftobe =~ s/3/$reftobe=\ 3;4/e;
 is $reftobe, '4', 'clobbering target with ref in s//.../e';
+my %locker;
 $locker{key} = 3;
 SKIP:{
     skip "no Hash::Util under miniperl", 2 if is_miniperl;
@@ -1003,7 +1006,7 @@ SKIP:{
     like $@, qr/^Modification of a read-only value/, 'err msg' . ($@ ? ": $@" : "");
 }
 delete $::{does_not_exist}; # just in case
-eval { no warnings; $::{does_not_exist}=~s/(?:)/*{"does_not_exist"}; 4/e };
+eval { no strict 'refs'; no warnings; $::{does_not_exist}=~s/(?:)/*{"does_not_exist"}; 4/e };
 like $@, qr/^Modification of a read-only value/,
     'vivifying stash elem in $that::{elem} =~ s//.../e';
 
