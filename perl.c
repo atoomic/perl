@@ -2118,8 +2118,6 @@ S_parse_body(pTHX_ char **env, XSINIT_t xsinit)
 
     init_main_stash();
 
-    PL_hints = 0x00000602; /* after init_main_stash */
-
     {
 	const char *s;
     for (argc--,argv++; argc > 0; argc--,argv++) {
@@ -2575,6 +2573,8 @@ S_parse_body(pTHX_ char **env, XSINIT_t xsinit)
 	filter_add(read_e_script, NULL);
 
     /* now parse the script */
+
+    PL_hints = 0x00000602; /* after init_main_stash ; need to be after init_predump_symbols */
 
     SETERRNO(0,SS_NORMAL);
     if (yyparse(GRAMPROG) || PL_parser->error_count) {
