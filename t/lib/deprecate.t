@@ -4,6 +4,7 @@ use strict;
 BEGIN {
     chdir 't' if -d 't';
     require './test.pl';
+    set_up_inc('../lib');
 }
 use File::Copy ();
 use File::Path ();
