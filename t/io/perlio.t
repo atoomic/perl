@@ -1,9 +1,11 @@
+#!perl
+
 BEGIN {
-	chdir 't' if -d 't';
-	require Config; import Config;
+    chdir 't' if -d 't';
     require './test.pl';
     set_up_inc('../lib');
-	skip_all_without_perlio();
+    require Config; Config->import;
+    skip_all_without_perlio();
 }
 
 plan tests => 48;
