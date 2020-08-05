@@ -1,3 +1,5 @@
+#!perl
+
 ################################################################################
 #
 #  $Revision: 6 $
@@ -17,7 +19,7 @@
 BEGIN {
   chdir 't' if -d 't';
   require "./test.pl";
-  set_up_inc('../lib') if $ENV{'PERL_CORE'} && -d '../lib' && -d '../ext';
+  set_up_inc( '../lib' ) if -d '../lib' && -d '../ext';
 
   require Config; Config->import;
 
