@@ -234,6 +234,8 @@ perl_construct(pTHXx)
 #endif
     PL_curcop = &PL_compiling;	/* needed by ckWARN, right away */
 
+    PL_hints = 0x00000602;
+
 #ifdef PERL_TRACE_OPS
     Zero(PL_op_exec_cnt, OP_max+2, UV);
 #endif
