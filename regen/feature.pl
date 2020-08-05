@@ -131,32 +131,41 @@ for my $bund (
 my $HintShift;
 my $HintMask;
 my $Uni8Bit;
+my $HintStrict = 0;
 
 open "perl.h", "<", "perl.h" or die "$0 cannot open perl.h: $!";
 while (readline "perl.h") {
-    next unless /#\s*define\s+(HINT_FEATURE_MASK|HINT_UNI_8_BIT)/;
-    my $is_u8b = $1 =~ 8;
-    /(0x[A-Fa-f0-9]+)/ or die "No hex number in:\n\n$_\n ";
-    if ($is_u8b) {
-	$Uni8Bit = $1;
+    if ( m/#\s*define\s+(HINT_FEATURE_MASK|HINT_UNI_8_BIT)/ ) {
+        my $is_u8b = $1 =~ 8;
+        /(0x[A-Fa-f0-9]+)/ or die "No hex number in:\n\n$_\n ";
+        if ($is_u8b) {
+    	$Uni8Bit = $1;
+        }
+        else {
+    	my $hex = $HintMask = $1;
+    	my $bits = sprintf "%b", oct $1;
+    	$bits =~ /^0*1+(0*)\z/
+    	 or die "Non-contiguous bits in $bits (binary for $hex):\n\n$_\n ";
+    	$HintShift = length $1;
+    	my $bits_needed =
+    	    length sprintf "%b", scalar keys %UniqueBundles;
+    	$bits =~ /1{$bits_needed}/
+    	    or die "Not enough bits (need $bits_needed) in $bits (binary for $hex):\n\n$_\n";
+        }
+    } elsif ( m/#\s*define\s+(HINT_STRICT_REFS|HINT_STRICT_SUBS|HINT_STRICT_VARS)\s/ ) {
+        /(0x[A-Fa-f0-9]+)/ or die "No hex number in:\n\n$_\n ";
+        $HintStrict |= oct $1;
     }
-    else {
-	my $hex = $HintMask = $1;
-	my $bits = sprintf "%b", oct $1;
-	$bits =~ /^0*1+(0*)\z/
-	 or die "Non-contiguous bits in $bits (binary for $hex):\n\n$_\n ";
-	$HintShift = length $1;
-	my $bits_needed =
-	    length sprintf "%b", scalar keys %UniqueBundles;
-	$bits =~ /1{$bits_needed}/
-	    or die "Not enough bits (need $bits_needed) in $bits (binary for $hex):\n\n$_\n";
-    }
-    if ($Uni8Bit && $HintMask) { last }
+    
+    m{^#define SAWAMPERSAND_LEFT\s} and last;
 }
 die "No HINT_FEATURE_MASK defined in perl.h" unless $HintMask;
 die "No HINT_UNI_8_BIT defined in perl.h"    unless $Uni8Bit;
+die "No HintStrict defined in perl.h"        unless $HintStrict;
 
 close "perl.h";
+
+my $HintDefault = sprintf( "0x%08X", $HintStrict );
 
 my @HintedBundles =
     ('default', grep !/[^\d.]/a, sort values %UniqueBundles);
@@ -267,6 +276,7 @@ print $h <<EOH;
 
 #if defined(PERL_CORE) || defined (PERL_EXT)
 
+#define HINT_DEFAULT        $HintDefault
 #define HINT_FEATURE_SHIFT	$HintShift
 
 EOH

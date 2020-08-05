@@ -37,6 +37,7 @@
 #include "perl.h"
 #include "patchlevel.h"			/* for local_patches */
 #include "XSUB.h"
+#include "feature.h"
 
 #ifdef NETWARE
 #include "nwutil.h"	
@@ -437,8 +438,6 @@ perl_construct(pTHXx)
 #ifdef USE_POSIX_2008_LOCALE
     PL_C_locale_obj = newlocale(LC_ALL_MASK, "C", NULL);
 #endif
-
-    /* PL_hints = 0x00000602; */
 
     ENTER;
     init_i18nl10n(1);
@@ -2574,7 +2573,7 @@ S_parse_body(pTHX_ char **env, XSINIT_t xsinit)
 
     /* now parse the script */
 
-    PL_hints = 0x00000602; /* after init_main_stash ; need to be after init_predump_symbols */
+    PL_hints |= HINT_DEFAULT; /* after init_main_stash ; need to be after init_predump_symbols */
 
     SETERRNO(0,SS_NORMAL);
     if (yyparse(GRAMPROG) || PL_parser->error_count) {

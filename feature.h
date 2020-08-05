@@ -10,6 +10,7 @@
 
 #if defined(PERL_CORE) || defined (PERL_EXT)
 
+#define HINT_DEFAULT        0x00000602
 #define HINT_FEATURE_SHIFT	26
 
 #define FEATURE_BITWISE_BIT         0x0001
