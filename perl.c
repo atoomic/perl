@@ -233,9 +233,7 @@ perl_construct(pTHXx)
        init_interp();
 #endif
     PL_curcop = &PL_compiling;	/* needed by ckWARN, right away */
-
-    PL_hints = 0x00000602;
-
+    
 #ifdef PERL_TRACE_OPS
     Zero(PL_op_exec_cnt, OP_max+2, UV);
 #endif
@@ -375,7 +373,7 @@ perl_construct(pTHXx)
         hv_ksplit(PL_strtab, 1 << 11);
     }
 
-    Zero(PL_sv_consts, SV_CONSTS_COUNT, SV*);
+    Zero(PL_sv_consts, SV_CONSTS_COUNT, SV*);    
 
 #ifndef PERL_MICRO
 #   ifdef  USE_ENVIRON_ARRAY
@@ -439,6 +437,8 @@ perl_construct(pTHXx)
 #ifdef USE_POSIX_2008_LOCALE
     PL_C_locale_obj = newlocale(LC_ALL_MASK, "C", NULL);
 #endif
+
+    /* PL_hints = 0x00000602; */
 
     ENTER;
     init_i18nl10n(1);
@@ -2117,6 +2117,8 @@ S_parse_body(pTHX_ char **env, XSINIT_t xsinit)
     PERL_SET_PHASE(PERL_PHASE_START);
 
     init_main_stash();
+
+    PL_hints = 0x00000602; /* after init_main_stash */
 
     {
 	const char *s;
