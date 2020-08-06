@@ -14,7 +14,7 @@ sub do_require {
 }
 
 # don't make this lexical
-$i = 1;
+our $i = 1;
 
 my @files_to_delete = qw (bleah.pm bleah.do bleah.flg urkkk.pm urkkk.pmc
 krunch.pm krunch.pmc whap.pm whap.pmc);
@@ -196,8 +196,8 @@ print "ok $i - require() context\n";
 **BLEAH**
 );
                               delete $INC{"bleah.pm"}; ++$::i;
-$foo = eval q{require bleah}; delete $INC{"bleah.pm"}; ++$::i;
-@foo = eval q{require bleah}; delete $INC{"bleah.pm"}; ++$::i;
+my $foo = eval q{require bleah}; delete $INC{"bleah.pm"}; ++$::i;
+my @foo = eval q{require bleah}; delete $INC{"bleah.pm"}; ++$::i;
        eval q{require bleah}; delete $INC{"bleah.pm"}; ++$::i;
        eval q{$_=$_+2;require bleah}; delete $INC{"bleah.pm"}; ++$::i;
        eval q{return require bleah}; delete $INC{"bleah.pm"}; ++$::i;
