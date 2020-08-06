@@ -2189,7 +2189,7 @@ S_parse_body(pTHX_ char **env, XSINIT_t xsinit)
 	    /* FALLTHROUGH */
 	case 'e':
 	    forbid_setid('e', FALSE);
-        minus_e = TRUE;
+        if (c == 'e') minus_e = TRUE;
 	    if (!PL_e_script) {
 		PL_e_script = newSVpvs("");
 		add_read_e_script = TRUE;
@@ -2574,7 +2574,7 @@ S_parse_body(pTHX_ char **env, XSINIT_t xsinit)
 	filter_add(read_e_script, NULL);
 
     /* now parse the script */
-    if ( minus_e == FALSE )
+    if (minus_e == FALSE && PL_minus_E == FALSE)
         PL_hints |= HINT_DEFAULT; /* after init_main_stash ; need to be after init_predump_symbols */
 
     SETERRNO(0,SS_NORMAL);
