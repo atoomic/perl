@@ -3,6 +3,8 @@ package Text::Wrap;
 use warnings::register;
 require Exporter;
 
+use v5;
+
 @ISA = qw(Exporter);
 @EXPORT = qw(wrap fill);
 @EXPORT_OK = qw($columns $break $huge);
