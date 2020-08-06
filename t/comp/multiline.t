@@ -10,9 +10,9 @@ sub failed {
     my @caller = caller(1);
     print "# Failed test at $caller[1] line $caller[2]\n";
     if (defined $got) {
-	print "# Got '$got'\n";
+        print "# Got '$got'\n";
     } else {
-	print "# Got undef\n";
+        print "# Got undef\n";
     }
     print "# Expected $expected\n";
     return;
@@ -22,10 +22,10 @@ sub like {
     my ($got, $pattern, $name) = @_;
     $test = $test + 1;
     if (defined $got && $got =~ $pattern) {
-	print "ok $test - ".($name // 'undef')."\n";
-	# Principle of least surprise - maintain the expected interface, even
-	# though we aren't using it here (yet).
-	return 1;
+        print "ok $test - ".($name // 'undef')."\n";
+        # Principle of least surprise - maintain the expected interface, even
+        # though we aren't using it here (yet).
+        return 1;
     }
     failed($got, $pattern, $name);
 }
@@ -34,8 +34,8 @@ sub is {
     my ($got, $expect, $name) = @_;
     $test = $test + 1;
     if (defined $got && $got eq $expect) {
-	print "ok $test - ".($name // 'undef')."\n";
-	return 1;
+        print "ok $test - ".($name // 'undef')."\n";
+        return 1;
     }
     failed($got, "'$expect'", $name);
 }
