@@ -1,3 +1,5 @@
+use v5;
+
 package Exporter;
 
 require 5.006;
@@ -34,6 +36,7 @@ sub import {
     return;
   }
 
+  no strict 'refs';
   # We *need* to treat @{"$pkg\::EXPORT_FAIL"} since Carp uses it :-(
   my $exports = \@{"$pkg\::EXPORT"};
   # But, avoid creating things if they don't exist, which saves a couple of
