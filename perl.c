@@ -2106,6 +2106,7 @@ S_parse_body(pTHX_ char **env, XSINIT_t xsinit)
     char c;
     bool doextract = FALSE;
     const char *cddir = NULL;
+    bool minus_e = FALSE; /* TODO probably convert to a PL_minus_e */
 #ifdef USE_SITECUSTOMIZE
     bool minus_f = FALSE;
 #endif
@@ -2188,6 +2189,7 @@ S_parse_body(pTHX_ char **env, XSINIT_t xsinit)
 	    /* FALLTHROUGH */
 	case 'e':
 	    forbid_setid('e', FALSE);
+        minus_e = TRUE;
 	    if (!PL_e_script) {
 		PL_e_script = newSVpvs("");
 		add_read_e_script = TRUE;
@@ -2572,8 +2574,8 @@ S_parse_body(pTHX_ char **env, XSINIT_t xsinit)
 	filter_add(read_e_script, NULL);
 
     /* now parse the script */
-
-    PL_hints |= HINT_DEFAULT; /* after init_main_stash ; need to be after init_predump_symbols */
+    if ( minus_e == FALSE )
+        PL_hints |= HINT_DEFAULT; /* after init_main_stash ; need to be after init_predump_symbols */
 
     SETERRNO(0,SS_NORMAL);
     if (yyparse(GRAMPROG) || PL_parser->error_count) {
