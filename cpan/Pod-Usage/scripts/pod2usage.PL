@@ -1,5 +1,5 @@
 #!/usr/local/bin/perl
-
+use strict; # not needed in core, but include for benefit of dual-life
 use Config;
 use File::Basename qw(&basename &dirname);
 use Cwd;

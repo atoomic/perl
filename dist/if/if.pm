@@ -1,5 +1,5 @@
 package if;
-
+use strict; # though not needed in core, include for dual-life
 our $VERSION = '0.0608';
 
 sub work {
