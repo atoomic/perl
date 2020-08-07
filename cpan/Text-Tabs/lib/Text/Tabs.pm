@@ -2,16 +2,12 @@ package Text::Tabs;
 
 require Exporter;
 
-#use v5;
-
-@ISA = (Exporter);
-@EXPORT = qw(expand unexpand $tabstop);
+our @ISA = ('Exporter');
+our @EXPORT = qw(expand unexpand $tabstop);
 
 use vars qw($VERSION $SUBVERSION $tabstop $debug);
 $VERSION = 2013.0523;
 $SUBVERSION = 'modern';
-
-use strict;
 
 use 5.010_000;
 
