@@ -3,19 +3,16 @@ package Text::Wrap;
 use warnings::register;
 require Exporter;
 
-#use v5;
-
+our (@ISA, @EXPORT, @EXPORT_OK);
 @ISA = qw(Exporter);
 @EXPORT = qw(wrap fill);
 @EXPORT_OK = qw($columns $break $huge);
 
+use vars qw($VERSION $SUBVERSION $columns $debug $break $huge $unexpand $tabstop $separator $separator2);
 $VERSION = 2013.0523;
 $SUBVERSION = 'modern';
 
 use 5.010_000;
-
-use vars qw($VERSION $SUBVERSION $columns $debug $break $huge $unexpand $tabstop $separator $separator2);
-use strict;
 
 BEGIN	{
 	$columns = 76;  # <= screen width
