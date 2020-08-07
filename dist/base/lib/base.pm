@@ -1,7 +1,8 @@
 use 5.008;
 package base;
 
-use strict 'vars';
+#use strict 'vars';
+use strict; # not needed in core, but retain for dual-life
 our $VERSION = '2.27';
 $VERSION =~ tr/_//d;
 
@@ -23,6 +24,7 @@ my $Fattr = \%fields::attr;
 
 sub has_fields {
     my($base) = shift;
+    no strict 'refs';
     my $fglob = ${"$base\::"}{FIELDS};
     return( ($fglob && 'GLOB' eq ref($fglob) && *$fglob{HASH}) ? 1 : 0 );
 }
@@ -158,14 +160,17 @@ ERROR
                 # see [perl #118561]
                 die if $@ && $@ !~ /^Can't locate \Q$fn\E .*? at .* line [0-9]+(?:, <[^>]*> (?:line|chunk) [0-9]+)?\.\n\z/s
                           || $@ =~ /Compilation failed in require at .* line [0-9]+(?:, <[^>]*> (?:line|chunk) [0-9]+)?\.\n\z/;
-                unless (%{"$base\::"}) {
-                    require Carp;
-                    local $" = " ";
-                    Carp::croak(<<ERROR);
+                {
+                    no strict 'refs';
+                    unless (%{"$base\::"}) {
+                        require Carp;
+                        local $" = " ";
+                        Carp::croak(<<ERROR);
 Base class package "$base" is empty.
     (Perhaps you need to 'use' the module which defines that package first,
     or make that module available in \@INC (\@INC contains: @INC).
 ERROR
+                    }
                 }
                 $sigdie = $SIG{__DIE__} || undef;
             }
@@ -185,7 +190,7 @@ ERROR
         }
     }
     # Save this until the end so it's all or nothing if the above loop croaks.
-    push @{"$inheritor\::ISA"}, @bases;
+    { no strict 'refs'; push @{"$inheritor\::ISA"}, @bases; }
 
     if( defined $fields_base ) {
         inherit_fields($inheritor, $fields_base);
