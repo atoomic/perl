@@ -114,14 +114,17 @@ print "ok ",$i++," - 5.5.1 gt v5.5\n";
     print "ok ",$i++," - v1.20.300.4000.50000.600000 eq ...\n";
 }
 
-# "use 5.11.0" (and higher) loads strictures.
-# check that this doesn't happen with require
-eval 'require 5.11.0; ${"foo"} = "bar";';
-print "# $@\nnot " if $@;
-print "ok ",$i++," - require 5.11.0\n";
-eval 'BEGIN {require 5.11.0} ${"foo"} = "bar";';
-print "# $@\nnot " if $@;
-print "ok ",$i++,"\ - BEGIN { require 5.11.0}\n";
+{
+    no strict 'refs';
+    # "use 5.11.0" (and higher) loads strictures.
+    # check that this doesn't happen with require
+    eval 'require 5.11.0; ${"foo"} = "bar";';
+    print "# $@\nnot " if $@;
+    print "ok ",$i++," - require 5.11.0\n";
+    eval 'BEGIN {require 5.11.0} ${"foo"} = "bar";';
+    print "# $@\nnot " if $@;
+    print "ok ",$i++,"\ - BEGIN { require 5.11.0}\n";
+}
 
 # interaction with pod (see the eof)
 write_file('bleah.pm', "print 'ok $i - require bleah.pm\n'; 1;\n");
