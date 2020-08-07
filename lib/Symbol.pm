@@ -80,7 +80,7 @@ you reload the C<Foo> module afterwards.
 
 BEGIN { require 5.005; }
 
-use v5;
+#use v5;
 
 require Exporter;
 @ISA = qw(Exporter);

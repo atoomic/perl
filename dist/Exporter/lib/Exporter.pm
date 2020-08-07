@@ -1,4 +1,4 @@
-use v5;
+#use v5;
 
 package Exporter;
 
