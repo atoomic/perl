@@ -1,10 +1,8 @@
 package overload;
 
-#use v5;
-
 our $VERSION = '1.31';
 
-%ops = (
+my %ops = (
     with_assign         => "+ - * / % ** << >> x .",
     assign              => "+= -= *= /= %= **= <<= >>= x= .=",
     num_comparison      => "< <= >  >= == !=",
