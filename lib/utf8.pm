@@ -3,6 +3,7 @@ package utf8;
 $utf8::hint_bits = 0x00800000;
 
 our $VERSION = '1.22';
+our $AUTOLOAD;
 
 sub import {
     $^H |= $utf8::hint_bits;
