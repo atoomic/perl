@@ -33,6 +33,7 @@ sub Mkbootstrap {
     if (-f "${baseext}_BS"){
 	$_ = "${baseext}_BS";
 	package DynaLoader; # execute code as if in DynaLoader
+    our ($osname, $dlsrc, $bscode);
 	local($osname, $dlsrc) = (); # avoid warnings
 	($osname, $dlsrc) = @Config::Config{qw(osname dlsrc)};
 	$bscode = "";
@@ -43,6 +44,7 @@ sub Mkbootstrap {
 
     if ($Config{'dlsrc'} =~ /^dl_dld/){
 	package DynaLoader;
+	our @dl_resolve_using;
 	push(@dl_resolve_using, dl_findfile('-lc'));
     }
 
