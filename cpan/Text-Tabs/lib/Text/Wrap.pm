@@ -1,4 +1,5 @@
 package Text::Wrap;
+use strict; # though not needed in core, include for dual-life
 
 use warnings::register;
 require Exporter;
