@@ -1,5 +1,5 @@
 package Text::Tabs;
-
+use strict; # though not needed in core, include for dual-life
 require Exporter;
 
 our @ISA = ('Exporter');
