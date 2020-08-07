@@ -19,6 +19,8 @@
 # In this file, we use the latter "Baby Perl" approach, and increment
 # will be worked over by t/op/inc.t
 
+no strict;
+
 $| = 1;
 $Level = 1;
 my $test = 1;
