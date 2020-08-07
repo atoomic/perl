@@ -24,13 +24,16 @@ print "1..", 2+$nlines, "\n";
 $^P = 0x2;
 do "comp/line_debug_0.aux";
 
-ok 1, scalar(@{"_<comp/line_debug_0.aux"}) == 1+$nlines;
-ok 2, !defined(${"_<comp/line_debug_0.aux"}[0]);
+{
+    no strict 'refs';
+    ok 1, scalar(@{"_<comp/line_debug_0.aux"}) == 1+$nlines;
+    ok 2, !defined(${"_<comp/line_debug_0.aux"}[0]);
 
-for(1..$nlines) {
-    if (!ok 2+$_, ${"_<comp/line_debug_0.aux"}[$_] eq $lines[$_-1]) {
-	print "# Got: ", ${"_<comp/line_debug_0.aux"}[$_]//"undef\n";
-	print "# Expected: $lines[$_-1]";
+    for(1..$nlines) {
+        if (!ok 2+$_, ${"_<comp/line_debug_0.aux"}[$_] eq $lines[$_-1]) {
+            print "# Got: ", ${"_<comp/line_debug_0.aux"}[$_]//"undef\n";
+            print "# Expected: $lines[$_-1]";
+        }
     }
 }
 
