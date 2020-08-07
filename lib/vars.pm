@@ -26,6 +26,7 @@ sub import {
 		}
 	    }
 	    $sym = "${callpack}::$sym" unless $sym =~ /::/;
+	    no strict 'refs';
 	    *$sym =
 		(  $ch eq "\$" ? \$$sym
 		 : $ch eq "\@" ? \@$sym
