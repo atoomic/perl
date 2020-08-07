@@ -401,7 +401,11 @@ is($@, "", "multiline whitespace inside substitute expression");
 }
 
 $test = $test + 1;
-no strict 'refs';
+{
+    # Because of format declarations and here-docs, code in most of this block
+    # is not indented
+
+    no strict 'refs';
 "ok $test - format inside re-eval" =~ /(?{
     format =
 @<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
@@ -437,7 +441,7 @@ like "blah blah blah\n", eval q|qr/${\ <<END
 blah blah blah
 END
  }/|, 'here docs in multiline quoted construct in string eval';
-use strict;
+} # END block "no strict 'refs'" starting at "ok $test - format inside re-eval"
 
 # Unterminated here-docs in subst in eval; used to crash
 eval 's/${<<END}//';
