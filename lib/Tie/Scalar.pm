@@ -141,7 +141,7 @@ sub STORE {
 # tweak a small bit.
 #
 package Tie::StdScalar;
-@ISA = qw(Tie::Scalar);
+our @ISA = qw(Tie::Scalar);
 
 sub TIESCALAR {
     my $class = shift;
