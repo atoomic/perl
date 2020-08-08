@@ -145,7 +145,7 @@ Tie::Array - base class for tied arrays
     package Tie::NewStdArray;
     use Tie::Array;
 
-    @ISA = ('Tie::StdArray');
+    our @ISA = ('Tie::StdArray');
 
     # all methods provided by default
 
