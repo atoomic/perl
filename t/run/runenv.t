@@ -7,8 +7,8 @@
 BEGIN {
     chdir 't' if -d 't';
     @INC = '../lib';
-    require Config; import Config;
     require './test.pl';
+    require Config; Config->import;
     skip_all_without_config('d_fork');
 }
 
