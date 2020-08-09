@@ -237,18 +237,21 @@ EOT
     T '^main:plink:53$', $test++;
 }
 
-# tests 47--51 start here
+# tests 52--56 start here
 # tests for new array interpolation semantics:
 # arrays now *always* interpolate into "..." strings.
 # 20000522 MJD (mjd@plover.com)
 {
-  eval(q(">@nosuch<" eq "><")) || print "# $@", "not ";
-  print "ok $test\n";
+  my $description;
+  $description = q|With "strict 'vars'" by default, interpolation of empty array |;
+  $description .= q|does not give misleading result in test of string equality|;
+  eval(q(">@nosuch<" eq "><")) && print "# $@", "not ";
+  print "ok $test - $description\n";
   ++$test;
 
   # Look at this!  This is going to be a common error in the future:
-  eval(q("fred@example.com" eq "fred.com")) || print "# $@", "not ";
-  print "ok $test\n";
+  eval(q("fred@example.com" eq "fred.com")) && print "# $@", "not ";
+  print "ok $test - $description\n";
   ++$test;
 
   # Let's make sure that normal array interpolation still works right
@@ -259,8 +262,8 @@ EOT
 
   # Ditto.
   eval(q{@nosuch = ('a', 'b', 'c'); ">@nosuch<" eq ">a b c<"}) 
-      || print "# $@", "not ";
-  print "ok $test\n";
+      && print "# $@", "not ";
+  print "ok $test - $description\n";
   ++$test;
 
   # This isn't actually a lex test, but it's testing the same feature
