@@ -19,6 +19,11 @@
 # In this file, we use the latter "Baby Perl" approach, and increment
 # will be worked over by t/op/inc.t
 
+BEGIN {
+    chdir 't' if -d 't';
+    @INC = '../lib'; # needed to locate strict for instances of 'no strict'
+}
+
 no strict;
 
 $| = 1;
