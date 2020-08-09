@@ -5,7 +5,6 @@ BEGIN {
     @INC = '../lib';
     require './test.pl';
     require Config; Config->import;
-
 }
 
 plan(4);
