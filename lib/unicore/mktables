@@ -1419,7 +1419,7 @@ my %loose_names_ending_in_code_point;   # Same as above, but has blanks, dashes
 # Inverse mapping.  The list of ranges that have these kinds of
 # names.  Each element contains the low, high, and base names in an
 # anonymous hash.
-my @code_points_ending_in_code_point;
+@main::code_points_ending_in_code_point = ();
 
 # To hold Unicode's normalization test suite
 my @normalization_tests;
@@ -7265,7 +7265,7 @@ END
                 my $legal = join "", sort { $a cmp $b } keys %legal;
 
                 # The legal chars can be used in match optimizations
-                push @code_points_ending_in_code_point, { low => $low,
+                push @main::code_points_ending_in_code_point, { low => $low,
                                                         high => $high,
                                                         name => $map,
                                                         legal => $legal,
@@ -17334,7 +17334,7 @@ sub make_Name_pm () {
     # conjunction with Name.pl
 
     # Maybe there's nothing to do.
-    return unless $has_hangul_syllables || @code_points_ending_in_code_point;
+    return unless $has_hangul_syllables || @main::code_points_ending_in_code_point;
 
     my @name = <<END;
 $HEADER
@@ -17343,7 +17343,7 @@ END
 
     # Convert these structures to output format.
     my $code_points_ending_in_code_point =
-        main::simple_dumper(\@code_points_ending_in_code_point,
+        main::simple_dumper(\@main::code_points_ending_in_code_point,
                             ' ' x 8);
     my $names = main::simple_dumper(\%names_ending_in_code_point,
                                     ' ' x 8);
@@ -17425,12 +17425,12 @@ $loose_names
 
     # And the following array gives the inverse mapping from code points to
     # names.  Lowest code points are first
-    \@code_points_ending_in_code_point = (
+    \@main::code_points_ending_in_code_point = (
 $code_points_ending_in_code_point
     );
 
     # Is exportable, make read-only
-    Internals::SvREADONLY(\@code_points_ending_in_code_point, 1);
+    Internals::SvREADONLY(\@main::code_points_ending_in_code_point, 1);
 END
     # Earlier releases didn't have Jamos.  No sense outputting
     # them unless will be used.
@@ -17556,7 +17556,7 @@ END
             my $L = $LBase + $SIndex / $NCount;
             my $V = $VBase + ($SIndex % $NCount) / $TCount;
             my $T = $TBase + $SIndex % $TCount;
-            $name = "$HANGUL_SYLLABLE$Jamo{$L}$Jamo{$V}";
+            my $name = "$HANGUL_SYLLABLE$Jamo{$L}$Jamo{$V}";
             $name .= $Jamo{$T} if $T != $TBase;
             return $name;
         }
@@ -17565,7 +17565,7 @@ END
     push @name, << 'END';
 
         # Look through list of these code points for one in range.
-        foreach my $hash (@code_points_ending_in_code_point) {
+        foreach my $hash (@main::code_points_ending_in_code_point) {
             return if $code_point < $hash->{'low'};
             if ($code_point <= $hash->{'high'}) {
                 return sprintf("%s-%04X", $hash->{'name'}, $code_point);
@@ -17748,11 +17748,11 @@ sub make_UCD () {
     my $done_hangul = $v_version lt v2.0.0;  # Hanguls as we know them came
                                              # along in this version
     # Copy it linearly.
-    for my $i (0 .. @code_points_ending_in_code_point - 1) {
+    for my $i (0 .. @main::code_points_ending_in_code_point - 1) {
 
         # Insert the hanguls in the correct place.
         if (! $done_hangul
-            && $code_points_ending_in_code_point[$i]->{'low'} > $SBase)
+            && $main::code_points_ending_in_code_point[$i]->{'low'} > $SBase)
         {
             $done_hangul = 1;
             push @algorithm_names, { low => $SBase,
@@ -17763,10 +17763,10 @@ sub make_UCD () {
 
         # Copy the current entry, modified.
         push @algorithm_names, {
-            low => $code_points_ending_in_code_point[$i]->{'low'},
-            high => $code_points_ending_in_code_point[$i]->{'high'},
+            low => $main::code_points_ending_in_code_point[$i]->{'low'},
+            high => $main::code_points_ending_in_code_point[$i]->{'high'},
             name =>
-               "$code_points_ending_in_code_point[$i]->{'name'}-<code point>",
+               "$main::code_points_ending_in_code_point[$i]->{'name'}-<code point>",
         };
     }
 
