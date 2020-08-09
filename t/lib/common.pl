@@ -13,7 +13,6 @@ use Config;
 use File::Path;
 use File::Spec::Functions qw(catfile curdir rel2abs);
 
-use strict;
 use warnings;
 my (undef, $file) = caller;
 my ($pragma_name) = $file =~ /([A-Za-z_0-9]+)\.t$/
