@@ -1,5 +1,10 @@
 #!./perl
 
+BEGIN {
+    chdir 't' if -d 't';
+    @INC = '../lib'; # needed to locate strict for instances of 'no strict'
+}
+
 print "1..120\n";
 
 my $x = 'x';

@@ -2,6 +2,11 @@
 
 # Check that lines from eval are correctly retained by the debugger
 
+BEGIN {
+    chdir 't' if -d 't';
+    @INC = '../lib'; # needed to locate strict for instances of 'no strict'
+}
+
 print "1..75\n";
 my $test = 0;
 
