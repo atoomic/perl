@@ -7,14 +7,12 @@
 BEGIN {
     chdir 't' if -d 't';
     @INC = '../lib';
+    require './test.pl';
     require Config; Config->import;
+    require "./loc_tools.pl";
 }
 
-BEGIN { require "./test.pl";  require "./loc_tools.pl"; }
-
 plan(tests => 137);
-
-use Config;
 
 # due to a bug in VMS's piping which makes it impossible for runperl()
 # to emulate echo -n (ie. stdin always winds up with a newline), these 
@@ -151,8 +149,8 @@ $r = runperl(
 );
 is( $r, '21-', '-s switch parsing' );
 
-TODO: {
-    local $TODO = "Not yet working correctly in Perl 7-ish";
+#TODO: {
+#    local $TODO = "Not yet working correctly in Perl 7-ish";
 $filename = tempfile();
 SKIP: {
     open my $f, ">$filename" or skip( "Can't write temp file $filename: $!" );
@@ -183,7 +181,7 @@ SWTEST
     );
     is( $r, 'foo', '-sn on the shebang line' );
 }
-} # END TODO block
+#} # END TODO block
 
 # Tests for -m and -M
 
