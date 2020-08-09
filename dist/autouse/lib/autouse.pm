@@ -65,6 +65,7 @@ sub import {
 	    *$closure_import_func = eval "sub ($proto) { goto &\$load_sub }"
 	        || die;
 	} else {
+        no strict 'refs';
 	    *$closure_import_func = $load_sub;
 	}
     }
