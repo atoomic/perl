@@ -19,12 +19,21 @@
 # In this file, we use the latter "Baby Perl" approach, and increment
 # will be worked over by t/op/inc.t
 
+# t/test.pl needs to run with relaxed strictures, at least for now.
+# To run in an environment with strict-by-default, it needs to be able to say
+# "no strict;".  To say that, it needs to be able to locate 'strict.pm' via
+# @INC.  Hence, the "@INC = '../lib';" in the BEGIN block below.
+# PROBLEM:  Some test files don't want that assignment.
+# WORKAROUND:  Save the current state of @INC, hard-set it so that this
+# program can locate strict.pm.  Then restore the original @INC after we've
+# relaxed strictures.
+our @current_INC = @INC;
 BEGIN {
     chdir 't' if -d 't';
     @INC = '../lib'; # needed to locate strict for instances of 'no strict'
 }
-
 no strict;
+@INC = @current_INC;
 
 $| = 1;
 $Level = 1;
