@@ -2186,7 +2186,7 @@ x{0c!}\;\;îçÿ  /0f/! F  /;îçÿù\Q   xÿÿÿÿ   ù   `x{0c!};   ù\Q
     }
 
     {   # [perl #133992]  This is a tokenizer bug of parsing a pattern
-        fresh_perl_is(q:$z = do {
+        fresh_perl_is(q:my $z = do {
                                 use utf8;
                                 "q!ÑÐµÑÑ! =~ m'"
                         };
