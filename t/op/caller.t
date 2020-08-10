@@ -311,7 +311,7 @@ fresh_perl_is <<'END', 'main', { run_as_five => 1 },
 $SIG{__DIE__} = \&dbdie;
 eval '/x';
 sub dbdie {
-    @x = caller(1);
+    our @x = caller(1);
     print $x[0];
 }
 END
