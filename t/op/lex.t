@@ -101,19 +101,19 @@ is join("", map{no strict; "rhu$_" } "barb"), 'rhubarb',
 
 # [perl #123753]
 fresh_perl_is(
-  '$eq = "ok\n"; print $' . "\0eq\n",
+  'my $eq = "ok\n"; print $' . "\0eq\n",
   "ok\n",
    { stderr => 1 },
   '$ <null> ident'
 );
 fresh_perl_is(
-  '@eq = "ok\n"; print @' . "\0eq\n",
+  'my @eq = "ok\n"; print @' . "\0eq\n",
   "ok\n",
    { stderr => 1 },
   '@ <null> ident'
 );
 fresh_perl_is(
-  '%eq = ("o"=>"k\n"); print %' . "\0eq\n",
+  'my %eq = ("o"=>"k\n"); print %' . "\0eq\n",
   "ok\n",
    { stderr => 1 },
   '% <null> ident'
@@ -125,7 +125,7 @@ fresh_perl_is(
   '& <null> ident'
 );
 fresh_perl_is(
-  '$eq = "ok\n"; print ${*' . "\0eq{SCALAR}}\n",
+  'our $eq = "ok\n"; print ${*' . "\0eq{SCALAR}}\n",
   "ok\n",
    { stderr => 1 },
   '* <null> ident'
@@ -162,7 +162,7 @@ gibberisi
 }
 
 fresh_perl_is(
-  '/$a[/<<a',
+  'my @a; /$a[/<<a',
   "Missing right curly or square bracket at - line 1, within pattern\n" .
   "syntax error at - line 1, at EOF\n" .
   "Execution of - aborted due to compilation errors.\n",
@@ -170,7 +170,7 @@ fresh_perl_is(
   '/$a[/<<a with no newline [perl #123712]'
 );
 fresh_perl_is(
-  '/$a[m||/<<a',
+  'my @a; /$a[m||/<<a',
   "Missing right curly or square bracket at - line 1, within pattern\n" .
   "syntax error at - line 1, at EOF\n" .
   "Execution of - aborted due to compilation errors.\n",
