@@ -262,7 +262,6 @@ is($foo, 'b');
                 @a = ();
             },
         stderr => 1,
-        run_as_five => 1,
         );
 
     $got =~ s/\n/ /g;
