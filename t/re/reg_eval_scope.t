@@ -22,7 +22,7 @@ CODE
 
 fresh_perl_is <<'CODE',
  for my $x("a".."c") {
-  $y = 1;
+  our $y = 1;
   print scalar
    "abcabc" =~
        /
@@ -49,7 +49,7 @@ CODE
 
 fresh_perl_is <<'CODE', '178279371047857967101745', {},
  use re "eval";
- my $x = 7; $y = 1;
+ my $x = 7; our $y = 1;
  my $a = 4; my $b = 5;
  print scalar
   "abcabc"
@@ -66,7 +66,7 @@ CODE
 
 fresh_perl_is <<'CODE', '178279371047857967101745', {},
  use re "eval";
- my $x = 7; $y = 1;
+ my $x = 7; our $y = 1;
  my $a = 4; my $b = 5;
  print scalar
   "abcabc" =~
@@ -82,6 +82,7 @@ CODE
  'multiple (?{})s in "foo" =~ /$string/x';
 
 fresh_perl_is <<'CODE', '123123', {},
+  my @regexps;
   for my $x(1..3) {
    push @regexps, qr/(?{ print $x })a/;
   }
