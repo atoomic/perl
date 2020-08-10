@@ -116,3 +116,4 @@ foreach (@progs) {
     system $command
         and die "Failed to run $command: $?";
 }
+
