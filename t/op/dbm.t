@@ -17,7 +17,7 @@ my $filename = tempfile();
 
 my $prog = <<'EOC';
 package Foo;
-$filename = '@@@@';
+my $filename = '@@@@';
 sub new {
         my $proto = shift;
         my $class = ref($proto) || $proto;
@@ -25,39 +25,40 @@ sub new {
         bless($self,$class);
         my %LT;
         dbmopen(%LT, $filename, 0666) ||
-	    die "Can't open $filename because of $!\n";
+        die "Can't open $filename because of $!\n";
         $self->{'LT'} = \%LT;
         return $self;
 }
 sub DESTROY {
         my $self = shift;
-	dbmclose(%{$self->{'LT'}});
-	1 while unlink $filename;
-	1 while unlink glob "$filename.*";
-	print "ok\n";
+        dbmclose(%{$self->{'LT'}});
+        1 while unlink $filename;
+        1 while unlink glob "$filename.*";
+        print "ok\n";
 }
 package main;
-$test = Foo->new(); # must be package var
+our $test = Foo->new(); # must be package var
 EOC
 
 $prog =~ s/\@\@\@\@/$filename/;
 
-fresh_perl_is("require AnyDBM_File;\n$prog", 'ok', {run_as_five => 1}, 'explicit require');
-fresh_perl_is($prog, 'ok', {run_as_five => 1}, 'implicit require');
+fresh_perl_is("require AnyDBM_File;\n$prog", 'ok', {}, 'explicit require');
+fresh_perl_is($prog, 'ok', {}, 'implicit require');
 
 $prog = <<'EOC';
 @INC = ();
+my (%LT, $filename);
 dbmopen(%LT, $filename, 0666);
 1 while unlink $filename;
 1 while unlink glob "$filename.*";
 die "Failed to fail!";
 EOC
 
-fresh_perl_like($prog, qr/No dbm on this machine/, {run_as_five => 1},
-		'implicit require fails');
+fresh_perl_like($prog, qr/No dbm on this machine/, {},
+    'implicit require fails');
 fresh_perl_like('delete $::{"AnyDBM_File::"}; ' . $prog,
-		qr/No dbm on this machine/, {run_as_five => 1},
-		'implicit require and no stash fails');
+    qr/No dbm on this machine/, {},
+    'implicit require and no stash fails');
 
 { # undef 3rd arg
     my $w;
