@@ -246,7 +246,7 @@ is(my $obj = tied($t)->{fetched}, undef, 'assignment to empty list makes no copi
     pass('no panic'); # panics only under DEBUGGING
 }
 
-fresh_perl_is(<<'EOS', "", {run_as_five => 1}, "[perl #131954] heap use after free in pp_list");
+fresh_perl_is(<<'EOS', "", {}, "[perl #131954] heap use after free in pp_list");
 #!./perl
 BEGIN {
 my $bar = "bar";
