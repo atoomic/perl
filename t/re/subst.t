@@ -1094,7 +1094,7 @@ SKIP: {
 }
 {
     # RT #126602 double free if the value being modified is freed in the replacement
-    fresh_perl_is('s//*_=0;s|0||;00.y0/e; print qq(ok\n)', "ok\n", { stderr => 1 },
+    fresh_perl_is('no strict q|subs|; s//*_=0;s|0||;00.y0/e; print qq(ok\n)', "ok\n", { stderr => 1 },
                   "[perl #126602] s//*_=0;s|0||/e crashes");
 }
 
