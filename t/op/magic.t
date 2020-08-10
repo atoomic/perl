@@ -130,7 +130,7 @@ SKIP: {
 
     open( CMDPIPE, "|-", $PERL);
 
-    print CMDPIPE "\$t1 = $tn[1]; \$t2 = $tn[2];\n", <<'END';
+    print CMDPIPE "my \$t1 = $tn[1]; my \$t2 = $tn[2];\n", <<'END';
 
     $| = 1;		# command buffering
 
@@ -139,7 +139,7 @@ SKIP: {
     $SIG{"INT"} = "DEFAULT"; kill "INT",$$; sleep 1; print" not ok $t2\n";
 
     sub ok1 {
-	if (($x = pop(@_)) eq "INT") {
+	if ((my $x = pop(@_)) eq "INT") {
 	    print "ok $t1\n";
 	}
 	else {
@@ -152,7 +152,7 @@ END
     close CMDPIPE;
 
     open( CMDPIPE, "|-", $PERL);
-    print CMDPIPE "\$t3 = $tn[3];\n", <<'END';
+    print CMDPIPE "my \$t3 = $tn[3];\n", <<'END';
 
     { package X;
 	sub DESTROY {
@@ -270,7 +270,7 @@ SKIP: {
     }
     else { # child
 	print $$;
-	$::NO_ENDING = 1; # silence "Looks like you only ran..."
+	$::NO_ENDING = $::NO_ENDING = 1; # silence "Looks like you only ran..."
 	exit;
     }
 }
@@ -496,13 +496,14 @@ foreach (['powie::!', 'Errno']) {
 	skip "$package is statically linked", 2
 	    if $Config{static_ext} =~ m|\b\Q$extension\E\b|;
 	foreach my $scalar_first ('', '$$symbol;') {
+        no strict 'refs';
 	    my $desc = qq{Referencing %{"$symbol"}};
 	    $desc .= qq{ after mentioning \${"$symbol"}} if $scalar_first;
 	    $desc .= " doesn't load $package";
 
 	    fresh_perl_is(<<"EOP", 0, {}, $desc);
-use strict qw(vars subs);
 my \$symbol = '$symbol';
+no strict 'refs';
 $scalar_first;
 1 if %{\$symbol};
 print scalar %${package}::;
@@ -661,7 +662,7 @@ for my $code ('tell $0', 'sysseek $0, 0, 0', 'seek $0, 0, 0', 'eof $0') {
 fresh_perl_is 'print $| = ~$|', "1\n", {switches => ['-l']},
  '[perl #4760] print $| = ~$|';
 fresh_perl_is
- 'select f; undef *f; ${q/|/}; print STDOUT qq|ok\n|', "ok\n", {},
+ 'no strict q|refs|; select f; undef *f; ${q/|/}; print STDOUT qq|ok\n|', "ok\n", {},
  '[perl #115206] no crash when vivifying $| while *{+select}{IO} is undef';
 
 # ${^OPEN} and $^H interaction
