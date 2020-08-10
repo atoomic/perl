@@ -31,7 +31,7 @@ ok !exists $INC{'Tie/Hash/NamedCapture.pm'},
 
 use tests 1; # ARGV
 fresh_perl_is
- '$count=0; ++$count while(<foo::ARGV>); print $count',
+ 'my $count=0; ++$count while(<foo::ARGV>); print $count',
  '0',
   { stdin => 'swext\n' },
  '<foo::ARGV> does not iterate through STDIN';
