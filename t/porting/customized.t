@@ -3,25 +3,24 @@
 # Test that CUSTOMIZED files in Maintainers.pl have not been overwritten.
 
 BEGIN {
-    # This test script uses a slightly atypical invocation of the 'standard'
-    # core testing setup stanza.
-    # The existing porting tools which manage the Maintainers file all
-    # expect to be run from the root
-    # XXX that should be fixed
-    chdir '..' if -f 'test.pl';
-    unshift @INC, qw[ lib Porting ];
+        # This test script uses a slightly atypical invocation of the 'standard'
+        # core testing setup stanza.
+        # The existing porting tools which manage the Maintainers file all
+        # expect to be run from the root
+        # XXX that should be fixed
+
+    chdir '..' unless -d 't';
+    @INC = qw(lib Porting t);
+    require 'test.pl';
+    skip_all("pre-computed SHA1 won't match under EBCDIC") if $::IS_EBCDIC;
+    skip_all("This distro may have modified some files in cpan/. Skipping validation.") if $ENV{'PERL_BUILD_PACKAGING'};
 }
+
+use strict;
 use warnings;
 use Digest;
 use File::Spec;
 use Maintainers qw[%Modules get_module_files get_module_pat];
-use Test::More;
-{   no warnings 'once';
-    skip_all("pre-computed SHA1 won't match under EBCDIC")
-        if $::IS_EBCDIC;
-}
-skip_all("This distro may have modified some files in cpan/. Skipping validation.")
-    if $ENV{'PERL_BUILD_PACKAGING'};
 
 sub filter_customized {
     my ($m, @files) = @_;
