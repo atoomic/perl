@@ -302,7 +302,7 @@ SKIP: {
 
     # or coerced into a non-glob
     fresh_perl_is
-	'open Fh, "test.pl"; -r($h{i} = *Fh); $h{i} = 3; undef %h;'
+	'open Fh, "test.pl"; my %h; -r($h{i} = *Fh); $h{i} = 3; undef %h;'
 	. 'open my $fh2, ' . "q\0" . which_perl() . "\0; print -B _",
 	'',
 	{ switches => ['-l'] },
