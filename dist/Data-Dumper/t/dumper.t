@@ -4,10 +4,10 @@
 #
 
 BEGIN {
-    require Config; import Config;
+    use Config;
     if ($Config{'extensions'} !~ /\bData\/Dumper\b/) {
-	print "1..0 # Skip: Data::Dumper was not built\n";
-	exit 0;
+        print "1..0 # Skip: Data::Dumper was not built\n";
+        exit 0;
     }
 }
 
@@ -15,7 +15,6 @@ BEGIN {
 local $Data::Dumper::Sortkeys = 1;
 
 use Data::Dumper;
-use Config;
 
 $Data::Dumper::Pad = "#";
 my $TMAX;
