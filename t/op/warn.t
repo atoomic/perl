@@ -200,7 +200,7 @@ is @warnings, 2;
 is $warnings[1], $warnings[0], 'warn treats $@=3 and $@="3" the same way';
 
 fresh_perl_is(<<'EOF', "should be line 4 at - line 4.\n", {stderr => 1}, "");
-${
+my $foo; ${
     foo
 } = "should be line 4";
 warn $foo;
@@ -216,7 +216,7 @@ line 5 at - line 5.
 EOF
     fresh_perl_is(<<'EOF', $expected, {stderr => 1}, "");
 warn "line 1";
-(${
+my $foo; (${
     foo
 } = "line 5") && warn("line 4"); warn("also line 4");
 warn $foo;
