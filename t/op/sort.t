@@ -1020,6 +1020,7 @@ fresh_perl_is('sub w ($$) {my ($l, $r) = @_; my $v = \@_; undef @_; @_ = 0..2; $
 #               from a custom sort subroutine.
 fresh_perl_is
  '
+   no strict q|vars|;
    $sub = sub {
     local $count = $count+1;
     ()->$sub if $count < 1000;
