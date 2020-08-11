@@ -48,7 +48,7 @@ is($ans, 120, 'calculate a factorial with recursive evals');
 my $curr_test = curr_test();
 my $tempfile = tempfile();
 open(try,'>',$tempfile);
-print try 'print "ok $curr_test\n";',"\n";
+print try qq|print "ok $curr_test\n";|,"\n";
 close try;
 
 do "./$tempfile"; print $@;
