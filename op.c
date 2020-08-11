@@ -8845,30 +8845,43 @@ Perl_utilize(pTHX_ int aver, I32 floor, OP *version, OP *idop, OP *arg)
 	    newSTATEOP(0, NULL, imop) ));
 
     if (use_version) {
-	/* Enable the
-	 * feature bundle that corresponds to the required version. */
-	use_version = sv_2mortal(new_version(use_version));
-	S_enable_feature_bundle(aTHX_ use_version);
+        use_version = sv_2mortal(new_version(use_version));
 
-	/* If a version >= 5.11.0 is requested, strictures are on by default! */
-	if (vcmp(use_version,
-		 sv_2mortal(upg_version(newSVnv(5.011000), FALSE))) >= 0) {
-	    if (!(PL_hints & HINT_EXPLICIT_STRICT_REFS))
-		PL_hints |= HINT_STRICT_REFS;
-	    if (!(PL_hints & HINT_EXPLICIT_STRICT_SUBS))
-		PL_hints |= HINT_STRICT_SUBS;
-	    if (!(PL_hints & HINT_EXPLICIT_STRICT_VARS))
-		PL_hints |= HINT_STRICT_VARS;
-	}
-	/* otherwise they are off */
-	else {
-	    if (!(PL_hints & HINT_EXPLICIT_STRICT_REFS))
-		PL_hints &= ~HINT_STRICT_REFS;
-	    if (!(PL_hints & HINT_EXPLICIT_STRICT_SUBS))
-		PL_hints &= ~HINT_STRICT_SUBS;
-	    if (!(PL_hints & HINT_EXPLICIT_STRICT_VARS))
-		PL_hints &= ~HINT_STRICT_VARS;
-	}
+        /* If a version >= 7.0.0 is requested... */
+        if (vcmp(use_version,
+            sv_2mortal(upg_version(newSVnv(7.000000), FALSE))) >= 0) {
+            /* PL_hints &= HINT_EXPLICIT_V7; */
+            /* also enable warnings... */
+        } else {
+            /* disable BUNDLE_7 if not explicit: need a new HINT_EXPLICIT_V7 */
+            /* if (!(PL_hints & HINT_EXPLICIT_V7)) */
+            /* PL_hints &= ~HINT_BUNDLE_V7; */
+            /* should probably go to S_enable_feature_bundle */
+        }
+
+        /* Enable the
+        * feature bundle that corresponds to the required version. */
+        S_enable_feature_bundle(aTHX_ use_version);
+
+        /* If a version >= 5.11.0 is requested, strictures are on by default! */
+        if (vcmp(use_version,
+            sv_2mortal(upg_version(newSVnv(5.011000), FALSE))) >= 0) {
+            if (!(PL_hints & HINT_EXPLICIT_STRICT_REFS))
+                PL_hints |= HINT_STRICT_REFS;
+            if (!(PL_hints & HINT_EXPLICIT_STRICT_SUBS))
+                PL_hints |= HINT_STRICT_SUBS;
+            if (!(PL_hints & HINT_EXPLICIT_STRICT_VARS))
+                PL_hints |= HINT_STRICT_VARS;
+            }
+        /* otherwise they are off */
+        else {
+            if (!(PL_hints & HINT_EXPLICIT_STRICT_REFS))
+                PL_hints &= ~HINT_STRICT_REFS;
+            if (!(PL_hints & HINT_EXPLICIT_STRICT_SUBS))
+				PL_hints &= ~HINT_STRICT_SUBS;
+            if (!(PL_hints & HINT_EXPLICIT_STRICT_VARS))
+                PL_hints &= ~HINT_STRICT_VARS;
+        }
     }
 
     /* The "did you use incorrect case?" warning used to be here.
