@@ -180,7 +180,7 @@ is($#that_array, 28, 'list repetition propagates lvalue cx to its lhs');
 
 
 fresh_perl_like(
- '@a = (1) x ~1',
+ 'my @a = (1) x ~1',
   qr/Out of memory/,
   {  },
  '(1) x ~1',
