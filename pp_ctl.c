@@ -3791,8 +3791,7 @@ S_require_version(pTHX_ SV *sv)
     }
 
     /* catch issues like use 5.6 which converts to 5.600 instead of using 5.006 */
-    sv_last_five_version = sv_2mortal( newSVpvs("v5.32.255") ); /* the last available release version */
-    upg_version(sv_last_five_version, TRUE);
+    sv_last_five_version = sv_2mortal(upg_version(newSVnv(5.033000), FALSE)); /* the last available release version */
 
     if (!Perl_sv_derived_from_pvn(aTHX_ PL_patchlevel, STR_WITH_LEN("version"), 0))
         upg_version(PL_patchlevel, TRUE);
