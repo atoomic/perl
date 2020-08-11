@@ -926,8 +926,9 @@ SKIP: {
     my $n = 125;
 
     my $code = <<'EOF';
-$ary = '[';
-my @a = map $$ary, 1..NNN;
+my $ary = '[';
+my @a;
+{ no strict 'refs'; @a = map $$ary, 1..NNN; }
 print "@a\n";
 EOF
     $code =~ s/NNN/$n/g;
