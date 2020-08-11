@@ -3,7 +3,7 @@ package base;
 
 #use strict 'vars';
 use strict; # not needed in core, but retain for dual-life
-our $VERSION = '2.27';
+our $VERSION = '2.27_001';
 $VERSION =~ tr/_//d;
 
 # simplest way to avoid indexing of the package: no package statement
@@ -57,6 +57,7 @@ if ($] < 5.009) {
 else {
     *get_fields = sub {
         # Shut up a possible typo warning.
+        no strict 'refs';
         () = \%{$_[0].'::FIELDS'};
         return \%{$_[0].'::FIELDS'};
     }
@@ -106,6 +107,7 @@ sub import {
                 my $dot_hidden;
                 eval {
                     my $guard;
+                    no strict 'refs';
                     if ($INC[-1] eq '.' && %{"$base\::"}) {
                         # So:  the package already exists   => this an optional load
                         # And: there is a dot at the end of @INC  => we want to hide it
