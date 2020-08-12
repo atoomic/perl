@@ -3805,7 +3805,7 @@ S_require_version(pTHX_ SV *sv)
             );
     }
     else {
-        if ( vcmp(sv,sv_last_five_version) > 0 ) {
+        if ( vcmp(sv,sv_last_five_version) >= 0 ) {
             I32 first = 0;
             AV *lav;
 
