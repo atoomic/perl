@@ -151,6 +151,7 @@ sub delete_package ($) {
     }
 
     my($stem, $leaf) = $pkg =~ m/(.*::)(\w+::)$/;
+    no strict 'refs';
     my $stem_symtab = *{$stem}{HASH};
     return unless defined $stem_symtab and exists $stem_symtab->{$leaf};
 
@@ -161,6 +162,7 @@ sub delete_package ($) {
     foreach my $name (keys %$leaf_symtab) {
         undef *{$pkg . $name};
     }
+    use strict 'refs';
 
     # delete the symbol table
 
