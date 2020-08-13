@@ -314,7 +314,7 @@ pass("B::Concise STYLE/CALLBACK TESTS");
 use B::Concise qw( walk_output add_style set_style_standard add_callback );
 
 # new relative style, added by set_up_relative_test()
-@stylespec =
+my @stylespec =
     ( "#hyphseq2 (*(   (x( ;)x))*)<#classsym> "
       . "#exname#arg(?([#targarglife])?)~#flags(?(/#privateb)?)(x(;~->#next)x) "
       . "(x(;~=> #extra)x)\n" # new 'variable' used here
@@ -333,6 +333,7 @@ sub set_up_relative_test {
     add_callback
 	( sub {
 	    my ($h, $op, $format, $level, $style) = @_;
+        my $lastnext;
 
 	    # callback marks up const ops
 	    $h->{arg} .= ' CALLBACK' if $h->{name} eq 'const';
@@ -350,6 +351,7 @@ sub set_up_relative_test {
 	    }
 	    elsif ($style eq 'scope') {
 		# suppress printout entirely
+        my @scopeops;
 		$$format="" unless grep { $h->{name} eq $_ } @scopeops;
 	    }
 	});
@@ -434,7 +436,7 @@ EONT_EONT
 
 #################################
 
-@scopeops = qw( leavesub enter leave nextstate );
+my @scopeops = qw( leavesub enter leave nextstate );
 add_style
 	( 'scope'  # concise copy
 	  , "#hyphseq2 (*(   (x( ;)x))*)<#classsym> "

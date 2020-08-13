@@ -63,7 +63,7 @@ EOT_EOT
 EONT_EONT
 
 checkOptree ( name	=> 'PMOP children',
-	      code	=> sub { $foo =~ s/(a)/$1/ },
+	      code	=> sub { my $foo =~ s/(a)/$1/ },
 	      strip_open_hints => 1,
 	      expect => <<'EOT_EOT',   expect_nt => <<'EONT_EONT');
 # 5  <1> leavesub[1 ref] K/REFC,1 ->(end)
@@ -169,7 +169,7 @@ EOT_EOT
 EONT_EONT
 
 checkOptree ( name      => 'padrange',
-	      code	=> sub { my ($x,$y); @a = ($x,$y); ($x,$y) = @a },
+	      code	=> sub { my ($x,$y); my @a = ($x,$y); ($x,$y) = @a },
 	      strip_open_hints => 1,
 	      expect	=> <<'EOT_EOT', expect_nt => <<'EONT_EONT');
 # f  <1> leavesub[1 ref] K/REFC,1 ->(end)
