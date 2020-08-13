@@ -18,6 +18,7 @@ plan tests => 21;
 
 pass("SORT OPTIMIZATION");
 
+my @a;
 checkOptree ( name	=> 'sub {sort @a}',
 	      code	=> sub {sort @a},
 	      bcopts	=> '-exec',

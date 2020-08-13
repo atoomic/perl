@@ -20,6 +20,7 @@ plan tests => 99;
 
 #################################
 
+my ($tsub1, $tsub3, $tsub5);
 my sub lleexx {}
 sub tsub0 {}
 sub tsub1 {} $tsub1 = 1;
@@ -98,7 +99,7 @@ INIT {
 #################################
 pass("RENDER CONSTANT SUBS RETURNING SCALARS");
 
-for $func (sort keys %$want) {
+for my $func (sort keys %$want) {
     # no strict 'refs';	# why not needed ?
     checkOptree ( name      => "$func() as a coderef",
 		  code      => \&{$func},
@@ -113,7 +114,7 @@ EONT_EONT
 
 pass("RENDER CALLS TO THOSE CONSTANT SUBS");
 
-for $func (sort keys %$want) {
+for my $func (sort keys %$want) {
     # print "# doing $func\n";
     checkOptree ( name    => "call $func",
 		  code    => "$func",
@@ -297,7 +298,7 @@ EONT_EONT
 
 checkOptree ( name	=> 'lc*,uc*,gt,lt,ge,le,cmp',
 	      code	=> sub {
-		  $s = uc('foo.').ucfirst('bar.').lc('LOW.').lcfirst('LOW');
+		  my $s = uc('foo.').ucfirst('bar.').lc('LOW.').lcfirst('LOW');
 		  print "a-lt-b" if "a" lt "b";
 		  print "b-gt-a" if "b" gt "a";
 		  print "a-le-b" if "a" le "b";
