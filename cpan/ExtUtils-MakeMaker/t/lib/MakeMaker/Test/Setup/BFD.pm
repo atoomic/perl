@@ -80,7 +80,7 @@ END
              'Big-Dummy/Liar/lib/Big/Liar.pm' => <<'END',
 package Big::Liar;
 
-$VERSION = 0.01;
+our $VERSION = 0.01;
 
 1;
 END
