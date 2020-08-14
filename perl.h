@@ -5375,10 +5375,7 @@ typedef enum {
 #define HINT_SORT_STABLE	0x00000100 /* sort styles */
 #define HINT_SORT_UNSTABLE	0x00000200
 
-#define HINT_ALL_STRICT       HINT_EXPLICIT_STRICT_REFS \
-                            | HINT_EXPLICIT_STRICT_SUBS \
-                            | HINT_EXPLICIT_STRICT_VARS \
-                            | HINT_STRICT_REFS \
+#define HINT_ALL_STRICT       HINT_STRICT_REFS \
                             | HINT_STRICT_SUBS \
                             | HINT_STRICT_VARS
 
