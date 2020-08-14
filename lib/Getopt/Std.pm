@@ -102,46 +102,48 @@ sub getopt (;$$) {
     local @EXPORT;
 
     while (@ARGV && ($_ = $ARGV[0]) =~ /^-(.)(.*)/) {
-	($first,$rest) = ($1,$2);
-	if (/^--$/) {	# early exit if --
-	    shift @ARGV;
-	    last;
-	}
-	if (index($argumentative,$first) >= 0) {
-	    if ($rest ne '') {
-		shift(@ARGV);
-	    }
-	    else {
-		shift(@ARGV);
-		$rest = shift(@ARGV);
-	    }
-	    if (ref $hash) {
-	        $$hash{$first} = $rest;
-	    }
-	    else {
-	        ${"opt_$first"} = $rest;
-	        push( @EXPORT, "\$opt_$first" );
-	    }
-	}
-	else {
-	    if (ref $hash) {
-	        $$hash{$first} = 1;
-	    }
-	    else {
-	        ${"opt_$first"} = 1;
-	        push( @EXPORT, "\$opt_$first" );
-	    }
-	    if ($rest ne '') {
-		$ARGV[0] = "-$rest";
-	    }
-	    else {
-		shift(@ARGV);
-	    }
-	}
+        ($first,$rest) = ($1,$2);
+        if (/^--$/) {    # early exit if --
+            shift @ARGV;
+            last;
+        }
+        if (index($argumentative,$first) >= 0) {
+            if ($rest ne '') {
+                shift(@ARGV);
+            }
+            else {
+                shift(@ARGV);
+                $rest = shift(@ARGV);
+            }
+            if (ref $hash) {
+                $$hash{$first} = $rest;
+            }
+            else {
+                no strict 'refs';
+                ${"opt_$first"} = $rest;
+                push( @EXPORT, "\$opt_$first" );
+            }
+        }
+        else {
+            if (ref $hash) {
+                $$hash{$first} = 1;
+            }
+            else {
+                no strict 'refs';
+                ${"opt_$first"} = 1;
+                push( @EXPORT, "\$opt_$first" );
+            }
+            if ($rest ne '') {
+                $ARGV[0] = "-$rest";
+            }
+            else {
+                shift(@ARGV);
+            }
+        }
     }
     unless (ref $hash) { 
-	local $Exporter::ExportLevel = 1;
-	import Getopt::Std;
+        local $Exporter::ExportLevel = 1;
+        import Getopt::Std;
     }
 }
 
@@ -235,69 +237,71 @@ sub getopts ($;$) {
 
     @args = split( / */, $argumentative );
     while(@ARGV && ($_ = $ARGV[0]) =~ /^-(.)(.*)/s) {
-	($first,$rest) = ($1,$2);
-	if (/^--$/) {	# early exit if --
-	    shift @ARGV;
-	    last;
-	}
-	my $pos = index($argumentative,$first);
-	if ($pos >= 0) {
-	    if (defined($args[$pos+1]) and ($args[$pos+1] eq ':')) {
-		shift(@ARGV);
-		if ($rest eq '') {
-		    ++$errs unless @ARGV;
-		    $rest = shift(@ARGV);
-		}
-		if (ref $hash) {
-		    $$hash{$first} = $rest;
-		}
-		else {
-		    ${"opt_$first"} = $rest;
-		    push( @EXPORT, "\$opt_$first" );
-		}
-	    }
-	    else {
-		if (ref $hash) {
-		    $$hash{$first} = 1;
-		}
-		else {
-		    ${"opt_$first"} = 1;
-		    push( @EXPORT, "\$opt_$first" );
-		}
-		if ($rest eq '') {
-		    shift(@ARGV);
-		}
-		else {
-		    $ARGV[0] = "-$rest";
-		}
-	    }
-	}
-	else {
-	    if ($first eq '-' and $rest eq 'help') {
-		version_mess($argumentative, 'main');
-		help_mess($argumentative, 'main');
-		try_exit();
-		shift(@ARGV);
-		next;
-	    } elsif ($first eq '-' and $rest eq 'version') {
-		version_mess($argumentative, 'main');
-		try_exit();
-		shift(@ARGV);
-		next;
-	    }
-	    warn "Unknown option: $first\n";
-	    ++$errs;
-	    if ($rest ne '') {
-		$ARGV[0] = "-$rest";
-	    }
-	    else {
-		shift(@ARGV);
-	    }
-	}
+        ($first,$rest) = ($1,$2);
+        if (/^--$/) {    # early exit if --
+            shift @ARGV;
+            last;
+        }
+        my $pos = index($argumentative,$first);
+        if ($pos >= 0) {
+            if (defined($args[$pos+1]) and ($args[$pos+1] eq ':')) {
+                shift(@ARGV);
+                if ($rest eq '') {
+                    ++$errs unless @ARGV;
+                    $rest = shift(@ARGV);
+                }
+                if (ref $hash) {
+                    $$hash{$first} = $rest;
+                }
+                else {
+                    no strict 'refs';
+                    ${"opt_$first"} = $rest;
+                    push( @EXPORT, "\$opt_$first" );
+                }
+            }
+            else {
+                if (ref $hash) {
+                    $$hash{$first} = 1;
+                }
+                else {
+                    no strict 'refs';
+                    ${"opt_$first"} = 1;
+                    push( @EXPORT, "\$opt_$first" );
+                }
+                if ($rest eq '') {
+                    shift(@ARGV);
+                }
+                else {
+                    $ARGV[0] = "-$rest";
+                }
+            }
+        }
+        else {
+            if ($first eq '-' and $rest eq 'help') {
+                version_mess($argumentative, 'main');
+                help_mess($argumentative, 'main');
+                try_exit();
+                shift(@ARGV);
+                next;
+            } elsif ($first eq '-' and $rest eq 'version') {
+                version_mess($argumentative, 'main');
+                try_exit();
+                shift(@ARGV);
+                next;
+            }
+            warn "Unknown option: $first\n";
+            ++$errs;
+            if ($rest ne '') {
+                $ARGV[0] = "-$rest";
+            }
+            else {
+                shift(@ARGV);
+            }
+        }
     }
     unless (ref $hash) { 
-	local $Exporter::ExportLevel = 1;
-	import Getopt::Std;
+        local $Exporter::ExportLevel = 1;
+        import Getopt::Std;
     }
     $errs == 0;
 }
