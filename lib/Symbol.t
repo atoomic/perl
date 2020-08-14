@@ -15,10 +15,10 @@ ok( $_ eq 'foo', 'check $_ clobbering' );
 
 
 # First test gensym()
-$sym1 = gensym;
+my $sym1 = gensym;
 ok( ref($sym1) eq 'GLOB', 'gensym() returns a GLOB' );
 
-$sym2 = gensym;
+my $sym2 = gensym;
 
 ok( $sym1 ne $sym2, 'gensym() returns a different GLOB' );
 
@@ -33,12 +33,12 @@ use Symbol qw(geniosym);
 $sym1 = geniosym;
 like( $sym1, qr/=IO\(/, 'got an IO ref' );
 
-$FOO = 'Eymascalar';
+$::FOO = 'Eymascalar';
 *FOO = $sym1;
 
 is( $sym1, *FOO{IO}, 'assigns into glob OK' );
 
-is( $FOO, 'Eymascalar', 'leaves scalar alone' );
+is( $::FOO, 'Eymascalar', 'leaves scalar alone' );
 
 {
     local $^W=1;		# 5.005 compat.
