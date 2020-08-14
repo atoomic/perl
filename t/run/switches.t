@@ -156,6 +156,7 @@ SKIP: {
     open my $f, ">$filename" or skip( "Can't write temp file $filename: $!" );
     print $f <<'SWTEST';
 #!perl -s
+our ($x,$y);
 BEGIN { print $x,$y; exit }
 SWTEST
     close $f or die "Could not close: $!";
@@ -172,6 +173,7 @@ SKIP: {
     open my $f, ">$filename" or skip( "Can't write temp file $filename: $!" );
     print $f <<'SWTEST';
 #!perl -sn
+our ($x,$y);
 BEGIN { print $x; exit }
 SWTEST
     close $f or die "Could not close: $!";
