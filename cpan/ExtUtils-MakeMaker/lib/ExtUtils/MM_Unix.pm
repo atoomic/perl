@@ -1145,6 +1145,10 @@ WARNING
         }
     }
 
+    if ( $ver && $ver eq '7' ) {
+        $ver = 'v7';
+    }
+
     foreach my $name (@$names){
         my ($abs, $use_dir);
         if ($self->file_name_is_absolute($name)) {     # /foo/bar
