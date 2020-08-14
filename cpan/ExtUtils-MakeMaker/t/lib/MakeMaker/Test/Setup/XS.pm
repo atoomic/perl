@@ -30,7 +30,7 @@ require DynaLoader;
 our $VERSION = 1.01;
 our @ISA    = qw(Exporter DynaLoader);
 our @EXPORT = qw(is_even);
-bootstrap XS::Test $VERSION;
+XS::Test->bootstrap( $VERSION );
 1;
 END
 
@@ -82,10 +82,10 @@ my $PM_OTHER = <<'END';
 package XS::Other;
 require Exporter;
 require DynaLoader;
-$VERSION = 1.20;
-@ISA    = qw(Exporter DynaLoader);
-@EXPORT = qw(is_odd);
-bootstrap XS::Other $VERSION;
+our $VERSION = 1.20;
+our @ISA    = qw(Exporter DynaLoader);
+our @EXPORT = qw(is_odd);
+XS::Other->bootstrap( $VERSION );
 1;
 END
 

@@ -1166,7 +1166,9 @@ WARNING
             print "Executing $abs\n" if ($trace >= 2);
 
             my $val;
-            my $version_check = qq{"$abs" -le "require $ver; print qq{VER_OK}"};
+            my $lib = $abs;
+            $lib =~ s{/[^/]+$}{/lib};
+            my $version_check = qq{"$abs" -I$lib -le "require $ver; print qq{VER_OK}"};
 
             # To avoid using the unportable 2>&1 to suppress STDERR,
             # we close it before running the command.
@@ -2080,8 +2082,10 @@ sub init_PERL {
         push @perls, $miniperl;
     }
 
+    my $pv = int($]);
+
     $self->{PERL} ||=
-        $self->find_perl(5.0, \@perls, \@defpath, $Verbose );
+        $self->find_perl($pv, \@perls, \@defpath, $Verbose );
 
     my $perl = $self->{PERL};
     $perl =~ s/^"//;
