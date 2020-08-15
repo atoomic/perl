@@ -22,6 +22,14 @@ jobs:
           GITHUB_CONTEXT: ${{ toJson(github) }}
         run: echo "$GITHUB_CONTEXT"
 
+      - name: setup branch env name
+        run: |
+          ref="${github_ref/refs\/heads\//}"
+          echo "$ref"
+          echo "::set-env name=ref::$ref"
+        env:
+          github_ref: ${{ github.event.ref }}
+
       - name: irc push
         uses: rectalogic/notify-irc@v1
         if: github.event_name == 'push'
@@ -32,7 +40,7 @@ jobs:
           channel: ${{ env.channel }}
           nickname: Push
           message:
-            "\x037${{ github.actor }}\x0F pushed to \x033${{ github.event.ref }}\x0F\n\
+            "\x037${{ github.actor }}\x0F pushed to branch \x033${{ env.ref }}\x0F\n\
             ${{ join(github.event.commits.*.message) }}\n\
             ${{ github.event.compare }}\
             "
