@@ -32,9 +32,10 @@ jobs:
           channel: ${{ env.channel }}
           nickname: Push
           message:
-            "\x037${{ github.actor }}\x0F pushed \x033${{ github.event.ref }}\x0F\n\
-            ${{ github.event.compare }}\n\
-            ${{ join(github.event.commits.*.message) }}"
+            "\x037${{ github.actor }}\x0F pushed to \x033${{ github.event.ref }}\x0F\n\
+            ${{ join(github.event.commits.*.message) }}\n\
+            ${{ github.event.compare }}\
+            "
 
       - name: irc pull request
         uses: rectalogic/notify-irc@v1
