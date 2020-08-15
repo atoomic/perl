@@ -27,16 +27,12 @@ my $noplan;
 my $Perl;       # Safer version of $^X set by which_perl()
 
 # This defines ASCII/UTF-8 vs EBCDIC/UTF-EBCDIC
-{
-    # TODO:  Figure out how not to generate a "used only once" warning here
-    # without having to fiddle with @INC to tell t/test.pl where to find
-    # warnings.pm
+# Avoid "used only once" warning
+$::IS_ASCII  = $::IS_ASCII  = ord 'A' ==  65;
+$::IS_EBCDIC = $::IS_EBCDIC = ord 'A' == 193;
 
-    $::IS_ASCII  = ord 'A' ==  65;
-    $::IS_EBCDIC = ord 'A' == 193;
-}
-
-# This is 'our' to enable harness to account for TODO-ed tests in overall grade of PASS or FAIL
+# This is 'our' to enable harness to account for TODO-ed tests in
+# overall grade of PASS or FAIL
 our $TODO = 0;
 my $NO_ENDING = 0;
 my $Tests_Are_Passing = 1;
