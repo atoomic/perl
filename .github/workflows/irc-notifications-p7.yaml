@@ -41,7 +41,7 @@ jobs:
           nickname: Push
           message:
             "\x037${{ github.actor }}\x0F pushed to branch \x033${{ env.ref }}\x0F\n\
-            ${{ join(github.event.commits.*.message) }}\n\
+            ${{ join(github.event.commits.*.message, '\n') }}\n\
             ${{ github.event.compare }}\
             "
 
