@@ -126,7 +126,7 @@ when
 ########
 # Without the feature, no 'Unambiguous use of' warning:
 use warnings; no warnings 'experimental::smartmatch';
-@break = ($break = "break");
+my (@break, $break); @break = ($break = "break");
 print ${break}, ${break[0]};
 EXPECT
 breakbreak
@@ -134,7 +134,7 @@ breakbreak
 # With the feature, we get an 'Unambiguous use of' warning:
 use warnings; no warnings 'experimental::smartmatch';
 use feature 'switch';
-@break = ($break = "break");
+my (@break, $break); @break = ($break = "break");
 print ${break}, ${break[0]};
 EXPECT
 Ambiguous use of ${break} resolved to $break at - line 5.
