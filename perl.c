@@ -4526,7 +4526,9 @@ Perl_init_argv_symbols(pTHX_ int argc, char **argv)
 
     argc--,argv++;	/* skip name of script */
     if (PL_doswitches) {
-	for (; argc > 0 && **argv == '-'; argc--,argv++) {
+	   U32 save_hints = PL_hints;
+       PL_hints &= ~HINT_STRICT_VARS; /* temporary disable strict */
+    for (; argc > 0 && **argv == '-'; argc--,argv++) {
 	    char *s;
 	    if (!argv[0][1])
 		break;
@@ -4542,6 +4544,7 @@ Perl_init_argv_symbols(pTHX_ int argc, char **argv)
 	    else
 		sv_setiv(GvSV(gv_fetchpv(argv[0]+1, GV_ADD, SVt_PV)),1);
 	}
+        PL_hints = save_hints;
     }
     if ((PL_argvgv = gv_fetchpvs("ARGV", GV_ADD|GV_NOTQUAL, SVt_PVAV))) {
 	SvREFCNT_inc_simple_void_NN(PL_argvgv);
