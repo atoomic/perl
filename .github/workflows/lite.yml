@@ -16,6 +16,7 @@ jobs:
     name: "linux ${{ matrix.configure }}"
     runs-on: ubuntu-latest
     timeout-minutes: 120
+    if: github.event_name == 'push' && github.ref == 'refs/heads/alpha'
 
     strategy:
       fail-fast: false
