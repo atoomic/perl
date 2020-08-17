@@ -1350,7 +1350,7 @@ our %Modules = (
                 lib/Class/Struct.{pm,t}
                 lib/Config.t
                 lib/Config/Extensions.{pm,t}
-                lib/DB.{pm,t}
+                lib/DB{.pm,.t,-*.t}
                 lib/DBM_Filter.pm
                 lib/DBM_Filter/
                 lib/DirHandle.{pm,t}
