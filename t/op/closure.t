@@ -243,13 +243,15 @@ require './test.pl';
 curr_test($test);
 
 # some of the variables which the closure will access
-\$global_scalar = 1000;
-\@global_array = (2000, 2100, 2200, 2300);
-%global_hash = 3000..3009;
+our \$global_scalar = 1000;
+our \@global_array = (2000, 2100, 2200, 2300);
+our %global_hash = 3000..3009;
 
 my \$fs_scalar = 4000;
 my \@fs_array = (5000, 5100, 5200, 5300);
 my %fs_hash = 6000..6009;
+
+# ~OUR_ANON_SETUP~
 
 END_MARK_THREE
 
@@ -265,7 +267,7 @@ END
   # }
     } elsif ($where_declared eq 'in_anon') {
     $code .= <<'END';
-$outer = sub {
+our $outer = sub {
   my $sub_scalar = 7000;
   my @sub_array = (8000, 8100, 8200, 8300);
   my %sub_hash = 9000..9009;
@@ -288,7 +290,7 @@ END
         } else {
           die "What was $within?"
         }
-    
+
         $sub_test = $test;
         @inners = ( qw!global_scalar global_array global_hash! ,
         qw!fs_scalar fs_array fs_hash! );
@@ -296,12 +298,14 @@ END
         if ($where_declared ne 'filescope') {
           push @inners, qw!sub_scalar sub_array sub_hash!;
         }
+        my @anon_vars;
         for $inner_sub_test (@inners) {
-      
+
           if ($inner_type eq 'named') {
             $code .= "  sub named_$sub_test "
           } elsif ($inner_type eq 'anon') {
-            $code .= "  \$anon_$sub_test = sub "
+            $code .= "  \$anon_$sub_test = sub ";
+            push @anon_vars, "anon_$sub_test";
           } else {
             die "What was $inner_type?"
           }
@@ -343,6 +347,12 @@ END
         # Close up $within block
         $code .= "  }\n\n";
     
+        # setup anon vars
+        if ( @anon_vars ) {
+            my $str = join "\n", map { "our \$$_;" } @anon_vars;
+            $code =~ s{^#\s*\Q~OUR_ANON_SETUP~\E}{$str}m;
+        }
+
         # Close up $where_declared block
         if ($where_declared eq 'in_named') {
           $code .= "}\n\n";
