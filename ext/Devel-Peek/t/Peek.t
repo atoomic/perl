@@ -1,7 +1,7 @@
 #!./perl -T
 
 BEGIN {
-    require Config; import Config;
+    use Config;
     if ($Config{'extensions'} !~ /\bDevel\/Peek\b/) {
         print "1..0 # Skip: Devel::Peek was not built\n";
         exit 0;
@@ -116,6 +116,7 @@ sub do_test {
 our   $a;
 our   $b;
 my    $c;
+our $d;
 local $d = 0;
 
 END {
@@ -925,8 +926,9 @@ do_test('small hash after keys and scalar',
       COW_REFCNT = 1
 ){2}');
 
+note ('Dump with arrays, hashes, and operator return values -- TODO');
 # Dump with arrays, hashes, and operator return values
-@array = 1..3;
+my @array = 1..3;
 do_test('Dump @array', '@array', <<'ARRAY', '', undef, 1);
 SV = PVAV\($ADDR\) at $ADDR
   REFCNT = 1
@@ -967,7 +969,7 @@ SV = PVAV\($ADDR\) at $ADDR
     IV = 1
 ARRAY
 
-%hash = 1..2;
+my %hash = 1..2;
 do_test('Dump %hash', '%hash', <<'HASH', '', undef, 1);
 SV = PVHV\($ADDR\) at $ADDR
   REFCNT = 1
@@ -983,6 +985,8 @@ SV = PVHV\($ADDR\) at $ADDR
     FLAGS = \(IOK,pIOK\)
     IV = 2
 HASH
+
+##### TODO:  Tests above are segfaulting ??  Tests below are okay 2020-08-18
 
 $_ = "hello";
 do_test('rvalue substr', 'substr $_, 1, 2', <<'SUBSTR', '', undef, 1);
@@ -1249,6 +1253,7 @@ sub _get_coderef {
    my $x = $_[0];
    utf8::upgrade($x);
    eval "sub $x {}; 1" or die $@;
+   no strict 'refs';
    return *{$x}{CODE};
 }
 
@@ -1282,45 +1287,48 @@ like(
    "GVGV's are correctly escaped for UTF8 :: latin 1 :: UTF8",
 );
 
-my $dump = _dump(*{"\x{30cb}::\x{df}::\x{30dc}"});
+{
+    no strict 'refs';
+    my $dump = _dump(*{"\x{30cb}::\x{df}::\x{30dc}"});
 
-like(
-   $dump,
-   qr/NAME = \Q"\x{30dc}"/,
-   "NAME is correctly escaped for UTF8 globs",
-);
+    like(
+       $dump,
+       qr/NAME = \Q"\x{30dc}"/,
+       "NAME is correctly escaped for UTF8 globs",
+    );
 
-like(
-   $dump,
-   qr/GvSTASH = 0x[[:xdigit:]]+\s+\Q"\x{30cb}::\x{df}"/,
-   "GvSTASH is correctly escaped for UTF8 globs"
-);
+    like(
+       $dump,
+       qr/GvSTASH = 0x[[:xdigit:]]+\s+\Q"\x{30cb}::\x{df}"/,
+       "GvSTASH is correctly escaped for UTF8 globs"
+    );
 
-like(
-   $dump,
-   qr/EGV = 0x[[:xdigit:]]+\s+\Q"\x{30dc}"/,
-   "EGV is correctly escaped for UTF8 globs"
-);
+    like(
+       $dump,
+       qr/EGV = 0x[[:xdigit:]]+\s+\Q"\x{30dc}"/,
+       "EGV is correctly escaped for UTF8 globs"
+    );
 
-$dump = _dump(*{"\x{df}::\x{30cc}"});
+    $dump = _dump(*{"\x{df}::\x{30cc}"});
 
-like(
-   $dump,
-   qr/NAME = \Q"\x{30cc}"/,
-   "NAME is correctly escaped for UTF8 globs with latin1 stashes",
-);
+    like(
+       $dump,
+       qr/NAME = \Q"\x{30cc}"/,
+       "NAME is correctly escaped for UTF8 globs with latin1 stashes",
+    );
 
-like(
-   $dump,
-   qr/GvSTASH = 0x[[:xdigit:]]+\s+\Q"\xdf"/,
-   "GvSTASH is correctly escaped for UTF8 globs with latin1 stashes"
-);
+    like(
+       $dump,
+       qr/GvSTASH = 0x[[:xdigit:]]+\s+\Q"\xdf"/,
+       "GvSTASH is correctly escaped for UTF8 globs with latin1 stashes"
+    );
 
-like(
-   $dump,
-   qr/EGV = 0x[[:xdigit:]]+\s+\Q"\x{30cc}"/,
-   "EGV is correctly escaped for UTF8 globs with latin1 stashes"
-);
+    like(
+       $dump,
+       qr/EGV = 0x[[:xdigit:]]+\s+\Q"\x{30cc}"/,
+       "EGV is correctly escaped for UTF8 globs with latin1 stashes"
+    );
+}
 
 like(
    _dump(bless {}, "\0::\1::\x{30cd}"),
@@ -1372,10 +1380,11 @@ like(
 sub test_utf8_stashes {
    my ($stash_name, $test) = @_;
 
-   $dump = _dump(\%{"${stash_name}::"});
+   no strict 'refs';
+   my $dump = _dump(\%{"${stash_name}::"});
 
    my $format = utf8::is_utf8($stash_name) ? '\x{%2x}' : '\x%2x';
-   $escaped_stash_name = join "", map {
+   my $escaped_stash_name = join "", map {
          $_ eq ':' ? $_ : sprintf $format, ord $_
    } split //, $stash_name;
 
@@ -1415,7 +1424,7 @@ sub test_DumpProg {
     t::curr_test($builder->current_test() + 1);
 
     utf8::encode($prog);
-    
+
     if ( $test eq 'is' ) {
         t::fresh_perl_is($prog . $u, $expected, $runperl_args, $name)
     }
