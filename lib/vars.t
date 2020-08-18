@@ -14,9 +14,9 @@ print "1..28\n";
 my @warns;
 BEGIN { $SIG{__WARN__} = sub { push @warns, @_ }; $^W = 1 };
 
-%x = ();
-$y = 3;
-@z = ();
+my %x = ();
+my $y = 3;
+my @z = ();
 $X::x = 13;
 
 use vars qw($p @q %r *s &t $X::p);
@@ -35,7 +35,7 @@ print "${e}ok 5\n";
 # this is inside eval() to avoid creation of symbol table entries and
 # to avoid "used once" warnings
 eval <<'EOE';
-$e = ! $main::{p} && 'not ';
+my $e = ! $main::{p} && 'not ';
 print "${e}ok 6\n";
 $e = ! *q{ARRAY} && 'not ';
 print "${e}ok 7\n";
