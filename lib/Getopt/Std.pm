@@ -81,7 +81,7 @@ and version_mess() with the switches string as an argument.
 
 our @ISA = qw(Exporter);
 our @EXPORT = qw(getopt getopts);
-our $VERSION = '1.12';
+our $VERSION = '1.13';
 # uncomment the next line to disable 1.03-backward compatibility paranoia
 # $STANDARD_HELP_VERSION = 1;
 

@@ -14,7 +14,7 @@ sub __clean_eval { eval $_[0] }
 use strict;
 use warnings;
 
-our $VERSION = '1.000037';
+our $VERSION = '1.000037_01';
 
 use Carp qw/croak/;
 use File::Spec;

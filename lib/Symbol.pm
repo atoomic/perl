@@ -85,7 +85,7 @@ our @ISA = qw(Exporter);
 our @EXPORT = qw(gensym ungensym qualify qualify_to_ref);
 our @EXPORT_OK = qw(delete_package geniosym);
 
-our $VERSION = '1.08';
+our $VERSION = '1.09';
 
 my $genpkg = "Symbol::";
 my $genseq = 0;

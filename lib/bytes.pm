@@ -1,6 +1,6 @@
 package bytes;
 
-our $VERSION = '1.07';
+our $VERSION = '1.08';
 
 $bytes::hint_bits = 0x00000008;
 
