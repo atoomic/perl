@@ -62,8 +62,8 @@ sub test_proto {
   if ($p eq '') {
     $main::tests ++;
 
-    eval " &CORE::$o(1) ";
-    like $@, qr/^Too many arguments for $o at /, "&$o with too many args";
+    eval " CORE->can('$o')->(1) ";
+    like $@, qr/^Too many arguments for $o at /, "&$o with too many args ; line:" . __LINE__;
 
   }
   elsif ($p =~ /^_;?\z/) {
@@ -72,10 +72,8 @@ sub test_proto {
     eval " &CORE::$o(1,2) ";
     my $desc = quotemeta op_desc($o);
     like $@, qr/^Too many arguments for $desc at /,
-      "&$o with too many args";
-
-    if (!@_) { return }
-
+      "&$o with too many args ; line:" . __LINE__;
+    return unless @_;
     $main::tests += 3;
 
     my($in,$out) = @_; # for testing implied $_
@@ -83,14 +81,11 @@ sub test_proto {
     # Since we have $in and $out values, we might as well test basic amper-
     # sand calls, too.
 
-    {
-        no strict 'refs';
-        is &{"CORE::$o"}($in), $out, "&$o";
-        lis [&{"CORE::$o"}($in)], [$out], "&$o in list context";
-    }
+    is( CORE->can("$o")->($in), $out, "&$o " . __LINE__ );
+    lis( [ CORE->can("$o")->($in) ], [$out], "&$o in list context" );
 
     $_ = $in;
-    { no strict 'refs'; is &{"CORE::$o"}(), $out, "&$o with no args"; }
+    is( CORE->can("$o")->($in), $out, "&$o with no args" );
   }
   elsif ($p =~ '^;([$*]+)\z') { # ;$ ;* ;$$ etc.
     my $maxargs = length $1;
@@ -98,7 +93,7 @@ sub test_proto {
     eval " &CORE::$o((1)x($maxargs+1)) ";
     my $desc = quotemeta op_desc($o);
     like $@, qr/^Too many arguments for $desc at /,
-        "&$o with too many args";
+        "&$o with too many args ; line:" . __LINE__;
   }
   elsif ($p =~ '^([$*]+);?\z') { # Fixed-length $$$ or ***
     my $args = length $1;
@@ -116,13 +111,13 @@ sub test_proto {
     eval " &CORE::$o((1)x($minargs-1)) ";
     like $@, qr/^Not enough arguments for $o at /, "&$o with too few args";
     eval " &CORE::$o((1)x($maxargs+1)) ";
-    like $@, qr/^Too many arguments for $o at /, "&$o with too many args";
+    like $@, qr/^Too many arguments for $o at /, "&$o with too many args ; line:" . __LINE__;
   }
   elsif ($p eq '_;$') {
     $main::tests += 1;
 
     eval " &CORE::$o(1,2,3) ";
-    like $@, qr/^Too many arguments for $o at /, "&$o with too many args";
+    like $@, qr/^Too many arguments for $o at /, "&$o with too many args ; line:" . __LINE__;
   }
   elsif ($p eq '@') {
     # Do nothing, as we cannot test for too few or too many arguments.
@@ -138,10 +133,9 @@ sub test_proto {
   }
   elsif ($p =~ /^\*\\\$\$(;?)\$\z/) { #  *\$$$ and *\$$;$
     $main::tests += 5;
-
     eval "&CORE::$o(1,1,1,1,1)";
     like $@, qr/^Too many arguments for $o at /,
-         "&$o with too many args";
+         "&$o with too many args ; line:" . __LINE__;
     eval " &CORE::$o((1)x(\$1?2:3)) ";
     like $@, qr/^Not enough arguments for $o at /,
          "&$o with too few args";
@@ -157,10 +151,9 @@ sub test_proto {
   }
   elsif ($p =~ /^\\%\$*\z/) { #  \% and \%$$
     $main::tests += 5;
-
     eval "&CORE::$o(" . join(",", (1) x length $p) . ")";
     like $@, qr/^Too many arguments for $o at /,
-         "&$o with too many args";
+         "&$o with too many args ; line:" . __LINE__;
     eval " &CORE::$o(" . join(",", (1) x (length($p)-2)) . ") ";
     like $@, qr/^Not enough arguments for $o at /,
          "&$o with too few args";
@@ -177,16 +170,15 @@ sub test_proto {
   }
   elsif ($p =~ /^(;)?\\\[(\$\@%&?\*)](\$\@)?\z/) {
     $main::tests += 3;
-
     unless ($3) {
       $main::tests ++;
       eval " &CORE::$o(1,2) ";
       like $@, qr/^Too many arguments for ${\op_desc($o)} at /,
-        "&$o with too many args";
+        "&$o with too many args ; line:" . __LINE__;
     }
     unless ($1) {
       $main::tests ++;
-      eval { &{"CORE::$o"}($3 ? 1 : ()) };
+      eval { CORE->can($o)->($3 ? 1 : ()) };
       like $@, qr/^Not enough arguments for $o at /,
          "&$o with too few args";
     }
@@ -215,16 +207,15 @@ sub test_proto {
   }
   elsif ($p =~ /^;?\\\@([\@;])?/) { #   ;\@   \@@   \@;$$@
     $main::tests += 7;
-
     if ($1) {
-      eval { &{"CORE::$o"}() };
+      eval { CORE->can($o)->() };
       like $@, qr/^Not enough arguments for $o at /,
          "&$o with too few args";
     }
     else {
-      eval " &CORE::$o(\\\@1,2) ";
+      eval " CORE->can('$o')->(\\\@1,2) ";
       like $@, qr/^Too many arguments for $o at /,
-        "&$o with too many args";
+        "&$o with too many args ; line:" . __LINE__;
     }
     eval " &CORE::$o(2) ";
     like $@, qr/^Type of arg 1 to &CORE::$o must be array reference at /,
@@ -249,11 +240,10 @@ sub test_proto {
   }
   elsif ($p eq '\[%@]') {
     $main::tests += 7;
-
     eval " &CORE::$o(\\%1,2) ";
     like $@, qr/^Too many arguments for ${\op_desc($o)} at /,
-        "&$o with too many args";
-    eval { &{"CORE::$o"}() };
+        "&$o with too many args ; line:" . __LINE__;
+    eval { CORE->can($o)->() };
     like $@, qr/^Not enough arguments for $o at /,
          "&$o with too few args";
     eval " &CORE::$o(2) ";
@@ -281,11 +271,10 @@ sub test_proto {
   }
   elsif ($p eq ';\[$*]') {
     $main::tests += 4;
-
     my $desc = quotemeta op_desc($o);
     eval " &CORE::$o(1,2) ";
     like $@, qr/^Too many arguments for $desc at /,
-        "&$o with too many args";
+        "&$o with too many args ; line:" . __LINE__;
     eval " &CORE::$o([]) ";
     like $@, qr/^Type of arg 1 to &CORE::$o must be scalar reference at /,
         "&$o with array ref arg";
@@ -300,6 +289,8 @@ sub test_proto {
   else {
     die "Please add tests for the $p prototype";
   }
+
+  return;
 }
 
 # Test that &CORE::foo calls without parentheses (no new @_) can handle the
@@ -314,11 +305,11 @@ test_proto '__LINE__';
 test_proto '__PACKAGE__';
 test_proto '__SUB__';
 
-is file(), 'frob'    , '__FILE__ does check its caller'   ; ++ $main::tests;
-is line(),  5        , '__LINE__ does check its caller'   ; ++ $main::tests;
-is pakg(), 'stribble', '__PACKAGE__ does check its caller'; ++ $main::tests;
+is file(), 'frob'    , '__FILE__ does check its caller'   ; $main::tests++;
+is line(),  5        , '__LINE__ does check its caller'   ; $main::tests++;
+is pakg(), 'stribble', '__PACKAGE__ does check its caller'; $main::tests++;
 sub __SUB__test { &my__SUB__ }
-is __SUB__test, \&__SUB__test, '&__SUB__';                  ++ $main::tests;
+is __SUB__test, \&__SUB__test, '&__SUB__';                  $main::tests++;
 
 test_proto 'abs', -5, 5;
 
@@ -380,7 +371,7 @@ like join(" ", &CORE::bless([],'parcel')),
 like &mybless([]), qr/^main=ARRAY/, '&bless with one arg';
 
 test_proto 'break';
-{ $main::tests ++;
+{ $main::tests++;
   my $tmp;
   CORE::given(1) {
     CORE::when(1) {
@@ -487,7 +478,7 @@ test_proto 'dbmclose';
 test_proto 'dbmopen';
 {
   last unless eval { require AnyDBM_File };
-  $main::tests ++;
+  $main::tests++;
   my $filename = tempfile();
   &mydbmopen(\my %db, $filename, 0666);
   $db{1} = 2; $db{3} = 4;
@@ -506,24 +497,29 @@ test_proto 'dbmopen';
 
 test_proto 'die';
 eval { dier('quinquangle') };
-is $@, "quinquangle at frob line 6.\n", '&CORE::die'; $main::tests ++;
+is $@, "quinquangle at frob line 6.\n", '&CORE::die'; $main::tests++;
 
 test_proto $_ for qw(
  endgrent endhostent endnetent endprotoent endpwent endservent
 );
 
 test_proto 'evalbytes';
+
 $main::tests += 4;
 {
   my $U_100_bytes = byte_utf8a_to_utf8n("\xc4\x80");
-  chop(my $upgraded = "use utf8; $U_100_bytes" . chr 256);
-  is &myevalbytes($upgraded), chr 256, '&evalbytes';
+  chop(my $upgraded = "use utf8; { no strict; $U_100_bytes" . chr 256);
+  $upgraded .= " }";
+  is( &myevalbytes($upgraded), chr 256, '&evalbytes [myevalbytes]' );
   # Test hints
   require strict;
-  strict->import;
-  &myevalbytes('
-    is someone, "someone", "run-time hint bits do not leak into &evalbytes"
-  ');
+  strict->import; # cannot use strict to check hints
+  my $hint_bit = 0x20000; # use an arbitrary bit
+  $^H |= $hint_bit;
+  my $x = &myevalbytes('my $x; BEGIN { $x = $^H } $x');
+  is( $x & $hint_bit, 0, "run-time hint bits do not leak into &evalbytes" );
+  $^H |= ~$hint_bit; # remove the bit
+
   use strict;
   BEGIN { $^H{coreamp} = 42 }
   $^H{coreamp} = 75;
@@ -698,10 +694,13 @@ test_proto 'oct', '666', 438;
 
 test_proto 'open';
 $main::tests += 5;
-$file = 'test.pl';
-ok &myopen('file'), '&open with 1 arg' or warn "1-arg open: $!";
-like <file>, qr|^#|, 'result of &open with 1 arg';
-close file;
+our $file = 'test.pl';
+{
+  no strict 'refs';
+  ok &myopen('file'), '&open with 1 arg ' . $! or warn "1-arg open: $!";
+  like <file>, qr|^#|, 'result of &open with 1 arg';
+  close file;
+}
 {
   ok &myopen(my $fh, "test.pl"), 'two-arg &open';
   ok $fh, '&open autovivifies';
@@ -1190,9 +1189,9 @@ like $@, qr'^Undefined format "STDOUT" called',
       my $word = $1;
       next if $nottest_words{$word};
       $main::tests ++;
-      ok   exists &{"my$word"}
-        || (eval{&{"CORE::$word"}}, $@ =~ /cannot be called directly/),
-     "$word either has been tested or is not ampable";
+      ok( exists &{"my$word"}
+        || (eval{CORE->can($word)->() }, $@ =~ /cannot be called directly/),
+     "$word either has been tested or is not ampable" ) or warn "$word either has been tested or is not ampabl: $@";
     }
   }
 }
