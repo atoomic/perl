@@ -1,6 +1,6 @@
 package if;
 use strict; # though not needed in core, include for dual-life
-our $VERSION = '0.0608';
+our $VERSION = '0.0609';
 
 sub work {
   my $method = shift() ? 'import' : 'unimport';

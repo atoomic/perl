@@ -89,7 +89,7 @@ no strict 'vars';
 # Tim.Bunce@ig.co.uk, August 1994
 
 BEGIN {
-    $VERSION = '1.47';
+    $VERSION = '1.48';
 }
 
 EOT

@@ -10,7 +10,7 @@
 package Data::Dumper;
 
 BEGIN {
-    our $VERSION = '2.174'; # Don't forget to set version and release
+    our $VERSION = '2.175'; # Don't forget to set version and release
 }               # date in POD below!
 
 #$| = 1;

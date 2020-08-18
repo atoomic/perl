@@ -10,7 +10,7 @@ our (@ISA, @EXPORT, @EXPORT_OK);
 @EXPORT_OK = qw($columns $break $huge);
 
 use vars qw($VERSION $SUBVERSION $columns $debug $break $huge $unexpand $tabstop $separator $separator2);
-$VERSION = 2013.0523;
+$VERSION = 2013.0523_01;
 $SUBVERSION = 'modern';
 
 use 5.010_000;

@@ -2,7 +2,7 @@ package utf8;
 
 $utf8::hint_bits = 0x00800000;
 
-our $VERSION = '1.22';
+our $VERSION = '1.23';
 our $AUTOLOAD;
 
 sub import {
