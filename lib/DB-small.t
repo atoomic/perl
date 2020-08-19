@@ -65,7 +65,8 @@ print "CCC: $main\n";
 }
 
 # test DB::loadfile()
-SKIP: {
+#SKIP: {
+{
 print "WWW: $_\n" for @DB::dbline;
         local (*DB::dbline, $DB::filename);
 print "XXX: $DB::filename\n";
@@ -75,12 +76,13 @@ print Dumper \*DB::dbline;
 my @temp = grep { /\.pm/ } keys %main::;
 for (@temp[0..4]) { if (length $_) { print "YYY: $_\n"; } }
         my $file = (grep { m|^_<.+\.pm| } keys %main:: )[0];
-        skip('cannot find loaded file', 3) unless $file;
+        ok($file, "Can identify loaded file");
         $file =~ s/^_<..//;
 
         my $db = DB->loadfile($file);
         like( $db, qr!$file\z!, '... should find loaded file from partial name');
 
+        no strict 'refs';
         is( *DB::dbline, *{ "_<$db" } , 
                 '... should set *DB::dbline to associated glob');
         is( $DB::filename, $db, '... should set $DB::filename to file name' );
