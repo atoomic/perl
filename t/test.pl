@@ -1363,11 +1363,12 @@ sub run_multiple_progs {
 	    $err_line   .= "GOT:\n$results\n";
 	    $err_line   .= "EXIT STATUS: " . ($status >> 8) . "\n" if $fatal;
 	    if ($::TODO) {
-		$err_line =~ s/^/# /mg;
-		print $err_line;  # Harness can't filter it out from STDERR.
+            $err_line =~ s/^/# /mg;
+            print $err_line;  # Harness can't filter it out from STDERR.
 	    }
 	    else {
-		print STDERR $err_line;
+            print STDERR $err_line;
+            die "PERL_TEST_ABORT_FIRST_FAILURE set Test Failure" if $ENV{PERL_TEST_ABORT_FIRST_FAILURE};
 	    }
 	}
 
