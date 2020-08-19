@@ -1359,7 +1359,9 @@ sub run_multiple_progs {
         local $::TODO = $reason{todo};
 
         unless ($ok) {
-            my $err_line = "PROG: $switch\n$prog\n" .
+            my $err_line = '';
+            $err_line   .= "FILE: $file ; line $line\n" if defined $file;
+            $err_line   .= "PROG: $switch\n$prog\n" .
                            "EXPECTED:\n$expected\n";
             $err_line   .= "EXIT STATUS: != 0\n" if $fatal;
             $err_line   .= "GOT:\n$results\n";
