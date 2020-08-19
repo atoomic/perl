@@ -4,7 +4,7 @@ no strict 'vars'; # Needed for assignment to typeglobs and symbol table
 no strict 'refs';
 our $VERSION = '1.32';
 
-my %ops = (
+our %ops = (
     with_assign         => "+ - * / % ** << >> x .",
     assign              => "+= -= *= /= %= **= <<= >>= x= .=",
     num_comparison      => "< <= >  >= == !=",
