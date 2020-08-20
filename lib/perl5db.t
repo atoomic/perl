@@ -2,11 +2,10 @@
 
 BEGIN {
     chdir 't' if -d 't';
-    @INC = '../lib';
+    our @INC = '../lib';
     require './test.pl';
 }
 
-use strict;
 use warnings;
 use Config;
 
