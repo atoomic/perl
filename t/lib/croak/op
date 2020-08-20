@@ -240,6 +240,7 @@ Execution of - aborted due to compilation errors.
 ########
 # NAME better messages for array-ops on non-arrays (part 2)
 # to check PADHV without hitting the reported error limit
+my %a;
 push %a, 1;
 pop %a;
 shift %a;
