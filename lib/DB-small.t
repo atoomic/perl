@@ -12,7 +12,6 @@ BEGIN {
 
 # symbolic references used later
 use strict qw( vars subs );
-use Data::Dumper;
 
 # @DB::dbline values have both integer and string components (Benjamin Goldberg)
 use Scalar::Util qw( dualvar );
@@ -49,12 +48,7 @@ BEGIN {
 # test DB::files()
 {
         my $dbf = () = DB::files();
-my @temp = DB::files();
-for (@temp[0..4]) { if (length $_) { print "AAA: $_\n"; } }
-@temp = grep { /\.pm/ } keys %main::;
-for (@temp[0..4]) { if (length $_) { print "BBB: $_\n"; } }
         my $main = () = grep ( m!^_<!, keys %main:: );
-print "CCC: $main\n";
         is( $dbf, $main, 'DB::files() should pick up filenames from %main::' );
 }
 
@@ -67,14 +61,9 @@ print "CCC: $main\n";
 # test DB::loadfile()
 #SKIP: {
 {
-print "WWW: $_\n" for @DB::dbline;
         local (*DB::dbline, $DB::filename);
-print "XXX: $DB::filename\n";
-print Dumper \*DB::dbline;
         ok( ! defined DB->loadfile('notafile'),
                 'DB::loadfile() should not find unloaded file' );
-my @temp = grep { /\.pm/ } keys %main::;
-for (@temp[0..4]) { if (length $_) { print "YYY: $_\n"; } }
         my $file = (grep { m|^_<.+\.pm| } keys %main:: )[0];
         ok($file, "Can identify loaded file");
         $file =~ s/^_<..//;
