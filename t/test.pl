@@ -34,8 +34,8 @@ $::IS_EBCDIC = $::IS_EBCDIC = ord 'A' == 193;
 # This is 'our' to enable harness to account for TODO-ed tests in
 # overall grade of PASS or FAIL
 our $TODO = 0;
-my $NO_ENDING = 0;
-my $Tests_Are_Passing = 1;
+our $NO_ENDING = 0;
+our $Tests_Are_Passing = 1;
 
 # Use this instead of print to avoid interference while testing globals.
 sub _print {
