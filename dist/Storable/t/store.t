@@ -33,18 +33,18 @@ my %a = ('key', 'value', 1, 0, $a, $b, 'cvar', \$c);
 my @a = ('first', undef, 3, -4, -3.14159, 456, 4.5,
 	$b, \$a, $a, $c, \$c, \%a);
 
-isnt(store(\@a, "store$$"), undef);
+isnt(store(\@a, "store$$"), undef, 'store returned defined value');
 
 my $dumped = &dump(\@a);
-isnt($dumped, undef);
+isnt($dumped, undef, 'dumped value is defined');
 
 my $root = retrieve("store$$");
-isnt($root, undef);
+isnt($root, undef, 'retrieve returned defined value');
 
 my $got = &dump($root);
-isnt($got, undef);
+isnt($got, undef, 'dumped value is defined');
 
-is($got, $dumped);
+is($got, $dumped, 'got expected value');
 
 1 while unlink "store$$";
 
@@ -60,15 +60,15 @@ sub make {
 package main;
 
 my $foo = FOO->make;
-isnt($foo->store("store$$"), undef);
+isnt($foo->store("store$$"), undef, 'store returned defined value');
 
-isnt(open(OUT, '>>', "store$$"), undef);
+isnt(open(OUT, '>>', "store$$"), undef, 'open returned defined value');
 binmode OUT;
 
 no strict 'subs';
-isnt(store_fd(\@a, ::OUT), undef);
-isnt(nstore_fd($foo, ::OUT), undef);
-isnt(nstore_fd(\%a, ::OUT), undef);
+isnt(store_fd(\@a, '::OUT'), undef, 'store_fd returned defined value');
+isnt(nstore_fd($foo, '::OUT'), undef, 'nstore_fd returned defined value');
+isnt(nstore_fd(\%a, '::OUT'), undef, 'nstore_fd returned defined value');
 use strict 'subs';
 
 isnt(close(OUT), undef);
@@ -76,31 +76,31 @@ isnt(close(OUT), undef);
 isnt(open(OUT, "store$$"), undef);
 
 no strict 'subs';
-my $r = fd_retrieve(::OUT);
+my $r = fd_retrieve('::OUT');
 use strict 'subs';
 isnt($r, undef);
 is(&dump($r), &dump($foo));
 
 no strict 'subs';
-$r = fd_retrieve(::OUT);
+$r = fd_retrieve('::OUT');
 use strict 'subs';
 isnt($r, undef);
 is(&dump($r), &dump(\@a));
 
 no strict 'subs';
-$r = fd_retrieve(main::OUT);
+$r = fd_retrieve('main::OUT');
 use strict 'subs';
 isnt($r, undef);
 is(&dump($r), &dump($foo));
 
 no strict 'subs';
-$r = fd_retrieve(::OUT);
+$r = fd_retrieve('::OUT');
 use strict 'subs';
 isnt($r, undef);
 is(&dump($r), &dump(\%a));
 
 no strict 'subs';
-eval { $r = fd_retrieve(::OUT); };
+eval { $r = fd_retrieve('::OUT'); };
 use strict 'subs';
 isnt($@, '');
 
