@@ -326,7 +326,6 @@ sub MAX_DEPTH { Storable::stack_depth() }
 sub MAX_DEPTH_HASH { Storable::stack_depth_hash() }
 {
     my $t;
-    no strict 'subs';
     print "# max depth ", MAX_DEPTH, "\n";
     $t = [$t] for 1 .. MAX_DEPTH;
     dclone $t;

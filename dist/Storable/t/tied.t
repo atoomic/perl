@@ -126,10 +126,9 @@ my $b = \$a;
 
 my ($c, $d, %hash, @array, $scalar);
 {
-    no strict 'subs';
-    $c = tie %hash, TIED_HASH;
-    $d = tie @array, TIED_ARRAY;
-    tie $scalar, TIED_SCALAR;
+    $c = tie %hash, 'TIED_HASH';
+    $d = tie @array, 'TIED_ARRAY';
+    tie $scalar, 'TIED_SCALAR';
 }
 
 #$scalar = 'foo';

@@ -27,8 +27,7 @@ use Test::More tests => 21;
 
 my $a = 'toto';
 my $b = \$a;
-my $c;
-{ no strict 'subs'; $c = bless {}, CLASS; }
+my $c = bless {}, 'CLASS';
 $c->{attribute} = $b;
 my $d = {};
 my $e = [];

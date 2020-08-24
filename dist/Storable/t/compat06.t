@@ -57,8 +57,7 @@ package ROOT;
 our %hash;
 sub make {
 	my $self = bless {}, shift;
-	my $h;
-	{ no strict 'subs'; $h = tie %hash, TIED_HASH; }
+	my $h = tie %hash, 'TIED_HASH';
 	$self->{h} = $h;
 	$self->{ref} = \%hash;
 	my @pool;
