@@ -31,8 +31,7 @@ use overload
 
 package main;
 
-my $a;
-{ no strict 'subs'; $a = bless [77], OVERLOADED; }
+my $a = bless [77], 'OVERLOADED';
 
 my $b = thaw freeze $a;
 is(ref $b, 'OVERLOADED');

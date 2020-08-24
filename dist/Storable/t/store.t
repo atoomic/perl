@@ -26,8 +26,7 @@ use Test::More tests => 25;
 
 my $a = 'toto';
 my $b = \$a;
-my $c;
-{ no strict 'subs'; $c = bless {}, CLASS; }
+my $c = bless {}, 'CLASS';
 $c->{attribute} = 'attrval';
 my %a = ('key', 'value', 1, 0, $a, $b, 'cvar', \$c);
 my @a = ('first', undef, 3, -4, -3.14159, 456, 4.5,
@@ -65,43 +64,31 @@ isnt($foo->store("store$$"), undef, 'store returned defined value');
 isnt(open(OUT, '>>', "store$$"), undef, 'open returned defined value');
 binmode OUT;
 
-no strict 'subs';
 isnt(store_fd(\@a, '::OUT'), undef, 'store_fd returned defined value');
 isnt(nstore_fd($foo, '::OUT'), undef, 'nstore_fd returned defined value');
 isnt(nstore_fd(\%a, '::OUT'), undef, 'nstore_fd returned defined value');
-use strict 'subs';
 
 isnt(close(OUT), undef);
 
 isnt(open(OUT, "store$$"), undef);
 
-no strict 'subs';
 my $r = fd_retrieve('::OUT');
-use strict 'subs';
 isnt($r, undef);
 is(&dump($r), &dump($foo));
 
-no strict 'subs';
 $r = fd_retrieve('::OUT');
-use strict 'subs';
 isnt($r, undef);
 is(&dump($r), &dump(\@a));
 
-no strict 'subs';
 $r = fd_retrieve('main::OUT');
-use strict 'subs';
 isnt($r, undef);
 is(&dump($r), &dump($foo));
 
-no strict 'subs';
 $r = fd_retrieve('::OUT');
-use strict 'subs';
 isnt($r, undef);
 is(&dump($r), &dump(\%a));
 
-no strict 'subs';
 eval { $r = fd_retrieve('::OUT'); };
-use strict 'subs';
 isnt($@, '');
 
 {
