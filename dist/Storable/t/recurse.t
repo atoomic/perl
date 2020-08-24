@@ -108,8 +108,8 @@ package OBJ_REAL2;
 use Storable qw(freeze thaw);
 
 our $MAX = 20;
-my $recursed = 0;
-my $hook_called = 0;
+our $recursed = 0;
+our $hook_called = 0;
 
 sub make { bless [], shift }
 
@@ -322,8 +322,8 @@ is($refcount_ok, 1, "check refcount");
 
 local $Storable::recursion_limit = 30;
 local $Storable::recursion_limit_hash = 20;
-sub MAX_DEPTH { Storable::stack_depth() }
-sub MAX_DEPTH_HASH { Storable::stack_depth_hash() }
+sub MAX_DEPTH () { Storable::stack_depth() }
+sub MAX_DEPTH_HASH () { Storable::stack_depth_hash() }
 {
     my $t;
     print "# max depth ", MAX_DEPTH, "\n";
@@ -345,14 +345,17 @@ sub MAX_DEPTH_HASH { Storable::stack_depth_hash() }
     is $@, '', 'No simple array[5000] stack overflow #257';
 }
 
-eval {
-    my $t;
-    $t = [$t] for 1 .. MAX_DEPTH*2;
-    eval { note('trying catching recursive aref stack overflow') };
-    dclone $t;
-};
-like $@, qr/Max\. recursion depth with nested structures exceeded/,
-      'Caught aref stack overflow '.MAX_DEPTH*2;
+{
+    local $@;
+    eval {
+        my $t;
+        $t = [$t] for 1 .. MAX_DEPTH*2;
+        eval { note('trying catching recursive aref stack overflow') };
+        dclone $t;
+    };
+    like $@, qr/Max\. recursion depth with nested structures exceeded/,
+          'Caught aref stack overflow '.MAX_DEPTH*2;
+}
 
 if ($ENV{APPVEYOR} and length(pack "p", "") >= 8) {
     # TODO: need to repro this fail on a small machine.
