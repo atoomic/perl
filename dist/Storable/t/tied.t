@@ -104,7 +104,7 @@ sub STORE {
 
 package FAULT;
 
-my $fault = 0;
+our $fault = 0;
 
 sub TIESCALAR {
 	my $pkg = shift;
