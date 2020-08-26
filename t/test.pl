@@ -989,6 +989,7 @@ sub fresh_perl {
 
     open TEST, '>', $tmpfile or die "Cannot open $tmpfile: $!";
     binmode TEST, ':utf8' if $runperl_args->{wide_chars};
+    print TEST qq[use v5; ] if $runperl_args->{run_as_five}; # Simulate how perl -e behaves.
     print TEST $prog;
     close TEST or die "Cannot close $tmpfile: $!";
 

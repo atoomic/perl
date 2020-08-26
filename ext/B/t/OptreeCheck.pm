@@ -487,10 +487,12 @@ sub getRendering {
     if ($tc->{prog}) {
 	$rendering = runperl( switches => ['-w',join(',',"-MO=Concise",@opts)],
 			      prog => $tc->{prog}, stderr => 1,
+                  run_as_five => 1,
 			      ); # verbose => 1);
     } elsif ($tc->{progfile}) {
 	$rendering = runperl( switches => ['-w',join(',',"-MO=Concise",@opts)],
 			      progfile => $tc->{progfile}, stderr => 1,
+                  run_as_five => 1,
 			      ); # verbose => 1);
     } else {
 	my $code = $tc->{code};
@@ -529,6 +531,7 @@ sub getRendering {
 	    push @errs, $1;
 	}
 	$rendering =~ s/-e syntax OK\n//;
+	$rendering =~ s{t/tmp\S+ syntax OK\n}{};
 	$rendering =~ s/-e had compilation errors\.\n//;
     }
     $tc->{got}	   = $rendering;
@@ -942,6 +945,7 @@ sub OptreeCheck::gentest {
     # run the prog, capture 'reference' concise output
     my $preamble = preamble(1);
     my $got = runperl( prog => "$preamble $testcode", stderr => 1,
+                  run_as_five => 1,
 		       #switches => ["-I../ext/B/t", "-MOptreeCheck"], 
 		       );  #verbose => 1);
     
