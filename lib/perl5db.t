@@ -1111,7 +1111,7 @@ DebugWrap->new({
 
     $wrapper->contents_like(
         qr/
-            ^1==>\s+\$x\ =\ 1;\n
+            ^1==>\s+my\ \$x\ =\ 1;\n
             2:\s+print\ "1\\n";\n
             3\s*\n
             4:\s+\$x\ =\ 2;\n
@@ -1139,7 +1139,7 @@ DebugWrap->new({
     );
 
     my $first_l_out = qr/
-        1==>\s+\$x\ =\ 1;\n
+        ^1==>\s+my\ \$x\ =\ 1;\n
         2:\s+print\ "1\\n";\n
         3\s*\n
         4:\s+\$x\ =\ 2;\n
@@ -2152,7 +2152,7 @@ DebugWrap->new({
 
     $wrapper->contents_like(
         qr/
-            ^1==>\s+\$x\ =\ 1;\n
+            ^1==>\s+my\ \$x\ =\ 1;\n
             2:\s+print\ "1\\n";\n
             3\s*\n
             4:\s+\$x\ =\ 2;\n
