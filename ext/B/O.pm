@@ -41,13 +41,9 @@ sub import {
 	    # nice. Thanks. --smcc
 	    use B::].$backend.q[ ();
 
-	    my $compilesub;
-        {
-            no strict 'refs';
-	        $compilesub = &{"B::${backend}::compile"}(@options);
-	        if (ref($compilesub) ne "CODE") {
-		        die $compilesub;
-            }
+        my $compilesub = B::].$backend.q[::compile(@options);
+	    if (ref($compilesub) ne "CODE") {
+		    die $compilesub;
 	    }
 
 	    local $savebackslash = $\;
