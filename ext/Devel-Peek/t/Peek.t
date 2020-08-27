@@ -18,6 +18,7 @@ use Test::More;
 use Devel::Peek;
 
 our $DEBUG = 0;
+our ( @array, %hash );
 open(SAVERR, ">&STDERR") or die "Can't dup STDERR: $!";
 
 # If I reference any lexicals in this, I get the entire outer subroutine (or
@@ -928,7 +929,7 @@ do_test('small hash after keys and scalar',
 
 note ('Dump with arrays, hashes, and operator return values -- TODO');
 # Dump with arrays, hashes, and operator return values
-my @array = 1..3;
+@array = 1..3;
 do_test('Dump @array', '@array', <<'ARRAY', '', undef, 1);
 SV = PVAV\($ADDR\) at $ADDR
   REFCNT = 1
@@ -969,7 +970,7 @@ SV = PVAV\($ADDR\) at $ADDR
     IV = 1
 ARRAY
 
-my %hash = 1..2;
+%hash = 1..2;
 do_test('Dump %hash', '%hash', <<'HASH', '', undef, 1);
 SV = PVHV\($ADDR\) at $ADDR
   REFCNT = 1
