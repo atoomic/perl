@@ -127,7 +127,7 @@ sub handler_traceback {
     }
 
     # Now go for broke.
-    my ($i,$p,$f,$l,$s,$h,$w,$e,$r, $a, @a, %a, @args, $mess);
+    my ($i,$p,$f,$l,$s,$h,$w,$e,$r, $called, @a, %a, @args, $mess);
     for ($i = 1; ($p,$f,$l,$s,$h,$w,$e,$r) = caller($i); $i++) {
         @a = ();
         for (@{[@args]}) {
@@ -139,7 +139,7 @@ sub handler_traceback {
             push(@a, $_);
         }
         $w = $w ? '@ = ' : '$ = ';
-        $a = $h ? '(' . join(', ', @a) . ')' : '';
+        $called = $h ? '(' . join(', ', @a) . ')' : '';
         $e =~ s/\n\s*\;\s*\Z// if $e;
         $e =~ s/[\\\']/\\$1/g if $e;
         if ($r) {
@@ -150,7 +150,7 @@ sub handler_traceback {
             $s = "eval {...}";
         }
         $f = "file '$f'" unless $f eq '-e';
-        $mess = "$w$s$a called from $f line $l\n";
+        $mess = "$w$s$called called from $f line $l\n";
         if ($use_print) {
             print STDERR $mess;
         }
