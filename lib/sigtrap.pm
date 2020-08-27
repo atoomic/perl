@@ -11,7 +11,6 @@ use Carp;
 our $VERSION = '1.10';
 our $Verbose ||= 0;
 our $panic;
-our $use_print = 0;
 
 sub import {
     my $pkg = shift;
@@ -83,6 +82,7 @@ sub handler_die {
 
 sub handler_traceback {
     package DB;		# To get subroutine args.
+    my $use_print = 0;
     { no strict 'subs'; $SIG{'ABRT'} = DEFAULT; }
     kill 'ABRT', $$ if $panic++;
 
