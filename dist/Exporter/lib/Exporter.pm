@@ -1,5 +1,3 @@
-#use v5;
-
 package Exporter;
 
 require 5.006;
