@@ -61,7 +61,6 @@ sub runperl_and_capture {
   }
 }
 
-our $TODO;
 SKIP:
 {
     #skip "NO_PERL_HASH_ENV or NO_PERL_HASH_SEED_DEBUG set", 16
@@ -81,13 +80,9 @@ SKIP:
             my($out2, $err2) = runperl_and_capture( { %base_opts, PERL_HASH_SEED => $seed }, [ @print_keys ]);
             if ( $mode eq 'RANDOM' ) {
                 isnt ($out,$out2,"PERL_PERTURB_KEYS = $mode results in different key order with the same key");
-            } elsif ( $mode eq 'NO' ) {
-                is ($out,$out2,"PERL_PERTURB_KEYS = $mode allows one to recreate a random hash");
-            } elsif ( $mode eq 'DETERMINISTIC' ) {
-                local $TODO = q[need to check DETERMINISTIC mode];
+            } else {
                 is ($out,$out2,"PERL_PERTURB_KEYS = $mode allows one to recreate a random hash");
             }
-
             is ($err,$err2,"Got the same debug output when we set PERL_HASH_SEED and PERL_PERTURB_KEYS");
         }
     }
