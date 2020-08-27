@@ -10,6 +10,8 @@ use Carp;
 
 our $VERSION = '1.10';
 our $Verbose ||= 0;
+our $panic;
+our $use_print = 0;
 
 sub import {
     my $pkg = shift;
@@ -81,7 +83,6 @@ sub handler_die {
 
 sub handler_traceback {
     package DB;		# To get subroutine args.
-    my ($use_print, $panic);
     { no strict 'subs'; $SIG{'ABRT'} = DEFAULT; }
     kill 'ABRT', $$ if $panic++;
 
@@ -102,7 +103,7 @@ sub handler_traceback {
         ++$use_print;
     }
 
-    my ($pack,$file,$line) = caller;
+    my (undef,$file,$line) = caller;
     unless ($use_print) {
         syswrite(STDERR, $file, length($file));
         syswrite(STDERR, ' line ', 6);
