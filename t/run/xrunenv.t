@@ -12,7 +12,8 @@ BEGIN {
     skip_all_without_config('d_fork');
 }
 
-plan tests =>   12;
+our $total_tests = 12;
+plan tests =>   $total_tests;
 
 my $STDOUT = tempfile();
 my $STDERR = tempfile();
@@ -23,7 +24,6 @@ delete $ENV{PERLLIB};
 delete $ENV{PERL5LIB};
 delete $ENV{PERL5OPT};
 delete $ENV{PERL_USE_UNSAFE_INC};
-
 
 # Run perl with specified environment and arguments, return (STDOUT, STDERR)
 sub runperl_and_capture {
@@ -63,8 +63,7 @@ sub runperl_and_capture {
 
 SKIP:
 {
-    #skip "NO_PERL_HASH_ENV or NO_PERL_HASH_SEED_DEBUG set", 16
-    skip "NO_PERL_HASH_ENV or NO_PERL_HASH_SEED_DEBUG set",  6
+    skip "NO_PERL_HASH_ENV or NO_PERL_HASH_SEED_DEBUG set", $total_tests
       if $Config{ccflags} =~ /-DNO_PERL_HASH_ENV\b/ ||
          $Config{ccflags} =~ /-DNO_PERL_HASH_SEED_DEBUG\b/;
 
