@@ -127,10 +127,10 @@ sub handler_traceback {
     }
 
     # Now go for broke.
-    my ($i,$p,$f,$l,$s,$h,$w,$e,$r, $called, @a, %a, @args, $mess);
+    my ($i,$p,$f,$l,$s,$h,$w,$e,$r, $called, @a, %a, $mess);
     for ($i = 1; ($p,$f,$l,$s,$h,$w,$e,$r) = caller($i); $i++) {
         @a = ();
-        for (@{[@args]}) {
+        for (@{[@DB::args]}) {
             s/([\'\\])/\\$1/g;
             s/([^\0]*)/'$1'/
               unless /^(?: -?[\d.]+ | \*[\w:]* )$/x;
