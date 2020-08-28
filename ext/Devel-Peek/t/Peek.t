@@ -932,7 +932,7 @@ do_test('small hash after keys and scalar',
       COW_REFCNT = 1
 ){2}');
 
-note ('Dump with arrays, hashes, and operator return values -- TODO');
+note ('Dump with arrays, hashes, and operator return values');
 # Dump with arrays, hashes, and operator return values
 @array = 1..3;
 do_test('Dump @array', '@array', <<'ARRAY', '', undef, 1);
@@ -991,8 +991,6 @@ SV = PVHV\($ADDR\) at $ADDR
     FLAGS = \(IOK,pIOK\)
     IV = 2
 HASH
-
-##### TODO:  Tests above are segfaulting ??  Tests below are okay 2020-08-18
 
 $_ = "hello";
 do_test('rvalue substr', 'substr $_, 1, 2', <<'SUBSTR', '', undef, 1);
