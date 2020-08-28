@@ -146,15 +146,17 @@ package other { # hide the "ok" sub
 }
 
 {
-    no strict 'subs';
     # or truncate
+
+    no strict 'subs';
+    # Per analysis by xenu in https://github.com/Perl/perl5/issues/17996
     my $n = "for_fold_dot_t$$";
     open F, ">$n" or die "open: $!";
     print F "bralh blah blah \n";
     close F or die "close $!";
     eval "truncate 1 ? $n : 0, 0;";
     print "not " unless -z $n;
-    print "ok ", ++$test, " - truncate(const ? word : ...) -- but 'strict' changes behavior - https://github.com/Perl/perl5/issues/17996\n";
+    print "ok ", ++$test, " - truncate(const ? word : ...)\n";
     unlink $n;
 }
 
