@@ -2280,6 +2280,10 @@ S_parse_body(pTHX_ char **env, XSINIT_t xsinit)
     {
 	char *s;
 
+    /* enable warnings by default outside of -e/-E when not using -w,-W,-X */
+    if ( minus_e == FALSE && PL_minus_E == FALSE && PL_dowarn == G_WARN_OFF )
+        free_and_set_cop_warnings(&PL_compiling, pWARN_ALL);
+
     if (
 #ifndef SECURE_INTERNAL_GETENV
         !TAINTING_get &&
