@@ -6,7 +6,7 @@ BEGIN {
     $ENV{PERL5LIB} = '../lib';
 }
 
-use v5;
+no strict;
 use warnings;
 
 $| = 1;
