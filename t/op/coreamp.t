@@ -62,7 +62,7 @@ sub test_proto {
   if ($p eq '') {
     $main::tests ++;
 
-    eval " CORE->can('$o')->(1) ";
+    eval " &CORE::$o(1) ";
     like $@, qr/^Too many arguments for $o at /, "&$o with too many args ; line:" . __LINE__;
 
   }
@@ -81,11 +81,12 @@ sub test_proto {
     # Since we have $in and $out values, we might as well test basic amper-
     # sand calls, too.
 
-    is( CORE->can("$o")->($in), $out, "&$o " . __LINE__ );
-    lis( [ CORE->can("$o")->($in) ], [$out], "&$o in list context" );
+    no strict 'refs';
+    is &{"CORE::$o"}($in), $out, "&$o line:" . __LINE__;
+    lis [&{"CORE::$o"}($in)], [$out], "&$o in list context";
 
     $_ = $in;
-    is( CORE->can("$o")->($in), $out, "&$o with no args" );
+    is &{"CORE::$o"}(), $out, "&$o with no args";
   }
   elsif ($p =~ '^;([$*]+)\z') { # ;$ ;* ;$$ etc.
     my $maxargs = length $1;
@@ -178,7 +179,8 @@ sub test_proto {
     }
     unless ($1) {
       $main::tests ++;
-      eval { CORE->can($o)->($3 ? 1 : ()) };
+      no strict 'refs';
+      eval { &{"CORE::$o"}($3 ? 1 : ()) };
       like $@, qr/^Not enough arguments for $o at /,
          "&$o with too few args";
     }
@@ -207,15 +209,18 @@ sub test_proto {
   }
   elsif ($p =~ /^;?\\\@([\@;])?/) { #   ;\@   \@@   \@;$$@
     $main::tests += 7;
-    if ($1) {
-      eval { CORE->can($o)->() };
-      like $@, qr/^Not enough arguments for $o at /,
-         "&$o with too few args";
-    }
-    else {
-      eval " CORE->can('$o')->(\\\@1,2) ";
-      like $@, qr/^Too many arguments for $o at /,
-        "&$o with too many args ; line:" . __LINE__;
+    {
+        no strict 'refs';
+        if ($1) {
+          eval { &{"CORE::$o"}() };
+          like $@, qr/^Not enough arguments for $o at /,
+             "&$o with too few args";
+        }
+        else {
+          eval " &CORE::$o(\\\@1,2) ";
+          like $@, qr/^Too many arguments for $o at /,
+            "&$o with too many args ; line:" . __LINE__;
+        }
     }
     eval " &CORE::$o(2) ";
     like $@, qr/^Type of arg 1 to &CORE::$o must be array reference at /,
@@ -243,9 +248,12 @@ sub test_proto {
     eval " &CORE::$o(\\%1,2) ";
     like $@, qr/^Too many arguments for ${\op_desc($o)} at /,
         "&$o with too many args ; line:" . __LINE__;
-    eval { CORE->can($o)->() };
-    like $@, qr/^Not enough arguments for $o at /,
-         "&$o with too few args";
+    {
+        no strict 'refs';
+        eval { &{"CORE::$o"}() };
+        like $@, qr/^Not enough arguments for $o at /,
+            "&$o with too few args";
+    }
     eval " &CORE::$o(2) ";
     like $@, qr/^Type of arg 1 to &CORE::$o must be hash or array (?x:
                 )reference at /,
@@ -1189,9 +1197,10 @@ like $@, qr'^Undefined format "STDOUT" called',
       my $word = $1;
       next if $nottest_words{$word};
       $main::tests ++;
-      ok( exists &{"my$word"}
-        || (eval{CORE->can($word)->() }, $@ =~ /cannot be called directly/),
-     "$word either has been tested or is not ampable" ) or warn "$word either has been tested or is not ampabl: $@";
+      no strict 'refs';
+      ok exists &{"my$word"}
+        || (eval{&{"CORE::$word"}}, $@ =~ /cannot be called directly/),
+     "$word either has been tested or is not ampable";
     }
   }
 }
