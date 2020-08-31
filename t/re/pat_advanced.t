@@ -1733,6 +1733,7 @@ sub run_tests {
         is("$1", 'abc', "/g leads to unsafe match vars: $1");
 
         fresh_perl_is(<<'EOP', ">abc<\n", {}, 'mention $&');
+no warnings 'void';
 $&;
 my $x; 
 ($x='abc')=~/(abc)/g; 
@@ -2489,7 +2490,7 @@ EOF
         $Config{uvsize} == 8
 	  or skip("need large code-points for this test", 1);
 
-	fresh_perl_is('/\x{E000000000}|/ and print qq(ok\n)', "ok\n", {},
+	fresh_perl_is('/\x{E000000000}|/ and print qq(ok\n)', "ok\n", { switches => ['-X']},
 		      "buffer overflow in TRIE_STORE_REVCHAR");
     }
 
