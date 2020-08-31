@@ -61,7 +61,7 @@ sub finder {
 
     if (@non_ascii and not $has_encoding) {
         say "$file:";
-        $DB::single = 1;
+        $DB::single = $DB::single = 1;
         for (@non_ascii) {
             say "    $_->{num} ($_->{encoding}): $_->{line}";
         }
