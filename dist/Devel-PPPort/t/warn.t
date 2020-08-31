@@ -53,6 +53,7 @@ Devel::PPPort->bootstrap;
 package main;
 
 $^W = 0;
+BEGIN { ${^WARNING_BITS} = 0 }
 
 my $warning;
 
@@ -68,15 +69,15 @@ ok("$]" >= 5.004 ? $warning =~ /^Perl_warner bar:42/ : $warning eq '');
 
 $warning = '';
 Devel::PPPort::Perl_warner_nocontext();
-ok("$]" >= 5.004 ? $warning =~ /^Perl_warner_nocontext bar:42/ : $warning eq '');
+ok("$]" >= 5.004 ? $warning =~ /^Perl_warner_nocontext bar:42/ : $warning eq '', "Perl_warner_nocontext");
 
 $warning = '';
 Devel::PPPort::ckWARN();
-is($warning, '');
+is($warning, '', "ckWARN no warnings");
 
 $^W = 1;
 
 $warning = '';
 Devel::PPPort::ckWARN();
-ok("$]" >= 5.004 ? $warning =~ /^ckWARN bar:42/ : $warning eq '');
+ok("$]" >= 5.004 ? $warning =~ /^ckWARN bar:42/ : $warning eq '', "ckWARN bar:42");
 
