@@ -56,10 +56,18 @@ foreach my $class ('Tie::RefHash', 'Tie::RefHash::Nestable') {
         my ($tr, $tw, $te) = @{$tied_results[$i]};
         
         my $ok = 1;
-        local $^W = 0;
-        $ok = 0 if (defined($or) != defined($tr)) or ($or ne $tr);
-        $ok = 0 if (defined($ow) != defined($tw)) or ($ow ne $tw);
-        $ok = 0 if (defined($oe) != defined($te)) or ($oe ne $te);
+
+        my $t = sub {
+            my ($x, $y) = @_;
+            return 1 if !defined($x) && !defined($y);
+            return 0 if defined($x) != defined($y);
+            return 0 if $x ne $y;
+            return 1;
+        };
+
+        $ok = 0 unless $t->( $or, $tr);
+        $ok = 0 unless $t->( $ow, $tw);
+        $ok = 0 unless $t->( $oe, $te);
         
         if (not $ok) {
             print STDERR
