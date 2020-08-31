@@ -57,11 +57,14 @@ sub match {
   if ($matched) {
     print "match ";
     if (ref($obj)) {
+      no warnings 'uninitialized';
       print ref($obj), ":$obj->{name}:$obj->{age}:$obj->{square}";
     } else {
+      no warnings 'uninitialized';
       print $obj, ":$hash->{name}:$hash->{age}:$hash->{square}";
     }
   } else {
+    no warnings 'uninitialized';
     print "no match $hash->{name}:$hash->{age}:$hash->{square}";
   }
 
@@ -86,7 +89,7 @@ match("Jim Jones, 35 years old, secret wombat 007.");
 CODE
 
 # RT #129199: this is mainly for ASAN etc's benefit
-fresh_perl_is(<<'CODE', '', {}, "RT #129199:");
+fresh_perl_is(<<'CODE', '', { switches => ['-X']}, "RT #129199:");
 /(?{<<""})/
 0
 CODE
