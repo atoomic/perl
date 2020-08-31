@@ -21,6 +21,7 @@ done_testing();
 
 __END__
 # https://github.com/Perl/perl5/issues/7207#issuecomment-543940952
+no warnings 'io';
 while (<DATA>) {
     chomp;
     print "$.: '$_'\n";
