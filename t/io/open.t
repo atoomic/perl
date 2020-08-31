@@ -398,7 +398,7 @@ fresh_perl_is(
       close $fh;
       unlink \*STDOUT;
     ',
-    'ok', { stderr => 1 },
+    'ok', { stderr => 1, switches => [ '-X' ] },
     '[perl #77492]: open $fh, ">", \*glob causes SEGV');
 
 # [perl #77684] Opening a reference to a glob copy.
