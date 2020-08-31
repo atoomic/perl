@@ -284,7 +284,7 @@ SKIP:
             my($out2, $err2) = runperl_and_capture( { %base_opts, PERL_HASH_SEED => $seed }, [ @print_keys ]);
             TODO: {
                 local $TODO = "Being discussed in https://github.com/Perl/perl5/pull/18095"
-                    if $mode == 2;
+                    if $mode != 0;
 
                 # If mode is deterministic (2), test will fail intermittently
                 # when 'strict' is on.  Being discussed in Perl 5.  We don't
