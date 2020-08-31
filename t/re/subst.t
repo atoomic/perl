@@ -678,11 +678,11 @@ is($name, "cis", q[#22351 bug with 'e' substitution modifier]);
     }
 }
 
-fresh_perl_is( '$_=q(foo);s/(.)\G//g;print' => 'foo', {},
+fresh_perl_is( '$_=q(foo);s/(.)\G//g;print' => 'foo', { switches => [ '-X' ] },
                 '[perl #69056] positive GPOS regex segfault' );
-fresh_perl_is( '$_="abcdef"; s/bc|(.)\G(.)/$1 ? "[$1-$2]" : "XX"/ge; print' => 'aXXdef', {},
+fresh_perl_is( '$_="abcdef"; s/bc|(.)\G(.)/$1 ? "[$1-$2]" : "XX"/ge; print' => 'aXXdef', { switches => [ '-X' ] },
                 'positive GPOS regex substitution failure (#69056, #114884)' );
-fresh_perl_is( '$_="abcdefg123456"; s/(?<=...\G)?(\d)/($1)/; print' => 'abcdefg(1)23456', {},
+fresh_perl_is( '$_="abcdefg123456"; s/(?<=...\G)?(\d)/($1)/; print' => 'abcdefg(1)23456', { switches => [ '-X' ] },
                 'positive GPOS lookbehind regex substitution failure #114884' );
 
 # s/..\G//g should stop after the first iteration, rather than working its
@@ -1094,7 +1094,7 @@ SKIP: {
 }
 {
     # RT #126602 double free if the value being modified is freed in the replacement
-    fresh_perl_is('no strict q|subs|; s//*_=0;s|0||;00.y0/e; print qq(ok\n)', "ok\n", { stderr => 1 },
+    fresh_perl_is('no strict q|subs|; s//*_=0;s|0||;00.y0/e; print qq(ok\n)', "ok\n", { stderr => 1, switches => [ '-X' ] },
                   "[perl #126602] s//*_=0;s|0||/e crashes");
 }
 
@@ -1188,5 +1188,5 @@ __EOF__
 }
 
 {
-    fresh_perl_is("s//00000000000format            \0          '0000000\\x{800}/;eval", "", {}, "RT #133882");
+    fresh_perl_is("s//00000000000format            \0          '0000000\\x{800}/;eval", "", { switches => [ '-X' ]}, "RT #133882");
 }
