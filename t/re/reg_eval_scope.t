@@ -160,7 +160,7 @@ fresh_perl_is <<'CODE',
 my $a=4; my $b=5; "a" =~ /(?{last})a/; print $a,$b
 CODE
     q{Can't "last" outside a loop block at - line 1.},
-    { stderr => 1 }, '(?{last})';
+    { stderr => 1, switches => [ '-X' ] }, '(?{last})';
 
 
 fresh_perl_is <<'CODE',
@@ -174,21 +174,21 @@ fresh_perl_is <<'CODE',
 for (1) {  my $a=4; my $b=5; "a" =~ /(?{last})a/ }; print $a,$b
 CODE
     q{Can't "last" outside a loop block at - line 1.},
-    { stderr => 1 }, 'for (1) {(?{last})}';
+    { stderr => 1, switches => [ '-X' ] }, 'for (1) {(?{last})}';
 
 
 fresh_perl_is <<'CODE',
 my $a=4; my $b=5; eval { "a" =~ /(?{last})a/ }; print $a,$b
 CODE
     '45',
-    { stderr => 1 }, 'eval {(?{last})}';
+    { stderr => 1, switches => [ '-X' ]  }, 'eval {(?{last})}';
 
 
 fresh_perl_is <<'CODE',
 my $a=4; my $b=5; "a" =~ /(?{next})a/; print $a,$b
 CODE
     q{Can't "next" outside a loop block at - line 1.},
-    { stderr => 1 }, '(?{next})';
+    { stderr => 1, switches => [ '-X' ] }, '(?{next})';
 
 
 fresh_perl_is <<'CODE',
@@ -198,10 +198,10 @@ CODE
     { stderr => 1 }, '(?{for {next}})';
 
 
-fresh_perl_is <<'CODE',
+fresh_perl_like <<'CODE',
 for (1) {  my $a=4; my $b=5; "a" =~ /(?{next})a/ }; print $a,$b
 CODE
-    q{Can't "next" outside a loop block at - line 1.},
+    qr{Can't "next" outside a loop block at - line 1.}m,
     { stderr => 1 }, 'for (1) {(?{next})}';
 
 
@@ -209,7 +209,7 @@ fresh_perl_is <<'CODE',
 my $a=4; my $b=5; eval { "a" =~ /(?{next})a/ }; print $a,$b
 CODE
     '45',
-    { stderr => 1 }, 'eval {(?{next})}';
+    { stderr => 1, switches => [ '-X' ] }, 'eval {(?{next})}';
 
 
 fresh_perl_is <<'CODE',
@@ -237,7 +237,7 @@ CODE
 }
 
 # [perl #3590]
-fresh_perl_is <<'CODE', '', { stderr => 1 }, '(?{eval{die}})';
+fresh_perl_is <<'CODE', '', { stderr => 1, switches => [ '-X' ] }, '(?{eval{die}})';
 "$_$_$_"; my $foo; # these consume pad entries and ensure a SEGV on opd perls
 "" =~ m{(?{exit(0)})};
 CODE
