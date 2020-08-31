@@ -339,14 +339,17 @@ $libnet_cfg_out = "libnet.cfg"
 	unless(defined($libnet_cfg_out = $opt_o));
 
 my %oldcfg = ();
-
-$Net::Config::CONFIGURE = 1; # Suppress load of user overrides
+{
+    no warnings 'once';
+    $Net::Config::CONFIGURE = 1; # Suppress load of user overrides
+}
 if( -f $libnet_cfg_in )
  {
   %oldcfg = ( %{ local @INC = '.'; do $libnet_cfg_in } );
  }
 elsif (eval { require Net::Config }) 
  {
+  no warnings 'once';
   $have_old = 1;
   %oldcfg = %Net::Config::NetConfig;
  }
