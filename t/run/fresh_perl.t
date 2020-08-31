@@ -83,9 +83,9 @@ my $x=0x0eabcd; print $x->ref;
 EXPECT
 Can't locate object method "ref" via package "961485" (perhaps you forgot to load "961485"?) at - line 1.
 ########
-chop (my $str .= <DATA>);
+no warnings qw{unopened once uninitialized}; chop (my $str .= <DATA>);
 ########
-no strict 'refs'; my $banana; close ($banana);
+no strict 'refs'; no warnings qw{uninitialized}; my $banana; close ($banana);
 ########
 my ($x, $y); $x=2;$y=3;$x<$y ? $x : $y += 23;print $x;
 EXPECT
@@ -95,7 +95,7 @@ eval 'sub bar {print "In bar"}';
 ########
 system './perl -ne "print if eof" /dev/null'
 ########
-chop(my $file = <DATA>);
+no warnings qw{unopened once uninitialized}; chop(my $file = <DATA>);
 ########
 package N;
 sub new {my ($obj,$n)=@_; bless \$n}  
@@ -112,13 +112,13 @@ foo
 ########
 my @a; push(@a, 1, 2, 3,)
 ########
-quotemeta ""
+no warnings 'void'; quotemeta ""
 ########
 for ("ABCDE") {
  &sub;
 s/./&sub($&)/eg;
 print;}
-sub sub {local($_) = @_;
+sub sub {local($_) = @_; no warnings 'uninitialized';
 $_ x 4;}
 EXPECT
 Modification of a read-only value attempted at - line 3.
@@ -137,7 +137,7 @@ print;
 EXPECT
 oo
 ########
-print scalar ("foo","bar")
+no warnings 'void'; print scalar ("foo","bar")
 EXPECT
 bar
 ########
@@ -190,7 +190,7 @@ EXPECT
 phooey
 BEGIN failed--compilation aborted at - line 1.
 ########
-BEGIN { my $zero; 1/$zero }
+no warnings 'uninitialized'; BEGIN { my $zero; 1/$zero }
 EXPECT
 Illegal division by zero at - line 1.
 BEGIN failed--compilation aborted at - line 1.
@@ -470,6 +470,7 @@ package Y;
 sub attribute {
     my $self = shift;
     my $var = shift;
+    $var = '' unless defined $var;
     if (@_ == 0) {
 	return $self->{$var};
     } elsif (@_ == 1) {
@@ -477,7 +478,7 @@ sub attribute {
     }
 }
 sub AUTOLOAD {
-    $AUTOLOAD =~ /::([^:]+)$/;
+    $AUTOLOAD =~ /::([^:]+)$/ if defined $AUTOLOAD;
     my $method = $1;
     splice @_, 1, 0, $method;
     goto &attribute;
@@ -531,7 +532,7 @@ ok
 # moved to op/lc.t
 EXPECT
 ########
-sub f { my $a = 1; my $b = 2; my $c = 3; my $d = 4; next }
+sub f { my $a = 1; my $b = 2; my $c = 3; my $d = 4; return }
 my $x = "foo";
 { f } continue { print $x, "\n" }
 EXPECT
@@ -590,6 +591,7 @@ BAR
 
 # This loop causes a segv in 5.6.0
 for my $lineno (1..61) {
+   no warnings 'io';
    write REMITOUT;
 }
 
@@ -666,6 +668,7 @@ EXPECT
 Bar=ARRAY(0x...)
 ######## (?{...}) compilation bounces on PL_rs
 -0
+no warnings 'uninitialized';
 my $x; {
   /(?{ $x })/;
   # {
