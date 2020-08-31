@@ -27,7 +27,7 @@ Helloworld
 ########
 # VERSION requirement, doesn't load anything with require
 require 5.9.5;
-print "<".$INC{"feature.pm"}.">\n";
+print "<".( defined $INC{"feature.pm"} ? $INC{"feature.pm"} : '' ).">\n";
 EXPECT
 <>
 ########
@@ -62,6 +62,7 @@ OPTIONS regex
 Unknown behavior for .*
 ########
 # lower version after higher version
+no warnings 'ambiguous';
 sub evalbytes { print "evalbytes sub\n" }
 sub say { print "say sub\n" }
 use 5.015;
