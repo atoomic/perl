@@ -22,7 +22,7 @@ use XS::APItest;
  eval 'sub frimple() { 78 }';
  undef $w;
  newCONSTSUB_flags(\%::, "frimple", 0, "78");
- is $w, undef, '...or the const SVs have the same value';
+ like $w, qr[Constant subroutine frimple redefined], '...or the const SVs have the same value';
 }
 
 use warnings;
