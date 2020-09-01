@@ -315,7 +315,7 @@ $$ = $pid; # Tests below use $$
 	$headmaybe = <<EOH ;
 \@rem ='
 \@echo off
-$perl -x \%0
+$perl -I../lib -m-strict -x \%0
 goto endofperl
 \@rem ';
 EOH

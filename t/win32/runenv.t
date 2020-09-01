@@ -243,6 +243,7 @@ my @test_cases = (
 	  'zwapp', 'bam', 'owww'],
 );
 
+my @testcases;
 # This block added to verify fix for RT #87322
 if ($::os_id == 2 and $::os_major == 6) {    # Vista, Server 2008 (incl R2), 7
   my @big_perl5lib = ('z' x 16) x 2049;

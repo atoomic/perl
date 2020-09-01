@@ -57,10 +57,10 @@ if "%OS%" == "Windows_NT" goto WinNT
 EOT
 
 print $F <<EOT;
-"$^X" -x -S "%0" %1 %2 %3 %4 %5 %6 %7 %8 %9
+"$^X" -I../lib -m-strict -x -S "%0" %1 %2 %3 %4 %5 %6 %7 %8 %9
 goto endofperl
 :WinNT
-"$^X" -x -S %0 %*
+"$^X" -I../lib -m-strict -x -S %0 %*
 EOT
 print $F <<'EOT';
 if NOT "%COMSPEC%" == "%SystemRoot%\system32\cmd.exe" goto endofperl
