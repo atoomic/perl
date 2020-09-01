@@ -45,15 +45,28 @@ jobs:
             ${{ github.event.compare }}\
             "
 
-      - name: irc pull request
+      - name: irc opened pull request
         uses: rectalogic/notify-irc@v1
-        if: github.event_name == 'pull_request'
+        if: github.event_name == 'pull_request' && github.event.action == 'opened'
         with:
           server: ${{ env.server }}
           port: ${{ env.port }}
           channel: ${{ env.channel }}
-          nickname: new-PR
+          nickname: Pull-Request
           message:
             "\x037${{ github.actor }}\x0F opened PR #${{ github.event.pull_request.number }}\n\
             ${{ github.event.pull_request.title }}\n\
-            \x0313${{ github.event.html_url }}\x0F"
+            ${{ github.event.html_url }}"
+
+      - name: irc synchronize pull request
+        uses: rectalogic/notify-irc@v1
+        if: github.event_name == 'pull_request' && github.event.action == 'synchronize'
+        with:
+          server: ${{ env.server }}
+          port: ${{ env.port }}
+          channel: ${{ env.channel }}
+          nickname: Pull-Request
+          message:
+            "\x037${{ github.actor }}\x0F updated PR #${{ github.event.pull_request.number }}\n\
+            ${{ github.event.pull_request.title }}\n\
+            ${{ github.event.html_url }}"
