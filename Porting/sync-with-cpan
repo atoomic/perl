@@ -294,6 +294,7 @@ if (!-d $files [0] || grep { $_ eq $module } @problematic) {
 
 use Cwd 'cwd';
 my $orig_pwd = cwd();
+say "PPP: orig_pwd: $orig_pwd";
 
 chdir "cpan";
 
@@ -383,7 +384,8 @@ system git => 'clean', '-dfxq', $pkg_dir;
 
 say "Unpacking $new_file";
 my $tar_rv = Archive::Tar->extract_archive( $new_file );
-say "TTT: Archive::Tar->extract_archive returned $tar_rv";
+say "TTT: Archive::Tar->extract_archive returned ",
+    $tar_rv // 'undefined value';
 #my $tar = Archive::Tar->new( $new_file );
 #my @untarred_files = $tar->extract();
 #say $_ for sort @untarred_files;
@@ -451,8 +453,6 @@ FILE: for my $file ( find_type_f( $new_dir )) {
     rename $old_file => $file;
 }
 remove_tree( $new_dir );
-say "UUU: got this far";
-__END__
 
 if (-f "$old_dir/.gitignore") {
     say "Restoring .gitignore";
