@@ -301,7 +301,7 @@ if ($cpan_mod =~ /-/ && $cpan_mod !~ /::/) {
 
 sub wget {
     my ($url, $saveas) = @_;
-say "LLL: Entering sub wget";
+say "LLL: Entering sub wget: ", join '|' => ($url, $saveas);
     local $@;
     eval {
         require HTTP::Tiny;
@@ -311,7 +311,7 @@ say "LLL: Entering sub wget";
             say "MMM1: $saveas is up to date";
         }
         else {
-            say "MMM2: HTTP::Tiny response apparently successful";
+            say "MMM2: HTTP::Tiny response apparently unsuccessful";
             say "MMM3: $response->{status} $response->{reason}";
         }
         1
