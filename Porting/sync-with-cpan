@@ -141,15 +141,6 @@ use File::Find;
 use File::Spec::Functions qw( tmpdir rel2abs );
 use Config qw( %Config );
 
-say "AAA: @INC";
-my $testmodule;
-$testmodule = "$INC[0]/HTTP/Tiny.pm";
-say "BBB1: $testmodule ", (-f $testmodule ? "found" : "not found");
-$testmodule = "$INC[0]/Archive/Tar.pm";
-say "BBB2: $testmodule ", (-f $testmodule ? "found" : "not found");
-$testmodule = "$INC[0]/autodie/exception.pm";
-say "BBB3: $testmodule ", (-f $testmodule ? "found" : "not found");
-
 $| = 1;
 
 use constant WIN32 => $^O eq 'MSWin32';
@@ -310,25 +301,36 @@ if ($cpan_mod =~ /-/ && $cpan_mod !~ /::/) {
 
 sub wget {
     my ($url, $saveas) = @_;
-say "QQQ: Entering sub wget";
+say "LLL: Entering sub wget";
     local $@;
     eval {
         require HTTP::Tiny;
         my $http= HTTP::Tiny->new();
-        $http->mirror( $url => $saveas );
+        my $response = $http->mirror( $url => $saveas );
+        if ( $response->{success} ) {
+            say "MMM1: $saveas is up to date";
+        }
+        else {
+            say "MMM2: HTTP::Tiny response apparently successful";
+            say "MMM3: $response->{status} $response->{reason}";
+        }
         1
     };
     # or
     if ($@) {
         say "RRR1: Error eval-ing HTTP::Tiny: $@";
         say "RRR2: Unable to require HTTP::Tiny; trying wget";
-       # Some system do not have wget.  Fall back to curl if we do not
+       # Some systems do not have wget.  Fall back to curl if we do not
        # have it.  On Windows, `which wget` is not going to work, so
        # just use wget, as this script has always done.
        WIN32 || -x substr(`which wget`, 0, -1)
          ? system wget => $url, '-qO', $saveas
          : system curl => $url, '-sSo', $saveas;
-     }
+    }
+    else {
+        say "RRR0: sub wget() used HTTP::Tiny";
+    }
+    return 1;
 }
 
 #
@@ -336,7 +338,7 @@ say "QQQ: Entering sub wget";
 #
 my $new_file;
 my $new_version;
-say "package_url, package_file: ", join("\t" => $package_url, $package_file);
+say "BBB: package_url, package_file: ", join("\t" => $package_url, $package_file);
 if (defined $tarball) {
     $tarball = rel2abs( $tarball, $orig_pwd ) ;
     die "Tarball $tarball does not exist\n" if !-e $tarball;
@@ -373,7 +375,7 @@ else {
     # Fetch the new distro
     #
     my $rv = wget $url, $new_file;
-say "SSS: wget returned $rv";
+say "SSS: sub wget() returned $rv";
 }
 say "new_file: $new_file";
 
@@ -383,12 +385,15 @@ say "Cleaning out old directory";
 system git => 'clean', '-dfxq', $pkg_dir;
 
 say "Unpacking $new_file";
-my $tar_rv = Archive::Tar->extract_archive( $new_file );
-say "TTT: Archive::Tar->extract_archive returned ",
-    $tar_rv // 'undefined value';
+Archive::Tar->extract_archive( $new_file )
+    or die "Archive::Tar->extract_archive() failed: $!";
+
+__END__
+say "TTT: Archive::Tar->extract_archive() returned $tar_rv";
 #my $tar = Archive::Tar->new( $new_file );
 #my @untarred_files = $tar->extract();
 #say $_ for sort @untarred_files;
+
 
 (my $new_dir = basename($new_file)) =~ s/\.tar\.gz//;
 # ensure 'make' will update all files
