@@ -99,11 +99,10 @@ E1
 
 my ($bar, %foo, @ary);
 {
-    no strict 'subs';
-    $foo = FOO;
-    $bar = BAR;
-    $foo{$bar} = BAZ;
-    $ary[0] = ABC;
+    $foo = 'FOO';
+    $bar = 'BAR';
+    $foo{$bar} = 'BAZ';
+    $ary[0] = 'ABC';
 }
 
 print "$foo{$bar}" eq "BAZ" ? "ok 21\n" : "not ok 21\n";
