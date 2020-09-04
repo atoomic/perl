@@ -51,8 +51,7 @@ if ($^O eq 'VMS') {
         my $drop_dot_notype = $ENV{'DECC$READDIR_DROPDOTNOTYPE'} || '';
         $drop_dot = $drop_dot_notype =~ /^[ET1]/i;
     }
-    no strict 'subs';
-    $Is_VMS_traildot = 0 if $drop_dot && unix_rpt;
+    $Is_VMS_traildot = 0 if $drop_dot && 'unix_rpt';
 }
 if (!(-e $extracted_program)) {
     print "1..0 # Skip: $extracted_program was not built\n";
