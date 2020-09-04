@@ -171,7 +171,7 @@ ok eval { *CORE::exit = \42 },
 inlinable_ok($_, '$_{k}', 'on hash')
     for qw<delete exists>;
 
-{ no strict 'subs'; @UNIVERSAL::ISA = CORE; }
+@UNIVERSAL::ISA = 'CORE';
 is "just another "->ucfirst . "perl hacker,\n"->ucfirst,
    "Just another Perl hacker,\n", 'coresubs do not return TARG';
 ++$tests;

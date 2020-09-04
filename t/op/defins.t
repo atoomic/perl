@@ -32,8 +32,7 @@ if ($^O eq 'VMS') {
         my $drop_dot_notype = $ENV{'DECC$READDIR_DROPDOTNOTYPE'} || '';
         $drop_dot = $drop_dot_notype =~ /^[ET1]/i;
     }
-    no strict 'subs';
-    $unix_mode = 1 if $drop_dot && unix_rpt;
+    $unix_mode = 1 if $drop_dot && 'unix_rpt';
 }
 
 # $wanted_filename should be 0 for readdir() and glob() tests.
@@ -56,7 +55,7 @@ print FILE "1\n";
 close(FILE);
 
 open(FILE,"<$saved_filename");
-{ no strict 'subs'; ok(defined(FILE),'opened work file'); }
+ok(defined('FILE'),'opened work file');
 my $seen = 0;
 my $dummy;
 while (my $name = <FILE>)
@@ -98,7 +97,7 @@ cmp_ok($seen,'==',1,'seen in hash while()');
 close FILE;
 
 opendir(DIR,'.');
-{no strict 'subs'; ok(defined(DIR),'opened current directory'); }
+ok(defined('DIR'),'opened current directory');
 $seen = 0;
 while (my $name = readdir(DIR))
  {

@@ -369,7 +369,7 @@ test_proto 'binmode';
 $main::tests += 3;
 is &CORE::binmode(qw[foo bar]), undef, "&binmode";
 lis [&CORE::binmode(qw[foo bar])], [undef], "&binmode in list context";
-{ no strict 'subs'; is &mybinmode(foo), undef, '&binmode with one arg'; }
+is &mybinmode('foo'), undef, '&binmode with one arg';
 
 test_proto 'bless';
 $main::tests += 3;
@@ -455,9 +455,8 @@ lis [&CORE::close('tototootot')], [''], '&close in list context'; ++$main::tests
 test_proto 'closedir';
 $main::tests += 2;
 {
-    no strict 'subs';
-    is &CORE::closedir(foo), undef, '&CORE::closedir';
-    lis [&CORE::closedir(foo)], [undef], '&CORE::closedir in list context';
+    is &CORE::closedir('foo'), undef, '&CORE::closedir';
+    lis [&CORE::closedir('foo')], [undef], '&CORE::closedir in list context';
 }
 
 test_proto 'connect';
@@ -830,14 +829,13 @@ test_proto 'readpipe';
 test_proto 'recv';
 
 {
-    no strict 'subs';
-    use if !is_miniperl, File::Spec::Functions, qw "catfile";
-    use if !is_miniperl, File::Temp, 'tempdir';
+    use if !'is_miniperl', 'File::Spec::Functions', qw "catfile";
+    use if !'is_miniperl', 'File::Temp', 'tempdir';
 }
 
 test_proto 'rename';
 {
-    last if is_miniperl;
+    last if 'is_miniperl';
     $main::tests ++;
     my $dir = tempdir(uc cleanup => 1);
     my $tmpfilenam = catfile $dir, 'aaa';
@@ -1176,11 +1174,11 @@ like $@, qr'^Undefined format "STDOUT" called',
 # haven’t, then either the sub needs to be tested or the list in
 # gv.c is wrong.
 {
-  last if is_miniperl;
+  last if 'is_miniperl';
   require File::Spec::Functions;
   my $keywords_file =
    File::Spec::Functions::catfile(
-      File::Spec::Functions::updir,'regen','keywords.pl'
+      'File::Spec::Functions::updir','regen','keywords.pl'
    );
   my %nottest_words = map { $_ => 1 } qw(
     AUTOLOAD BEGIN CHECK CORE DESTROY END INIT UNITCHECK

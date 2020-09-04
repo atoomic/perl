@@ -7,7 +7,7 @@ BEGIN {
     plan (tests => 22); # some tests are run in BEGIN block
 }
 
-{no strict 'subs'; is __SUB__, "__SUB__", '__SUB__ is a bareword outside of use feature'; }
+is '__SUB__', "__SUB__", '__SUB__ is a bareword outside of use feature';
 
 {
     use v5.15;

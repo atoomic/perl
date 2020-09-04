@@ -154,10 +154,9 @@ cmp_ok( scalar(@{$refary[0]}),'==',1,'one down');
     my @a = 33;
     my($a) = \(@a);
     my $b = \$a[0];
-    no strict 'subs';
     no warnings 'reserved';
     no warnings 'numeric';
-    my $c = \delete $a[bar];
+    my $c = \delete $a['bar'];
 
     ok($a == $b && $b == $c,'a b c also equivalent');
 }
