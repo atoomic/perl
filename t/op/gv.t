@@ -20,7 +20,7 @@ plan(tests => 284);
 # declarators would be missing the point.
 #
 # So we'll run the file with "no strict 'vars'".  We'll also run it with "no
-# strict 'refs'" for similar reasons, but will permit "strict 'subs'" to be on by default and only loosen that stricture when needed.
+# strict 'refs'" for similar reasons, but will permit "strict 'subs'" to be on
 
 no strict 'vars';
 no strict 'refs';
@@ -548,11 +548,11 @@ foreach my $value ({1=>2}, *STDOUT{IO}, *STDOUT{FORMAT}) {
 {
     no warnings qw(once uninitialized);
     my $g = \*clatter;
-    my $r = eval {no strict; ${*{$g}{SCALAR}}};
+    my $r = eval {${*{$g}{SCALAR}}};
     is ($@, '', "PERL_DONT_CREATE_GVSV shouldn't affect thingy syntax");
 
     $g = \*vowm;
-    $r = eval {use strict; ${*{$g}{SCALAR}}};
+    $r = eval {${*{$g}{SCALAR}}};
     is ($@, '',
 	"PERL_DONT_CREATE_GVSV shouldn't affect thingy syntax under strict");
 }
@@ -689,8 +689,7 @@ is join(' ', sub {
 # created for the non-existent function.
 {
 	package RT72740a;
-    no strict 'subs';
-	my $f = bless({}, RT72740b);
+	my $f = bless({}, 'RT72740b');
 	sub s1 { s2 $f; }
 	our $s4;
 	sub s3 { s4 $f; }

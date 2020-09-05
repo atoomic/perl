@@ -11,7 +11,7 @@ is '__SUB__', "__SUB__", '__SUB__ is a bareword outside of use feature';
 
 {
     use v5.15;
-    {no strict 'subs'; is __SUB__, undef, '__SUB__ under use v5.16'; }
+    is __SUB__, undef, '__SUB__ under use v5.16';
 }
 
 use feature 'current_sub';

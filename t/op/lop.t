@@ -64,18 +64,16 @@ is( $i, 11, 'negation precedence with &&, multiple operands' );
 {
     $x = 42;
 
-    no strict 'subs';
-
-    $i = !Bare || !$x;
+    $i = !'Bare' || !$x;
     is( $i, '', 'neg-bareword on lhs of || with non-foldable neg-true on rhs' );
 
-    $i = !Bare && !$x;
+    $i = !'Bare' && !$x;
     is( $i, '', 'neg-bareword on lhs of && with non-foldable neg-true on rhs' );
 
-    $i = do { !$x if !Bare };
+    $i = do { !$x if !'Bare' };
     is( $i, '', 'neg-bareword on rhs of modifier-if with non-foldable neg-true on lhs' );
 
-    $i = do { !$x unless !Bare };
+    $i = do { !$x unless !'Bare' };
     is( $i, '', 'neg-bareword on rhs of modifier-unless with non-foldable neg-true on lhs' );
 
     $i = !do { "str" } || !$x;
