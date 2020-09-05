@@ -123,9 +123,9 @@ $_ x 4;}
 EXPECT
 Modification of a read-only value attempted at - line 3.
 ########
-package FOO;no strict 'subs'; sub new {bless {FOO => BAR}};
+package FOO; sub new {bless {FOO => 'BAR'}};
 package main;
-use strict vars;   
+use strict 'vars';   
 my $self = new FOO;
 print $$self{FOO};
 EXPECT
@@ -160,10 +160,9 @@ our $i; sub ShowShell
 }
  
 {
-    no strict 'subs';
-    &ShowShell(&NewShell(beach,Work,"+0+0"));
-    &ShowShell(&NewShell(beach,Work,"+0+0"));
-    &ShowShell(&NewShell(beach,Work,"+0+0"));
+    &ShowShell(&NewShell('beach','Work',"+0+0"));
+    &ShowShell(&NewShell('beach','Work',"+0+0"));
+    &ShowShell(&NewShell('beach','Work',"+0+0"));
 }
 ########
    {
@@ -181,9 +180,8 @@ our $i; sub ShowShell
    }
    
 my @h;
-no strict 'subs';
-eval 'tie @h, FAKEARRAY, fred' ;
-tie @h, FAKEARRAY, fred ;
+eval q{tie @h, 'FAKEARRAY', 'fred'} ;
+tie @h, 'FAKEARRAY', 'fred' ;
 EXPECT
 TIEARRAY FAKEARRAY fred
 TIEARRAY FAKEARRAY fred
@@ -659,8 +657,7 @@ END {
 }
 package Bar;
 sub new {
-    no strict 'subs';
-    my Bar $self = bless [], Bar;
+    my Bar $self = bless [], 'Bar';
     eval '$self';
     return $self;
 }
