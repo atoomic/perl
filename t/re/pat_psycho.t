@@ -7,10 +7,7 @@
 # this file includes test that my burn a lot of CPU or otherwise be heavy
 # on resources. Set env var $PERL_SKIP_PSYCHO_TEST to skip this file
 
-use strict;
 use warnings;
-use 5.010;
-
 
 sub run_tests;
 
