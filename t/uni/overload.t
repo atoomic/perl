@@ -12,7 +12,6 @@ BEGIN {
 plan(tests => 193);
 
 package UTF8Toggle;
-use strict;
 
 use overload '""' => 'stringify', fallback => 1;
 
