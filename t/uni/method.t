@@ -10,7 +10,7 @@ BEGIN {
     set_up_inc( qw(. ../lib ../cpan/parent/lib) );
 }
 
-use strict;
+# use strict;
 use utf8;
 use open qw( :utf8 :std );
 no warnings 'once';
