@@ -17,7 +17,6 @@ BEGIN {
     skip_all_if_miniperl("no dynamic loading on miniperl, no re");
 }
 
-use strict;
 use warnings;
 
 plan tests => 48;

@@ -15,7 +15,6 @@ BEGIN {
 
 skip_all_without_unicode_tables();
 
-use strict;
 use warnings;
 
 $| = 1;
