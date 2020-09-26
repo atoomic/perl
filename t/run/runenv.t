@@ -28,6 +28,7 @@ delete $ENV{PERL_USE_UNSAFE_INC};
 
 # Run perl with specified environment and arguments, return (STDOUT, STDERR)
 sub runperl_and_capture {
+  no warnings 'once';
   local *F;
   my ($env, $args) = @_;
 
