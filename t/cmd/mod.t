@@ -35,7 +35,7 @@ if (join(' ',@y) eq '0 2 4 6 8 10 12 14 16 18 20') {
 }
 
 # Well this is fragile...
-open(foo,'./TEST') || open(foo,'TEST') || open(foo,'t/TEST');
+open('foo','./TEST') || open('foo','TEST') || open('foo','t/TEST');
 $x = 0;
 $x++ while <foo>;
 print $x > 50 && $x < 2000 ? "ok 8\n" : "not ok 8\n";
@@ -54,5 +54,5 @@ print "ok 12\n" unless $x > 0;
 print "not ok 12\n" if $x > 0;
 
 # This used to cause a segfault
-$x = "".("".do{"foo" for (1)});
+{ no warnings 'void'; $x = "".("".do{"foo" for (1)}); }
 print "ok 13\n";

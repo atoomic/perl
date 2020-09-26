@@ -1,5 +1,6 @@
 #!./perl
 
+no warnings 'void';
 sub foo1 {
     'true1';
     if ($_[0]) { 'true2'; }
@@ -30,6 +31,7 @@ sub foo6 {
     'true1';
     'true2' unless $_[0];
 }
+use warnings;
 
 print "1..36\n";
 
@@ -88,6 +90,7 @@ print &ary1 eq 3 ? "ok 23\n" : "not ok 23\n";
 print join(':',&ary1) eq '1:2:3' ? "ok 24\n" : "not ok 24\n";
 
 sub ary2 {
+    no warnings 'void';
     do {
 	return (1,2,3);
 	(3,2,1);
@@ -153,6 +156,7 @@ sub iseof {
 }
 
 {package foo;
+ no warnings 'syntax';
 
 sub main'file_package {
         local(*F) = @_;
