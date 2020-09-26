@@ -29,7 +29,7 @@ if ( $Config{usecrosscompile} ) {
   skip_all( "Not all files are available during cross-compilation" );
 }
 
-my ($opt) = @ARGV;
+my ($opt) = @ARGV || '';
 
 my $readme_year = readme_year();
 my $v_year = v_year();
