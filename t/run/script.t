@@ -15,9 +15,9 @@ my $x = `$Perl -le "print 'ok';"`;
 
 is($x, "ok\n", "Got expected 'perl -le' output");
 
-open(try,">$filename") || (die "Can't open temp file.");
-print try 'print "ok\n";'; print try "\n";
-close try or die "Could not close: $!";
+open(TRY,">$filename") || (die "Can't open temp file.");
+print TRY 'print "ok\n";'; print TRY "\n";
+close TRY or die "Could not close: $!";
 
 $x = `$Perl $filename`;
 
