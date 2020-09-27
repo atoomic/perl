@@ -35,7 +35,7 @@ if (!exists &Errno::EBADF) {
     print "ok 9 # skipped: no EBADF\n";
 } else {
     $! = 0;
-    no warnings 'unopened';
+    no warnings 'unopened'; no warnings 'once';
     say NONEXISTENT "foo";
     print "not " if ($! != &Errno::EBADF);
     say "ok 9";
