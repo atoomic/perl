@@ -294,7 +294,7 @@ SKIP: {
         return $line;
     }
 
-    my (@fh0, %fh1, @fh2, @fh2, %fh3);
+    my (@fh0, %fh1, @fh2, %fh3);
     open($fh0[0], "TEST");
     ok_cloexec($fh0[0]);
     gimme($fh0[0]);
