@@ -242,8 +242,11 @@ $? = 0;
 # check that child is reaped if the piped program can't be executed
 SKIP: {
   skip "/no_such_process exists", 1 if -e "/no_such_process";
-  open NIL, '/no_such_process |';
-  close NIL;
+  {
+    no warnings 'exec';
+    open NIL, '/no_such_process |';
+    close NIL;
+  }
 
   my $child = 0;
   eval {
