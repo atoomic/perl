@@ -5,7 +5,7 @@ BEGIN {
     @INC = '../lib'; # needed to locate strict for instances of 'no strict'
 }
 
-print "1..120\n";
+print "1..121\n";
 
 my $x = 'x';
 
@@ -14,7 +14,10 @@ if ($x eq 'x') {print "ok 1\n";} else {print "not ok 1\n";}
 
 $x = $#[0];
 
-if ($x eq '') {print "ok 2\n";} else {print "not ok 2\n";}
+{
+    no warnings 'uninitialized';
+    if ($x eq '') {print "ok 2\n";} else {print "not ok 2\n";}
+}
 
 my @x;
 $x = $#x;
@@ -25,14 +28,14 @@ $x = '\\'; # ';
 
 if (length($x) == 1) {print "ok 4\n";} else {print "not ok 4\n";}
 
-eval 'while (0) {
+eval 'no warnings q|uninitialized|; while (0) {
     print "foo\n";
 }
 /^/ && (print "ok 5\n");
 '; # '
 
 my %foo;
-eval '$foo{1} / 1;';
+eval 'no warnings q|uninitialized|; $foo{1} / 1;';
 if (!$@) {print "ok 6\n";} else {print "not ok 6 $@\n";}
 
 my $foo;
@@ -97,7 +100,7 @@ E2
 ]}
 E1
 
-my ($bar, %foo, @ary);
+my ($bar, @ary);
 {
     no strict 'subs';
     $foo = FOO;
@@ -112,9 +115,12 @@ print "${foo}{$bar}" eq "FOO{BAR}" ? "ok 22\n" : "not ok 22\n";
 print "${foo{$bar}}" eq "BAZ" ? "ok 23\n" : "not ok 23\n";
 
 print "FOO:" =~ /$foo[:]/ ? "ok 24\n" : "not ok 24\n";
-my $A;
-print "ABC" =~ /^$ary[$A]$/ ? "ok 25\n" : "not ok 25\n";
-print "FOOZ" =~ /^$foo[$A-Z]$/ ? "ok 26\n" : "not ok 26\n";
+{
+    no warnings 'uninitialized';
+    my $A;
+    print "ABC" =~ /^$ary[$A]$/ ? "ok 25\n" : "not ok 25\n";
+    print "FOOZ" =~ /^$foo[$A-Z]$/ ? "ok 26\n" : "not ok 26\n";
+}
 
 # MJD 19980425
 my ($X, @X) = qw(a b c d); 
@@ -242,15 +248,22 @@ EOT
 # arrays now *always* interpolate into "..." strings.
 # 20000522 MJD (mjd@plover.com)
 {
+  my @these_warnings;
   my $description;
   $description = q|With "strict 'vars'" by default, interpolation of empty array |;
   $description .= q|does not give misleading result in test of string equality|;
-  eval(q(">@nosuch<" eq "><")) && print "# $@", "not ";
-  print "ok $test - $description\n";
-  ++$test;
+  {
+    local $SIG{__WARN__} = sub{ push @these_warnings, $_[0]; };
+    eval(q(">@nosuch<" eq "><")) && print "# $@", "not ";
+    print "ok $test - $description\n";
+    ++$test;
+    print +($these_warnings[0] =~ m/Possible unintended interpolation of \@nosuch in string/
+        ? "ok" : "not ok"), " $test - Captured possible unintended interpolation warning\n";
+    ++$test;
+  }
 
   # Look at this!  This is going to be a common error in the future:
-  eval(q("fred@example.com" eq "fred.com")) && print "# $@", "not ";
+  eval(q(no warnings 'ambiguous'; "fred@example.com" eq "fred.com")) && print "# $@", "not ";
   print "ok $test - $description\n";
   ++$test;
 
@@ -261,7 +274,7 @@ EOT
   ++$test;
 
   # Ditto.
-  eval(q{@nosuch = ('a', 'b', 'c'); ">@nosuch<" eq ">a b c<"}) 
+  eval(q{no warnings 'ambiguous'; @nosuch = ('a', 'b', 'c'); ">@nosuch<" eq ">a b c<"}) 
       && print "# $@", "not ";
   print "ok $test - $description\n";
   ++$test;
@@ -269,10 +282,11 @@ EOT
   # This isn't actually a lex test, but it's testing the same feature
   sub makearray {
     my @array = ('fish', 'dog', 'carrot');
+    no warnings 'once';
     *R::crackers = \@array;
   }
 
-  eval(q{makearray(); ">@R::crackers<" eq ">fish dog carrot<"})
+  eval(q{no warnings 'ambiguous'; makearray(); ">@R::crackers<" eq ">fish dog carrot<"})
     || print "# $@", "not ";
   print "ok $test\n";
   ++$test;
@@ -381,7 +395,7 @@ print "ok $test - eval 's//<<END/' does not leave extra newlines\n"; $test++;
 
 {
     no strict 'subs';
-    $_ = a;
+    $_ = 'a';
     eval "s/a/'b\0'#/e";
     print 'not ' unless $_ eq "b\0";
     print "ok $test - # after null in s/// repl\n"; $test++;
@@ -399,7 +413,7 @@ print "ok $test - s//3}->{3/e\n"; $test++;
 $_ = "not ok $test";
 my %x;
 $x{3} = "not ";
-eval 's/${\%x}{3}//e';
+eval 'no warnings q|uninitialized|; s/${\%x}{3}//e';
 print "$_ - s//\${\\%x}{3}/e\n"; $test++;
 
 eval 's/${foo#}//e';
@@ -536,11 +550,11 @@ print "not " unless ref +(map{sub :lvalue { "a" }} 1)[0] eq "CODE";
 print "ok $test - map{sub :lvalue...}\n"; $test++;
 
 # Used to crash [perl #123711]
-0-5x-l{0};
+{ no warnings; 0-5x-l{0}; }
 
 # Used to fail an assertion [perl #123617] [perl #123955]
 eval '"$a{ 1 m// }"; //';
-eval '"@0{0s 000";eval"$"';
+eval 'no warnings q|ambiguous|; "@0{0s 000";eval"$"';
 
 # Pending token stack overflow [perl #123677]
 {
