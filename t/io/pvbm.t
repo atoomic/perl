@@ -45,11 +45,11 @@ sub PVBM () { 'foo' }
         $caution .= 'https://github.com/Perl/perl5/issues/17997';
         ok (scalar eval { pipe $pvbm, PIPE; },
             "pipe(PVBM, ) succeeds $caution");
-        close foo;
+        close 'foo';
         close PIPE;
         ok (scalar eval { pipe PIPE, $pvbm;  },
             "pipe(, PVBM) succeeds $caution");
-        close foo;
+        close 'foo';
         close PIPE;
     }
     ok (!eval { pipe \$pvbm, PIPE;  }, 'pipe(PVBM ref, ) fails');
@@ -82,8 +82,11 @@ sub PVBM () { 'foo' }
     ok (!eval { utime 0, 0, $pvbm }, 'utime(PVBM) fails');
     ok (!eval { utime 0, 0, \$pvbm }, 'utime(PVBM ref) fails');
 
-    ok (!eval { <$pvbm> }, '<PVBM> fails');
-    ok (!eval { readline $pvbm }, 'readline(PVBM) fails');
+    {
+        no warnings 'closed';
+        ok (!eval { <$pvbm> }, '<PVBM> fails');
+        ok (!eval { readline $pvbm }, 'readline(PVBM) fails');
+    }
     ok (!eval { readline \$pvbm }, 'readline(PVBM ref) fails');
 
     ok (!eval { open $pvbm, '<', 'none.such' }, 'open(PVBM) fails');
