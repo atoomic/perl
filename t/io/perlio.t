@@ -183,13 +183,14 @@ SKIP: {
         #close STDOUT;
         my $status = open(STDOUT,">",\$var);
         my $error = "$!" unless $status; # remember the error
-	close STDOUT unless $status;
+        close STDOUT unless $status;
         open STDOUT,  ">&OLDOUT" or die "cannot dup OLDOUT: $!";
         print "# $error\n" unless $status;
         # report after STDOUT is restored
         ok($status, '       open STDOUT into in-memory var');
 
         # test in-memory open over STDERR
+        no warnings 'once';
         open OLDERR, ">&STDERR" or die "cannot dup STDERR: $!";
         #close STDERR;
         ok( open(STDERR,">",\$var), '       open STDERR into in-memory var');
@@ -223,6 +224,7 @@ SKIP: {
     }
 
     { # [perl #92258]
+        no warnings 'once';
         open my $fh, "<", \(my $f = *f);
         is join("", <$fh>), '*main::f', 'reading from a glob copy';
         is ref \$f, 'GLOB', 'the glob copy is unaffected';
