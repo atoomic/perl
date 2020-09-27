@@ -65,7 +65,7 @@ binmode OTHER if (($^O eq 'MSWin32') || ($^O eq 'NetWare'));
 
     ok($., "open() doesn't change filehandler for \$.");
 
-    tell OTHER;
+    { no warnings 'void'; tell OTHER; }
     ok(!$., "tell() does change filehandler for \$.");
 
     $. = 5;
@@ -87,7 +87,7 @@ is($., $curline, "the 'local' correctly restores old value of filehandler for \$
 {
     local($.);
 
-    tell OTHER;
+    { no warnings 'void'; tell OTHER; }
     is($., 7, "tell() inside 'local' change filehandler for \$.");
 }
 
@@ -97,7 +97,7 @@ close(OTHER);
     is(tell(OTHER), -1, "tell() for closed file returns -1");
 }
 {
-    no warnings 'unopened';
+    no warnings 'unopened'; no warnings 'once';
     # this must be a handle that has never been opened
     is(tell(UNOPENED), -1, "tell() for unopened file returns -1");
 }
@@ -180,12 +180,15 @@ open FH, "test.pl";
 my $fh = *FH; # coercible glob
 is(tell($fh), 0, "tell on coercible glob");
 is(tell, 0, "argless tell after tell \$coercible");
-tell *$fh;
-is(tell, 0, "argless tell after tell *\$coercible");
-eof $fh;
-is(tell, 0, "argless tell after eof \$coercible");
-eof *$fh;
-is(tell, 0, "argless tell after eof *\$coercible");
+{
+  no warnings 'void';
+  tell *$fh;
+  is(tell, 0, "argless tell after tell *\$coercible");
+  eof $fh;
+  is(tell, 0, "argless tell after eof \$coercible");
+  eof *$fh;
+  is(tell, 0, "argless tell after eof *\$coercible");
+}
 seek $fh,0,0;
 is(tell, 0, "argless tell after seek \$coercible...");
 seek *$fh,0,0;
