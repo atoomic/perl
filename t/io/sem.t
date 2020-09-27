@@ -47,6 +47,9 @@ else {
 }
 
 { # [perl #120635] 64 bit big-endian semctl SETVAL bug
+    # [GH 17926]: How we should handle non-numeric warnings for 2nd and 4th
+    # arguments is unclear.  For the time being, suppress them.
+    no warnings 'numeric';
     ok(semctl($id, "ignore", SETALL, pack("s!*",(0)x$nsem)),
        "Initialize all $nsem semaphores to zero");
 
@@ -55,7 +58,7 @@ else {
     ok(semctl($id, $sem2set, SETVAL, $semval),
        "Set semaphore $sem2set to $semval");
 
-    my $semvals;
+    my $semvals = '';
     ok(semctl($id, "ignore", GETALL, $semvals),
        'Get current semaphore values');
 
