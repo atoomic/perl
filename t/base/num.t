@@ -1,9 +1,16 @@
 #!./perl
 
+BEGIN {
+    chdir 't' if -d 't';
+    @INC = '../lib'; # needed to locate strict for instances of 'no warnings'
+}
+
 print "1..53\n";
 
 # First test whether the number stringification works okay.
 # (Testing with == would exercise the IV/NV part, not the PV.)
+
+no warnings 'void';
 
 my $alpha = 1; "$alpha";
 print $alpha eq "1"       ? "ok 1\n"  : "not ok 1 # $alpha\n";
