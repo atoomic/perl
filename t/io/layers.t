@@ -234,6 +234,7 @@ EOT
     sub FETCH { ++$f; $_[0][0] = $_[1] }
     sub STORE { $_[0][0] }
     tie my $t, "";
+    no warnings 'uninitialized';
     $t = *f;
     $f = 0; PerlIO::get_layers $t;
     is $f, 1, '1 fetch on tied glob';
