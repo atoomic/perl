@@ -80,24 +80,24 @@ close(F);
     { my $x = tell(F);
       { use bytes; $y = length($a);}
       cmp_ok( $x, '==', $y );
-  }
+    }
 
     { # Check byte length of $b
-	use bytes; my $y = length($b);
-	cmp_ok( $y, '==', 1 );
+        use bytes; my $y = length($b);
+        cmp_ok( $y, '==', 1 );
     }
 
     print F $b,"\n"; # Don't upgrade $b
 
     { # Check byte length of $b
-	use bytes; my $y = length($b);
-	cmp_ok( $y, '==', 1 );
+        use bytes; my $y = length($b);
+        cmp_ok( $y, '==', 1 );
     }
 
     {
-	my $x = tell(F);
-	{ use bytes; if ($::IS_EBCDIC){$y += 2;}else{$y += 3;}} # EBCDIC ASCII
-	cmp_ok( $x, '==', $y );
+        my $x = tell(F);
+        { use bytes; if ($::IS_EBCDIC){$y += 2;}else{$y += 3;}} # EBCDIC ASCII
+        cmp_ok( $x, '==', $y );
     }
 
     close F;
@@ -122,11 +122,11 @@ close(F);
     # Now let's make it suffer.
     my $w;
     {
-	use warnings 'utf8';
-	local $SIG{__WARN__} = sub { $w = $_[0] };
-	print F $a;
+        use warnings 'utf8';
+        local $SIG{__WARN__} = sub { $w = $_[0] };
+        print F $a;
         ok( (!$@));
-	like($w, qr/Wide character in print/i );
+        like($w, qr/Wide character in print/i );
     }
 }
 
@@ -159,7 +159,7 @@ $x = <F>; chomp $x;
 my $UTF8_OUTPUT;
 SKIP: {
     skip("Defaulting to UTF-8 output means that we can't generate a mangled file")
-	if $UTF8_OUTPUT;
+        if $UTF8_OUTPUT;
     is( $x, $chr );
 }
 
@@ -212,7 +212,7 @@ for (@a) {
         print '# tell(F)           == ', tell(F), "\n";
         print '# $a                == ', $a, "\n";
         print '# $c                == ', $c, "\n";
-	$failed++;
+        $failed++;
         last;
     }
 }
@@ -289,29 +289,29 @@ is($failed, undef);
 
 {
     my @a = ( [ 0x007F, "bytes" ],
-	      [ 0x0080, "bytes" ],
-	      [ 0x0080, "utf8"  ],
-	      [ 0x0100, "utf8"  ] );
+              [ 0x0080, "bytes" ],
+              [ 0x0080, "utf8"  ],
+              [ 0x0100, "utf8"  ] );
     my $t = 34;
     for my $u (@a) {
-	for my $v (@a) {
-	    # print "# @$u - @$v\n";
-	    open F, ">$a_file";
-	    binmode(F, ":" . $u->[1]);
-	    print F chr($u->[0]);
-	    close F;
+        for my $v (@a) {
+            # print "# @$u - @$v\n";
+            open F, ">$a_file";
+            binmode(F, ":" . $u->[1]);
+            print F chr($u->[0]);
+            close F;
 
-	    open F, "<$a_file";
-	    binmode(F, ":" . $u->[1]);
+            open F, "<$a_file";
+            binmode(F, ":" . $u->[1]);
 
-	    my $s = chr($v->[0]);
-	    utf8::upgrade($s) if $v->[1] eq "utf8";
+            my $s = chr($v->[0]);
+            utf8::upgrade($s) if $v->[1] eq "utf8";
 
-	    { no warnings 'utf8'; $s .= <F>; }
-	    is( $s, chr($v->[0]) . chr($u->[0]), 'rcatline utf8' );
-	    close F;
-	    $t++;
-	}
+            { no warnings 'utf8'; $s .= <F>; }
+            is( $s, chr($v->[0]) . chr($u->[0]), 'rcatline utf8' );
+            close F;
+            $t++;
+        }
     }
     # last test here 49
 }
@@ -347,11 +347,11 @@ is($failed, undef);
     ($chrE4, $chrF6) = ("E4", "F6");
     if ($::IS_EBCDIC) { ($chrE4, $chrF6) = ("43", "EC"); } # EBCDIC
     like( $@, qr/utf8 "\\x$chrE4" does not map to Unicode .+ <F> line 1/,
-	  "<:utf8 readline must warn about bad utf8");
+          "<:utf8 readline must warn about bad utf8");
     undef $@;
     $line .= <F>;
     like( $@, qr/utf8 "\\x$chrF6" does not map to Unicode .+ <F> line 2/,
-	  "<:utf8 rcatline must warn about bad utf8");
+          "<:utf8 rcatline must warn about bad utf8");
     close F;
 }
 
@@ -390,7 +390,7 @@ is($failed, undef);
     $line = <F>;
 
     like( $@, qr/utf8 "\\xEF" does not map to Unicode .+ <F> chunk 1/,
-	  "<:utf8 readline (fixed) must warn about bad utf8");
+          "<:utf8 readline (fixed) must warn about bad utf8");
     close F;
 }
 
@@ -402,7 +402,7 @@ SKIP: {
     open my $fh, "<:raw",  \($buf = chr 255);
     open my $uh, "<:utf8", \($uuf = $U_100);
     for([$uh,chr 256], [$fh,chr 255]) {
-	is getc $$_[0], $$_[1],
-	  'getc returning non-utf8 after utf8';
+        is getc $$_[0], $$_[1],
+          'getc returning non-utf8 after utf8';
     }
 }
