@@ -10,7 +10,7 @@ skip_all_without_perlio();
 no utf8; # needed for use utf8 not griping about the raw octets
 
 
-plan(tests => 62);
+plan(tests => 63);
 
 $| = 1;
 
@@ -167,15 +167,21 @@ SKIP: {
 
 SKIP: {
     if ($::IS_EBCDIC) {
-	skip("EBCDIC The file isn't deformed in UTF-EBCDIC", 2);
-    } else {
-	my @warnings;
-	open F, "<:utf8", $a_file or die $!;
-	$x = <F>; chomp $x;
-	local $SIG{__WARN__} = sub { push @warnings, $_[0]; };
-	eval { sprintf "%vd\n", $x };
-	is (scalar @warnings, 1);
-	like ($warnings[0], qr/Malformed UTF-8 character: \\x82 \(unexpected continuation byte 0x82, with no preceding start byte/);
+        skip("EBCDIC The file isn't deformed in UTF-EBCDIC", 2);
+    }
+    else {
+        my @warnings;
+        open F, "<:utf8", $a_file or die $!;
+        local $SIG{__WARN__} = sub { push @warnings, $_[0]; };
+        $x = <F>; chomp $x;
+        eval { no warnings 'void'; sprintf "%vd\n", $x };
+        is (scalar @warnings, 2);
+        like ($warnings[0],
+            qr/utf8 "\\x82" does not map to Unicode/,
+            "Got utf8 ... does not map to Unicode warning");
+        like ($warnings[1],
+            qr/Malformed UTF-8 character: \\x82 \(unexpected continuation byte 0x82, with no preceding start byte/,
+            "Got Malformed UTF-8 character warning");
     }
 }
 
@@ -276,7 +282,7 @@ is($failed, undef);
 
     open F, "<:utf8", $a_file;
     my $b = "\xde";
-    $b .= <F>;
+    { no warnings 'utf8'; $b .= <F>; }
     is( $b, chr(0xde).chr(0x100), "21395 '.= <>' bytes vs. utf8" );
     close F;
 }
@@ -301,7 +307,7 @@ is($failed, undef);
 	    my $s = chr($v->[0]);
 	    utf8::upgrade($s) if $v->[1] eq "utf8";
 
-	    $s .= <F>;
+	    { no warnings 'utf8'; $s .= <F>; }
 	    is( $s, chr($v->[0]) . chr($u->[0]), 'rcatline utf8' );
 	    close F;
 	    $t++;
@@ -338,7 +344,7 @@ is($failed, undef);
     open F, "<:utf8", $a_file;
     undef $@;
     my $line = <F>;
-    my ($chrE4, $chrF6) = ("E4", "F6");
+    ($chrE4, $chrF6) = ("E4", "F6");
     if ($::IS_EBCDIC) { ($chrE4, $chrF6) = ("43", "EC"); } # EBCDIC
     like( $@, qr/utf8 "\\x$chrE4" does not map to Unicode .+ <F> line 1/,
 	  "<:utf8 readline must warn about bad utf8");
