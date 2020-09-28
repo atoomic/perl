@@ -19,9 +19,12 @@ use open qw( :utf8 :std );
 {
     no strict 'vars';
 
-    is *tèst, "*main::tèst", "sanity check.";
-    ok $::{"tèst"}, "gets the right glob in the stash.";
-
+    {
+        no warnings 'once';
+        is *tèst, "*main::tèst", "sanity check.";
+        ok $::{"tèst"}, "gets the right glob in the stash.";
+    }
+    
     my $glob_by_sub = sub { *ｍａｉｎ::method }->();
 
     is *ｍａｉｎ::method, "*ｍａｉｎ::method", "glob stringy works";
@@ -36,9 +39,12 @@ use open qw( :utf8 :std );
     }
 
     is "" . gimme_glob("下郎"), "*main::下郎";
-    $a = *下郎;
-    is "" . $a, "*main::下郎";
-
+    {
+        no warnings 'once';
+        $a = *下郎;
+        is "" . $a, "*main::下郎";
+    }
+    
     *{gimme_glob("下郎")} = sub {};
 
     {
@@ -68,18 +74,21 @@ use open qw( :utf8 :std );
         ok $@, q!$c can't call $b's sub.!;
 
         # Now define another sub under the downgraded name:
-        *$a = sub { 6 };
-        # Call it:
-        is eval { main->$a }, 6, "Adding a new sub to *a and calling it works,";
-        ok !$@, "..without errors.";
-        eval { main->$c };
-        ok $@, "but it's still unreachable through *c";
+        {
+            no warnings 'redefine';
+            *$a = sub { 6 };
+            # Call it:
+            is eval { main->$a }, 6, "Adding a new sub to *a and calling it works,";
+            ok !$@, "..without errors.";
+            eval { main->$c };
+            ok $@, "but it's still unreachable through *c";
 
-        *$b = \10;
-        is ${*$a{SCALAR}}, 10;
-        is ${*$b{SCALAR}}, 10;
-        is ${*$c{SCALAR}}, undef;
-
+            *$b = \10;
+            is ${*$a{SCALAR}}, 10;
+            is ${*$b{SCALAR}}, 10;
+            is ${*$c{SCALAR}}, undef;
+        }
+        
         opendir FÒÒ, ".";
         closedir FÒÒ;
         ::ok($::{"FÒÒ"}, "Bareword generates the right glob.");
@@ -96,10 +105,10 @@ use open qw( :utf8 :std );
         is grep({ $_ eq "\345\216\237" } keys %::), 0;
 
         #These should probably go elsewhere.
-        eval q{ sub wròng1 (_$); wròng1(1,2) };
+        eval q{ no warnings 'illegalproto'; sub wròng1 (_$); wròng1(1,2) };
         like( $@, qr/Malformed prototype for main::wròng1/, 'Malformed prototype croak is clean.' );
-
-        eval q{ sub ча::ики ($__); ча::ики(1,2) };
+        
+        eval q{ no warnings 'illegalproto'; sub ча::ики ($__); ча::ики(1,2) };
         like( $@, qr/Malformed prototype for ча::ики/ );
 
         our $問 = 10;
@@ -139,7 +148,7 @@ use open qw( :utf8 :std );
 
         $f = qq{(?{q\0foobar\0 \x{FFFF}+1 })};
         eval { "a" =~ /^a$f/ };
-        my $e = $@;
+        $e = $@;
         $e =~ s/eval \d+/eval 11/;
         is(
             $e,
@@ -166,6 +175,8 @@ use open qw( :utf8 :std );
     use feature 'state';
     for ( qw( my state our ) ) {
         local $@;
+        no warnings 'once';
+        no warnings 'uninitialized';
         eval "$_ Ｆｏｏ $x = 1;";
         like $@, qr/No such class Ｆｏｏ/u, "'No such class' warning for $_ is UTF-8 clean";
     }
@@ -270,6 +281,7 @@ SKIP: {
 }
 
 no strict 'refs';
+no warnings 'uninitialized';
 fresh_perl_is(<<'EOS', <<'EXPECT', {}, 'no panic in pad_findmy_pvn (#134061)');
 use utf8;
 eval "sort \x{100}%";
