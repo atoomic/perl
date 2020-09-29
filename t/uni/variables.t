@@ -30,6 +30,7 @@ plan (tests => 66880);
     local $@;
     no utf8;
     evalbytes '${single:colon} = "block/label, not var"';
+    no warnings 'once';
     is($::colon,
          'block/label, not var',
          '...same with ${single:colon}'
@@ -129,7 +130,7 @@ for ( 0x0 .. 0xff ) {
                      "$name as a length-1 variable generates a syntax error");
             $tests++;
             utf8::upgrade($chr);
-            eval "no strict; \$$chr = 4;",
+            eval "no strict; no warnings 'syntax'; \$$chr = 4;",
             like($@, qr/ syntax\ error | Unrecognized\ character /x,
                      "  ... and the same under 'use utf8'");
             $tests++;
@@ -169,7 +170,7 @@ for ( 0x0 .. 0xff ) {
                 local $@;
                 eval "no strict; use utf8; \$$chr = 1";
                 like $@,
-                    qr/\QUnrecognized character \x{\E\L$esc/,
+                    qr/\QUnrecognized character \x{\E\L$esc/,    # }
                     "  ... but is illegal as a length-1 variable under 'use utf8'";
                 $tests++;
             }
@@ -320,7 +321,22 @@ for my $i (0x100..0xffff) {
 EOP
     is($@, '', q{$$1 parses correctly});
 
-    for my $chr ( q{@}, "\N{U+FF10}", "\N{U+0300}" ) {
+    {
+        no warnings 'syntax';
+        my $chr = q{@};
+        my $esc = sprintf("\\x{%x}", ord $chr);
+        local $@;
+        eval <<"    EOP";
+            \$$chr = q{\$};
+            \$\$$chr;
+    EOP
+
+        like($@,
+             qr/syntax error|Unrecognized character/,
+             qq{\$\$$esc is a syntax error}
+        );
+    }
+    for my $chr ( "\N{U+FF10}", "\N{U+0300}" ) {
         my $esc = sprintf("\\x{%x}", ord $chr);
         local $@;
         eval <<"    EOP";
@@ -399,12 +415,15 @@ EOP
     # on the presence of the newline after '@{'.
     sub foo (&) { [1] }
     my %foo = (a=>2);
-    my $ret = @{ foo { "a" } };
-    is($ret, $foo{a}, '@{ foo { "a" } } is parsed as @foo{a}');
-    
-    $ret = @{
-            foo { "a" }
-        };
-    is($ret, $foo{a}, '@{\nfoo { "a" } } is still parsed as @foo{a}');
+    {
+        no warnings 'syntax';
+        my $ret = @{ foo { "a" } };
+        is($ret, $foo{a}, '@{ foo { "a" } } is parsed as @foo{a}');
+
+        $ret = @{
+                foo { "a" }
+            };
+        is($ret, $foo{a}, '@{\nfoo { "a" } } is still parsed as @foo{a}');
+    }
 
 }
