@@ -63,6 +63,7 @@ sub is {
 
 sub isnt {
     my ($got, $expect, $name) = @_;
+    $name //= '';
     $test = $test + 1;
     if (defined $got && $got ne $expect) {
 	if ($::TODO) {
@@ -114,8 +115,8 @@ sub y  { return "y-".shift }
 
 # m operator
 can_ok( 'main', "m" );
-SILENCE_WARNING: { # Complains because $_ is undef
-    local $^W;		       
+{
+    no warnings 'uninitialized';  # Here $_ is undef
     isnt( m('unqualified'), "m-unqualified", "m('unqualified') is oper" );
 }
 is( main::m('main'), "m-main", "main::m() is func" );
