@@ -42,12 +42,11 @@ our $TODO;
 #op/stash.t
 {
     package ᛐⲞɲe::Šꇇᚽṙᆂṗ;
+    no warnings 'once';
     $본go::ଶfʦbᚒƴ::scalar = 1;
     
     package main;
         
-    # now tests with strictures
-    
     {
         ok( !exists $piƓ::{bodine}, q(referencing a non-existent stash element doesn't produce stricture errors) );
     }
@@ -94,13 +93,13 @@ our $TODO;
         is( eval { $gv->NAME }, "__ANON__", "...and an __ANON__ name");
         is( eval { $gv->STASH->NAME }, "__ANON__", "...and an __ANON__ stash");
     
-        my $sub = do {
+        $sub = do {
             package ꃖᚢ;
             sub { 1 };
         };
         %ꃖᚢ:: = ();
     
-        my $gv = B::svref_2object($sub)->GV;
+        $gv = B::svref_2object($sub)->GV;
         ok($gv->isa(q/B::GV/), "cleared stash leaves anon CV with valid GV");
     
         my $st = eval { $gv->STASH->NAME };
@@ -151,6 +150,7 @@ our $TODO;
         # on glob reassignment, orphaned CV should have anon CvGV
     
         {
+            no warnings 'redefine';
             my $r;
             eval q[
                 package ＦŌŌ௨;
@@ -236,6 +236,7 @@ our $TODO;
         use Config;
     
         my $obj  = bless [];
+        no warnings 'once';
         my $globref = \*tàt;
     
         # effectively rename a stash
@@ -267,6 +268,7 @@ our $TODO;
     
     # Setting the name during undef %stash:: should have no effect.
     {
+        no warnings 'once';
         my $glob = \*Phòò::glòb;
         sub ò::DESTROY { eval '++$Phòò::bòr' }
         no strict 'refs';
