@@ -24,6 +24,7 @@ sub test_too_few {
 }
 
 sub test_no_error {
+    no warnings 'void';
     eval $_[0];
     print "not " if $@;
     printf "ok %d\n",$i++;
