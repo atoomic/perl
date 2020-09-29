@@ -25,6 +25,7 @@ ok 1, "sanity check. If we got this far, UTF-8 in package names is legal.";
 {
 
     no strict 'vars';
+    no warnings 'once';
 
     $ㄅĽuṞfⳐ = 123;
     
