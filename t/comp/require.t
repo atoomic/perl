@@ -202,7 +202,7 @@ print "ok $main::i - require() context\n";
 my $foo = eval q{require bleah}; delete $INC{"bleah.pm"}; ++$::i;
 my @foo = eval q{require bleah}; delete $INC{"bleah.pm"}; ++$::i;
        eval q{require bleah}; delete $INC{"bleah.pm"}; ++$::i;
-       eval q{$_=$_+2;require bleah}; delete $INC{"bleah.pm"}; ++$::i;
+       eval q{no warnings 'uninitialized'; $_=$_+2;require bleah}; delete $INC{"bleah.pm"}; ++$::i;
        eval q{return require bleah}; delete $INC{"bleah.pm"}; ++$::i;
 $foo = eval  {require bleah}; delete $INC{"bleah.pm"}; ++$::i;
 @foo = eval  {require bleah}; delete $INC{"bleah.pm"}; ++$::i;
