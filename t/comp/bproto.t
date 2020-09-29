@@ -12,22 +12,28 @@ sub foo {}
 my $bar = "bar";
 
 sub test_too_many {
+    my $arg = $_[0]; $arg =~ s/^\s+(.*)/$1/;
+    my $description = "Too many arguments for '$arg'";
     eval $_[0];
     print "not " unless $@ =~ /^Too many arguments/;
-    printf "ok %d\n",$i++;
+    printf "ok %d - $description\n",$i++;
 }
 
 sub test_too_few {
+    my $arg = $_[0]; $arg =~ s/^\s+(.*)/$1/;
+    my $description = "Not enough arguments for '$arg'";
     eval $_[0];
     print "not " unless $@ =~ /^Not enough arguments/;
-    printf "ok %d\n",$i++;
+    printf "ok %d - $description\n",$i++;
 }
 
 sub test_no_error {
     no warnings 'void';
+    my $arg = $_[0]; $arg =~ s/^\s+(.*)/$1/;
+    my $description = "No error for '$arg'";
     eval $_[0];
     print "not " if $@;
-    printf "ok %d\n",$i++;
+    printf "ok %d - $description\n",$i++;
 }
 
 test_too_many($_) for split /\n/,
