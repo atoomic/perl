@@ -13,7 +13,6 @@ require threads;
 {
     fresh_perl_is('
         use threads;
-        use strict;
         use warnings;
 
         sub main::IsA {
@@ -48,7 +47,6 @@ require threads;
 {
     fresh_perl_is('
         use threads;
-        use strict;
         use warnings;
 
         sub InLongSleep {
@@ -87,7 +85,6 @@ require threads;
 {
     fresh_perl_like('
         use threads;
-        use strict;
         use warnings;
 
         sub InLongSleep {
