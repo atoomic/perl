@@ -48,6 +48,7 @@ open my $kh, $keywords_file
 while(<$kh>) {
   if (m?__END__?..${\0} and /^[+-]/) {
     chomp(my $word = $');
+    note("Testing $word ...");
     if($unsupported{$word}) {
       $tests ++;
       ok !defined &{"CORE::$word"}, "no CORE::$word";
@@ -58,6 +59,10 @@ while(<$kh>) {
       ok defined &{"CORE::$word"}, "defined &{'CORE::$word'}";
 
       my $proto = prototype "CORE::$word";
+      # prototype function returns undef if no prototype;
+      # Since we use $proto heavily in balance of this loop block, quiet
+      # warnings
+      no warnings 'uninitialized';
       {no strict 'refs'; *{"my$word"} = \&{"CORE::$word"}; }
       is prototype \&{"my$word"}, $proto, "prototype of &CORE::$word";
 
@@ -139,9 +144,17 @@ sub inlinable_ok {
        "#line 1 This-line-makes-__FILE__-easier-to-test.
         sub { () = (CORE::$word$full_args) }";
     my $my_code = $core_code =~ s/CORE::$word/my$word/r;
-    my $core = op_list(eval $core_code or die);
-    my $my   = op_list(eval   $my_code or die);
-    is $my, $core, "inlinability of CORE::$word $preposition parens $desc_suffix";
+    unless ($word eq 'push' or $word eq 'unshift') {
+        my $core = op_list(eval $core_code or die);
+        my $my   = op_list(eval   $my_code or die);
+        is $my, $core, "inlinability of CORE::$word $preposition parens $desc_suffix";
+    }
+    else {
+        no warnings 'syntax';
+        my $core = op_list(eval $core_code or die);
+        my $my   = op_list(eval   $my_code or die);
+        is $my, $core, "inlinability of CORE::$word $preposition parens $desc_suffix";
+    };
   }
 }
 
