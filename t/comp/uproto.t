@@ -68,9 +68,11 @@ f("FOOBAR 42", ($foo .= $bar));
 f("FOOBAR 42", $foo);
 
 eval q{ f("foo") };
-like( $@, qr/Not enough arguments for main::f at/ );
+like( $@, qr/Not enough arguments for main::f at/,
+    "Identified not enough arguments");
 eval q{ f(1,2,3,4) };
-like( $@, qr/Too many arguments for main::f at/ );
+like( $@, qr/Too many arguments for main::f at/,
+    "Identified too many arguments");
 
 &f(""); # no error
 
