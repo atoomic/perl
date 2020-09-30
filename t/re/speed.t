@@ -26,7 +26,6 @@ skip_all_without_unicode_tables();
 
 plan tests => 59;  #** update watchdog timeouts proportionally when adding tests
 
-use strict;
 use warnings;
 use 5.010;
 
