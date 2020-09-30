@@ -14,8 +14,6 @@ BEGIN {
     require './test.pl';	# for which_perl() etc
 }
 
-use strict;
-
 my $Perl = which_perl();
 
 $|=1;
@@ -125,6 +123,7 @@ Modification of a read-only value attempted at - line 3.
 ########
 package FOO; sub new {bless {FOO => 'BAR'}};
 package main;
+no strict;
 use strict 'vars';
 my $self = new FOO;
 print $$self{FOO};
@@ -499,14 +498,12 @@ sub re {
 }
 EXPECT
 ########
-use strict;
 my $foo = "ZZZ\n";
 END { print $foo }
 EXPECT
 ZZZ
 ########
 eval '
-use strict;
 my $foo = "ZZZ\n";
 END { print $foo }
 ';
@@ -610,7 +607,6 @@ reset;
 // if 0;
 ########
 # Vadim Konovalov
-use strict;
 sub new_pmop($) {
     my $pm = shift;
     return eval "sub {shift=~/$pm/}";
@@ -692,7 +688,6 @@ EXPECT
 123456789
 ######## example from Camel 5, ch. 15, pp.406 (with my)
 # SKIP: ord "A" == 193 # EBCDIC
-use strict;
 use utf8;
 my $人 = 2; # 0xe4 0xba 0xba: U+4eba, "human" in CJK ideograph
 $人++; # a child is born
@@ -701,7 +696,6 @@ EXPECT
 3
 ######## example from Camel 5, ch. 15, pp.406 (with our)
 # SKIP: ord "A" == 193 # EBCDIC
-use strict;
 use utf8;
 our $人 = 2; # 0xe4 0xba 0xba: U+4eba, "human" in CJK ideograph
 $人++; # a child is born
@@ -719,7 +713,6 @@ EXPECT
 3
 ######## example from Camel 5, ch. 15, pp.406 (with use vars)
 # SKIP: ord "A" == 193 # EBCDIC
-use strict;
 use utf8;
 use vars qw($人);
 $人 = 2; # 0xe4 0xba 0xba: U+4eba, "human" in CJK ideograph
@@ -774,7 +767,6 @@ $_="foo";utf8::upgrade($_);/bar/i,warn$_;
 EXPECT
 foo at - line 1.
 ######## "#75146: 27e904532594b7fb (fix for #23810) introduces a #regression"
-use strict;
 
 unshift @INC, sub {
     my ($self, $fn) = @_;
@@ -815,8 +807,8 @@ EXPECT
 If you get here, you didn't crash
 ######## [perl #112312] crash on syntax error
 # SKIP: !defined &DynaLoader::boot_DynaLoader # miniperl
-#!/usr/bin/perl
-use strict;
+#!./perl
+
 use warnings;
 sub meow (&);
 my %h;
@@ -835,8 +827,8 @@ Unmatched right curly bracket at - line 14, at end of line
 Execution of - aborted due to compilation errors.
 ######## [perl #112312] crash on syntax error - another test
 # SKIP: !defined &DynaLoader::boot_DynaLoader # miniperl
-#!/usr/bin/perl
-use strict;
+#!./perl
+
 use warnings;
 
 sub meow (&);
