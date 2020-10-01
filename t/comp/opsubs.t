@@ -4,6 +4,11 @@
 # we've not yet verified that use works.
 # use strict;
 
+BEGIN {
+    chdir 't' if -d 't';
+    @INC = '../lib'; # needed to locate warnings for instances of 'no warnings'
+}
+
 $|++;
 
 print "1..36\n";
