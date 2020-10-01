@@ -3,6 +3,11 @@
 # check if builtins behave as prototyped
 #
 
+BEGIN {
+    chdir 't' if -d 't';
+    @INC = '../lib'; # needed to locate warnings for instances of 'no warnings'
+}
+
 # Ideally tests in t/comp wouldn't use require, as require isn't tested yet
 print "1..16\n";
 

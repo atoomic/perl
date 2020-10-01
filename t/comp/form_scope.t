@@ -1,5 +1,10 @@
 #!./perl
 
+BEGIN {
+    chdir 't' if -d 't';
+    @INC = '../lib'; # needed to locate warnings for instances of 'no warnings'
+}
+
 print "1..14\n";
 
 # Tests bug #22977.  Test case from Dave Mitchell.
