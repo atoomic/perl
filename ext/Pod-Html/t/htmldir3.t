@@ -8,7 +8,7 @@ END {
     rem_test_dir();
 }
 
-use strict;
+
 use Cwd;
 use File::Spec::Functions;
 use Test::More tests => 2;

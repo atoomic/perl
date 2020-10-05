@@ -1,5 +1,5 @@
 #!perl
-use strict;
+
 use warnings;
 
 require '../../t/test.pl';
@@ -12,7 +12,7 @@ if (!$Config{useithreads}) {
 plan(1);
 
 fresh_perl_is( <<'----', <<'====', {}, "loading XS::APItest in threads works");
-use strict;
+
 use warnings;
 
 use threads;

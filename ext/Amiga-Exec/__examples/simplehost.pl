@@ -2,7 +2,7 @@
 
 # Simple ARExx Host
 
-use strict;
+
 use Amiga::ARexx;
 use feature "switch";
 

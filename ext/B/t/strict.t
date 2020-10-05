@@ -1,6 +1,6 @@
 #!./perl -w
 
-use strict;
+
 use warnings;
 
 use Config;
@@ -13,7 +13,7 @@ BEGIN {
     }
 }
 
-use strict;
+
 use warnings;
 
 use B ();

@@ -1,5 +1,5 @@
 # -*- perl -*-
-use strict;
+
 use Pod::Html qw( anchorify );
 use Test::More tests => 1;
 

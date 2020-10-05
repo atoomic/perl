@@ -10,7 +10,7 @@ BEGIN {
 	require 'test.pl';
 }
 
-use strict;
+
 use Config;
 use File::Spec;
 use File::Path;

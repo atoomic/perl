@@ -12,7 +12,7 @@ BEGIN {
 	require Fcntl; import Fcntl qw(/^O_/ /^SEEK_/);
 }
 
-use strict;
+
 use File::Temp 'tempfile';
 use Test::More;
 

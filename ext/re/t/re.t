@@ -8,7 +8,7 @@ BEGIN {
 	}
 }
 
-use strict;
+
 
 my $re_taint_bit = 0x00100000;
 my $re_eval_bit = 0x00200000;

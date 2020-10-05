@@ -13,7 +13,7 @@ BEGIN {
     $SIG{__WARN__} = sub { die @_ };
 }
 
-use strict;
+
 use Test::More tests => 45;
 
 use IO::Handle;

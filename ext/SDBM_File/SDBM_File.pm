@@ -1,6 +1,6 @@
 package SDBM_File;
 
-use strict;
+
 use warnings;
 
 require Tie::Hash;

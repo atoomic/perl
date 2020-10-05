@@ -5,7 +5,7 @@ BEGIN {
                               # find_utf8_ctype_locale()
 }
 
-use strict;
+
 use Test::More;
 use Config;
 

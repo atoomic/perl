@@ -1,7 +1,7 @@
 package Amiga::ARexx;
 
 use 5.016000;
-use strict;
+
 use warnings;
 use Carp;
 
@@ -118,7 +118,7 @@ sub DoRexx($$)
 
 package Amiga::ARexx::Msg;
 
-use strict;
+
 use warnings;
 use Carp;
 

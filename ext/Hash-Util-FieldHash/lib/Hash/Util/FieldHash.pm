@@ -1,7 +1,7 @@
 package Hash::Util::FieldHash;
 
 use 5.009004;
-use strict;
+
 use warnings;
 use Scalar::Util qw( reftype);
 

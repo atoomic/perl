@@ -1,6 +1,6 @@
 package IPC::Open3;
 
-use strict;
+
 no strict 'refs'; # because users pass me bareword filehandles
 our ($VERSION, @ISA, @EXPORT);
 

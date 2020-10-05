@@ -5,7 +5,7 @@ BEGIN {
     require 'loc_tools.pl';
 }
 
-use strict;
+
 
 use Config;
 use POSIX;

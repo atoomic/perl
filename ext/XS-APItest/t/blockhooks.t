@@ -1,7 +1,7 @@
 #!/usr/bin/perl
 
 use warnings;
-use strict;
+
 use Test::More tests => 17;
 
 use XS::APItest;

@@ -1,6 +1,6 @@
 #!/usr/bin/perl -Tw
 
-use strict;
+
 use Test::More;
 
 my @Exported_Funcs;

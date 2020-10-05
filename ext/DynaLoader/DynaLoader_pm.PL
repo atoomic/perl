@@ -1,6 +1,6 @@
 use Config;
 
-use strict;
+
 use warnings;
 
 sub to_string {

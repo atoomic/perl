@@ -1,7 +1,7 @@
 package Amiga::Exec;
 
 use 5.016000;
-use strict;
+
 use warnings;
 use Carp;
 

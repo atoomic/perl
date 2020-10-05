@@ -10,7 +10,7 @@ BEGIN {
         }
 }
 
-use strict;
+
 
 use Test::More tests => 10;
 BEGIN { require_ok( 're' ); }

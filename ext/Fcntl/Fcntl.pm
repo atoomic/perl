@@ -55,7 +55,7 @@ See L<perlfunc/stat> about the S_I* constants.
 
 =cut
 
-use strict;
+
 our($VERSION, @ISA, @EXPORT, @EXPORT_OK, %EXPORT_TAGS);
 
 require Exporter;

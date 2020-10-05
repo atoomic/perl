@@ -2,7 +2,7 @@
 
 # Tests for @{^COMPILE_SCOPE_CONTAINER}
 
-use strict;
+
 use warnings;
 use Test::More tests => 12;
 use XS::APItest;

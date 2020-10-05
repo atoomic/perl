@@ -2,7 +2,7 @@ package B::Showlex;
 
 our $VERSION = '1.05';
 
-use strict;
+
 use B qw(svref_2object comppadlist class);
 use B::Terse ();
 use B::Concise ();

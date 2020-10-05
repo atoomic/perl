@@ -1,7 +1,7 @@
 package XS::APItest;
 
 { use 5.011001; } # 5.11 is a long long time ago... What gives with this?
-use strict;
+
 use warnings;
 use Carp;
 

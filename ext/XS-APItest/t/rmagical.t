@@ -8,7 +8,7 @@
 # mg_magical won't turn SvRMAGICAL on. However, if the chain is in the
 # opposite order (sv -> A -> B -> NULL), SvRMAGICAL used to be turned on.
 
-use strict;
+
 use warnings;
 
 use Test::More tests => 3;

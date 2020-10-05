@@ -1,4 +1,4 @@
-use strict;
+
 package Tie::Memoize;
 use Tie::Hash;
 our @ISA = 'Tie::ExtraHash';

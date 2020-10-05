@@ -1,6 +1,6 @@
 #!perl
 
-use strict;
+
 use warnings;
 
 require "../../t/test.pl";

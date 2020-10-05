@@ -2,7 +2,7 @@ package VMS::DCLsym;
 
 use Carp;
 use DynaLoader;
-use strict;
+
 
 # Package globals
 our @ISA = ( 'DynaLoader' );

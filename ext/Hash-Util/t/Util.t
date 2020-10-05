@@ -11,7 +11,7 @@ BEGIN {
     }
 }
 
-use strict;
+
 use Test::More;
 
 sub numbers_first { # Sort helper: All digit entries sort in front of others

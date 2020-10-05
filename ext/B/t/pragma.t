@@ -13,7 +13,7 @@ BEGIN {    ## no critic strict
     }
 }
 
-use strict;
+
 use warnings;
 use Test::More tests => 4 * 3;
 use B 'svref_2object';

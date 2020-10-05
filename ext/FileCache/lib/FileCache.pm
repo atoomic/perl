@@ -85,7 +85,7 @@ so you may have to set I<maxopen> yourself.
 
 require 5.006;
 use Carp;
-use strict;
+
 no strict 'refs';
 
 # These are not C<my> for legacy reasons.

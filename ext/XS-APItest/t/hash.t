@@ -1,6 +1,6 @@
 #!perl -w
 
-use strict;
+
 use utf8;
 use Tie::Hash;
 use Test::More;

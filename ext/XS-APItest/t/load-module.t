@@ -1,5 +1,5 @@
 #!perl -w
-use strict;
+
 
 # Test the load_module() core API function.
 #

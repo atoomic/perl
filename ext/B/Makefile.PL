@@ -1,7 +1,7 @@
 use ExtUtils::MakeMaker;
 use ExtUtils::Constant 0.23 'WriteConstants';
 use File::Spec;
-use strict;
+
 use warnings;
 
 my $core = grep { $_ eq 'PERL_CORE=1' } @ARGV;

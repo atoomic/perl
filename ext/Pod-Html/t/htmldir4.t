@@ -4,7 +4,7 @@ BEGIN {
     require "./t/pod2html-lib.pl";
 }
 
-use strict;
+
 use Cwd;
 use File::Spec::Functions ':ALL';
 use Test::More tests => 2;

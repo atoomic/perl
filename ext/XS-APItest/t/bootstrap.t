@@ -6,7 +6,7 @@
 # APItest.so, the .bs should be automatically executed, which should
 # set $::bs_file_got_executed.
 
-use strict;
+
 
 use Test::More;
 use XS::APItest;

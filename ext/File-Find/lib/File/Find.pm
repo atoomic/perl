@@ -1,6 +1,6 @@
 package File::Find;
 use 5.006;
-use strict;
+
 use warnings;
 use warnings::register;
 our $VERSION = '1.37';
@@ -11,7 +11,7 @@ our @ISA = qw(Exporter);
 our @EXPORT = qw(find finddepth);
 
 
-use strict;
+
 my $Is_VMS = $^O eq 'VMS';
 my $Is_Win32 = $^O eq 'MSWin32';
 

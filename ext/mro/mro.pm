@@ -7,7 +7,7 @@
 #      License or the Artistic License, as specified in the README file.
 #
 package mro;
-use strict;
+
 use warnings;
 
 # mro.pm versions < 1.00 reserved for MRO::Compat

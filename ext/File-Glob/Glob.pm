@@ -1,6 +1,6 @@
 package File::Glob;
 
-use strict;
+
 our($VERSION, @ISA, @EXPORT_OK, @EXPORT_FAIL, %EXPORT_TAGS, $DEFAULT_FLAGS);
 
 require XSLoader;

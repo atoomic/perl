@@ -1,6 +1,6 @@
 #!./perl -w
 package ExtUtils::Miniperl;
-use strict;
+
 require Exporter;
 use ExtUtils::Embed 1.31, qw(xsi_header xsi_protos xsi_body);
 

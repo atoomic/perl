@@ -1,5 +1,5 @@
 #!./perl
-use strict;
+
 use Test::More tests => 4;
 
 use SDBM_File;

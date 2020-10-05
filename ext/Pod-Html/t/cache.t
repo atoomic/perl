@@ -7,7 +7,7 @@ BEGIN {
 # test the directory cache
 # XXX test --flush and %Pages being loaded/used for cross references
 
-use strict;
+
 use Cwd;
 use Pod::Html;
 use Data::Dumper;

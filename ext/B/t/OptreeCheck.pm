@@ -1,6 +1,6 @@
 package OptreeCheck;
 use parent 'Exporter';
-use strict;
+
 use warnings;
 our ($TODO, $Level, $using_open);
 require "test.pl";

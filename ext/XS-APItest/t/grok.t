@@ -1,5 +1,5 @@
 #!perl -w
-use strict;
+
 
 use Test::More;
 use Config;

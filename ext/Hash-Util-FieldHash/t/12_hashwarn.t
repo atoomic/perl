@@ -3,7 +3,7 @@ use Test::More;
 
 plan( tests => 12 );
 
-use strict;
+
 use warnings;
 use Hash::Util::FieldHash qw( :all);
 

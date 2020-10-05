@@ -12,7 +12,7 @@ BEGIN {
 
 $| = 1;
 use warnings;
-use strict;
+
 use Config;
 use B::Showlex ();
 

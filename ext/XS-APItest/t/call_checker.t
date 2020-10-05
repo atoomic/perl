@@ -1,5 +1,5 @@
 use warnings;
-use strict;
+
 use Test::More tests => 78;
 
 use XS::APItest;

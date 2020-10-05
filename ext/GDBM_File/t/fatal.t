@@ -7,7 +7,7 @@
 # releases of the gdbm library, which uses mmap() rather than write() etc:
 # so skip in that case.
 
-use strict;
+
 
 use Test::More;
 use Config;

@@ -7,7 +7,7 @@ BEGIN {
     }
     require "../../t/test.pl";
 }
-use strict;
+
 use warnings;
 
 plan 3;

@@ -1,4 +1,4 @@
-use strict;
+
 use ExtUtils::MakeMaker;
 
 my $is_mswin    = $^O eq 'MSWin32';

@@ -4,7 +4,7 @@
 # out the sub name, but also that that interface does not interfere with
 # prototypes, the way it did before 5.15.4.
 
-use strict;
+
 use warnings;
 
 use Test::More tests => 26;

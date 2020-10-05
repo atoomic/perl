@@ -140,7 +140,7 @@ Malcolm Beattie, mbeattie@sable.ox.ac.uk.
 
 =cut
 
-use strict;
+
 use Config;
 use B qw(peekop class comppadlist main_start svref_2object walksymtable
          OPpLVAL_INTRO SVf_POK SVf_ROK OPpOUR_INTRO cstring

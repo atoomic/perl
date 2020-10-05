@@ -12,7 +12,7 @@ BEGIN {
     }
 }
 
-use strict;
+
 use warnings;
 
 my $tmp = "via$$";

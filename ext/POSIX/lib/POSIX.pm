@@ -1,5 +1,5 @@
 package POSIX;
-use strict;
+
 use warnings;
 
 our ($AUTOLOAD, %SIGRT);

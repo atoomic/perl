@@ -1,5 +1,5 @@
 #!perl -w
-use strict;
+
 
 use Test::More tests => 5;
 use XS::APItest;

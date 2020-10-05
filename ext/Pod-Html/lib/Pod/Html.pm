@@ -1,5 +1,5 @@
 package Pod::Html;
-use strict;
+
 require Exporter;
 
 our $VERSION = 1.25;
@@ -728,7 +728,7 @@ sub _unixify {
 }
 
 package Pod::Simple::XHTML::LocalPodLinks;
-use strict;
+
 use warnings;
 use parent 'Pod::Simple::XHTML';
 

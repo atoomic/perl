@@ -7,7 +7,7 @@
 # perturbs it to be malformed in various ways, and tests that this gets
 # appropriately detected.
 
-use strict;
+
 use Test::More;
 
 BEGIN {
