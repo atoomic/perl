@@ -144,7 +144,7 @@ sub inlinable_ok {
        "#line 1 This-line-makes-__FILE__-easier-to-test.
         sub { () = (CORE::$word$full_args) }";
     my $my_code = $core_code =~ s/CORE::$word/my$word/r;
-    unless ($word eq 'push' or $word eq 'unshift') {
+    if (! ($word eq 'push' or $word eq 'unshift') ) {
         my $core = op_list(eval $core_code or die);
         my $my   = op_list(eval   $my_code or die);
         is $my, $core, "inlinability of CORE::$word $preposition parens $desc_suffix";
