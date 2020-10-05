@@ -1,7 +1,7 @@
 package I18N::Langinfo;
 
 use 5.006;
-use strict;
+
 use warnings;
 use Carp;
 

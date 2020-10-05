@@ -1,6 +1,6 @@
 package Sys::Hostname;
 
-use strict;
+
 
 use Carp;
 

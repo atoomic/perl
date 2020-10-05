@@ -5,7 +5,7 @@ BEGIN {
     $XS::APItest::WARNINGS_ON_BOOTSTRAP = 1;
 }
 
-use strict;
+
 use warnings;
 use Test::More tests => 103;
 

@@ -5,7 +5,7 @@
 # for these macros.
 
 use warnings;
-use strict;
+
 
 use Test::More tests => 80;
 use XS::APItest;

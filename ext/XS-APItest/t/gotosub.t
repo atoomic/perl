@@ -2,7 +2,7 @@
 
 # Test that goto &xsub provides the right lexical environment.
 
-use strict;
+
 
 use Test::More tests => 1;
 use XS::APItest;

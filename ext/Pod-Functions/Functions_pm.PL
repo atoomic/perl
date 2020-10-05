@@ -1,5 +1,5 @@
 #!perl -w
-use strict;
+
 use Pod::Simple::SimpleTree;
 
 my ($tap, $test, %Missing);
@@ -152,7 +152,7 @@ foreach ($real, $temp) {
 open my $fh, '>', $temp or die "Can't open '$temp' for writing: $!";
 print $fh <<'EOT';
 package Pod::Functions;
-use strict;
+
 
 =head1 NAME
 

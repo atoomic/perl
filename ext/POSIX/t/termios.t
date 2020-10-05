@@ -1,6 +1,6 @@
 #!perl -Tw
 
-use strict;
+
 use Config;
 use Test::More;
 

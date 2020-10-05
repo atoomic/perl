@@ -9,7 +9,7 @@ BEGIN {
         require 'loc_tools.pl';
 }
 
-use strict;
+
 
 use Test::More tests => 74;
 

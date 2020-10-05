@@ -1,6 +1,6 @@
 #!/usr/bin/perl -wT
 
-use strict;
+
 use Config;
 push @INC, '.';
 if (-f 't/test.pl') {

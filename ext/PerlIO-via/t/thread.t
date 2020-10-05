@@ -15,7 +15,7 @@ BEGIN {
     }
 }
 
-use strict;
+
 use warnings;
 use threads;
 

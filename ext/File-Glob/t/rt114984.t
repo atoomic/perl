@@ -1,4 +1,4 @@
-use strict;
+
 use warnings;
 use v5.16.0;
 use File::Temp 'tempdir';

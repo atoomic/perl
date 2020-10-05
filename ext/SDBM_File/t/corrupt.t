@@ -1,5 +1,5 @@
 #!./perl
-use strict;
+
 use Test::More;
 use MIME::Base64;
 use File::Temp 'tempfile';

@@ -1,7 +1,7 @@
 # Miscellaneous tests for XS lvalue functions
 
 use warnings;
-use strict;
+
 
 use Test::More tests => 4;
 

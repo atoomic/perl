@@ -1,6 +1,6 @@
 package ODBM_File;
 
-use strict;
+
 use warnings;
 
 require Tie::Hash;

@@ -1,6 +1,6 @@
 use ExtUtils::MakeMaker;
 use Config;
-use strict;
+
 
 our $VERSION = "1.30";
 
@@ -290,7 +290,7 @@ sub write_errno_pm {
 
 package Errno;
 require Exporter;
-use strict;
+
 
 EDQ
 

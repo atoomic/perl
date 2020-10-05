@@ -1,6 +1,6 @@
 #!perl
 
-use strict;
+
 use utf8;
 use open qw( :utf8 :std );
 use Test::More tests => 22;

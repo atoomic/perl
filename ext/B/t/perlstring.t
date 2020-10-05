@@ -11,7 +11,7 @@ BEGIN {
 
 $|  = 1;
 use warnings;
-use strict;
+
 BEGIN  {
     eval { require threads; threads->import; }
 }

@@ -8,7 +8,7 @@ BEGIN {
     }
 }
 
-use strict;
+
 
 # must use a BEGIN or the prototypes wont be respected meaning 
     # tests could pass that shouldn't

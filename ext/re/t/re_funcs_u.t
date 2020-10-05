@@ -10,7 +10,7 @@ BEGIN {
     require 'loc_tools.pl'; # To see if platform has locales
 }
 
-use strict;
+
 use warnings;
 
 use re qw(is_regexp regexp_pattern

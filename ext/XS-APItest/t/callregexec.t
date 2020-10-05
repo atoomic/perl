@@ -5,7 +5,7 @@
 # full tests haven't been added yet)
 
 use warnings;
-use strict;
+
 
 use XS::APItest;
 *callregexec = *XS::APItest::callregexec;

@@ -1,6 +1,6 @@
 #!./perl -w
 
-use strict;
+
 use Tie::Memoize;
 use Test::More tests => 27;
 use File::Spec;

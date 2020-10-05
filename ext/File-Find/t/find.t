@@ -1,5 +1,5 @@
 #!./perl
-use strict;
+
 use Cwd;
 
 my $warn_msg;

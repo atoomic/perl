@@ -1,6 +1,6 @@
 #!perl
 
-use strict;
+
 use warnings;
 
 use Amiga::ARexx qw(DoRexx);

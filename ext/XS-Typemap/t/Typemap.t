@@ -8,7 +8,7 @@ BEGIN {
 
 use Test::More tests => 156;
 
-use strict;
+
 #catch WARN_INTERNAL type errors, and anything else unexpected
 use warnings FATAL => 'all';
 use XS::Typemap;

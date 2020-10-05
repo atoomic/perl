@@ -6,7 +6,7 @@ BEGIN {
     plan skip_all => "POSIX is unavailable" if $Config{'extensions'} !~ m!\bPOSIX\b!;
 }
 
-use strict;
+
 use File::Spec;
 use POSIX;
 

@@ -1,6 +1,6 @@
 #!perl -w
 
-use strict;
+
 use warnings;
 use Test::More;
 use Devel::Peek;

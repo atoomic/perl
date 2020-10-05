@@ -1,6 +1,6 @@
 #!perl -w
 
-use strict;
+
 use Test::More;
 
 # This file tests various functions and macros in the API related to UTF-8.
