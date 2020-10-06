@@ -16,7 +16,6 @@ BEGIN {
 }
 
 use warnings;
-use strict;
 
 plan 65;
 
