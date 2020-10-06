@@ -10,7 +10,6 @@ BEGIN {
     set_up_inc( qw(. ../lib lib ../dist/base/lib) );
 }
 
-use strict;
 no warnings 'once';
 
 plan(tests => 162);
