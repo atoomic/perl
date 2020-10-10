@@ -25,7 +25,7 @@ my $c2 = &no_args();
 print (($c2 == 11) ? "ok 2\n" : "not ok 2\n");
 print $FAIL ? "not ok 3\n" : "ok 3\n";	# Was it really memoized?
 
-my $FAIL = 0;
+$FAIL = 0;
 my $f = do { my $COUNT = 0; sub { $FAIL++ if $COUNT++; 12 } };
 my $fm = memoize($f);
 
