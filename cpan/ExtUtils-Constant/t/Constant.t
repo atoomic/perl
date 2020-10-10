@@ -445,6 +445,7 @@ EOT
   # Standard test header (need an option to suppress this?)
   print FH <<"EOT" or die $!;
 use strict;
+use warnings;
 use $package qw(@$export_names);
 
 print "1..2\n";
@@ -904,7 +905,7 @@ EOT
   }
 EOT
 
-  $test_body .=  "my (\$error, \$got) = ${package}::constant (\$string);\n";
+  $test_body .=  "(\$error, \$got) = ${package}::constant (\$string);\n";
 
   $test_body .= <<'EOT';
   if ($error or $got ne $expect) {
@@ -1024,7 +1025,7 @@ simple ("Three start", qw(Bea kea Lea lea nea pea rea sea tea Wea yea Zea));
 # I felt was rather too many. So I used words with 2 vowels.
 simple ("Twos and three middle", qw(aa ae ai ea eu ie io oe era eta));
 # Given the choice go for the end, else the earliest point
-simple ("Three end and four symetry", qw(ean ear eat barb marm tart));
+simple ("Three end and four symmetry", qw(ean ear eat barb marm tart));
 
 
 # Need this if the single test below is rolled into @tests :
