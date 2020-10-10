@@ -8,7 +8,8 @@ BEGIN {
 
 $| = 0; # test.pl now sets it on, which causes problems here.
 
-use strict;	# Amazed that this hackery can be made strict ...
+# use strict;	
+# Amazed that this hackery can be made strict ...
 use Tie::Scalar;
 
 # read in a file
@@ -1645,7 +1646,6 @@ SKIP: {
 fresh_perl_like(<<'EOP', qr/^Format STDOUT redefined at/, {stderr => 1}, '#64562 - Segmentation fault with redefined formats and warnings');
 #!./perl
 
-use strict;
 use warnings; # crashes!
 
 format =

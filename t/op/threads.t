@@ -12,7 +12,6 @@ BEGIN {
      plan(30);
 }
 
-use strict;
 use warnings;
 use threads;
 
@@ -230,7 +229,6 @@ EOI
 # This will fail in "interesting" ways if stashes in clone_params is not
 # initialised correctly.
 fresh_perl_like(<<'EOI', qr/\AThread 1 terminated abnormally: Not a CODE reference/, { }, 'RT #73046');
-    use strict;
     use threads;
 
     sub foo::bar;
@@ -290,7 +288,6 @@ EOI
 
 # Test from Jerry Hedden, reduced by him from Object::InsideOut's tests.
 fresh_perl_is(<<'EOI', 'ok', { }, '0 refcnt during CLONE');
-use strict;
 use warnings;
 
 use threads;
