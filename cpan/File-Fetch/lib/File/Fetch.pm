@@ -1,6 +1,7 @@
 package File::Fetch;
 
 use strict;
+use warnings;
 use FileHandle;
 use File::Temp;
 use File::Copy;
