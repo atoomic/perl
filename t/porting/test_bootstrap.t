@@ -20,7 +20,6 @@ my %exceptions = (
     hints => "require './test.pl'",
     parser => 'use DieDieDie',
     parser_run => "require './test.pl'",
-    proto => 'use strict',
  );
 
 while (my $file = <$fh>) {
