@@ -4,8 +4,8 @@
 #########################
 
 use strict;
-use_ok("version", 0.9924);
 use Test::More;
+use_ok("version", 0.9924);
 
 BEGIN {
     eval "use List::Util qw(reduce)";
