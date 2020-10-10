@@ -42,7 +42,7 @@ my $COUNT = 0;
 sub parity { $COUNT++; $_[0] % 2 }
 sub parnorm { $_[0] % 2 }
 memoize('parity', NORMALIZER =>  'main::parnorm');
-my @res = map { &parity($_) } @ARGS;
+@res = map { &parity($_) } @ARGS;
 print ((("@res" eq "1 0 1 0 1") ? '' : 'not '), "ok 4\n");
 print (( ($COUNT == 2) ? '' : 'not '), "ok 5\n");
 
