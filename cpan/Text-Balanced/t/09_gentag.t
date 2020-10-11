@@ -15,7 +15,6 @@ print "ok 1\n";
 my $count=2;
 use vars qw( $DEBUG );
 sub debug { print "\t>>>",@_ if $DEBUG }
-
 ######################### End of black magic.
 
 
@@ -29,7 +28,12 @@ while (defined($str = <DATA>))
 	if ($str =~ s/\A# USING://)
 	{
 		$neg = 0;
-		eval{local$^W;*f = eval $str || die};
+		eval {
+			# Capture "Subroutine main::f redefined" warning
+			my @warnings;
+			local $SIG{__WARN__} = sub { push @warnings, shift; };
+			*f = eval $str || die;
+		};
 		next;
 	}
 	elsif ($str =~ /\A# TH[EI]SE? SHOULD FAIL/) { $neg = 1; next; }
