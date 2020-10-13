@@ -17,7 +17,7 @@ use Errno qw(EACCES);
 
 $| = 1;
 
-use Test::More tests => 123;
+use Test::More tests => 126;
 
 my $fh;
 my $var = "aaa\n";
@@ -105,7 +105,6 @@ tie $p, 'P'; open $fh, '<', \$p;
 is(<$fh>, "shazam", "reading from magic scalars");
 
 {
-    use warnings;
     my $warn = 0;
     local $SIG{__WARN__} = sub { $warn++ };
     open my $fh, '>', \my $scalar;
@@ -120,7 +119,6 @@ is(<$fh>, "shazam", "reading from magic scalars");
 }
 
 {
-    use warnings;
     my $warn = 0;
     local $SIG{__WARN__} = sub { $warn++ };
     for (1..2) {
@@ -131,7 +129,6 @@ is(<$fh>, "shazam", "reading from magic scalars");
 }
 
 {
-    use warnings;
     my $warn = 0;
     local $SIG{__WARN__} = sub { $warn++ };
 
@@ -151,7 +148,6 @@ is(<$fh>, "shazam", "reading from magic scalars");
 }
 
 {
-    use warnings;
     my $warn = 0;
     local $SIG{__WARN__} = sub { $warn++ };
     my $scalar = 3;
@@ -161,11 +157,14 @@ is(<$fh>, "shazam", "reading from magic scalars");
     is($warn, 0, "no warnings reading an undef, allocated scalar");
 }
 
-my $data = "a non-empty PV";
-$data = undef;
-open(MEM, '<', \$data) or die "Fail: $!\n";
-my $x = join '', <MEM>;
-is($x, '');
+{
+    my $data = "a non-empty PV";
+    $data = undef;
+    open(MEM, '<', \$data) or die "Fail: $!\n";
+    no warnings 'uninitialized';
+    my $x = join '', <MEM>;
+    is($x, '');
+}
 
 {
     # [perl #35929] verify that works with $/ (i.e. test PerlIOScalar_unread)
@@ -183,6 +182,8 @@ EOF
 
 # [perl #40267] PerlIO::scalar doesn't respect readonly-ness
 {
+    my @these_warnings;
+    local $SIG{__WARN__} = sub { push @these_warnings, @_; };
     ok(!(defined open(F, '>', \undef)), "[perl #40267] - $!");
     close F;
 
@@ -190,6 +191,11 @@ EOF
     ok(!(defined open(F, '>', $ro)), $!);
     is($!+0, EACCES, "check we get a read-onlyish error code");
     close F;
+    is(@these_warnings, 2, "Got 2 warnings as expected");
+    like($these_warnings[0], qr/Modification of a read-only value attempted/,
+        "Got warning for modification of a read-only value");
+    like($these_warnings[1], qr/Modification of a read-only value attempted/,
+        "Got warning for modification of a read-only value");
     # but we can read from it
     ok(open(F, '<', $ro), $!);
     is(<F>, 43);
@@ -233,6 +239,7 @@ EOF
 
     # Seeking negative should not do funny business.
 
+    no warnings 'layer';
     ok(!seek(F,  -50, SEEK_SET), $!);
     ok(seek(F, 0, SEEK_SET));
     ok(!seek(F,  -50, SEEK_CUR), $!);
@@ -246,7 +253,7 @@ EOF
     my $s;
     sub TIESCALAR { bless \my $x }
     sub FETCH { $s .= ':F'; ${$_[0]} }
-    sub STORE { $s .= ":S($_[1])"; ${$_[0]} = $_[1] }
+    sub STORE { no warnings 'uninitialized'; $s .= ":S($_[1])"; ${$_[0]} = $_[1] }
 
     package main;
 
@@ -323,7 +330,7 @@ EOF
 {
     open my $fh, "<", \(my $f=*f); seek $fh, 2,1;
     pass 'seeking on a glob copy';
-    open my $fh, "<", \(my $f=*f); seek $fh, -2,2;
+    open $fh, "<", \($f=*f); seek $fh, -2,2;
     pass 'seeking on a glob copy from the end';
 }
 
@@ -403,22 +410,25 @@ my $byte_warning = "Strings with code points over 0xFF may not be mapped into in
 {
     use Errno qw(EINVAL);
     my @warnings;
-    local $SIG{__WARN__} = sub { push @warnings, "@_" };
+
+    no warnings 'utf8';
+    local $SIG{__WARN__} = sub { push @warnings, @_; };
     my $content = "12\x{101}";
     $! = 0;
     ok(!open(my $fh, "<", \$content), "non-byte open should fail");
     is(0+$!, EINVAL, "check \$! is updated");
     is_deeply(\@warnings, [], "should be no warnings (yet)");
+
     use warnings "utf8";
     $! = 0;
-    ok(!open(my $fh, "<", \$content), "non byte open should fail (and warn)");
+    ok(!open($fh, "<", \$content), "non byte open should fail (and warn)");
     is(0+$!, EINVAL, "check \$! is updated even when we warn");
     is_deeply(\@warnings, [ $byte_warning ], "should have warned");
 
     @warnings = ();
     $content = "12\xA1";
     utf8::upgrade($content);
-    ok(open(my $fh, "<", \$content), "open upgraded scalar");
+    ok(open($fh, "<", \$content), "open upgraded scalar");
     binmode $fh;
     my $tmp;
     is(read($fh, $tmp, 4), 3, "read should get the downgraded bytes");
@@ -441,12 +451,14 @@ my $byte_warning = "Strings with code points over 0xFF may not be mapped into in
     $content = "\x{101}\x{102}\x{103}";
 
     my @warnings;
+    no warnings 'utf8';
     local $SIG{__WARN__} = sub { push @warnings, "@_" };
 
     $! = 0;
     is(read($fh, $tmp, 1), undef, "read from scalar with >0xff chars");
     is(0+$!, EINVAL, "check errno set correctly");
     is_deeply(\@warnings, [], "should be no warning (yet)");
+
     use warnings "utf8";
     seek($fh, 1, SEEK_SET);
     is(read($fh, $tmp, 1), undef, "read from scalar with >0xff chars");
@@ -511,6 +523,7 @@ SKIP:
 {
     my $buf0 = "hello";
     open my $fh, "<", \$buf0 or die $!;
+    no warnings 'layer';
     ok(!seek($fh, -10, SEEK_CUR), "seek to negative position");
     is(tell($fh), 0, "shouldn't change the position");
 }
