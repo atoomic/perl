@@ -11,6 +11,7 @@ END { unlink('foo') }
 use Test::More tests => 1;
 
 {# Test 4: that 2 arg format works, and that we cycle on mode change
+     no warnings 'reserved';
      cacheout '>', "foo";
      print foo "foo 4\n";
      cacheout '+>', "foo";
