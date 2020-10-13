@@ -19,7 +19,9 @@ use Devel::Peek;
 
 our $DEBUG = 0;
 our ( @array, %hash );
-open(SAVERR, ">&STDERR") or die "Can't dup STDERR: $!";
+{
+    no warnings 'once';
+    open(SAVERR, ">&STDERR") or die "Can't dup STDERR: $!";
 
 # If I reference any lexicals in this, I get the entire outer subroutine (or
 # MAIN) dumped too, which isn't really what I want, as it's a lot of faff to
@@ -30,6 +32,7 @@ $::type
 Good    @>>>>>
 $::mmmm
 .
+}
 
 use constant thr => $Config{useithreads};
 
@@ -847,7 +850,7 @@ do_test('ENAMEs on a stash with no NAME',
 ');
 
 my %small = ("Perl", "Rules", "Beer", "Foamy");
-my $b = %small;
+$b = %small;
 do_test('small hash',
         \%small,
 'SV = $RV\\($ADDR\\) at $ADDR
@@ -1351,6 +1354,7 @@ like(
     my $coderef = eval <<"EOP";
     use feature 'lexical_subs';
     no warnings 'experimental::lexical_subs';
+    no warnings 'illegalproto';
     my sub bar (\$\x{30cd}) {1}; \\&bar
 EOP
     like(
@@ -1512,7 +1516,7 @@ EODUMP
                  prog => 'package t; use Devel::Peek q-DumpProg-; DumpProg();',
                  stderr=>1;
     $out =~ s/ *SEQ = .*\n//;
-    $out =~ s/0x[0-9a-f]{2,}\]/${1}0xNNN]/g;
+    { no warnings 'uninitialized'; $out =~ s/0x[0-9a-f]{2,}\]/${1}0xNNN]/g; }
     $out =~ s/\(0x[0-9a-f]{3,}\)/(0xNNN)/g;
     is $out, $e, "DumpProg() has no 'Attempt to free X prematurely' warning";
 }
