@@ -112,7 +112,7 @@ SKIP: {
     TODO: {
         local $TODO = 'directory brackets look like pattern brackets to glob' if $^O eq 'VMS';
         my $home = exists $ENV{HOME} ? $ENV{HOME}
-        : eval { getpwuid($>); 1 } ? (getpwuid($>))[7]
+        : eval { no warnings 'void'; getpwuid($>); 1 } ? (getpwuid($>))[7]
         : $^O eq 'MSWin32' && exists $ENV{USERPROFILE} ? $ENV{USERPROFILE}
         : q{~};
         $tilde_check->($home);
