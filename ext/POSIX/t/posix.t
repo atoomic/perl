@@ -77,6 +77,7 @@ SKIP: {
     my ($reader, $writer) = ('') x 2;
     cmp_ok($fds[0], '>', $testfd, 'POSIX::pipe');
 
+    no warnings 'once';
     CORE::open($reader = \*READER, "<&=".$fds[0]);
     CORE::open($writer = \*WRITER, ">&=".$fds[1]);
     my $test = next_test();
@@ -355,7 +356,7 @@ is ($result, undef, "fgets should fail");
 like ($@, qr/^Unimplemented: POSIX::fgets\(\): Use method IO::Handle::gets\(\) instead/,
       "check its redef message");
 
-eval { use strict; POSIX->import("S_ISBLK"); my $x = S_ISBLK };
+eval { use strict; no warnings 'uninitialized'; POSIX->import("S_ISBLK"); my $x = S_ISBLK };
 unlike( $@, qr/Can't use string .* as a symbol ref/, "Can import autoloaded constants" );
 
 SKIP: {
