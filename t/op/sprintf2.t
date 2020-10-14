@@ -265,7 +265,6 @@ if ($Config{nvsize} == 8 &&
     print "# no hexfloat tests\n";
 }
 
-use strict;
 use Config;
 
 is(
