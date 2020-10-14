@@ -55,12 +55,8 @@ SKIP: {
 		  );
 }
 
-# now tests with strictures
-
-{
-    use strict;
-    ok( !exists $pig::{bodine}, q(referencing a non-existent stash element doesn't produce stricture errors) );
-}
+ok( !exists $pig::{bodine},
+  q(referencing a non-existent stash element doesn't produce stricture errors) );
 
 our $TODO;
 SKIP: {
@@ -257,7 +253,7 @@ fresh_perl_is(
 
     # effectively rename a stash
     *slin:: = *rile::; *rile:: = *zor::;
-    
+
     ::is *$globref, "*rile::tat",
      'globs stringify the same way when stashes are moved';
     ::is ref $obj, "rile",
