@@ -16,7 +16,7 @@ $Config{shortsize} == 2
 my ($dirfh, $dirname) = tempfile(UNLINK => 1);
 my ($pagfh, $pagname) = tempfile(UNLINK => 1);
 close $dirfh;
-close pagefh;
+{no warnings 'once'; no warnings 'reserved'; close pagefh;}
 
 # these might only fail under ASAN
 while (my $testdata = do { local $/ = "END\n"; <DATA>; }) {
