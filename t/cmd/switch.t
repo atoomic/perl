@@ -4,8 +4,8 @@ print "1..18\n";
 
 sub foo1 {
     $_ = shift(@_);
-    $a = 0;
-    until ($a++) {
+    my $alpha = 0;
+    until ($alpha++) {
 	next if $_ eq 1;
 	next if $_ eq 2;
 	next if $_ eq 3;

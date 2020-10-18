@@ -62,11 +62,11 @@ sub bar {
     return (1, 2, 4);
 }
 
-$a = 0;
-foreach $b (bar()) {
-    $a += $b;
+my $alpha = 0;
+foreach my $beta (bar()) {
+    $alpha += $beta;
 }
-print $a == 7 ? "ok" : "not ok", " 11\n";
+print $alpha == 7 ? "ok" : "not ok", " 11\n";
 
 my $loop_count = 0;
 for ("-3" .. "0") {
