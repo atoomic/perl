@@ -28,7 +28,7 @@ my $p = $x->getpos;
 print $x "ok 3\n";
 $x->flush;
 $x->setpos($p);
-my $line = <$x>;
+$line = <$x>;
 is($line, "ok 3\n", "test getpos/setpos");
 
 $! = 0;

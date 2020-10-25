@@ -22,6 +22,7 @@ plan(tests => 18);
 	my @load;
 	local $^W;
 	my $xsl = \&XSLoader::load;
+	no warnings 'redefine';
 	local *XSLoader::load = sub {
 		push @load, \@_;
 		&$xsl(@_);
