@@ -6,12 +6,6 @@ BEGIN {
 	    print "1..0 # Skip -- Perl configured without List::Util module\n";
 	    exit 0;
 	}
-
-	# `make test` in the CPAN version of this module runs us with -w, but
-	# Dumpvalue.pm relies on all sorts of things that can cause warnings. I
-	# don't think that's worth fixing, so we just turn off all warnings
-	# during testing.
-	$^W = 0;
 }
 
 our ( $foo, @bar, %baz, @foo, %foo );
@@ -28,7 +22,9 @@ ok( $d = Dumpvalue->new(), 'create a new Dumpvalue object' );
 $d->set( globPrint => 1, dumpReused => 1 );
 is( $d->{globPrint}, 1, 'set an option correctly' );
 is( $d->get('globPrint'), 1, 'get an option correctly' );
-is( $d->get('globPrint', 'dumpReused'), qw( 1 1 ), 'get multiple options' );
+my $got         = join(' ' => $d->get('globPrint', 'dumpReused'));
+my $expected    = join(' ' => ( qw( 1 1 ) ));
+is( $got, $expected, 'get multiple options' );
 
 # check to see if unctrl works
 is( ref( Dumpvalue::unctrl(*FOO) ), 'GLOB', 'unctrl should not modify GLOB' );
@@ -113,7 +109,7 @@ $DB::signal = $d->{stopDbSignal} = 1;
 is( $d->unwrap(), undef, 'unwrap returns if DB signal is set' );
 undef $DB::signal;
 
-my $foo = 7;
+$foo = 7;
 $d->{dumpReused} = 0;
 $d->unwrap(\$foo);
 is( $out->read, "-> 7\n", 'unwrap worked on scalar' );
@@ -223,7 +219,7 @@ like( $out->read, qr/&TieOut::read in/, 'dumpsub found sub fine' );
 
 # test findsubs
 is( $d->findsubs(), undef, 'findsubs returns nothing without %DB::sub' );
-$DB::sub{'TieOut::read'} = 'TieOut';
+{ no warnings 'once'; $DB::sub{'TieOut::read'} = 'TieOut'; }
 is( $d->findsubs( \&TieOut::read ), 'TieOut::read', 'findsubs reported sub' );
 
 # now that it's capable of finding the package...
