@@ -810,7 +810,7 @@ my @tests = (
 	local $^W;
 	*rel2abs = sub {
 	    my $self = shift;
-	    local $^W;
+	    no warnings 'redefine';
 	    local *Cwd::getcwd = sub { 'C:\\one\\two' };
 	    *Cwd::getcwd = *Cwd::getcwd; # Avoid a 'used only once' warning
 	    local *Cwd::getdcwd = sub {
@@ -824,7 +824,7 @@ my @tests = (
 	*rel2abs = *rel2abs; # Avoid a 'used only once' warning
 	*abs2rel = sub {
 	    my $self = shift;
-	    local $^W;
+	    no warnings 'redefine';
 	    local *Cwd::getcwd = sub { 'C:\\one\\two' };
 	    *Cwd::getcwd = *Cwd::getcwd; # Avoid a 'used only once' warning
 	    return $self->SUPER::abs2rel(@_);
