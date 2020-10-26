@@ -16,7 +16,7 @@ my ($args, $op, $target, $test, $test_set, $try, $val, $zvalue, @set, @val);
 $test = 0;
 $| = 1;
 my @script = (
-    'my ($res, $s0,$s1,$s2,$s3,$s4,$s5,$s6,$s7,$s8,$s9,$s10,$z0,$z1,$z2);' .
+    'my ($res, $s0,$s1,$s2,$s3,$s4,$s5,$s6,$s7,$s8,$s9,$s10,$z0,$z1,$z2,$bad,$z);' .
 	"\n\n"
 );
 my $eps = 1e-13;
@@ -74,7 +74,7 @@ sub test_mutators {
     $test++;
 push(@script, <<'EOT');
 {
-    my $z = cplx(  1,  1);
+    $z = cplx(  1,  1);
     $z->Re(2);
     $z->Im(3);
     print "# $test Re(z) = ",$z->Re(), " Im(z) = ", $z->Im(), " z = $z\n";
@@ -85,7 +85,7 @@ EOT
     $test++;
 push(@script, <<'EOT');
 {
-    my $z = cplx(  1,  1);
+    $z = cplx(  1,  1);
     $z->abs(3 * sqrt(2));
     print "# $test Re(z) = ",$z->Re(), " Im(z) = ", $z->Im(), " z = $z\n";
     print 'not ' unless (abs($z) - 3 * sqrt(2)) < $eps and
@@ -98,7 +98,7 @@ EOT
     $test++;
 push(@script, <<'EOT');
 {
-    my $z = cplx(  1,  1);
+    $z = cplx(  1,  1);
     $z->arg(-3 / 4 * pi);
     print "# $test Re(z) = ",$z->Re(), " Im(z) = ", $z->Im(), " z = $z\n";
     print 'not ' unless (arg($z) + 3 / 4 * pi) < $eps and
@@ -136,7 +136,7 @@ sub test_dbz {
 	$test++;
 	push(@script, <<EOT);
 	eval '$op';
-	(my \$bad) = (\$@ =~ /(.+)/);
+	(\$bad) = (\$@ =~ /(.+)/);
 	print "# $test op = $op divbyzero? \$bad...\n";
 	print 'not ' unless (\$@ =~ /Division by zero/);
 EOT
@@ -542,7 +542,7 @@ sub set {
 	for ($i = 0; $i < @set; $i++) {
 		push(@{$valref}, $set[$i]);
 		my $val = value($set[$i]);
-		push @script, "\$s$i = $val;\n";
+		push @script, "no warnings 'shadow'; \$s$i = $val;\n";
 		push @{$setref}, "\$s$i";
 	}
 }
