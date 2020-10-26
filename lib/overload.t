@@ -403,6 +403,7 @@ is($qr, 9);
 
 my (@q1, @qr1, $res);
 {
+  no warnings q|reserved|;
   $_ = '!<b>!foo!<-.>!';
   BEGIN { overload::constant 'q' => sub {push @q1, shift, ($_[1] || 'none'); "_<" . (shift) . ">_"},
 			     'qr' => sub {push @qr1, shift, ($_[1] || 'none'); "!<" . (shift) . ">!"}; }
@@ -1903,6 +1904,7 @@ foreach my $op (qw(<=> == != < <= > >=)) {
 	for my $sub (keys %subs) {
 	    no warnings 'experimental::smartmatch';
 	    my $term = $subs{$sub};
+print STDERR "XXX: sub: $sub\tterm: $term\n";
 	    my $t = sprintf( $term, '$_[0][0]' );
 	    my $e ="sub { \$funcs .= '($sub)'; my \$r; if (\$use_int) {"
 		. "use integer; \$r = ($t) } else { \$r = ($t) } \$r }";
@@ -2768,6 +2770,8 @@ package refsgalore {
     use feature 'postderef';
     use feature 'indirect';
     no strict;
+    no warnings 'reserved';
+    no warnings 'void';
     tell myio; # vivifies *myio{IO} at compile time
     use constant ioref => bless( *myio{IO}, 'refsgalore' );
     is ioref->$*, 42, '(overloaded constant that is not a scalar ref)->$*';
