@@ -137,7 +137,7 @@ $result = runperl( progfile => $extracted_program,
                                 '-e', 'file',
                                 '-F', $testreport] );
 like($result, qr/Report saved/, 'fake bug report saved');
-my $contents = _slurp($testreport);
+$contents = _slurp($testreport);
 unlink $testreport, $body, $attachment;
 like($contents, qr/Subject: testing perlbug/,
      'Subject included in fake bug report');
