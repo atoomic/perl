@@ -1100,6 +1100,7 @@ TEST q(Data::Dumper->new([[$c, $d]])->Dumpxs;), "more sortkeys sub (XS)"
   $WANT = <<'EOT';
 #$VAR1 = {
 #          foo => sub {
+#                     use warnings;
 #                     use strict;
 #                     print 'foo';
 #                 }
