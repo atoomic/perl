@@ -4,7 +4,7 @@
 #
 
 package Pie;
-
+no warnings;
 sub INCORRECT (DB);
 
 1;
