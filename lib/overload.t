@@ -1904,7 +1904,7 @@ foreach my $op (qw(<=> == != < <= > >=)) {
 	for my $sub (keys %subs) {
 	    no warnings 'experimental::smartmatch';
 	    my $term = $subs{$sub};
-print STDERR "XXX: sub: $sub\tterm: $term\n";
+#print STDERR "XXX: sub: $sub\tterm: $term\n";
 	    my $t = sprintf( $term, '$_[0][0]' );
 	    my $e ="sub { \$funcs .= '($sub)'; my \$r; if (\$use_int) {"
 		. "use integer; \$r = ($t) } else { \$r = ($t) } \$r }";
