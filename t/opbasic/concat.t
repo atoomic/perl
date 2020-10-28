@@ -92,20 +92,18 @@ print "1..254\n";
 {
     # ID 20001020.006 (#4484)
 
-    # no warnings 'void';
+    no warnings 'void';
     no warnings 'uninitialized';
     no warnings 'once';
     "x" =~ /(.)/; # unset $2
 
-    my $discard = undef;
-
     # Without the fix this 5.7.0 would croak:
     # Modification of a read-only value attempted at ...
-    $discard = eval {"$2\x{1234}"};
+    eval {"$2\x{1234}"};
     ok(!$@, "bug id 20001020.006 (#4484), left");
 
     # For symmetry with the above.
-    $discard = eval {"\x{1234}$2"};
+    eval {"\x{1234}$2"};
     ok(!$@, "bug id 20001020.006 (#4484), right");
 
     *pi = \undef;
@@ -113,11 +111,11 @@ print "1..254\n";
     # patch. Without the fix this 5.7.0 would also croak:
     # Modification of a read-only value attempted at ...
     my $pi;
-    $discard = eval{"$pi\x{1234}"};
+    eval{"$pi\x{1234}"};
     ok(!$@, "bug id 20001020.006 (#4484), constant left");
 
     # For symmetry with the above.
-    $discard = eval{"\x{1234}$pi"};
+    eval{"\x{1234}$pi"};
     ok(!$@, "bug id 20001020.006 (#4484), constant right");
 }
 
