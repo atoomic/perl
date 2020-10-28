@@ -24,6 +24,9 @@ sub ok {
 }
 
 sub is {
+
+    no warnings 'uninitialized';
+
     my($got, $expected, $name) = @_;
 
     my $ok = $got eq $expected;
@@ -41,16 +44,18 @@ sub is {
 
 print "1..254\n";
 
-my ($alpha, $beta, $c) = qw(foo bar);
+{
+  no warnings 'uninitialized';
+  my ($alpha, $beta, $c) = qw(foo bar);
 
-ok("$alpha"     eq "foo",    "verifying assign");
-ok("$alpha$beta"   eq "foobar", "basic concatenation");
-ok("$c$alpha$c" eq "foo",    "concatenate undef, fore and aft");
-
+  ok("$alpha"     eq "foo",    "verifying assign");
+  ok("$alpha$beta"   eq "foobar", "basic concatenation");
+  ok("$c$alpha$c" eq "foo",    "concatenate undef, fore and aft");
+}
 # Okay, so that wasn't very challenging.  Let's go Unicode.
 
 {
-    # bug id 20000819.004 (#3761) 
+    # bug id 20000819.004 (#3761)
 
     my $dx;
     $_ = $dx = "\x{10f2}";
@@ -76,7 +81,7 @@ ok("$c$alpha$c" eq "foo",    "concatenate undef, fore and aft");
 {
     # bug id 20000901.092 (#4184)
     # test that undef left and right of utf8 results in a valid string
-
+    no warnings 'uninitialized';
     my $alpha;
     $alpha .= "\x{1ff}";
     ok($alpha eq  "\x{1ff}", "bug id 20000901.092 (#4184), undef left");
@@ -87,15 +92,20 @@ ok("$c$alpha$c" eq "foo",    "concatenate undef, fore and aft");
 {
     # ID 20001020.006 (#4484)
 
+    # no warnings 'void';
+    no warnings 'uninitialized';
+    no warnings 'once';
     "x" =~ /(.)/; # unset $2
+
+    my $discard = undef;
 
     # Without the fix this 5.7.0 would croak:
     # Modification of a read-only value attempted at ...
-    eval {"$2\x{1234}"};
+    $discard = eval {"$2\x{1234}"};
     ok(!$@, "bug id 20001020.006 (#4484), left");
 
     # For symmetry with the above.
-    eval {"\x{1234}$2"};
+    $discard = eval {"\x{1234}$2"};
     ok(!$@, "bug id 20001020.006 (#4484), right");
 
     *pi = \undef;
@@ -103,11 +113,11 @@ ok("$c$alpha$c" eq "foo",    "concatenate undef, fore and aft");
     # patch. Without the fix this 5.7.0 would also croak:
     # Modification of a read-only value attempted at ...
     my $pi;
-    eval{"$pi\x{1234}"};
+    $discard = eval{"$pi\x{1234}"};
     ok(!$@, "bug id 20001020.006 (#4484), constant left");
 
     # For symmetry with the above.
-    eval{"\x{1234}$pi"};
+    $discard = eval{"\x{1234}$pi"};
     ok(!$@, "bug id 20001020.006 (#4484), constant right");
 }
 
@@ -129,6 +139,7 @@ sub beq { use bytes; $_[0] eq $_[1]; }
 }
 
 {
+    no warnings 'void';
     my $alpha; ($alpha .= 5) . 6;
     ok($alpha == 5, '($alpha .= 5) . 6 - present since 5.000');
 }
@@ -766,6 +777,7 @@ ok(ref(CORE::state $y = "a $o b") eq 'o',
 
     # assigning a string to a typeglob creates an alias
     {
+        no warnings 'once';
         $::Foo = 'myfoo';
         *Bar = ("F" . $o . $o);
         is($::Bar, "myfoo", '*Bar = "Foo"');
@@ -786,6 +798,7 @@ ok(ref(CORE::state $y = "a $o b") eq 'o',
 # distinguish between '=' and  '.=' where the LHS has the OPf_MOD flag
 
 {
+    no warnings( 'uninitialized', 'void');
     my $foo = "foo";
     my $alpha . $foo; # weird but legal
     is($alpha, '', 'my $alpha . $foo');
