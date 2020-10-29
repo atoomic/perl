@@ -1,5 +1,10 @@
 #!./perl
 
+BEGIN {
+    chdir 't' if -d 't';
+    @INC = '../lib'; # needed to locate warnings for instances of 'no warnings'
+}
+
 print "1..14\n";
 
 # Tests bug #22977.  Test case from Dave Mitchell.
@@ -56,6 +61,7 @@ write;
 sub baz {
   my $a;
   sub {
+    no warnings 'void';
     $a;
     {my ($a,$b,$c,$d,$e,$f,$g,$h,$i,$j,$k,$l,$m,$n,$o,$p,$q,$r,$s,$t)}
     my $x;
