@@ -45,11 +45,11 @@ sub is {
 print "1..254\n";
 
 {
-  no warnings 'uninitialized';
   my ($alpha, $beta, $c) = qw(foo bar);
 
   ok("$alpha"     eq "foo",    "verifying assign");
   ok("$alpha$beta"   eq "foobar", "basic concatenation");
+  no warnings 'uninitialized';
   ok("$c$alpha$c" eq "foo",    "concatenate undef, fore and aft");
 }
 # Okay, so that wasn't very challenging.  Let's go Unicode.
@@ -81,10 +81,10 @@ print "1..254\n";
 {
     # bug id 20000901.092 (#4184)
     # test that undef left and right of utf8 results in a valid string
-    no warnings 'uninitialized';
     my $alpha;
     $alpha .= "\x{1ff}";
     ok($alpha eq  "\x{1ff}", "bug id 20000901.092 (#4184), undef left");
+    no warnings 'uninitialized';
     $alpha .= undef;
     ok($alpha eq  "\x{1ff}", "bug id 20000901.092 (#4184), undef right");
 }
@@ -92,9 +92,8 @@ print "1..254\n";
 {
     # ID 20001020.006 (#4484)
 
-    no warnings 'void';
-    no warnings 'uninitialized';
-    no warnings 'once';
+    no warnings ( 'void', 'uninitialized', 'once');
+
     "x" =~ /(.)/; # unset $2
 
     # Without the fix this 5.7.0 would croak:
