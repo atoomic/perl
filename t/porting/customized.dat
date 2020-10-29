@@ -8,7 +8,7 @@ Digest::MD5 cpan/Digest-MD5/t/files.t e987329d2411ff60ad9a2bdf93fdf5f6943467e8
 Filter::Util::Call pod/perlfilter.pod e9833bf4ebc51087dfee5c553e0f8a5eef67212d
 Locale::Maketext::Simple cpan/Locale-Maketext-Simple/lib/Locale/Maketext/Simple.pm 57ed38905791a17c150210cd6f42ead22a7707b6
 Math::Complex cpan/Math-Complex/lib/Math/Complex.pm 198ea6c6c584f5ea79a0fd7e9d411d0878f3b2af
-Math::Complex cpan/Math-Complex/t/Complex.t 248a2a2d6d52b37f2ab562fad497cea5ea2bc6f9
+Math::Complex cpan/Math-Complex/t/Complex.t f951e6b947c423b7868a0c9ff84bba9f40501cd1
 Math::Complex cpan/Math-Complex/t/Trig.t 2682526e23a161d54732c2a66393fe4a234d1865
 Memoize cpan/Memoize/Memoize.pm 2418e9e86f53196f98924ea7e2329f04a5aa4420
 NEXT cpan/NEXT/lib/NEXT.pm 2c83d03ee361816e53ccb931137d314ab878d19f
