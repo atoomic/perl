@@ -16,8 +16,6 @@ BEGIN {
      plan(6);
 }
 
-use strict;
-use warnings;
 use threads;
 use threads::shared;
 use File::Path;
@@ -26,6 +24,7 @@ use Cwd 'getcwd';
 
 # Basic sanity check: make sure this does not crash
 fresh_perl_is <<'# this is no comment', 'ok', {}, 'crash when duping dirh';
+   no warnings 'reserved'; no warnings 'once';
    use threads;
    opendir dir, 'op';
    async{}->join for 1..2;
