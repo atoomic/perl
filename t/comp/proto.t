@@ -271,10 +271,17 @@ one_or_two_a( @_, @_ );
 
 testing \&a_sub, '&';
 
-sub a_sub (&) {
-  print "# \@_ = (", join( ",", @_ ), ")\n";
-  return unless defined $_[0];
-  &{ $_[0] };
+{
+
+  no warnings 'prototype';
+  no warnings 'uninitialized';
+
+  sub a_sub (&) {
+
+    print "# \@_ = (", join( ",", @_ ), ")\n";
+    return unless defined $_[0];
+    &{ $_[0] };
+  }
 }
 
 sub tmp_sub_1 { printf "ok %d\n", $i++ }
@@ -452,20 +459,23 @@ print "# CORE::open => ($p)\nnot "
   if ( $p = prototype('CORE::open') ) ne '*;$@';
 print "ok ", $i++, "\n";
 
-print "# CORE::Foo => ($p), \$@ => '$@'\nnot "
-  if defined( $p = eval { prototype('CORE::Foo') or 1 } )
-  or $@ !~ /^Can't find an opnumber/;
-print "ok ", $i++, "\n";
+{
+  no warnings 'void';
+  print "# CORE::Foo => ($p), \$@ => '$@'\nnot "
+    if defined( $p = eval { prototype('CORE::Foo') or 1 } )
+    or $@ !~ /^Can't find an opnumber/;
+  print "ok ", $i++, "\n";
 
-eval { prototype("CORE::a\0b") };
-print "# CORE::a\\0b: \$@ => '$@'\nnot "
-  if $@ !~ /^Can't find an opnumber for "a\0b"/;
-print "ok ", $i++, "\n";
+  eval { prototype("CORE::a\0b") };
+  print "# CORE::a\\0b: \$@ => '$@'\nnot "
+    if $@ !~ /^Can't find an opnumber for "a\0b"/;
+  print "ok ", $i++, "\n";
 
-eval { prototype("CORE::\x{100}") };
-print "# CORE::\\x{100}: => ($p), \$@ => '$@'\nnot "
-  if $@ !~ /^Can't find an opnumber for "\x{100}"/;
-print "ok ", $i++, "\n";
+  eval { prototype("CORE::\x{100}") };
+  print "# CORE::\\x{100}: => ($p), \$@ => '$@'\nnot "
+    if $@ !~ /^Can't find an opnumber for "\x{100}"/;
+  print "ok ", $i++, "\n";
+}
 
 "CORE::Foo" =~ /(.*)/;
 print "# \$1 containing CORE::Foo => ($p), \$@ => '$@'\nnot "
@@ -660,7 +670,10 @@ print "ok ", $i++, " star4 STDERR\n";
 
 # [perl #2726]
 # Test that prototype binding is late
-print "not " unless eval 'sub l564($){ l564(); } 1';
+{
+  no warnings 'prototype';
+  print "not " unless eval 'sub l564($){ l564(); } 1';
+}
 print "ok ", $i++, " prototype checking not done within initial definition\n";
 print "not " if eval 'sub l566($); sub l566($){ l566(); } 1';
 print "ok ", $i++, " prototype checking done if sub pre-declared\n";
@@ -672,6 +685,7 @@ sub sreftest (\$$) {
 }
 {
   no strict 'vars';
+  no warnings 'once';
   sreftest my $sref, $i++;
   sreftest( $helem{$i}, $i++ );
   sreftest $aelem[0], $i++;
@@ -709,7 +723,8 @@ for my $p ( "", qw{ () ($) ($@) ($%) ($;$) (&) (&\@) (&@) (%) (\%) (\@) } ) {
   my $warn = "";
   local $SIG{__WARN__} = sub {
     my $thiswarn = join( "", @_ );
-    return if $thiswarn =~ /^Prototype mismatch: sub main::evaled_subroutine/;
+    return
+      if $thiswarn =~ /^Prototype mismatch: sub main::evaled_subroutine/;
     $warn .= $thiswarn;
   };
   my $eval = "sub evaled_subroutine $p { &void *; }";
