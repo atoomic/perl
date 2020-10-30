@@ -410,7 +410,7 @@ use threads::shared;
 
 our @List : shared = (1..5);
 my $v = 3.5;
-$v > 0;
+{ no warnings 'void'; $v > 0; }
 $List[3] = $v;
 printf "%s,%s", @List[(3)], $List[3];
 CODE
