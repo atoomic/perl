@@ -25,9 +25,9 @@ sub leak {
     my $sv0 = 0;
     my $sv1 = 0;
     for my $i (1..$n) {
-	&$code();
-	$sv1 = sv_count();
-	$sv0 = $sv1 if $i == 1;
+        &$code();
+        $sv1 = sv_count();
+        $sv0 = $sv1 if $i == 1;
     }
     cmp_ok($sv1-$sv0, '<=', ($n-1)*$delta, @rest);
 }
@@ -82,12 +82,12 @@ leak(5, 1, sub {push @a,1;},       "basic check 3 of leak test infrastructure");
 leak(2, 0, sub { defined *{"!"} }, 'defined *{"!"}');
 leak(2, 0, sub { defined *{"["} }, 'defined *{"["}');
 leak(2, 0, sub { defined *{"-"} }, 'defined *{"-"}');
-sub def_bang { defined *{"!"}; delete $::{"!"} }
+sub def_bang { no warnings 'void'; defined *{"!"}; delete $::{"!"} }
 def_bang;
 leak(2, 0, \&def_bang,'defined *{"!"} vivifying GV');
-leak(2, 0, sub { defined *{"["}; delete $::{"["} },
+leak(2, 0, sub { no warnings 'void'; defined *{"["}; delete $::{"["} },
     'defined *{"["} vivifying GV');
-sub def_neg { defined *{"-"}; delete $::{"-"} }
+sub def_neg { no warnings 'void'; defined *{"-"}; delete $::{"-"} }
 def_neg;
 leak(2, 0, \&def_neg, 'defined *{"-"} vivifying GV');
 
@@ -100,7 +100,7 @@ eleak(2, 0, "$all /\$\\ /", '/$\ / with fatal warnings');
 eleak(2, 0, "$all s//\\1/", 's//\1/ with fatal warnings');
 eleak(2, 0, "$all qq|\\i|", 'qq|\i| with fatal warnings');
 eleak(2, 0, "$f 'digit'; qq|\\o{9}|", 'qq|\o{9}| with fatal warnings');
-eleak(3, 1, "$f 'misc'; sub foo{} sub foo:lvalue",
+eleak(3, 1, "$f 'misc'; no warnings 'redefine'; sub foo{} sub foo:lvalue",
      'ignored :lvalue with fatal warnings');
 eleak(2, 0, "no warnings; use feature ':all'; $f 'misc';
              my sub foo{} sub foo:lvalue",
@@ -115,9 +115,9 @@ eleak(2, 0, "$all *x=sub() {1}",
      'fatal const sub redef warning with sub-to-glob assignment');
 eleak(2, 0, "$all XS::APItest::newCONSTSUB(\\%main::=>name=>0=>1)",
      'newCONSTSUB sub redefinition with fatal warnings');
-eleak(2, 0, "$f 'misc'; my\$a,my\$a", 'double my with fatal warnings');
-eleak(2, 0, "$f 'misc'; our\$a,our\$a", 'double our with fatal warnings');
-eleak(2, 0, "$f 'closure';
+eleak(2, 0, "no warnings 'shadow'; $f 'misc'; my\$alpha,my\$alpha", 'double my with fatal warnings');
+eleak(2, 0, "no warnings 'shadow'; $f 'misc'; our\$alpha,our\$alpha", 'double our with fatal warnings');
+eleak(2, 0, "$f 'closure'; no warnings 'redefine';
              sub foo { my \$x; format=\n\@\n\$x\n.\n} write; ",
      'format closing over unavailable var with fatal warnings');
 eleak(2, 0, "$all /(?{})?/ ", '(?{})? with fatal warnings');
@@ -131,12 +131,12 @@ eleak(2, 0, "$all v111111111111111111111111111111111111111111111111",
 eleak(2, 0, 'sub{<*>}');
 # Use a random number of ops, so that the glob op does not reuse the same
 # address each time, giving us false passes.
-leak(2, 0, sub { eval '$main::x+'x(1 + rand() * 100) . '<*>'; },
+leak(2, 0, sub { eval 'no warnings q|numeric|; $main::x+'x(1 + rand() * 100) . '<*>'; },
     'freeing partly iterated glob');
 
 eleak(2, 0, 'goto sub {}', 'goto &sub in eval');
 eleak(2, 0, '() = sort { goto sub {} } 1,2', 'goto &sub in sort');
-eleak(2, 0, '/(?{ goto sub {} })/', 'goto &sub in regexp');
+eleak(2, 0, 'no warnings q|uninitialized|; /(?{ goto sub {} })/', 'goto &sub in regexp');
 
 sub TIEARRAY	{ bless [], $_[0] }
 sub FETCH	{ $_[0]->[$_[1]] }
@@ -182,35 +182,35 @@ leak_expr(5, 0, q{"YYYYYa" =~ /.+?(a(.+?)|b)/ }, "trie leak");
     my $_3 = 3;
 
     grep qr/1/ && ($count[$_] = sv_count()) && 99,  0..$_3;
-    is(@count[3] - @count[0], 0, "void   grep expr:  no new tmps per iter");
+    is($count[3] - $count[0], 0, "void   grep expr:  no new tmps per iter");
     grep { qr/1/ && ($count[$_] = sv_count()) && 99 }  0..$_3;
-    is(@count[3] - @count[0], 0, "void   grep block: no new tmps per iter");
+    is($count[3] - $count[0], 0, "void   grep block: no new tmps per iter");
 
     $s = grep qr/1/ && ($count[$_] = sv_count()) && 99,  0..$_3;
-    is(@count[3] - @count[0], 0, "scalar grep expr:  no new tmps per iter");
+    is($count[3] - $count[0], 0, "scalar grep expr:  no new tmps per iter");
     $s = grep { qr/1/ && ($count[$_] = sv_count()) && 99 }  0..$_3;
-    is(@count[3] - @count[0], 0, "scalar grep block: no new tmps per iter");
+    is($count[3] - $count[0], 0, "scalar grep block: no new tmps per iter");
 
     @a = grep qr/1/ && ($count[$_] = sv_count()) && 99,  0..$_3;
-    is(@count[3] - @count[0], 0, "list   grep expr:  no new tmps per iter");
+    is($count[3] - $count[0], 0, "list   grep expr:  no new tmps per iter");
     @a = grep { qr/1/ && ($count[$_] = sv_count()) && 99 }  0..$_3;
-    is(@count[3] - @count[0], 0, "list   grep block: no new tmps per iter");
+    is($count[3] - $count[0], 0, "list   grep block: no new tmps per iter");
 
 
     map qr/1/ && ($count[$_] = sv_count()) && 99,  0..$_3;
-    is(@count[3] - @count[0], 0, "void   map expr:  no new tmps per iter");
+    is($count[3] - $count[0], 0, "void   map expr:  no new tmps per iter");
     map { qr/1/ && ($count[$_] = sv_count()) && 99 }  0..$_3;
-    is(@count[3] - @count[0], 0, "void   map block: no new tmps per iter");
+    is($count[3] - $count[0], 0, "void   map block: no new tmps per iter");
 
     $s = map qr/1/ && ($count[$_] = sv_count()) && 99,  0..$_3;
-    is(@count[3] - @count[0], 0, "scalar map expr:  no new tmps per iter");
+    is($count[3] - $count[0], 0, "scalar map expr:  no new tmps per iter");
     $s = map { qr/1/ && ($count[$_] = sv_count()) && 99 }  0..$_3;
-    is(@count[3] - @count[0], 0, "scalar map block: no new tmps per iter");
+    is($count[3] - $count[0], 0, "scalar map block: no new tmps per iter");
 
     @a = map qr/1/ && ($count[$_] = sv_count()) && 99,  0..$_3;
-    is(@count[3] - @count[0], 3, "list   map expr:  one new tmp per iter");
+    is($count[3] - $count[0], 3, "list   map expr:  one new tmp per iter");
     @a = map { qr/1/ && ($count[$_] = sv_count()) && 99 }  0..$_3;
-    is(@count[3] - @count[0], 3, "list   map block: one new tmp per iter");
+    is($count[3] - $count[0], 3, "list   map block: one new tmp per iter");
 
 }
 
@@ -270,14 +270,14 @@ leak(2, 0,
     }, "named regexp captures");
 }
 
-eleak(2,0,'/[:]/');
-eleak(2,0,'/[\xdf]/i');
-eleak(2,0,'s![^/]!!');
-eleak(2,0,'/[pp]/');
-eleak(2,0,'/[[:ascii:]]/');
-eleak(2,0,'/[[.zog.]]/');
-eleak(2,0,'/[.zog.]/');
-eleak(2,0,'/|\W/', '/|\W/ [perl #123198]');
+eleak(2,0,'no warnings q|uninitialized|; /[:]/');
+eleak(2,0,'no warnings q|uninitialized|; /[\xdf]/i');
+eleak(2,0,'no warnings q|uninitialized|; s![^/]!!');
+eleak(2,0,'no warnings q|uninitialized|; /[pp]/');
+eleak(2,0,'no warnings q|uninitialized|; /[[:ascii:]]/');
+eleak(2,0,'no warnings q|uninitialized|; /[[.zog.]]/');
+eleak(2,0,'no warnings q|uninitialized|; no warnings q|regexp}; /[.zog.]/');
+eleak(2,0,'no warnings q|uninitialized|; /|\W/', '/|\W/ [perl #123198]');
 eleak(2,0,'no warnings; /(?[])/');
 eleak(2,0,'no warnings; /(?[[a]+[b]])/');
 eleak(2,0,'no warnings; /(?[[a]-[b]])/');
@@ -296,7 +296,7 @@ eleak(4,1,'chr(0x100) =~ /[[:word:]]/');
 eleak(4,1,'chr(0x100) =~ /[[:^word:]]/');
 
 eleak(2,0,'chr(0x100) =~ /\P{Assigned}/');
-leak(2,0,sub { /(??{})/ }, '/(??{})/');
+leak(2,0,sub { no warnings 'uninitialized'; /(??{})/ }, '/(??{})/');
 
 leak(2,0,sub { !$^V }, '[perl #109762] version object in boolean context');
 
@@ -320,10 +320,11 @@ leak(2, 0, sub { sub { local $_[0]; \@_ }->(1) },
 
 sub recredef {}
 sub Recursive::Redefinition::DESTROY {
+    no warnings 'redefine';
     *recredef = sub { CORE::state $x } # state makes it cloneable
 }
 leak(2, 0, sub {
-    bless \&recredef, "Recursive::Redefinition"; eval "sub recredef{}"
+    bless \&recredef, "Recursive::Redefinition"; eval "no warnings 'redefine'; sub recredef{}"
 }, 'recursive sub redefinition');
 
 # Sub calls
@@ -350,7 +351,7 @@ eleak(2, 0, 'no warnings; 2 2;BEGIN{}',
     eleak(2, 0, 'no warnings; 2@!{',
                 'implicit "use Errno" after syntax error');
 }
-eleak(2, 0, "\"\$\0\356\"", 'qq containing $ <null> something');
+eleak(2, 0, "no warnings 'uninitialized'; \"\$\0\356\"", 'qq containing $ <null> something');
 eleak(2, 0, 'END OF TERMS AND CONDITIONS', 'END followed by words');
 eleak(2, 0, "+ + +;qq|\\N{a}|"x10,'qq"\N{a}" after errors');
 eleak(2, 0, "qq|\\N{%}|",      'qq"\N{%}" (invalid charname)');
@@ -395,7 +396,7 @@ leak(2, 0, sub {
     eval {%a = ($die_on_fetch, 0)}; # key
     eval {%a = (0, $die_on_fetch)}; # value
     eval {%a = ($die_on_fetch, $die_on_fetch)}; # both
-    eval {%a = ($die_on_fetch)}; # key, odd elements
+    eval {no warnings 'misc'; %a = ($die_on_fetch)}; # key, odd elements
 }, 'hash assignment does not leak');
 leak(2, 0, sub {
     eval {@a = ($die_on_fetch)};
@@ -454,7 +455,7 @@ leak(2, 0, sub {
 }, 'function returning explosive does not leak');
 
 leak(2, 0, sub {
-    my $res = eval { {$die_on_fetch, 0} };
+    my $res = eval { no warnings 'void'; {$die_on_fetch, 0} };
     $res = eval { {0, $die_on_fetch} };
 }, 'building anon hash with explosives does not leak');
 
@@ -478,10 +479,10 @@ leak(2, 0, sub {
     my @tests = ('[(?{})]','(?{})');
     for my $t (@tests) {
 	leak(2, 0, sub {
-	    / $t/;
+	    no warnings 'uninitialized'; / $t/;
 	}, "/ \$x/ where \$x is $t does not leak");
 	leak(2, 0, sub {
-	    /(?{})$t/;
+	    no warnings 'uninitialized'; /(?{})$t/;
 	}, "/(?{})\$x/ where \$x is $t does not leak");
     }
 }
@@ -610,7 +611,7 @@ EOF
 }
 
 {
-    sub N_leak { eval 'tr//\N{}-0/' }
+    sub N_leak { no warnings 'misc'; eval 'tr//\N{}-0/' }
     ::leak(2, 0, \&N_leak, "a bad \\N{} in a range leaks");
 }
 
@@ -648,3 +649,4 @@ my $refcount;
 }
 PERL
 }
+
