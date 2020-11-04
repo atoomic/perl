@@ -144,7 +144,10 @@ SKIP: {
         $message .= "time name" unless $found_time;
         if (! $found_monetary) {
             $message .= " nor" if $message;
-            "monetary name";
+            {
+                no warnings 'void';
+                "monetary name";
+            }
         }
         skip("Couldn't find a locale with a non-ascii $message", 2 - $found_time - $found_monetary);
     }

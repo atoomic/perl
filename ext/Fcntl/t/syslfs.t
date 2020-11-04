@@ -24,9 +24,11 @@ our @s;
 
 my $explained;
 
-sub explain {
-    unless ($explained++) {
-	print <<EOM;
+{
+    no warnings 'redefine';  # We're replacing Test::More::explain()
+    sub explain {
+        unless ($explained++) {
+            print <<EOM;
 #
 # If the lfs (large file support: large meaning larger than two
 # gigabytes) tests are skipped or fail, it may mean either that your
@@ -42,9 +44,10 @@ sub explain {
 # It is just that the test failed now.
 #
 EOM
-    }
-    if (@_) {
-	plan(skip_all => "@_");
+        }
+        if (@_) {
+            plan(skip_all => "@_");
+        }
     }
 }
 
