@@ -8,7 +8,7 @@ BEGIN {
     chdir 't' if -d 't';
 }
 
-print "1..190\n";
+print "1..188\n";
 our $test = 0;
 
 sub failed {
@@ -27,7 +27,6 @@ sub failed {
 }
 
 sub like {
-    no warnings 'void';
     my ($got, $pattern, $name) = @_;
     $test = $test + 1;
     if (defined $got && $got =~ $pattern) {
@@ -120,9 +119,7 @@ like( $@, qr/Final \$ should be \\\$ or \$name/, q($ at end of "" string) );
 
 is( "\Q\Q\Q\Q\Q\Q\Q\Q\Q\Q\Q\Q\Qa", "a", "PL_lex_casestack" );
 
-{
-  no warnings 'void';
-  eval {
+eval {
 {{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{
 {{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{
 {{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{
@@ -130,12 +127,11 @@ is( "\Q\Q\Q\Q\Q\Q\Q\Q\Q\Q\Q\Q\Qa", "a", "PL_lex_casestack" );
 }}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}
 }}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}
 };
-  is( $@, '', 'PL_lex_brackstack' );
-}
+is( $@, '', 'PL_lex_brackstack' );
 
 {
     no strict 'vars';
-    no warnings 'once';
+
     # tests for bug #20716
     undef $a;
     undef @b;
@@ -236,11 +232,8 @@ like( $@, qr/Bad name after foo'/, 'Bad name after foo\'' );
 eval q{no strict 'vars'; ($a ? $x : ($y)) = 5};
 like( $@, qr/Assignment to both a list and a scalar/, 'Assignment to both a list and a scalar' );
 
-{
-  no warnings 'uninitialized';
-  eval q{ s/x/#/e };
-  is( $@, '', 'comments in s///e' );
-}
+eval q{ s/x/#/e };
+is( $@, '', 'comments in s///e' );
 
 # these five used to coredump because the op cleanup on parse error could
 # be to the wrong pad
@@ -253,7 +246,7 @@ eval q[
 like($@, qr/Missing right curly/, 'nested sub syntax error' );
 
 eval q[
-    sub { my ($a,$b,$c,$d,$e,$f,$g,$h,$i,$j,$k,$l,$m,$n,$o,$p,$q,$r,$s);
+    sub { my ($a,$b,$c,$d,$e,$f,$g,$h,$i,$j,$k,$l,$m,$n,$o,$p,$q,$r,$s,$r);
 	    sub { my $z
 ];
 like($@, qr/Missing right curly/, 'nested sub syntax error 2' );
@@ -266,21 +259,19 @@ eval q[
 like($@, qr/Can't locate DieDieDie.pm/, 'croak cleanup' );
 
 eval q[
-    sub { my ($a,$b,$c,$d,$e,$f,$g,$h,$i,$j,$k,$l,$m,$n,$o,$p,$q,$r,$s);
+    sub { my ($a,$b,$c,$d,$e,$f,$g,$h,$i,$j,$k,$l,$m,$n,$o,$p,$q,$r,$s,$r);
 	    use DieDieDie;
 ];
 
 like($@, qr/Can't locate DieDieDie.pm/, 'croak cleanup 2' );
 
-{
-  no warnings 'misc';
-  eval q[
+
+eval q[
     my @a;
-    my ($a,$b,$c,$d,$e,$f,$g,$h,$i,$j,$k,$l,$m,$n,$o,$p,$q,$r,$s);
+    my ($a,$b,$c,$d,$e,$f,$g,$h,$i,$j,$k,$l,$m,$n,$o,$p,$q,$r,$s,$r);
     @a =~ s/a/b/; # compile-time error
     use DieDieDie;
-  ];
-}
+];
 
 like($@, qr/Can't modify/, 'croak cleanup 3' );
 
@@ -297,22 +288,17 @@ is($@, "", 'BEGIN 2' );
 eval q[ BEGIN { \&foo1 } ] for 1..10;
 is($@, "", 'BEGIN 3' );
 
-{
-  no warnings 'redefine';
-  eval q[ sub foo2 { } ] for 1..10;
-  is($@, "", 'BEGIN 4' );
-  eval q[ sub foo3 { my $x; $x=1 } ] for 1..10;
-  is($@, "", 'BEGIN 5' );
-}
+eval q[ sub foo2 { } ] for 1..10;
+is($@, "", 'BEGIN 4' );
+
+eval q[ sub foo3 { my $x; $x=1 } ] for 1..10;
+is($@, "", 'BEGIN 5' );
 
 eval q[ BEGIN { die } ] for 1..10;
 like($@, qr/BEGIN failed--compilation aborted/, 'BEGIN 6' );
 
-{
-  no warnings 'void';
-  eval q[ BEGIN {\&foo4; die } ] for 1..10;
-  like($@, qr/BEGIN failed--compilation aborted/, 'BEGIN 7' );
-}
+eval q[ BEGIN {\&foo4; die } ] for 1..10;
+like($@, qr/BEGIN failed--compilation aborted/, 'BEGIN 7' );
 
 {
   # RT #70934
@@ -391,8 +377,6 @@ eval q{
 is($@, "", "multiline whitespace inside substitute expression");
 
 {
-  no warnings 'illegalproto';
-  no warnings 'misc';
     eval '@A =~ s/a/b/; # compilation error
           sub tahi {}
           sub rua;
@@ -420,7 +404,7 @@ $test = $test + 1;
 {
     # Because of format declarations and here-docs, code in most of this block
     # is not indented
-    no warnings 'uninitialized';
+
     no strict 'refs';
 "ok $test - format inside re-eval" =~ /(?{
     format =
@@ -440,10 +424,6 @@ eval '
 }";
 ';
 is $@, "", 'pod inside string in string eval';
-
-{
-  no warnings 'void';
-  no warnings 'uninitialized';
 "${;
 
 =pod
@@ -452,7 +432,6 @@ is $@, "", 'pod inside string in string eval';
 
 }";
 print "ok ", ++$test, " - pod inside string outside of string eval\n";
-}
 
 like "blah blah blah\n", qr/${\ <<END
 blah blah blah
@@ -544,34 +523,28 @@ eval 'method {} {$_,undef}';
 like $@, qq/^Can't call method "method" on unblessed reference at /,
      'method BLOCK {...} does not try to disambiguate';
 
-{
-  no warnings 'uninitialized';
-    eval '#line 1 maggapom
-    if ($a>3) { $a ++; }
-    else {printf(1/0);}';
-}
+eval '#line 1 maggapom
+      if ($a>3) { $a ++; }
+      else {printf(1/0);}';
 is $@, "Illegal division by zero at maggapom line 2.\n",
    'else {foo} line number (no space after {) [perl #122695]';
 
 # parentheses needed for this to fail an assertion in S_maybe_multideref
 is +(${[{a=>214}]}[0])->{a}, 214, '($array[...])->{...}';
 
-{
-  # This used to fail an assertion because of the OPf_SPECIAL flag on an
-  # OP_GV that started out as an OP_CONST. 
- 
-  sub FILE1 () { 1 }
-  sub dummy { tell FILE1 }
+# This used to fail an assertion because of the OPf_SPECIAL flag on an
+# OP_GV that started out as an OP_CONST.  No test output is necessary, as
+# successful parsing is sufficient.
+sub FILE1 () { 1 }
+sub dummy { tell FILE1 }
 
-  no strict 'vars';
-  no warnings qw/void numeric uninitialized/;
-  # More potential multideref assertion failures
-  # OPf_PARENS on OP_RV2SV in subscript
-  $x[($_)];
-  is(1,1, "PASS: Previous line successfully parsed. OPf_PARENS on OP_RV2SV");
-  # OPf_SPECIAL on OP_GV in subscript
-  $x[FILE1->[0]];
-  is(1,1, "PASS: Previous line successfully parsed. OPf_SPECIAL on OP_GV");
+{
+    no strict 'vars';
+    # More potential multideref assertion failures
+    # OPf_PARENS on OP_RV2SV in subscript
+    $x[($_)];
+    # OPf_SPECIAL on OP_GV in subscript
+    $x[FILE1->[0]];
 }
 
 # Used to crash [perl #123542]
@@ -753,12 +726,6 @@ eval <<'EOSTANZA'; die $@ if $@;
 check(qr/^Great hail!.*no more\.$/, 61, "Overflow both small buffer checks");
 EOSTANZA
 
-{
-  no warnings qw/ uninitialized void/ ;
-  # from here to end of this block spacing including linebreaks are critical.
-  # numbers in tests do not match line numbers but warnings and failures will 
-  # identify those numbers.
-
 sub check_line ($$) {
     my ($line, $name) =  @_;
     my (undef, undef, $got_line) = caller;
@@ -815,6 +782,6 @@ check_line(627, 'line number after heredoc containing #line');
 ENE
 "bar"};
 check_line(642, 'line number after ${expr} surrounding heredoc body');
-} #line 531 parser.t
+
 __END__
 # Don't add new tests HERE. See "Add new tests HERE" above.
