@@ -6,7 +6,7 @@ BEGIN {
     set_up_inc('.', '../lib');
 }
 
-plan (194);
+plan (195);
 
 #
 # @foo, @bar, and @ary are also used from tie-stdarray after tie-ing them
@@ -348,12 +348,18 @@ is($foo, 'b');
         is (scalar @array, 7);
         is ($$outer, 6);
 
-        $$inner = 1;
+        {
+            my @warn;
+            local $SIG{__WARN__} = sub {push @warn, "@_"};
+            $$inner = 1;
+            like $warn[0], qr/^Attempt to set length of freed array/,
+                "Got expected warning: attempt to set length of freed array";
+        }
 
         is (scalar @array, 7);
         is ($$outer, 6);
 
-        $$inner = 503; # Bang!
+        { no warnings 'misc'; $$inner = 503; } # Bang!
 
         is (scalar @array, 7);
         is ($$outer, 6);
@@ -533,7 +539,7 @@ is($foo, 'b');
     }->($plink[0], $plink[-2], $plink[-5], $plunk[-1]);
 
     $_ = \$#{[]};
-    $$_ = \1;
+    { no warnings 'misc'; $$_ = \1; }
     {
         no warnings 'void';
         no warnings 'uninitialized';
