@@ -1,5 +1,10 @@
 #!perl
 
+BEGIN {
+    @INC = qw(. ../lib);
+    chdir 't' if -d 't';
+}
+
 print "1..32\n";
 my $test = 0;
 
@@ -31,6 +36,7 @@ sub like {
 }
 
 sub is {
+  no warnings 'uninitialized';
     my ($got, $expect, $name) = @_;
     $test = $test + 1;
     if (defined $expect) {
@@ -48,7 +54,11 @@ sub is {
     }
 }
 
-sub f($$_) { my $x = shift; is("@_", $x) }
+sub f($$_) {
+  no warnings 'uninitialized';
+  my $x = shift;
+  is("@_", $x)
+}
 
 my $foo = "FOO";
 my $bar = "BAR";
@@ -87,11 +97,14 @@ g();
 g;
 undef $expected; &g; # $_ not passed
 
-eval q{ sub wrong1 (_$); wrong1(1,2) };
-like( $@, qr/Malformed prototype for main::wrong1/, 'wrong1' );
+{
+  no warnings 'illegalproto';
+  eval q{ sub wrong1 (_$); wrong1(1,2) };
+  like( $@, qr/Malformed prototype for main::wrong1/, 'wrong1' );
 
-eval q{ sub wrong2 ($__); wrong2(1,2) };
-like( $@, qr/Malformed prototype for main::wrong2/, 'wrong2' );
+  eval q{ sub wrong2 ($__); wrong2(1,2) };
+  like( $@, qr/Malformed prototype for main::wrong2/, 'wrong2' );
+}
 
 sub opt ($;_) {
     is($_[0], "seen");
@@ -100,13 +113,17 @@ sub opt ($;_) {
 
 opt("seen");
 
-sub unop (_) { is($_[0], 11, "unary op") }
-unop 11, 22; # takes only the first parameter into account
+{
+  no warnings 'void';
 
-sub mymkdir (_;$) { is("@_", $expected, "mymkdir") }
-$expected = $_ = "mydir"; mymkdir();
-mymkdir($expected = "foo");
-$expected = "foo 493"; mymkdir foo => 0755;
+  sub unop (_) { is($_[0], 11, "unary op") }
+  unop 11, 22; # takes only the first parameter into account
+
+  sub mymkdir (_;$) { is("@_", $expected, "mymkdir") }
+  $expected = $_ = "mydir"; mymkdir();
+  mymkdir($expected = "foo");
+  $expected = "foo 493"; mymkdir foo => 0755;
+}
 
 sub mylist (_@) { is("@_", $expected, "mylist") }
 $expected = "foo";
