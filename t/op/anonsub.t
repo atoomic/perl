@@ -92,6 +92,7 @@ EXPECT
 Undefined subroutine called at - line 4.
 ########
 # NAME anon constant clobbering __ANON__
+no warnings 'void';
 sub __ANON__ { "42\n" }
 print __ANON__;
 sub(){3};
