@@ -456,6 +456,7 @@ for \%_ (@tests) {
                 "$nickname is$not inlinable";
     }
     if (exists $_{method}) {
+        no warnings 'once';
         local *time = $sub;
         $w = undef;
         use warnings 'ambiguous';
