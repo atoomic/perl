@@ -52,6 +52,7 @@ eval 'UNITCHECK {print ":u3"; UNITCHECK {print ":u4"}}';
 	   BEGIN {print ":b6-c"}})/x;
 {
     use re 'eval';
+    no warnings 'void';
     my $runtime = q{
     (?{UNITCHECK {print ":u5-r"};
 	       CHECK {print ":c2-r"};
@@ -122,13 +123,18 @@ fresh_perl_is(<<'SCRIPT70614', "still here",{switches => [''], stdin => '', stde
 eval "UNITCHECK { eval 0 }"; print "still here";
 SCRIPT70614
 
-# [perl #78634] Make sure block names can be used as constants.
-use constant INIT => 5;
+BEGIN {
+    # [perl #78634] Make sure block names can be used as constants.
+    # Also, suppress compile-time warning: Constant name '$name' is a Perl keyword
+    no warnings;
+    use constant INIT => 5;
+}
 ::is INIT, 5, 'constant named after a special block';
 
 # [perl #108794] context
 fresh_perl_is(<<'SCRIPT3', <<expEct,{stderr => 1 },'context');
 sub context {
+    no warnings 'uninitialized';
     print qw[void scalar list][wantarray + defined wantarray], "\n"
 }
 BEGIN     {context}
