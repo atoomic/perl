@@ -235,6 +235,7 @@ package main;
 fresh_perl_is <<'END', "ok\n", {},
   { package foo; sub bar { main::bar() } }
   sub bar {
+    no warnings 'uninitialized';
     delete $::{"foo::"};
     my $x = \($1+2);
     my $y = \($1+2); # this is the one that reuses the mem addr, but
@@ -270,14 +271,17 @@ pass "no assertion failure after modifying eval text via caller";
 is eval "<<END;\nfoo\nEND\n(caller 0)[6]",
         "<<END;\nfoo\nEND\n(caller 0)[6]",
         'here-docs do not gut eval text';
-is eval "s//<<END/e;\nfoo\nEND\n(caller 0)[6]",
-        "s//<<END/e;\nfoo\nEND\n(caller 0)[6]",
-        'here-docs in quote-like ops do not gut eval text';
+{
+    no warnings 'uninitialized';
+    is eval "s//<<END/e;\nfoo\nEND\n(caller 0)[6]",
+            "s//<<END/e;\nfoo\nEND\n(caller 0)[6]",
+            'here-docs in quote-like ops do not gut eval text';
+}
 
 # The bitmask should be assignable to ${^WARNING_BITS} without resulting in
 # different warnings settings.
 {
- my $ bits = sub { (caller 0)[9] }->();
+ my $bits = sub { (caller 0)[9] }->();
  my $w;
  local $SIG{__WARN__} = sub { $w++ };
  eval '
@@ -332,7 +336,10 @@ TODO: {
 EOP
 }
 
-$::testing_caller = 1;
+{
+    no warnings 'once';
+    $::testing_caller = 1;
+}
 
 do './op/caller.pl' or die $@;
 
