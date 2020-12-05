@@ -501,8 +501,8 @@ is($vanishing_pad->($some_var), 123, 'RT #9535');
   no strict;
   sub deleteme { $a = sub { eval '$newvar' } }
   deleteme();
-  *deleteme = sub {}; # delete the sub
-  $newvar = 123; # realloc the SV of the freed CV
+  no warnings 'redefine'; *deleteme = sub {}; # delete the sub
+  no warnings 'once'; $newvar = 123; # realloc the SV of the freed CV
   is($a->(), 123, 'RT #9535');
 }
 
@@ -535,7 +535,7 @@ pass();
 # can lead to stack corruption
 {
   my $x = "foooobar";
-  $x =~ s/o//eg;
+  no warnings 'uninitialized'; $x =~ s/o//eg;
   is($x, 'fbar', 'RT #17605');
 }
 
@@ -547,7 +547,7 @@ pass();
   my $x = 1;
   sub fake {
     is(sub {eval'$x'}->(), 1, 'RT #18286');
-  { $x;  is(sub {eval'$x'}->(), 1, 'RT #18286'); }
+  { no warnings 'void'; $x;  is(sub {eval'$x'}->(), 1, 'RT #18286'); }
     is(sub {eval'$x'}->(), 1, 'RT #18286');
   }
 }
@@ -574,7 +574,7 @@ sub Watch::DESTROY { ${$_[0][0]} .= $_[0][1] }
 sub linger {
   my $x = Watch->new($_[0], '2');
   sub {
-  $x;
+  no warnings 'void'; $x;
   my $y;
   sub { $y; };
   };
@@ -674,6 +674,10 @@ $r = \$x
 }
 
 {
+  no warnings 'unopened';
+  no warnings 'closure';
+  no warnings 'reserved';
+  no warnings 'void';
   fileno ff;
   write ff;
   my $r1 = $r;
@@ -714,7 +718,7 @@ $r = \$x
          undef $beta;
        };
 
-       $alpha;
+       no warnings 'void'; $alpha;
 
        $inner
      };
@@ -730,9 +734,11 @@ $r = \$x
 # [perl #113812] Closure prototypes with no CvOUTSIDE (crash caused by the
 #        fix for #89544)
 do "./op/closure_test.pl" or die $@||$!;
-is $closure_test::s2->()(), '10 cubes',
-  'cloning closure proto with no CvOUTSIDE';
-
+{
+    no warnings 'once';
+    is $closure_test::s2->()(), '10 cubes',
+        'cloning closure proto with no CvOUTSIDE';
+}
 # Also brought up in #113812: Even when being cloned, a closure prototype
 # might have its CvOUTSIDE pointing to the wrong thing.
 {
@@ -741,7 +747,7 @@ is $closure_test::s2->()(), '10 cubes',
   my $s1 = sub {
     my $x = 3;
     $s2 = sub {
-      $x;
+      no warnings 'void'; $x;
       my $s3 = sub { $x };
     };
   };
@@ -769,7 +775,7 @@ mosquito;
 sub anything {
   my $x;
   sub gnat {
-  $x = 3;
+  no warnings 'closure'; $x = 3;
   is sub { $x }->(), $x,
     'closing over stale var before 1st sub call';
   }
@@ -800,6 +806,7 @@ SKIP: {
   BEGIN {
     package Foo;
     use Filter::Util::Call;
+    no warnings 'void'; 
     sub import { filter_add( sub {
     my $status = filter_read();
     sub { $status };
@@ -813,14 +820,18 @@ SKIP: {
     'closures in source filters do not interfere with pad names';
 }
 
-sub {
-  my $f;
-  sub test_ref_to_unavailable {
-  my $ref = \$f;
-    $$ref = 7;
-    is $f, 7, 'taking a ref to unavailable var should not copy it';
-  }
-};
-test_ref_to_unavailable();
+{
+    no warnings 'void';
+    sub {
+      my $f;
+      sub test_ref_to_unavailable {
+        no warnings 'closure';
+        my $ref = \$f;
+        $$ref = 7;
+        is $f, 7, 'taking a ref to unavailable var should not copy it';
+      }
+    };
+    test_ref_to_unavailable();
+}
 
 done_testing();
