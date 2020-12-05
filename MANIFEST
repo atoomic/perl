@@ -5983,6 +5983,7 @@ t/op/wantarray.t		See if wantarray works
 t/op/warn.t			See if warn works
 t/op/while.t			See if while loops work
 t/op/write.t			See if write works (formats work)
+t/op/xcaller.t			TEMPORARY: Diagnose one test failure in t/op/caller.t
 t/op/yadayada.t			See if ... works
 t/opbasic/arith.t			See if arithmetic works
 t/opbasic/cmp.t			See if the various string and numeric compare work
