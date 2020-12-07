@@ -25,25 +25,73 @@ jobs:
       - name: setup branch env name
         run: |
           ref="${github_ref/refs\/heads\//}"
-          echo "$ref"
-          echo "::set-env name=ref::$ref"
+          echo "ref=$ref" >> $GITHUB_ENV
         env:
           github_ref: ${{ github.event.ref }}
 
+      - name: Setup commit message SUMUP env
+        env:
+          TXT: ${{ join(github.event.commits.*.message, '\n') }}
+          C1: ${{ github.event.commits[0].message }}
+          C2: ${{ github.event.commits[1].message }}
+          C3: ${{ github.event.commits[2].message }}
+          C4: ${{ github.event.commits[3].message }}
+          C5: ${{ github.event.commits[4].message }}
+        run: |
+          # -------------------------------------
+          echo "# original commit message"
+          echo "TXT=$TXT"
+
+          # -------------------------------------
+          echo "# Last 5 commits message"
+          echo "C1=$C1"
+          echo "C2=$C2"
+          echo "C3=$C3"
+          echo "C4=$C4"
+          echo "C5=$C5"
+
+          # -------------------------------------
+          echo "# script parse.pl"
+          cat <<'EOS' > parse.pl
+          use v5.14; use strict; use warnings;
+          my $txt = join "\n", map { $ENV{"C$_"} // '' } 1..5;
+          $txt =~ s{\\n}{\n}g; $txt =~ s{\\t}{ }g; $txt =~ s{\t}{ }g;
+          my @l = split( "\n", $txt );
+          my $max = 5;
+          @l = ( @l[0..$max], "..." ) if @l > $max;
+          @l = grep { $_ !~ m{^EOF} } @l;
+          say( join( "\n", @l ) );
+          EOS
+
+          # -------------------------------------
+          echo "# testing script"
+          perl parse.pl
+
+          # -------------------------------------
+          echo "# setup SUMUP environment variable"
+          echo 'SUMUP<<EOF' >> $GITHUB_ENV
+          perl parse.pl     >> $GITHUB_ENV
+          echo 'EOF'        >> $GITHUB_ENV
+
+          # -------------------------------------
+          echo "# done"
+
+      - name: checking SUMUP variable
+        run: |
+          echo "SUMUP: $SUMUP"
+
       - name: irc push
         uses: rectalogic/notify-irc@v1
-        if: github.event_name == 'push'
-        # && github.ref != 'refs/heads/blead'
+        if: github.event_name == 'push' && github.ref != 'refs/heads/blead'
         with:
           server: ${{ env.server }}
           port: ${{ env.port }}
           channel: ${{ env.channel }}
-          nickname: Push
+          nickname: Commit
           message:
             "\x037${{ github.actor }}\x0F pushed to branch \x033${{ env.ref }}\x0F\n\
-            ${{ join(github.event.commits.*.message, '\n') }}\n\
-            ${{ github.event.compare }}\
-            "
+            ${{ env.SUMUP }}\n\
+            ${{ github.event.compare }}"
 
       - name: irc opened pull request
         uses: rectalogic/notify-irc@v1
@@ -56,7 +104,8 @@ jobs:
           message:
             "\x037${{ github.actor }}\x0F opened PR #${{ github.event.pull_request.number }}\n\
             ${{ github.event.pull_request.title }}\n\
-            ${{ github.event.html_url }}"
+            ${{ github.event.pull_request.body }}\n\
+            ${{ github.event.pull_request.html_url }}"
 
       - name: irc synchronize pull request
         uses: rectalogic/notify-irc@v1
@@ -69,4 +118,4 @@ jobs:
           message:
             "\x037${{ github.actor }}\x0F updated PR #${{ github.event.pull_request.number }}\n\
             ${{ github.event.pull_request.title }}\n\
-            ${{ github.event.html_url }}"
+            ${{ github.event.pull_request.html_url }}"
