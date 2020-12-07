@@ -122,7 +122,7 @@ SKIP: {
     is (keys(%hash), 10, "keys (%hash)");
 }
 
-my @tests = (&next_test, &next_test, &next_test);
+@main::tests = (&next_test, &next_test, &next_test);
 {
     package Obj;
     sub DESTROY { print "ok $::tests[1] # DESTROY called\n"; }
