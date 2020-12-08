@@ -127,7 +127,7 @@ sub test_proto {
     $main::tests ++;
     $p =~ ';@';
     my $minargs = $-[0];
-    eval " &CORE::$o((1)x($minargs-1)) ";
+    eval "no warnings 'numeric'; &CORE::$o((1)x($minargs-1)) ";
     my $desc = quotemeta op_desc($o);
     like $@, qr/^Not enough arguments for $desc at /,
        "&$o with too few args";
@@ -332,9 +332,11 @@ SKIP:
     local $@;
     eval q{
       no strict 'refs';
+      no warnings 'unopened';
       is &CORE::accept(qw{foo bar}), undef, "&accept";
       lis [&{"CORE::accept"}(qw{foo bar})], [undef], "&accept in list context";
 
+      no warnings 'uninitialized';
       &myaccept(my $foo, my $bar);
       is ref $foo, 'GLOB', 'CORE::accept autovivifies its first argument';
       is $bar, undef, 'CORE::accept does not autovivify its second argument';
@@ -358,18 +360,24 @@ SKIP:
 {
     skip "bind() not available in Win32 miniperl", 3
       if $^O eq "MSWin32" && is_miniperl();
-    is &CORE::bind('foo', 'bear'), undef, "&bind";
-    lis [&CORE::bind('foo', 'bear')], [undef], "&bind in list context";
-    eval { no strict 'refs'; &mybind(my $foo, "bear") };
+    {
+      no warnings 'unopened';
+      is &CORE::bind('foo', 'bear'), undef, "&bind";
+      lis [&CORE::bind('foo', 'bear')], [undef], "&bind in list context";
+    }
+    eval { no strict 'refs'; no warnings 'uninitialized'; &mybind(my $foo, "bear") };
     like $@, qr/^Bad symbol for filehandle at/,
          'CORE::bind dies with undef first arg';
 }
 
 test_proto 'binmode';
 $main::tests += 3;
-is &CORE::binmode(qw[foo bar]), undef, "&binmode";
-lis [&CORE::binmode(qw[foo bar])], [undef], "&binmode in list context";
-{ no strict 'subs'; is &mybinmode(foo), undef, '&binmode with one arg'; }
+{
+  no warnings 'unopened';
+  is &CORE::binmode(qw[foo bar]), undef, "&binmode";
+  lis [&CORE::binmode(qw[foo bar])], [undef], "&binmode in list context";
+  { no strict 'subs'; is &mybinmode('foo'), undef, '&binmode with one arg'; }
+}
 
 test_proto 'bless';
 $main::tests += 3;
@@ -435,7 +443,7 @@ test_proto 'close';
   open my $fh, ">", \my $buffalo;
   print $fh 'an address in the outskirts of Jersey';
   ok &CORE::close($fh), '&CORE::close retval';
-  print $fh 'lalala';
+  { no warnings 'closed'; print $fh 'lalala'; }
   is $buffalo, 'an address in the outskirts of Jersey',
      'effect of &CORE::close';
   # This has to be a separate variable from $fh, as re-using the same
@@ -446,7 +454,7 @@ test_proto 'close';
   select+(select($fh2), do {
      print "Nasusiro Tokasoni";
      &CORE::close();
-     print "jfd";
+     { no warnings 'closed'; print "jfd"; }
      is $buffalo, "Nasusiro Tokasoni", '&CORE::close with no args';
   })[0];
 }
@@ -456,8 +464,9 @@ test_proto 'closedir';
 $main::tests += 2;
 {
     no strict 'subs';
-    is &CORE::closedir(foo), undef, '&CORE::closedir';
-    lis [&CORE::closedir(foo)], [undef], '&CORE::closedir in list context';
+    no warnings 'io';
+    is &CORE::closedir('foo'), undef, '&CORE::closedir';
+    lis [&CORE::closedir('foo')], [undef], '&CORE::closedir in list context';
 }
 
 test_proto 'connect';
@@ -466,6 +475,7 @@ SKIP:
 {
     skip "connect() not available in Win32 miniperl", 2
       if $^O eq "MSWin32" && is_miniperl();
+    no warnings 'unopened';
     is &CORE::connect('foo','bar'), undef, '&connect';
     lis [&myconnect('foo','bar')], [undef], '&connect in list context';
 }
@@ -521,7 +531,7 @@ $main::tests += 4;
     no strict 'subs';
     is &myevalbytes($upgraded), chr 256, '&evalbytes';
     &myevalbytes('
-      is someone, "someone", "run-time hint bits do not leak into &evalbytes"
+      is "someone", "someone", "run-time hint bits do not leak into &evalbytes"
     ');
   }
   BEGIN { $^H{coreamp} = 42 }
@@ -546,7 +556,10 @@ test_proto 'formline';
 $main::tests += 3;
 is &myformline(' @<<< @>>>', 1, 2), 1, '&myformline retval';
 is $^A,        ' 1       2', 'effect of &myformline';
-lis [&myformline('@')], [1], '&myformline in list context';
+{
+  no warnings 'syntax';
+  lis [&myformline('@')], [1], '&myformline in list context';
+}
 
 test_proto 'each';
 $main::tests += 4;
@@ -702,7 +715,7 @@ our $file = 'test.pl';
   no strict 'refs';
   ok &myopen('file'), '&open with 1 arg ' . $! or warn "1-arg open: $!";
   like <file>, qr|^#|, 'result of &open with 1 arg';
-  close file;
+  close 'file';
 }
 {
   ok &myopen(my $fh, "test.pl"), 'two-arg &open';
@@ -839,7 +852,7 @@ test_proto 'rename';
     open my $fh, ">", $tmpfilenam or die "cannot open $tmpfilenam: $!";
     close $fh or die "cannot close $tmpfilenam: $!";
     &myrename("$tmpfilenam", $tmpfilenam = catfile $dir,'bbb');
-    ok open(my $fh, '>', $tmpfilenam), '&rename';
+    ok open($fh, '>', $tmpfilenam), '&rename';
 }
 
 test_proto 'ref', [], 'ARRAY';
@@ -1041,7 +1054,7 @@ $main::tests += 3;
   is &mytied(\$tied), $obj, '&tie and &tied retvals';
   () = "$tied";
   is $fetches, 1, '&tie actually ties';
-  &CORE::untie(\$tied);
+  { no warnings 'untie'; &CORE::untie(\$tied); }
   () = "$tied";
   is $fetches, 1, '&untie unties';
 }
@@ -1142,6 +1155,7 @@ test_proto 'wantarray';
 $main::tests += 4;
 my $context;
 my $cx_sub = sub {
+  no warnings 'uninitialized';
   $context = qw[void scalar list][&mywantarray + defined mywantarray()]
 };
 () = &$cx_sub;
