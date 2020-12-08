@@ -50,6 +50,11 @@ letter.
 to check the return value of your socket() call?  See
 L<perlfunc/accept>.
 
+=item accept() on unopened socket %s
+
+(W unopened) You tried to do an accept on a socket that was never opened.
+L<perlfunc/accept>.
+
 =item Aliasing via reference is experimental
 
 (S experimental::refaliasing) This warning is emitted if you use
@@ -595,6 +600,16 @@ L<perlport> for more on portability concerns.
 
 (W closed) You tried to do a bind on a closed socket.  Did you forget to
 check the return value of your socket() call?  See L<perlfunc/bind>.
+
+=item bind() on unopened socket %s
+
+(W unopened) You tried to do a bind on a socket that was never opened.
+See L<perlfunc/bind>.
+
+=item binmode() on unopened filehandle %s
+
+(W unopened) You tried binmode() on a filehandle that was never opened.
+Check your control flow and number of arguments.
 
 =item binmode() on closed filehandle %s
 
@@ -1812,6 +1827,11 @@ on I<Mastering Regular Expressions>.)
 
 (W closed) You tried to do a connect on a closed socket.  Did you forget
 to check the return value of your socket() call?  See
+L<perlfunc/connect>.
+
+=item connect() on unopened socket %s
+
+(W unopened) You tried to do a connect on a socket that was never opened.  See
 L<perlfunc/connect>.
 
 =item Constant(%s): Call to &{$^H{%s}} did not return a defined value
