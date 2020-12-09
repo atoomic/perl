@@ -150,7 +150,7 @@ ok (eq_hash(\%u, \%u2), "copied unicode hash keys correctly?");
 my $A;
 my $a = "\xe3\x81\x82"; $A = "\x{3042}";
 my %b = ( $a => "non-utf8");
-my %u = ( $A => "utf8");
+%u = ( $A => "utf8");
 
 is (exists $b{$A}, '', "utf8 key in bytes hash");
 is (exists $u{$a}, '', "bytes key in utf8 hash");
