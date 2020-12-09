@@ -107,9 +107,12 @@ my $exit_one = $vms_exit_mode ? 4 << 8 : 1 << 8;
 is( system(qq{$Perl "-I../lib" -e "use vmsish qw(hushed); exit 1"}), $exit_one,
     'Explicit exit of 1' );
 
-my $rc = system { "lskdfj" } "lskdfj";
-unless( ok($rc == 255 << 8 or $rc == -1 or $rc == 256 or $rc == 512) ) {
-    print "# \$rc == $rc\n";
+{
+    no warnings 'exec';
+    my $rc = system { "lskdfj" } "lskdfj";
+    unless( ok($rc == 255 << 8 or $rc == -1 or $rc == 256 or $rc == 512) ) {
+        print "# \$rc == $rc\n";
+    }
 }
 
 unless ( ok( $! == 2  or  $! =~ /\bno\b.*\bfile/i or  
@@ -176,12 +179,14 @@ TODO: {
         last TODO;
     }
 
+    no warnings 'exec';
     ok( !exec("lskdjfalksdjfdjfkls"), 
         "exec failure doesn't terminate process");
 }
 
 {
     local $! = 0;
+    no warnings 'exec';
     ok !exec(), 'empty exec LIST fails';
     ok $! == 2 || $! =~ qr/\bno\b.*\bfile\b/i, 'errno = ENOENT'
         or diag sprintf "\$! eq %d, '%s'\n", $!, $!;
@@ -189,6 +194,7 @@ TODO: {
 }
 {
     local $! = 0;
+    no warnings 'exec';
     my $err = $!;
     ok !(exec {""} ()), 'empty exec PROGRAM LIST fails';
     ok $! == 2 || $! =~ qr/\bno\b.*\bfile\b/i, 'errno = ENOENT'
@@ -213,5 +219,5 @@ is system($^X, "-e", $exit_statement, "$$", $$), 0,
     "system args have magic processed before fork";
 
 my $test = curr_test();
-exec $Perl, '-le', qq{${quote}print 'ok $test - exec PROG, LIST'${quote}};
+{ exec $Perl, '-le', qq{${quote}print 'ok $test - exec PROG, LIST'${quote}}; }
 fail("This should never be reached if the exec() worked");
