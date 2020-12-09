@@ -25,7 +25,6 @@ my $PInf = "Inf"  + 0;
 my $NInf = "-Inf" + 0;
 my $NaN;
 {
-    local $^W = 0; # warning-ness tested later.
     $NaN  = "NaN" + 0;
 }
 
@@ -254,14 +253,14 @@ SKIP: {
     }
     for my $i (@FInf) {
         # Silence "isn't numeric in addition", that's kind of the point.
-        local $^W = 0;
+        no warnings 'numeric';
         cmp_ok("$i" + 0, '==', $PInf, "false infinity $i");
     }
 }
 
 {
     # Silence "Non-finite repeat count", that is tested elsewhere.
-    local $^W = 0;
+    no warnings 'numeric';
     is("a" x $PInf, "", "x +Inf");
     is("a" x $NInf, "", "x -Inf");
 }
@@ -282,7 +281,6 @@ ok($NaN eq $NaN, "NaN is NaN stringifically");
 is("$NaN", "NaN", "$NaN value stringifies as NaN");
 
 {
-    local $^W = 0; # warning-ness tested later.
     is("+NaN" + 0, "NaN", "+NaN is NaN");
     is("-NaN" + 0, "NaN", "-NaN is NaN");
 }
@@ -401,7 +399,7 @@ TODO: {
 SKIP: {
     my @FNaN = qw(NaX XNAN Ind Inx);
     # Silence "isn't numeric in addition", that's kind of the point.
-    local $^W = 0;
+    no warnings 'numeric';
     for my $i (@FNaN) {
         cmp_ok("$i" + 0, '==', 0, "false nan $i");
     }
@@ -409,7 +407,6 @@ SKIP: {
 
 {
     # Silence "Non-finite repeat count", that is tested elsewhere.
-    local $^W = 0;
     is("a" x $NaN, "", "x NaN");
 }
 
@@ -459,7 +456,6 @@ cmp_ok('-1e-9999', '==', 0,     "underflow to 0 (runtime) from neg");
 {
     my $w;
     local $SIG{__WARN__} = sub { $w = shift };
-    local $^W = 1;
 
     my $T =
         [
