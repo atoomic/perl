@@ -131,6 +131,8 @@ sub run_tests {
 
     SKIP: {
         skip("Not a 64-bit machine", 3) if length sprintf("%x", ~0) <= 8;
+        no warnings 'non_unicode';
+        no warnings 'portable';
         my $a = eval q{"\x{80000000}"};
         my $s = $a.'defxyz';
         is(index($s, 'def'), 1, "0x80000000 is a single character");
@@ -219,7 +221,7 @@ sub run_tests {
 
     # PVBM compilation should not flatten ref constants
     use constant riffraff => \our $referent;
-    index "foo", riffraff;
+    { no warnings 'void'; index "foo", riffraff; }
     is ref riffraff, 'SCALAR', 'index does not flatten ref constants';
 
     package o { use overload '""' => sub { "foo" } }
@@ -228,12 +230,12 @@ sub run_tests {
         'index respects changes in ref stringification';
 
     use constant quire => ${qr/(?{})/}; # A REGEXP, not a reference to one
-    index "foo", quire;
+    { no warnings 'void'; index "foo", quire; }
     eval ' "" =~ quire ';
     is $@, "", 'regexp constants containing code blocks are not flattened';
 
     use constant bang => $! = 8;
-    index "foo", bang;
+    { no warnings 'void'; index "foo", bang; }
     cmp_ok bang, '==', 8, 'dualvar constants are not flattened';
 
     use constant u => undef;
@@ -340,6 +342,7 @@ sub run_tests {
             sub STORE {
                 my ($self, $value) = @_;
 
+                no warnings 'closure';
                 $store = $value;
             }
         };
