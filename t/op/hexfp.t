@@ -116,6 +116,7 @@ is(0xa_b.c_dp+1_2, 703696, '0xa_b.c_dp+1_2');
 SKIP: {
     skip("nv_preserves_uv_bits is $Config{nv_preserves_uv_bits} not 53", 3)
         unless ($Config{nv_preserves_uv_bits} == 53);
+    no warnings 'overflow';
     is(0x0.b17217f7d1cf78p0, 0x1.62e42fefa39efp-1, '0x0.b17217f7d1cf78p0');
     is(0x0.58b90bfbe8e7bcp1, 0x1.62e42fefa39efp-1, '0x0.58b90bfbe8e7bcp1');
     is(0x0.2c5c85fdf473dep2, 0x1.62e42fefa39efp-1, '0x0.2c5c85fdf473dep2');
@@ -245,6 +246,7 @@ SKIP: {
         unless ($Config{uselongdouble} &&
 		($Config{nvsize} == 16 || $Config{nvsize} == 12) &&
 		($Config{long_double_style_ieee_extended}));
+    no warnings 'overflow';
     is(0x1p-1074,  4.94065645841246544e-324, '0x1p-1074');
     is(0x1p-1075,  2.47032822920623272e-324, '[perl #128919]');
     is(0x1p-1076,  1.23516411460311636e-324, '0x1p-1076');
