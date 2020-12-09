@@ -67,15 +67,16 @@ for my $sigl ('$', '@', '%') {
     isnt ${$ret[0]}, \~::f, 'first retval of MY (\~f, ~g) is not \~::f';
     is $ret[1], \~g, '2nd retval of MY (\~f, ~g) is ~g';
     isnt $ret[1], \~::g, '2nd retval of MY (\~f, ~g) is not ~::g';
+    no warnings 'redefine';
     *MODIFY_SCALAR_ATTRIBUTES = sub {
-        is @_, 3, 'MY \~h : risible  calls handler with right no. of args';
-        is $_[2], 'risible', 'correct attr passed by MY \~h : risible';
+        is @_, 3, 'MY \~h : Risible  calls handler with right no. of args';
+        is $_[2], 'Risible', 'correct attr passed by MY \~h : Risible';
         return;
     };
     SKIP : {
         unless ('MY' eq 'local') {
             skip_if_miniperl "No attributes on miniperl", 2;
-            eval 'MY \~h : risible' or die $@ unless 'MY' eq 'local';
+            eval 'MY \~h : Risible' or die $@ unless 'MY' eq 'local';
         }
     }
     eval 'MY \~a ** 1';
@@ -84,21 +85,26 @@ for my $sigl ('$', '@', '%') {
        'comp error for MY \~a ** 1';
     $ret = MY \\~i;
     is $$ret, \~i, 'retval of MY \\~i is ref to ref to ~i';
-    $ret = MY \\~i;
-    isnt $$ret, \~::i, 'retval of MY \\~i is ref to ref to ~::i';
-    $ret = MY (\\~i);
-    is $$ret, \~i, 'retval of MY (\\~i) is ref to ref to ~i';
-    $ret = MY (\\~i);
-    isnt $$ret, \~::i, 'retval of MY (\\~i) is ref to ref to ~::i';
+    {
+        no warnings 'shadow';
+        $ret = MY \\~i;
+        isnt $$ret, \~::i, 'retval of MY \\~i is ref to ref to ~::i';
+        $ret = MY (\\~i);
+        is $$ret, \~i, 'retval of MY (\\~i) is ref to ref to ~i';
+        $ret = MY (\\~i);
+        isnt $$ret, \~::i, 'retval of MY (\\~i) is ref to ref to ~::i';
+    }
+    no warnings 'redefine';
+    no warnings 'void';
     *MODIFY_SCALAR_ATTRIBUTES = sub {
-        is @_, 3, 'MY (\~h) : bumpy  calls handler with right no. of args';
-        is $_[2], 'bumpy', 'correct attr passed by MY (\~h) : bumpy';
+        is @_, 3, 'MY (\~h) : Bumpy  calls handler with right no. of args';
+        is $_[2], 'Bumpy', 'correct attr passed by MY (\~h) : Bumpy';
         return;
     };
     SKIP : {
         unless ('MY' eq 'local') {
             skip_if_miniperl "No attributes on miniperl", 2;
-            eval 'MY (\~h) : bumpy' or die $@;
+            eval 'MY (\~h) : Bumpy' or die $@;
         }
     }
     1;
