@@ -26,9 +26,9 @@ is($y, '12E0123E0');
 {
 local $.;
 
-open(of,'harness') or die "Can't open harness: $!";
+open(OF,'harness') or die "Can't open harness: $!";
 my $foo;
-while (<of>) {
+while (<OF>) {
     (3 .. 5) && ($foo .= $_);
 }
 $x = ($foo =~ y/\n/\n/);
@@ -40,6 +40,7 @@ ok(($x...$x) eq "1");
 
 {
     # coredump reported in bug 20001018.008 (#4474)
+    no warnings 'unopened';
     readline(UNKNOWN);
     $. = 1;
     $x = 1..10;
