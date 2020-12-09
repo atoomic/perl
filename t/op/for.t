@@ -3,6 +3,7 @@
 BEGIN {
     chdir 't' if -d 't';
     require "./test.pl";
+    set_up_inc(qw{../lib});
 }
 
 plan(126);
@@ -15,7 +16,7 @@ for (@array) {
     $r .= $_;
 }
 is ($r, 'ABC', 'Forwards for array');
-my $r = '';
+$r = '';
 for (1,2,3) {
     $r .= $_;
 }
@@ -549,7 +550,7 @@ for my $i (reverse (map {$_} @array, 1)) {
 }
 is ($r, '1CBA', 'Reverse for array and value via map with var');
 
-is do {17; foreach (1, 2) { 1; } }, '', "RT #1085: what should be output of perl -we 'print do { foreach (1, 2) { 1; } }'";
+is do {no warnings 'void'; 17; foreach (1, 2) { 1; } }, '', "RT #1085: what should be output of perl -we 'print do { foreach (1, 2) { 1; } }'";
 
 our $TODO;
 TODO: {
