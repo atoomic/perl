@@ -47,9 +47,9 @@ is($ans, 120, 'calculate a factorial with recursive evals');
 
 my $curr_test = curr_test();
 my $tempfile = tempfile();
-open(try,'>',$tempfile);
-print try qq|print "ok $curr_test\n";|,"\n";
-close try;
+open(TRY,'>',$tempfile);
+print TRY qq|print "ok $curr_test\n";|,"\n";
+close TRY;
 
 do "./$tempfile"; print $@;
 
@@ -184,7 +184,7 @@ EOT
 is(create_closure("good")->(), "good",
    'closures created within eval bind correctly');
 
-$main::r = "good";
+{ no warnings 'once'; $main::r = "good"; }
 sub terminal { eval '$main::r . q{!}' }
 is(do {
    my $r = "bad";
@@ -227,13 +227,14 @@ is(do {
 #   (BUG ID 20010305.003 (#5963))
 {
     eval {
-	eval { goto foo; };
-	like($@, qr/Can't "goto" into the middle of a foreach loop/,
-	     'eval catches bad goto calls');
-	last;
-	foreach my $i (1) {
-	    foo: fail('jumped into foreach');
-	}
+        eval { goto foo; };
+        like($@, qr/Can't "goto" into the middle of a foreach loop/,
+             'eval catches bad goto calls');
+        no warnings 'exiting';
+        last;
+        foreach my $i (1) {
+            foo: fail('jumped into foreach');
+        }
     };
     fail("Outer eval didn't execute the last");
     diag($@);
@@ -293,16 +294,16 @@ eval q{
     my $r = -1;
     my $yyy = 9;
     sub fred3 {
-	my $l = shift;
-	my $r = -2;
-	return 1 if $l < 1;
-	return 0 if eval '$zzz' != 1;
-	return 0 if       $yyy  != 9;
-	return 0 if eval '$yyy' != 9;
-	return 0 if eval '$l' != $l;
-	return $l * fred3($l-1);
+        my $l = shift;
+        my $r = -2;
+        return 1 if $l < 1;
+        return 0 if eval '$zzz' != 1;
+        return 0 if       $yyy  != 9;
+        return 0 if eval '$yyy' != 9;
+        return 0 if eval '$l' != $l;
+        return $l * fred3($l-1);
     }
-    my $r = fred3(5);
+    $r = fred3(5);
     is($r, 120);
     $r = eval'fred3(5)';
     is($r, 120);
@@ -360,11 +361,11 @@ eval q{ my $yyy = 888; my $zzz = 999; fred5(); };
 # thing outside DB that called them (usually the debugged code), rather
 # than the usual surrounding scope
 
-our $x = 1;
+{ no warnings 'once'; $main::x = 1; }
 {
     my $x=2;
-    sub db1	{ $x; eval '$x' }
-    sub DB::db2	{ $x; eval '$x' }
+    sub db1	{ no warnings 'void'; $x; eval '$x' }
+    sub DB::db2	{ no warnings 'void'; $x; eval '$x' }
     package DB;
     sub db3	{ eval '$x' }
     sub DB::db4	{ eval '$x' }
@@ -434,6 +435,7 @@ is($got, "ok\n", 'eval and last');
 
 {
     local $@ = "foo";
+    no warnings 'uninitialized';
     eval undef;
     is($@, "", 'eval undef');
 }
@@ -666,7 +668,7 @@ pass("eval in freed package does not crash");
         sub f127786 { eval q/\$s/ }
     }
     my $s;
-    sub { $s; DB::f127786}->();
+    sub { no warnings 'void'; $s; DB::f127786}->();
     pass("RT #127786");
 }
 
