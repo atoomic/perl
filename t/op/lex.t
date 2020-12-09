@@ -257,6 +257,7 @@ SKIP:
     fresh_perl_is(
         "BEGIN{\$^H=hex ~0}\xF3",
         "Integer overflow in hexadecimal number at - line 1.\n"
+      . "Hexadecimal number > 0xffffffff non-portable at - line 1.\n"
       . "Malformed UTF-8 character: \\xf3 (too short; 1 byte available, need 4) at - line 1.\n"
       . "Malformed UTF-8 character (fatal) at - line 1.",
         {},
