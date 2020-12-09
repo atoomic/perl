@@ -31,20 +31,26 @@ ok !exists $INC{'Tie/Hash/NamedCapture.pm'},
 
 use tests 1; # ARGV
 fresh_perl_is
- 'my $count=0; ++$count while(<foo::ARGV>); print $count',
+ 'no warnings q|unopened|; no warnings q|once|; '
+ . 'my $count=0; ++$count while(<foo::ARGV>); print $count',
  '0',
   { stdin => 'swext\n' },
  '<foo::ARGV> does not iterate through STDIN';
 
 use tests 1; # %SIG
-ok !scalar keys %foo::SIG, "%foo::SIG";
+{
+    no warnings 'once';
+    ok !scalar keys %foo::SIG, "%foo::SIG";
+}
 
 use tests 3; # rw ${^LETTERS} variables
 for(qw< CHILD_ERROR_NATIVE UTF8CACHE WARNING_BITS >) {
  my $name = s/./"qq|\\c$&|"/ere;
+ no warnings 'numeric';
  local $$name = 'swit';
 
  # Bring it into existence first, as defined() sometimes takes shortcuts
+ no warnings 'void';
  ${"foo::$name"};
 
  ok !defined(${"foo::$name"}), "\$foo::^$_";
@@ -73,7 +79,9 @@ use tests 14; # rw single-char scalars we can safely modify
  <$fh>;
 
  for(qw< : ? ! - | ^ ~ = % . \ / ; 0 >) {
+  no warnings 'numeric';
   local $$_ = 'thew';
+  no warnings 'void';
   ${"foo::$_"}; # touch it
   ok !defined ${"foo::$_"}, "\$foo::$_";
  }
@@ -99,8 +107,10 @@ use tests 1; # $# - This naughty little thing just warns.
 use tests 11; # rw $^X scalars
 for(qw<  C O I L   H A D   W E P T  >) {
  my $name = eval "qq|\\c$_|";
+ no warnings 'numeric';
  local $$name = 'poof'; # we're setting, among other things, $^D, so all
                         # characters in here must be valid -D flags
+ no warnings 'void';
  ${"foo::$name"}; # touch
  ok !defined ${"foo::$name"}, "\$foo::^$_";
 }
@@ -115,6 +125,7 @@ use tests 4; # user/group vars
 # These are rw, but setting them is obviously going to make the test much
 # more complex than necessary. So, again, we check for definition.
 for(qw<   < > ( )   >) {
+ no warnings 'void';
  ${"foo::$_"}; # touch
  ok !defined ${"foo::$_"}, "\$foo::$_";
 }
