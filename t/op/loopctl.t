@@ -904,7 +904,7 @@ TEST39: {
 }
 cmp_ok($ok,'==',1,'nested constructs');
 
-sub test_last_label { last TEST40 }
+sub test_last_label { no warnings 'exiting'; last TEST40 }
 
 TEST40: {
     $ok = 1;
@@ -913,7 +913,7 @@ TEST40: {
 }
 cmp_ok($ok,'==',1,'dynamically scoped label');
 
-sub test_last { last }
+sub test_last { no warnings 'exiting'; last }
 
 TEST41: {
     $ok = 1;
@@ -1077,7 +1077,7 @@ last_113684:
     label1:
     {
         my $label = "label1";
-        eval { last $label };
+        eval { no warnings 'exiting'; last $label };
         fail("last with non-constant label");
         last last_113684;
     }
@@ -1088,7 +1088,7 @@ next_113684:
     label2:
     {
         my $label = "label2";
-        eval { next $label };
+        eval { no warnings 'exiting'; next $label };
         fail("next with non-constant label");
         next next_113684;
     }
@@ -1103,7 +1103,7 @@ redo_113684:
             pass("redo with non-constant label"); last redo_113684
         }
         my $label = "label3";
-        eval { redo $label };
+        eval { no warnings 'exiting'; redo $label };
         fail("redo with non-constant label");
     }
 }
