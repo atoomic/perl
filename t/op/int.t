@@ -40,7 +40,7 @@ my $y;
 }
 
 my @x = ( 6, 8, 10);
-cmp_ok($x["1foo"], '==', 8, 'check bad strings still get converted');
+{ no warnings 'numeric'; cmp_ok($x["1foo"], '==', 8, 'check bad strings still get converted'); }
 
 # 4,294,967,295 is largest unsigned 32 bit integer
 
@@ -77,6 +77,7 @@ cmp_ok($y, '==', 4745162525730, 'run time divison, result of about 42 bits');
 SKIP:
 {   # see #126635
     my $large;
+    no warnings 'portable';
     $large = eval "0xffff_ffff" if $Config::Config{ivsize} == 4;
     $large = eval "0xffff_ffff_ffff_ffff" if $Config::Config{ivsize} == 8;
     $large or skip "Unusual ivsize", 1;
@@ -85,5 +86,8 @@ SKIP:
     }
 }
 
-is(1+"0x10", 1, "check string '0x' prefix not treated as hex");
-is(1+"0b10", 1, "check string '0b' prefix not treated as binary");
+{
+    no warnings 'numeric';
+    is(1+"0x10", 1, "check string '0x' prefix not treated as hex");
+    is(1+"0b10", 1, "check string '0b' prefix not treated as binary");
+}
