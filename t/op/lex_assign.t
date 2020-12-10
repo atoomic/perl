@@ -18,6 +18,7 @@ my %h = (1..6);
 my $aref = \@a;
 my $href = \%h;
 open OP, qq{$runme -le "print 'aaa Ok ok' for 1..100"|};
+close OP;
 my $chopit = 'aaaaaa';
 my @chopar = (113 .. 119);
 my $posstr = '123456';
@@ -87,6 +88,7 @@ for (@INPUT) {
   my $undefed;
   my $xundefed = [];
   eval <<EOE;
+  no warnings 'shadow'; no warnings 'void'; no warnings 'syntax';
   local \$SIG{__WARN__} = \\&wrn;
   my \$a = 'fake';
   $integer;
@@ -184,6 +186,7 @@ EOE
 # above that use <DATA>.
 for my $glob (*__) {
   my ($y, $z);
+  no warnings 'uninitialized';
   $glob = $y x $z;
   { use integer; $glob = $y <=> $z; }
   $glob = $y cmp $z;
@@ -196,7 +199,7 @@ for my $glob (*__) {
 #     OPpTARGET_MY optimisation.  But where should it go?
 eval {
     sub PVBM () { 'foo' }
-    index 'foo', PVBM;
+    no warnings 'void'; index 'foo', PVBM;
     my $x = PVBM;
 
     my $str = 'foo';
