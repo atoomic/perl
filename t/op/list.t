@@ -249,6 +249,7 @@ is(my $obj = tied($t)->{fetched}, undef, 'assignment to empty list makes no copi
 fresh_perl_is(<<'EOS', "", {}, "[perl #131954] heap use after free in pp_list");
 #!./perl
 BEGIN {
+no warnings 'void';
 my $bar = "bar";
 
 sub test_no_error {
@@ -256,15 +257,12 @@ sub test_no_error {
 }
 
 test_no_error($_) for split /\n/,
-q[	x
-	definfoo, $bar;
-	x
-	x
-	x
-	grep((not $bar, $bar, $bar), $bar);
-        x
-        x
+q[  x
+    definfoo, $bar;
     x
+    x
+    x
+    grep((not $bar, $bar, $bar), $bar);
         x
         x
         x
@@ -275,7 +273,10 @@ q[	x
         x
         x
         x
-       x
+        x
+        x
+        x
+        x
         x
         x
         x
