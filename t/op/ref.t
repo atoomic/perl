@@ -71,10 +71,13 @@ eval { die  1..127, $_=\() };
 
     $test = curr_test();
     my @ary = ($test,$test+1,$test+2,$test+3);
-    $ref[0] = \@a;
-    $ref[1] = \@b;
-    $ref[2] = \@c;
-    $ref[3] = \@d;
+    {
+        no warnings 'once';
+        $ref[0] = \@a;
+        $ref[1] = \@b;
+        $ref[2] = \@c;
+        $ref[3] = \@d;
+    }
     for my $i (3,1,2,0) {
         push(@{$ref[$i]}, "ok $ary[$i]\n");
     }
@@ -226,15 +229,19 @@ SKIP: {
     sub PVBM () { 'foo' }
     { my $dummy = index 'foo', PVBM }
 
-    my $pviv = 1; "$pviv";
-    my $pvnv = 1.0; "$pvnv";
-    my $x;
+    my ($pviv, $pvnv, $x);
+    {
+        no warnings 'void';
+        $pviv = 1; "$pviv";
+        $pvnv = 1.0; "$pvnv";
+    }
 
     # we don't test
     #   tied lvalue => SCALAR, as we haven't tested tie yet
     #   BIND, 'cos we can't create them yet
     #   REGEXP, 'cos that requires overload or Scalar::Util
 
+    no warnings 'once';
     for (
         [ 'undef',          SCALAR  => \undef               ],
         [ 'constant IV',    SCALAR  => \1                   ],
@@ -441,7 +448,7 @@ like ($@, qr/Can\'t modify.*ref.*in.*assignment(?x:
 
 
 {
-    note("Test if $_[0] is properly protected in DESTROY()");
+    note('Test if $_[0] is properly protected in DESTROY()');
 
     my $test = curr_test();
     my $i = 0;
@@ -451,12 +458,13 @@ like ($@, qr/Can\'t modify.*ref.*in.*assignment(?x:
             print "# infinite recursion, bailing\nnot ok $test\n";
             exit 1;
         }
-        like ($m, qr/^Modification of a read-only/);
+        like ($m, qr/^Modification of a read-only/,
+            "Caught modification of a read-only");
     };
 
     package C;
     sub new { bless {}, shift }
-    DESTROY { $_[0] = 'foo' }
+    DESTROY { no warnings; $_[0] = 'foo' }
     {
         print "# should generate an error...\n";
         my $c = C->new;
@@ -487,7 +495,7 @@ like ($@, qr/Can\'t modify.*ref.*in.*assignment(?x:
     # But cursing objects must not result in double frees
     # This caused "Attempt to free unreferenced scalar" in 5.16.
     fresh_perl_is(
-      'bless \%foo::, bar::; bless \%bar::, foo::; print "ok\n"', "ok\n",
+      'no warnings q|bareword|; bless \%foo::, bar::; bless \%bar::, foo::; print "ok\n"', "ok\n",
        { stderr => 1 },
       'no double free when stashes are blessed into each other');
 }
@@ -499,6 +507,7 @@ like ($@, qr/Can\'t modify.*ref.*in.*assignment(?x:
         my @a;
         $a[1] = "good";
         my $got;
+        no warnings 'uninitialized';
         for (@a) {
             $got .= ${\$_};
             $got .= ';';
@@ -534,6 +543,7 @@ sub x::DESTROY {print "ok ", $test + shift->[0], "\n"}
   my $a2 = bless [2],"x";
   { my $a3 = bless [1],"x";
     my $a4 = bless [0],"x";
+    no warnings 'void';
     567;
   }
 }
@@ -658,8 +668,8 @@ TODO: {
     ok (!defined $name2->{PWOF},
         'defined via a different NUL-containing name gives nothing');
 
-    my (undef, $one) = @{$name1}{'SNIF', 'BEEYOOP'};
-    my (undef, $two) = @{$name2}{'SNIF', 'BEEYOOP'};
+    (undef, $one) = @{$name1}{'SNIF', 'BEEYOOP'};
+    (undef, $two) = @{$name2}{'SNIF', 'BEEYOOP'};
     is ($one, undef, 'Nothing before we start (hash slices)');
     is ($two, undef, 'Nothing before we start');
     @{$name1}{'SNIF', 'BEEYOOP'} = ("Very", "Yummy");
@@ -675,7 +685,7 @@ TODO: {
     $name1 = "Left"; $name2 = "Left\0Right";
     my $glob2 = *{$name2};
 
-    is ($glob1, undef, "We get different typeglobs. In fact, undef");
+    { no warnings 'once'; is ($glob1, undef, "We get different typeglobs. In fact, undef"); }
 
     *{$name1} = sub {"One"};
     *{$name2} = sub {"Two"};
@@ -696,7 +706,7 @@ is ( (sub {"bar"})[0]->(), "bar", 'code deref from list slice w/ ->' );
 note("deref on empty list shouldn't autovivify");
 {
     local $@;
-    eval { ()[0]{foo} };
+    eval { no warnings 'void'; ()[0]{foo} };
     like ( "$@", qr/Can't use an undefined value as a HASH reference/,
            "deref of undef from list slice fails" );
 }
@@ -746,10 +756,10 @@ is (runperl(
 # Test undefined hash references as arguments to %{} in boolean context
 # [perl #81750]
 {
- no strict 'refs';
- eval { my $foo; %$foo;             }; ok !$@, '%$undef';
+ no strict 'refs'; no warnings 'uninitialized';
+ eval { no warnings 'void'; my $foo; %$foo;             }; ok !$@, '%$undef';
  eval { my $foo; scalar %$foo;      }; ok !$@, 'scalar %$undef';
- eval { my $foo; !%$foo;            }; ok !$@, '!%$undef';
+ eval { no warnings 'void'; my $foo; !%$foo;            }; ok !$@, '!%$undef';
  eval { my $foo; if ( %$foo) {}     }; ok !$@, 'if ( %$undef) {}';
  eval { my $foo; if (!%$foo) {}     }; ok !$@, 'if (!%$undef) {}';
  eval { my $foo; unless ( %$foo) {} }; ok !$@, 'unless ( %$undef) {}';
@@ -869,7 +879,8 @@ for ("4eounthouonth") {
     my $true  = 1;
     my $plain = [];
     my $obj     = bless {}, "Foo";
-    my $objnull = bless [], "";
+    my $objnull;
+    { no warnings 'misc'; $objnull = bless [], ""; }
     my $obj0    = bless [], "0";
     my $obj00   = bless [], "00";
     my $obj1    = bless [], "1";
@@ -948,6 +959,7 @@ my $test2 = $test + 2;
 package FINALE;
 
 {
+    no warnings 'once';
     $ref3 = bless ["ok $test2 - package destruction\n"];  # package destruction
     my $ref2 = bless ["ok $test1 - lexical destruction\n"];  # lexical destruction
     local $ref1 = bless ["ok $main::test - dynamic destruction\n"];  # dynamic destruction
