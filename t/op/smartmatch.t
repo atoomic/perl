@@ -145,7 +145,7 @@ sub NOT_DEF() { undef }
   # This isn't guaranteed to crash, but if the stack issue is
   # re-introduced it will probably crash in one of the many smoke
   # builds.
-  fresh_perl_is('print (q(x) ~~ q(x)) | (/x/ ~~ %!)', "1",
+  fresh_perl_is('no warnings q|void|; print (q(x) ~~ q(x)) | (/x/ ~~ %!)', "1",
 		{ switches => [ "-MErrno", "-M-warnings=experimental::smartmatch" ] },
 		 "don't fill the stack with rubbish");
 }
@@ -193,10 +193,11 @@ sub NOT_DEF() { undef }
     # Either caused an assertion failure in the context of warn (or print)
     # if there was some other operator's arguments left on the stack, as with
     # the test cases.
-    fresh_perl_is('print(0->[0 =~ qr/1/ ~~ 0])', '',
+    
+    fresh_perl_is('no warnings q|uninitialized|; print(0->[0 =~ qr/1/ ~~ 0])', '',
                   { switches => [ "-M-warnings=experimental::smartmatch" ] },
                   "don't qr-ify left-side match against a stacked argument");
-    fresh_perl_is('print(0->[0 ~~ (0 =~ qr/1/)])', '',
+    fresh_perl_is('no warnings q|uninitialized|; print(0->[0 ~~ (0 =~ qr/1/)])', '',
                   { switches => [ "-M-warnings=experimental::smartmatch" ] },
                   "don't qr-ify right-side match against a stacked argument");
 }
