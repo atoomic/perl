@@ -53,6 +53,7 @@ is( $r, join($dirsep, "Foo", "Bar.pm") );
 
 {
     my @r;
+    no warnings 'redefine';
     local *CORE::GLOBAL::require = sub { push @r, shift; 1; };
     eval "use 5.006";
     like( " @r ", qr " 5\.006 " );
@@ -133,6 +134,7 @@ BEGIN { *OverridenPop::pop = sub { ::is( $_[0][0], "ok" ) }; }
 
 {
     eval {
+        no warnings 'redefine';
         local *CORE::GLOBAL::require = sub {
             CORE::require($_[0]);
         };
@@ -145,8 +147,11 @@ BEGIN { *OverridenPop::pop = sub { ::is( $_[0][0], "ok" ) }; }
 # Constant inlining should not countermand "use subs" overrides
 BEGIN { package other; *::caller = \&::caller }
 sub caller() { 42 }
-caller; # inline the constant
-is caller, 42, 'constant inlining does not undo "use subs" on keywords';
+{
+    no warnings 'void';
+    caller; # inline the constant
+    is caller, 42, 'constant inlining does not undo "use subs" on keywords';
+}
 
 is runperl(prog => 'sub CORE::GLOBAL::do; do file; print qq-ok\n-'),
   "ok\n",
