@@ -72,8 +72,8 @@ is($main::y, "ok 20\n", 'this one too');
 
 my $i = "outer";
 
-if (my $i = "inner") {
-    is( $i, 'inner', 'my variable inside conditional propagates inside block');
+if (my $i or 1) {
+    is( $i, undef, 'my variable inside conditional propagates inside block');
 }
 
 if ((my $i = 1) == 0) {
