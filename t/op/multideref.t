@@ -15,8 +15,6 @@ BEGIN {
     set_up_inc("../lib");
 }
 
-use warnings;
-
 plan 65;
 
 
@@ -199,10 +197,10 @@ sub defer {}
             my $x = $a[ 'foo' eq $arg ? 1 : 0 ];
             1;
         },
-        "#123609: eval"
+        "#123609 (GH #14419): eval"
     )
         or diag("eval gave: $@");
-    is($warn, "", "#123609: warn");
+    is($warn, "", "#123609 (GH #14419): warn");
 }
 
 # RT #130727
@@ -214,12 +212,12 @@ sub defer {}
     eval { @{local $x[0][0]} = 1; };
     like $@, qr/Can't use an undefined value as an ARRAY reference/,
                     "RT #130727 error";
-    ok !defined $x[0][0],"RT #130727 array not autovivified";
+    ok !defined $x[0][0],"RT #130727 (GH #15864) array not autovivified";
 
     eval { @{1, local $x[0][0]} = 1; };
     like $@, qr/Can't use an undefined value as an ARRAY reference/,
                     "RT #130727 part 2: error";
-    ok !defined $x[0][0],"RT #130727 part 2: array not autovivified";
+    ok !defined $x[0][0],"RT #130727 (GH #15864) part 2: array not autovivified";
 
 }
 
@@ -229,7 +227,7 @@ sub defer {}
     our $rt131627 = 1;
 
     no strict qw(refs vars);
-    is $x[qw(rt131627)->$*], 11, 'RT #131627: $a[qw(var)->$*]';
+    is $x[qw(rt131627)->$*], 11, 'RT #131627 (GH #16029): $a[qw(var)->$*]';
 }
 
 # this used to leak - run the code for ASan to spot any problems
@@ -241,5 +239,9 @@ sub defer {}
     ::pass("S_maybe_multideref() shouldn't leak on croak");
 }
 
-fresh_perl_is('no strict q|refs|; 0for%{scalar local$0[0]}', '', {},
-              "RT #134045 assertion on the OP_SCALAR");
+fresh_perl_is(
+    'no strict q|refs|; no warnings q|uninitialized|; 0for%{scalar local$0[0]}',
+    '',
+    {},
+    "RT #134045 (GH #16969) assertion on the OP_SCALAR"
+);
