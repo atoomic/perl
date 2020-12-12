@@ -2049,8 +2049,9 @@ SKIP:
     # [perl #129149] the code below would write one past the end of the output
     # buffer, only detected by ASAN, not by valgrind
     $Config{ivsize} >= 8
-      or skip "[perl #129149] need 64-bit for this test", 1;
+      or skip "[perl #129149] [gh #15572] need 64-bit for this test", 1;
     fresh_perl_is(<<'EOS', "ok\n", { stderr => 1 }, "pack W overflow");
+no warnings 'non_unicode'; no warnings 'portable';
 print pack("ucW", "0000", 0, 140737488355327) eq "\$,#`P,```\n\0\x{7fffffffffff}"
  ? "ok\n" : "not ok\n";
 EOS
@@ -2060,7 +2061,7 @@ SKIP:
 {
   # [perl #131844] pointer addition overflow
     $Config{ptrsize} == 4
-      or skip "[perl #131844] need 32-bit build for this test", 4;
+      or skip "[perl #131844] [gh #16098] need 32-bit build for this test", 4;
     # prevent ASAN just crashing on the allocation failure
     local $ENV{ASAN_OPTIONS} = $ENV{ASAN_OPTIONS};
     $ENV{ASAN_OPTIONS} .= ",allocator_may_return_null=1";
@@ -2081,6 +2082,10 @@ SKIP:
 {
     # [perl #132655] heap-buffer-overflow READ of size 11
     # only expect failure under ASAN (and maybe valgrind)
-    fresh_perl_is('0.0 + unpack("u", "ab")', "", { stderr => 1 },
-                  "ensure unpack u of invalid data nul terminates result");
+    fresh_perl_is(
+        'no warnings q|void|; no warnings q|numeric|; 0.0 + unpack("u", "ab")',
+        "",
+        { stderr => 1 },
+        "ensure unpack u of invalid data nul terminates result"
+    );
 }
