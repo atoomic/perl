@@ -104,7 +104,7 @@ is(takeuchi($x, $y, $z), $z + 1, "takeuchi($x, $y, $z) == $z + 1");
 }
 
 {
-    local $^W = 0; # We do not need recursion depth warning.
+    no warnings 'recursion';
 
     sub sillysum {
 	return $_[0] + ($_[0] > 0 ? sillysum($_[0] - 1) : 0);
