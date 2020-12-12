@@ -22,6 +22,7 @@ my @a = (1, 2, 3);
   @a = sort { last ; } @a;
 }
 EXPECT
+Exiting pseudo-block via last at - line 3.
 Can't "last" outside a loop block at - line 3.
 ########
 package TEST;
@@ -74,6 +75,7 @@ sub TIEHANDLE {
 }
 sub PRINT {
 print STDERR "PRINT CALLED\n";
+no warnings 'void';
 (split(/./, 'x'x10000))[0];
 eval('die("test\n")');
 }
@@ -143,6 +145,7 @@ Can't "goto" out of a pseudo block at - line 2.
 ########
 my %seen = ();
 sub sortfn {
+  no warnings 'void';
   (split(/./, 'x'x10000))[0];
   my (@y) = ( 4, 6, 5);
   @y = sort { $a <=> $b } @y;
@@ -169,6 +172,7 @@ foo:
   @a = sort { last foo; } @a;
 }
 EXPECT
+Exiting pseudo-block via last at - line 4.
 Label not found for "last foo" at - line 4.
 ########
 package TEST;
@@ -192,6 +196,7 @@ tie $bar, 'TEST';
 }
 print "OK\n";
 EXPECT
+Exiting subroutine via next at - line 8.
 Can't "next" outside a loop block at - line 8.
 ########
 package TEST;
@@ -252,6 +257,7 @@ my $bar = '';
 tie $bar, 'TEST';
 }
 EXPECT
+Exiting subroutine via next at - line 4.
 Can't "next" outside a loop block at - line 4.
 ########
 my @a = (1, 2, 3);
@@ -344,6 +350,7 @@ tie *STDERR, '';
 { map ++$_, 1 }
 
 EXPECT
+Exiting subroutine via next at - line 2.
 Can't "next" outside a loop block at - line 2.
 ########
 sub TIEHANDLE { bless {} }
@@ -357,10 +364,12 @@ EXPECT
 ########
 sub TIEHANDLE { bless {} }
 sub PRINT { 
+    no warnings 'void';
     (split(/./, 'x'x10000))[0];
     eval('die("test\n")');
     warn "[TIE] $_[1]";
 }
+no warnings 'once';
 open OLDERR, '>&STDERR';
 tie *STDERR, '';
 
@@ -368,4 +377,4 @@ use warnings FATAL => qw(uninitialized);
 print undef;
 
 EXPECT
-[TIE] Use of uninitialized value in print at - line 11.
+[TIE] Use of uninitialized value in print at - line 13.
