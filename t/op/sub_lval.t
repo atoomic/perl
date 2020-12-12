@@ -170,7 +170,7 @@ sub nolv () { $x0, $x1 } # Not lvalue
 $_ = '';
 
 eval <<'EOE' or $_ = $@;
-  nolv = (2,3);
+  no warnings 'void'; nolv = (2,3);
   1;
 EOE
 
@@ -179,7 +179,7 @@ like($_, qr/Can\'t modify non-lvalue subroutine call of &main::nolv in scalar as
 $_ = '';
 
 eval <<'EOE' or $_ = $@;
-  nolv = (2,3) if $_;
+  no warnings 'void'; nolv = (2,3) if $_;
   1;
 EOE
 
@@ -188,7 +188,7 @@ like($_, qr/Can\'t modify non-lvalue subroutine call of &main::nolv in scalar as
 $_ = '';
 
 eval <<'EOE' or $_ = $@;
-  &nolv = (2,3) if $_;
+  no warnings 'void'; &nolv = (2,3) if $_;
   1;
 EOE
 
@@ -198,7 +198,7 @@ $x0 = $x1 = $_ = undef;
 my $nolv = \&nolv;
 
 eval <<'EOE' or $_ = $@;
-  $nolv->() = (2,3) if $_;
+  no warnings 'void'; $nolv->() = (2,3) if $_;
   1;
 EOE
 
@@ -208,7 +208,7 @@ $x0 = $x1 = $_ = undef;
 $nolv = \&nolv;
 
 eval <<'EOE' or $_ = $@;
-  $nolv->() = (2,3);
+  no warnings 'void'; $nolv->() = (2,3);
   1;
 EOE
 
@@ -220,7 +220,7 @@ sub rlv0 : lvalue { return }
 
 $_ = undef;
 eval <<'EOE' or $_ = $@;
-  lv0 = (2,3);
+  no warnings 'void'; lv0 = (2,3);
   1;
 EOE
 
@@ -228,7 +228,7 @@ like($_, qr/Can't return undef from lvalue subroutine/);
 
 $_ = undef;
 eval <<'EOE' or $_ = $@;
-  rlv0 = (2,3);
+  no warnings 'void'; rlv0 = (2,3);
   1;
 EOE
 
@@ -237,7 +237,7 @@ like($_, qr/Can't return undef from lvalue subroutine/,
 
 $_ = undef;
 eval <<'EOE' or $_ = $@;
-  (lv0) = (2,3);
+  no warnings 'void'; (lv0) = (2,3);
   1;
 EOE
 
@@ -245,7 +245,7 @@ ok(!defined $_) or diag $_;
 
 $_ = undef;
 eval <<'EOE' or $_ = $@;
-  (rlv0) = (2,3);
+  no warnings 'void'; (rlv0) = (2,3);
   1;
 EOE
 
@@ -262,7 +262,7 @@ sub rlv1u :lvalue { undef }
 
 $_ = undef;
 eval <<'EOE' or $_ = $@;
-  lv1u = (2,3);
+  no warnings 'void'; lv1u = (2,3);
   1;
 EOE
 
@@ -270,7 +270,7 @@ like($_, qr/Can't return undef from lvalue subroutine/);
 
 $_ = undef;
 eval <<'EOE' or $_ = $@;
-  rlv1u = (2,3);
+  no warnings 'void'; rlv1u = (2,3);
   1;
 EOE
 
@@ -279,7 +279,7 @@ like($_, qr/Can't return undef from lvalue subroutine/,
 
 $_ = undef;
 eval <<'EOE' or $_ = $@;
-  (lv1u) = (2,3);
+  no warnings 'void'; (lv1u) = (2,3);
   1;
 EOE
 
@@ -287,7 +287,7 @@ ok(!defined, 'implicitly returning undef in list context');
 
 $_ = undef;
 eval <<'EOE' or $_ = $@;
-  (rlv1u) = (2,3);
+  no warnings 'void'; (rlv1u) = (2,3);
   1;
 EOE
 
@@ -298,7 +298,7 @@ my $x = '1234567';
 $_ = undef;
 eval <<'EOE' or $_ = $@;
   sub lv1t : lvalue { index $x, 2 }
-  lv1t = (2,3);
+  no warnings 'void'; lv1t = (2,3);
   1;
 EOE
 
@@ -307,7 +307,7 @@ like($_, qr/Can\'t return a temporary from lvalue subroutine/);
 $_ = undef;
 eval <<'EOE' or $_ = $@;
   sub rlv1t : lvalue { index $x, 2 }
-  rlv1t = (2,3);
+  no warnings 'void'; rlv1t = (2,3);
   1;
 EOE
 
@@ -316,7 +316,7 @@ like($_, qr/Can\'t return a temporary from lvalue subroutine/,
 
 $_ = undef;
 eval <<'EOE' or $_ = $@;
-  (rlv1t) = (2,3);
+  no warnings 'void'; (rlv1t) = (2,3);
   1;
 EOE
 
@@ -361,7 +361,7 @@ sub xxx () { $xxx }  # Not lvalue
 $_ = undef;
 eval <<'EOE' or $_ = $@;
   sub lv1tmp : lvalue { xxx }			# is it a TEMP?
-  lv1tmp = (2,3);
+  no warnings 'void'; lv1tmp = (2,3);
   1;
 EOE
 
@@ -369,7 +369,7 @@ like($_, qr/Can\'t modify non-lvalue subroutine call of &main::xxx at /);
 
 $_ = undef;
 eval <<'EOE' or $_ = $@;
-  (lv1tmp) = (2,3);
+  no warnings 'void'; (lv1tmp) = (2,3);
   1;
 EOE
 
@@ -380,7 +380,7 @@ sub yyy () { 'yyy' } # Const, not lvalue
 $_ = undef;
 eval <<'EOE' or $_ = $@;
   sub lv1tmpr : lvalue { yyy }			# is it read-only?
-  lv1tmpr = (2,3);
+  no warnings 'void'; lv1tmpr = (2,3);
   1;
 EOE
 
@@ -388,7 +388,7 @@ like($_, qr/Can\'t return a readonly value from lvalue subroutine at/);
 
 $_ = undef;
 eval <<'EOE' or $_ = $@;
-  (lv1tmpr) = (2,3);
+  no warnings 'void'; (lv1tmpr) = (2,3);
   1;
 EOE
 
@@ -396,13 +396,13 @@ like($_, qr/Can\'t return a readonly value from lvalue subroutine/);
 
 eval <<'EOF';
   sub lv2tmpr : lvalue { my $x = *foo; Internals::SvREADONLY $x, 1; $x }
-  lv2tmpr = (2,3);
+  no warnings 'void'; lv2tmpr = (2,3);
 EOF
 
 like($@, qr/Can\'t return a readonly value from lvalue subroutine at/);
 
 eval <<'EOG';
-  (lv2tmpr) = (2,3);
+  no warnings 'void'; (lv2tmpr) = (2,3);
 EOG
 
 like($@, qr/Can\'t return a readonly value from lvalue subroutine/);
@@ -413,22 +413,22 @@ $_ = undef;
 @a = ();
 $a[1] = 12;
 eval <<'EOE' or $_ = $@;
-  (lva) = (2,3);
+  no warnings 'void'; (lva) = (2,3);
   1;
 EOE
 
-is("'@a' $_", "'2 3' ");
+{ no warnings 'uninitialized'; is("'@a' $_", "'2 3' "); }
 
 $_ = undef;
 @a = ();
 $a[0] = undef;
 $a[1] = 12;
 eval <<'EOE' or $_ = $@;
-  (lva) = (2,3);
+  no warnings 'void'; (lva) = (2,3);
   1;
 EOE
 
-is("'@a' $_", "'2 3' ");
+{ no warnings 'uninitialized'; is("'@a' $_", "'2 3' "); }
 
 is lva->${\sub { return $_[0] }}, 2,
   'lvalue->$thing when lvalue returns array';
@@ -444,11 +444,11 @@ sub lv1n : lvalue { $newvar }
 
 $_ = undef;
 eval <<'EOE' or $_ = $@;
-  lv1n = (3,4);
+  no warnings 'void'; lv1n = (3,4);
   1;
 EOE
 
-is("'$newvar' $_", "'4' ");
+{ no warnings 'uninitialized'; is("'$newvar' $_", "'4' "); }
 
 sub lv1nn : lvalue { $nnewvar }
 
@@ -458,7 +458,7 @@ eval <<'EOE' or $_ = $@;
   1;
 EOE
 
-is("'$nnewvar' $_", "'3' ");
+{ no warnings 'uninitialized'; is("'$nnewvar' $_", "'3' "); }
 
 $a = \&lv1nn;
 $a->() = 8;
@@ -537,7 +537,7 @@ sub sstr : lvalue { substr($str, 1, 4) }
 sstr() = "i";
 is($str, "Hi, world!");
 
-my $str = "Made w/ JavaScript";
+$str = "Made w/ JavaScript";
 sub veclv : lvalue { vec($str, 2, 32) }
 if ($::IS_ASCII) {
     veclv() = 0x5065726C;
@@ -554,7 +554,7 @@ while (/f/g) {
     push @p, position;
     position() += 6;
 }
-is("@p", "1 8");
+is("@p", "1 8", "1 8");
 
 SKIP: {
     skip "no Hash::Util on miniperl", 3, if is_miniperl;
@@ -879,7 +879,7 @@ SKIP: { skip "no attributes.pm", 2 unless eval { require attributes };
 my ($pnare);
 sub fleen : lvalue { $pnare }
 $pnare = __PACKAGE__;
-ok eval { fleen = 1 }, "lvalues can return COWs (CATTLE?) [perl #75656]";\
+ok eval { fleen = 1 }, "lvalues can return COWs (CATTLE?) [perl #75656]";
 is $pnare, 1, 'and returning CATTLE actually works';
 $pnare = __PACKAGE__;
 ok eval { (fleen) = 1 }, "lvalues can return COWs in list context";
