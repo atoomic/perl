@@ -18,6 +18,7 @@ plan(128);
     note("Test fake references.");
     no strict;
 
+    no warnings 'once';
     $baz = "valid";
     $bar = 'baz';
     $foo = 'bar';
@@ -46,8 +47,8 @@ my $test;
     my @ary = ($test,$test+1,$test+2,$test+3);
     my @ref;
     $ref[0] = \@main::a;
-    $ref[1] = \@main::b;
-    $ref[2] = \@main::c;
+    { no warnings 'once'; $ref[1] = \@main::b; }
+    { no warnings 'once'; $ref[2] = \@main::c; }
     $ref[3] = \@main::d;
     for my $i (3,1,2,0) {
         push($ref[$i]-> @*, "ok $ary[$i]\n");
@@ -90,7 +91,7 @@ curr_test($test+4);
     note("Test references to hashes of references.");
 
     my $refref;
-    { no strict 'vars'; $refref = \%whatever; }
+    { no strict 'vars'; no warnings 'once'; $refref = \%whatever; }
     $refref->{"key"} = $ref;
     is ($refref->{"key"}->[2]->[0], 3);
     is ($refref->{"key"}->[2][0], 3);
@@ -126,6 +127,7 @@ curr_test($test+4);
     is ($called, 1);
     ok(eval '$subref->&*',"ampersand-star runs coderef: syntax");
     is ($called, 2);
+    no warnings 'once';
     local *mysubalias;
     ok(eval q{'mysubalias'->** = 'mysub'->**->*{CODE}}, "glob access syntax");
     is ( eval 'mysubalias()', 2);
@@ -184,6 +186,7 @@ is ref eval {\&{""}}, "CODE", 'reference to &{""} [perl #94476] [gh #11488]';
     {
         no strict 'refs';
         no strict 'vars';
+        no warnings 'once'; 
         # and real references taken from symbolic postfix dereferences
         local ($joe, @curly, %larry, $momo);
         my ($s,@a,%h);
@@ -317,9 +320,10 @@ TODO: {
     note("Test undefined hash references as arguments to %{} in boolean context");
     note('[perl #81750] [gh #10947]');
     no strict 'refs';
-    eval { my $foo; $foo->%*;             }; ok !$@, '%$undef';
+    no warnings 'uninitialized';
+    eval { no warnings 'void'; my $foo; $foo->%*;             }; ok !$@, '%$undef';
     eval { my $foo; scalar $foo->%*;      }; ok !$@, 'scalar %$undef';
-    eval { my $foo; !$foo->%*;            }; ok !$@, '!%$undef';
+    eval { no warnings 'void'; my $foo; !$foo->%*;            }; ok !$@, '!%$undef';
     eval { my $foo; if ( $foo->%*) {}     }; ok !$@, 'if ( %$undef) {}';
     eval { my $foo; if (!$foo->%*) {}     }; ok !$@, 'if (!%$undef) {}';
     eval { my $foo; unless ( $foo->%*) {} }; ok !$@, 'unless ( %$undef) {}';
@@ -375,6 +379,7 @@ is join(" ", ['a'..'z']->%[1, 7, 3]), "1 b 7 h 3 d", '->%[';
         # "foo $_->$*" should be equivalent to "foo $$_", which uses concat
         # overloading
         package o {
+        no warnings 'uninitialized';
     	use overload fallback=>1,
     	    '""' => sub { $_[0][0] },
     	    '.'  => sub { bless [ "$_[$_[2]]"." plus "."$_[!$_[2]]" ] };
