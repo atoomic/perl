@@ -1020,7 +1020,8 @@ fresh_perl_is('sub w ($$) {my ($l, $r) = @_; my $v = \@_; undef @_; @_ = 0..2; $
 #               from a custom sort subroutine.
 fresh_perl_is
  '
-   no strict q|vars|;
+   no strict q|vars|; no warnings q|recursion|;
+   $count = 0;
    $sub = sub {
     local $count = $count+1;
     ()->$sub if $count < 1000;
@@ -1197,12 +1198,12 @@ SKIP:
 	    ReportDestruction->new("[sorta]"), "foo";
     $act .= "2";
     $filla = undef;
-    is $act, "01[sorta]2[filla]";
+    is $act, "01[sorta]2[filla]", "refcounting GvSVslot [GH 11422]";
     $act = "";
     my $fillb = \(ReportDestruction->new("[fillb]"));
     () = sort { my $r = $a cmp $b; $act .= "0"; *b = \$$fillb; $act .= "1"; $r }
 	    "foo", ReportDestruction->new("[sortb]");
     $act .= "2";
     $fillb = undef;
-    is $act, "01[sortb]2[fillb]";
+    is $act, "01[sortb]2[fillb]", "refcounting GvSVslot [GH 11422]";
 }
