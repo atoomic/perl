@@ -101,7 +101,8 @@ ok (!Cedric->isa('Programmer'));
 
 my $b = 'abc';
 my @refs = qw(SCALAR SCALAR     LVALUE      GLOB ARRAY HASH CODE);
-my @vals = (  \$b,   \3.14, \substr($b,1,1), \*b,  [],  {}, sub {} );
+my @vals;
+{ no warnings 'once'; @vals = (  \$b,   \3.14, \substr($b,1,1), \*b,  [],  {}, sub {} ); }
 for (my $p=0; $p < @refs; $p++) {
     for (my $q=0; $q < @vals; $q++) {
         is UNIVERSAL::isa($vals[$p], $refs[$q]), ($p==$q or $p+$q==1);
@@ -208,7 +209,7 @@ is $@, '';
 fresh_perl_is('package Foo; Foo->VERSION;  print "ok"', 'ok');
 
 # So did this.
-fresh_perl_is('$:; UNIVERSAL::isa(":","Unicode::String");print "ok"','ok');
+fresh_perl_is('no warnings q|void|; $:; UNIVERSAL::isa(":","Unicode::String");print "ok"','ok');
 
 package Foo;
 
@@ -249,6 +250,11 @@ like( $@, qr/Can't call method "DOES" on unblessed reference/,
 # but never actually tested.
 is(UNIVERSAL->can("NoSuchPackage::foo"), undef);
 
+package zlopp;
+1;
+package plop;
+1;
+package main;
 @splatt::ISA = 'zlopp';
 ok (splatt->isa('zlopp'));
 ok (!splatt->isa('plop'));
@@ -341,7 +347,7 @@ ok(Undeclared->isa("UNIVERSAL"));
 
 # keep this at the end to avoid messing up earlier tests, since it modifies
 # @UNIVERSAL::ISA
-@UNIVERSAL::ISA = ('UniversalParent');
+local @UNIVERSAL::ISA = ('UniversalParent');
 { package UniversalIsaTest1; }
 ok(UniversalIsaTest1->isa('UniversalParent'));
 ok(UniversalIsaTest2->isa('UniversalParent'));
