@@ -24,7 +24,7 @@ is eval { $i++; ...; $i+=10; 123 }, undef;
 like $@, qr/\AUnimplemented /;
 is $i, 1;
 
-note("RT #122661: Semicolon before ellipsis statement disambiguates to indicate block rather than hash reference");
+note("RT #122661 (GH #14054): Semicolon before ellipsis statement disambiguates to indicate block rather than hash reference");
 my @input = (3..5);
 my @transformed;
 $err = $err1 . ( __LINE__ + 1 ) . $err2;
@@ -47,7 +47,7 @@ eval { @transformed = map {;... } @input; };
 is $@, $err, "Disambiguation case 4";
 $@ = '';
 
-note("RT #132150: ... in other contexts is a syntax error");
+note("RT #132150 (GH #16165): ... in other contexts is a syntax error");
 foreach(
 	"... + 0", "0 + ...",
 	"... . 0", "0 . ...",
@@ -83,7 +83,7 @@ foreach my $line (@lines) {
     next if $line =~ /^\s*#/ || $line !~ /\S/;
     my $mess = qq {Parsing '...' in "$line" as a range operator};
     eval qq {
-       {local *STDOUT; no strict "subs"; $line;}
+       {local *STDOUT; no strict "subs"; no warnings 'unopened'; $line;}
         pass \$mess;
         1;
     } or do {
