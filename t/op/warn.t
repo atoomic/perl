@@ -165,6 +165,7 @@ $@ = \$_;
 @warnings = ();
 {
   no strict 'refs';
+  no warnings 'redefine';
   local *{ref(tied $@) . "::STORE"} = sub {};
   undef $@;
 }
@@ -183,7 +184,7 @@ my $t;
 {
   tie $t, 'Tie::StdScalar';
   $t = bless [], 'o';
-  no strict 'refs';
+  no strict 'refs'; no warnings 'redefine';
   local *{ref(tied $t) . "::STORE"} = sub {};
   undef $t;
 }
@@ -214,7 +215,7 @@ also line 4 at - line 4.
 line 5 at - line 5.
 EOF
     fresh_perl_is(<<'EOF', $expected, {stderr => 1}, "");
-warn "line 1";
+no warnings q|syntax|; warn "line 1";
 my $foo; (${
     foo
 } = "line 5") && warn("line 4"); warn("also line 4");
