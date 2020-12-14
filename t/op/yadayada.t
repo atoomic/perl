@@ -20,9 +20,9 @@ is $@, $err, "Execution of ellipsis statement reported 'Unimplemented' code";
 $@ = '';
 
 my $i = 0;
-is eval { $i++; ...; $i+=10; 123 }, undef;
-like $@, qr/\AUnimplemented /;
-is $i, 1;
+is eval { $i++; ...; $i+=10; 123 }, undef, "eval returned undefined value";
+like $@, qr/\AUnimplemented /, "syntax non implemented";
+is $i, 1, "variable only auto-incremented once";
 
 note("RT #122661 (GH #14054): Semicolon before ellipsis statement disambiguates to indicate block rather than hash reference");
 my @input = (3..5);
@@ -48,7 +48,7 @@ is $@, $err, "Disambiguation case 4";
 $@ = '';
 
 note("RT #132150 (GH #16165): ... in other contexts is a syntax error");
-foreach(
+foreach my $arg (
 	"... + 0", "0 + ...",
 	"... . 0", "0 . ...",
 	"... or 1", "1 or ...",
@@ -57,8 +57,8 @@ foreach(
 	'my $a = ...',
 	'... sub quux {}',
 ) {
-	is eval($_), undef;
-	like $@, qr/\Asyntax error /;
+	is eval($arg), undef, "$arg is not defined";
+	like $@, qr/\Asyntax error /, "$arg is a syntax error";
 }
 
 #
