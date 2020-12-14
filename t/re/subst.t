@@ -588,10 +588,10 @@ is("<$_> <$s>", "<> <4>", "[perl #7806]");
 
 # [perl #19048] Coredump in silly replacement
 {
-    local $^W = 0;
     $_="abcdef\n";
+    no warnings 'uninitialized';
     s!.!!eg;
-    is($_, "\n", "[perl #19048]");
+    is($_, "\n", "[perl #19048] [gh #6145]: Coredump in silly replacement");
 }
 
 # [perl #17757] interaction between saw_ampersand and study
