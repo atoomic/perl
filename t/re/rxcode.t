@@ -89,12 +89,15 @@ cmp_ok( scalar(@var), '==', 0, '..still nothing pushed (package)' );
 {
     use re 'eval';
     my $x = "(?{})";
-    is eval { "a" =~ /a++(?{})+$x/x } || $@, '1', '/a++(?{})+$code_block/'
+    is eval { no warnings 'regexp'; "a" =~ /a++(?{})+$x/x } || $@, '1', '/a++(?{})+$code_block/'
 }
 
 # [perl #78194] $_ in code block aliasing op return values
-"$_" =~ /(?{ is \$_, \$_,
-               '[perl #78194] \$_ == \$_ when $_ aliases "$x"' })/;
+{
+    no warnings 'uninitialized';
+    "$_" =~ /(?{ is \$_, \$_,
+         '[perl #78194] [gh #10690] \$_ == \$_ when $_ aliases "$x"' })/;
+}
 
 my @a = 1..3;
 like eval { qr/@a(?{})/ }, qr/1 2 3\(\?\{\}\)/, 'qr/@a(?{})/';
