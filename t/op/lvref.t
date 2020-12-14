@@ -287,12 +287,16 @@ package CodeTest {
   is \&bs, \&ThatSub, '(\&statesub)';
   \(&c) = expect_list_cx;
   is \&c, \&ThatSub, '\(&pkg)';
-  my sub b;
-  \(&c) = expect_list_cx;
-  is \&c, \&ThatSub, '\(&mysub)';
-  my sub bs;
-  \(&cs) = expect_list_cx;
-  is \&cs, \&ThatSub, '\(&statesub)';
+  {
+    no warnings 'redefine';
+    my sub b;
+    \(&c) = expect_list_cx;
+    is \&c, \&ThatSub, '\(&mysub)';
+
+    my sub bs;
+    \(&cs) = expect_list_cx;
+    is \&cs, \&ThatSub, '\(&statesub)';
+  }
 
   package main {
     # this is only a problem in main:: due to 1e2cfe157ca
@@ -300,10 +304,13 @@ package CodeTest {
     sub sy { "y" }
     is sx(), "x", "check original";
     my $temp = \&sx;
-    \&sx = \&sy;
-    is sx(), "y", "aliased";
-    \&sx = $temp;
-    is sx(), "x", "and restored";
+    {
+        no warnings 'redefine';
+        \&sx = \&sy;
+        is sx(), "y", "aliased";
+        \&sx = $temp;
+        is sx(), "x", "and restored";
+    }
   }
 }
 
@@ -328,12 +335,15 @@ is "@hh", '1 2 3', '\(@array) in list assignment';
 $_ = 3;
 $_ == 3 ? \$tahi : $rua = \3;
 is $tahi, 3, 'cond assignment resolving to scalar ref';
-$_ == 0 ? \$toru : $wha = \3;
-is $$wha, 3, 'cond assignment resolving to scalar';
-$_ == 3 ? \$rima : \$ono = \5;
-is $rima, 5, 'cond assignment with refgens on both branches';
-\($_ == 3 ? $whitu : $waru) = \5;
-is $whitu, 5, '\( ?: ) assignment';
+{
+    no warnings 'once';
+    $_ == 0 ? \$toru : $wha = \3;
+    is $$wha, 3, 'cond assignment resolving to scalar';
+    $_ == 3 ? \$rima : \$ono = \5;
+    is $rima, 5, 'cond assignment with refgens on both branches';
+    \($_ == 3 ? $whitu : $waru) = \5;
+    is $whitu, 5, '\( ?: ) assignment';
+}
 \($_ == 3 ? $_ < 4 ? $ii : $_ : $_) = \$_;
 is \$ii, \$_, 'nested \ternary assignment';
 
@@ -386,9 +396,12 @@ is "@for", "5 6 7 8", 'foreach \%::a [perl #22335]';
 }
 is "@for", "9 10", 'foreach \&padcv';
 
-@for = ();
-for \&::a(sub {9}, sub {10}) {
-  push @for, &::a;
+{
+    no warnings 'redefine';
+    @for = ();
+    for \&::a(sub {9}, sub {10}) {
+      push @for, &::a;
+    }
 }
 is "@for", "9 10", 'foreach \&rv2cv';
 
@@ -493,7 +506,7 @@ like $@,
 eval '\my(%b) = 42';
 like $@,
     qr/^Can't modify reference to parenthesized hash in list assignment a/,
-   "Can't modify ref to parenthesized hash (\my(%b)) in list assignment";
+   "Can't modify ref to parenthesized hash (\\my(%b)) in list assignment";
 eval '\%{"42"} = 42';
 like $@,
     qr/^Can't modify reference to hash dereference in scalar assignment a/,
