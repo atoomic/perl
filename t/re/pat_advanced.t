@@ -2524,7 +2524,7 @@ EOF
     }
 
     {   # [perl #134034]    Previously assertion failure
-        fresh_perl_is('use utf8; q!Ȧिम한글💣΢ყაოსაა!=~/(?li)\b{wb}\B(*COMMIT)0/;',
+        fresh_perl_is('use utf8; no warnings q|locale|; q!Ȧिम한글💣΢ყაოსაა!=~/(?li)\b{wb}\B(*COMMIT)0/;',
                       "", {}, "*COMMIT caused positioning beyond EOS");
     }
 
