@@ -359,7 +359,7 @@ SKIP: {
 
     my $s;
 
-    sub f1 { /(?{ $s = CORE::__SUB__; })/ }
+    sub f1 { no warnings 'uninitialized'; /(?{ $s = CORE::__SUB__; })/ }
     f1();
     is ($s, \&f1, '__SUB__ direct');
 
