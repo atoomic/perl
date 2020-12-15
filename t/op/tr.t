@@ -17,7 +17,7 @@ plan tests => 315;
 
 # Test this first before we extend the stack with other operations.
 # This caused an asan failure due to a bad write past the end of the stack.
-eval { my $x; die  1..127, $x =~ y/// };
+eval { my $x = ''; die  1..127, $x =~ y/// };
 
 $_ = "abcdefghijklmnopqrstuvwxyz";
 
@@ -936,17 +936,17 @@ is($@, '',  '   no error');
 
 
 my @foo = ();
-eval '$foo[-1] =~ tr/N/N/';
+eval 'no warnings q|uninitialized|; $foo[-1] =~ tr/N/N/';
 is( $@, '',         'implicit count outside array bounds, index negative' );
 is( scalar @foo, 0, "    doesn't extend the array");
 
-eval '$foo[1] =~ tr/N/N/';
+eval 'no warnings q|uninitialized|; $foo[1] =~ tr/N/N/';
 is( $@, '',         'implicit count outside array bounds, index positive' );
 is( scalar @foo, 0, "    doesn't extend the array");
 
 
 my %foo = ();
-eval '$foo{bar} =~ tr/N/N/';
+eval 'no warnings q|uninitialized|; $foo{bar} =~ tr/N/N/';
 is( $@, '',         'implicit count outside hash bounds' );
 is( scalar keys %foo, 0,   "    doesn't extend the hash");
 
@@ -1092,7 +1092,7 @@ for ("", nullrocow) {
 { # [perl #123759]
 	eval q{ ('a' =~ /./) =~ tr///d };
 	ok(1, "tr///d on PL_Yes does not assert");
-	eval q{ ('a' =~ /./) =~ tr/a-z/a-z/d };
+	eval q{ no warnings q|misc|; ('a' =~ /./) =~ tr/a-z/a-z/d };
 	ok(1, "tr/a-z/a-z/d on PL_Yes does not assert");
 	eval q{ ('a' =~ /./) =~ tr///s };
 	ok(1, "tr///s on PL_Yes does not assert");

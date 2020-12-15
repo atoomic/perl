@@ -89,14 +89,20 @@ $_ = join(':',$alpha,$beta);
 is($_, '1:2 3 4 5 6', "Storing split output into list of scalars");
 
 # do subpatterns generate additional fields (without trailing nulls)?
-$_ = join '|', split(/,|(-)/, "1-10,20,,,");
-is($_, "1|-|10||20");
+{
+    no warnings 'uninitialized';
+    $_ = join '|', split(/,|(-)/, "1-10,20,,,");
+    is($_, "1|-|10||20");
+}
 @ary = split(/,|(-)/, "1-10,20,,,");
 $cnt = split(/,|(-)/, "1-10,20,,,");
 is($cnt, scalar(@ary));
 
 # do subpatterns generate additional fields (with a limit)?
-$_ = join '|', split(/,|(-)/, "1-10,20,,,", 10);
+{
+    no warnings 'uninitialized';
+    $_ = join '|', split(/,|(-)/, "1-10,20,,,", 10);
+}
 is($_, "1|-|10||20||||||");
 @ary = split(/,|(-)/, "1-10,20,,,", 10);
 $cnt = split(/,|(-)/, "1-10,20,,,", 10);
@@ -186,7 +192,7 @@ $_ = join ':', split /^/, "ab\ncd\nef\n";
 is($_, "ab\n:cd\n:ef\n","check that split /^/ is treated as split /^/m");
 
 $_ = join ':', split /\A/, "ab\ncd\nef\n";
-is($_, "ab\ncd\nef\n","check that split /\A/ is NOT treated as split /^/m");
+is($_, "ab\ncd\nef\n",'check that split /\A/ is NOT treated as split /^/m');
 
 # see if @a = @b = split(...) optimization works
 my (@list1, @list2);
@@ -278,7 +284,7 @@ is($cnt, scalar(@ary));
     my ($alpha, $beta) = split(/\x{100}/, $s);
     ok($alpha eq "\x20\x40\x{80}" && $beta eq "\x{80}\x40\x20");
 
-    my ($alpha, $beta) = split(/\x{80}\x{100}\x{80}/, $s);
+    ($alpha, $beta) = split(/\x{80}\x{100}\x{80}/, $s);
     ok($alpha eq "\x20\x40" && $beta eq "\x40\x20");
 
   {
@@ -286,7 +292,8 @@ is($cnt, scalar(@ary));
 	ok($alpha eq "\x20" && $beta eq "\x{100}\x{80}\x40\x20");
   }
 
-    my ($alpha, $beta, $c) = split(/[\x40\x{80}]+/, $s);
+    my $c;
+    ($alpha, $beta, $c) = split(/[\x40\x{80}]+/, $s);
     ok($alpha eq "\x20" && $beta eq "\x{100}" && $c eq "\x20");
 }
 
@@ -402,7 +409,7 @@ is($cnt, scalar(@ary));
     my $x;
     my @a = split /,/, ',,,,,';
     $a[3]=1;
-    my $x = \$a[2];
+    $x = \$a[2];
     is (ref $x, 'SCALAR', '#28938 - garbage after extend');
 }
 
@@ -482,7 +489,7 @@ is($cnt, scalar(@ary));
         @results = split $cond ? qr/ / : " ", $expr;
         push @seq, scalar(@results) . ":" . $results[-1];
     }
-    my $exp;
+    my $exp = '';
     is join(" ", @seq), "1:foo 3:foo 1:foo 3:foo 1:foo",
         qq{split(\$cond ? qr/ / : " ", "$exp") behaves as expected over repeated similar patterns};
 }
@@ -662,10 +669,10 @@ is "@a", '1 2 3', 'assignment to split-to-array (stacked)';
 }
 
 fresh_perl_is(<<'CODE', '', {}, "scalar split stack overflow");
-map{int"";split//.0>60for"0000000000000000"}split// for"00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
+no warnings q|void|;no warnings q|numeric|;map{int"";split//.0>60for"0000000000000000"}split// for"00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
 CODE
 
-# RT #132334: /o modifier no longer has side effects on split
+note('RT #132334 [GH 16204]: /o modifier no longer has side effects on split');
 {
     my @records = (
         { separator => '0', effective => '',  text => 'ab' },

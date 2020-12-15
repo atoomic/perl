@@ -74,7 +74,7 @@ foreach (<DATA>) {
 		    print "# $id: @_";
 		    push @warnings, "@_";
 		};
-		unpack 'C0U*', $octets;
+		my @vals = unpack 'C0U*', $octets;
 	    }
 
 	    unless (is(scalar @warnings, $expect, "Expected number of warnings for $id seen")) {

@@ -50,6 +50,7 @@ use Tie::Hash;
 my ($alpha, %h); $a = tie %h, 'Tie::StdHash';
 untie %h;
 EXPECT
+untie attempted while 1 inner references still exist at - line 4.
 ########
 
 # NAME standard behaviour, with 1 extra reference via tied
@@ -58,6 +59,7 @@ my %h; tie %h, 'Tie::StdHash';
 my $alpha = tied %h;
 untie %h;
 EXPECT
+untie attempted while 1 inner references still exist at - line 5.
 ########
 
 # NAME standard behaviour, with 1 extra reference which is destroyed
@@ -216,6 +218,7 @@ sub Self3::PRINT     { $printed = 1; }
 die "IO tied to TEMP glob not PRINTed" unless $printed == 1;
 die "IO tied to TEMP glob not DESTROYed" unless $destroyed == 1;
 EXPECT
+Can't call method "PRINT" on an undefined value at - line 10.
 ########
 
 # NAME Interaction of tie and vec
@@ -347,12 +350,13 @@ print $s, "\n";
 EXPECT
 SCALAR SCALAR SCALAR SCALAR
 ########
-# NAME [perl #23287] segfault in untie
+# NAME [perl #23287] [gh #6697] segfault in untie
 sub TIESCALAR { bless $_[1], $_[0] }
 my $var;
 tie $var, 'main', \$var;
 untie $var;
 EXPECT
+untie attempted while 1 inner references still exist at - line 4.
 ########
 # NAME Test case from perlmonks by runrig
 # http://www.perlmonks.org/index.pl?node_id=273490
@@ -439,7 +443,8 @@ package TieDollarComma;
 
 sub TIESCALAR {
      my $pkg = shift;
-     return bless \my $x, $pkg;
+     no warnings 'shadow';
+     return bless \my ($x, $pkg);
 }
 
 sub STORE {
@@ -561,6 +566,7 @@ not empty
 FIRSTKEY
 empty
 ########
+# NAME Floating point number
 sub TIESCALAR { bless {} }
 sub FETCH { my $x = 3.3; 1 if 0+$x; $x }
 my $h; tie $h, "main";
@@ -568,6 +574,7 @@ print $h,"\n";
 EXPECT
 3.3
 ########
+# NAME Postincrement
 sub TIESCALAR { bless {} }
 sub FETCH { shift()->{i} ++ }
 my $h; tie $h, "main";
@@ -575,10 +582,10 @@ print $h.$h;
 EXPECT
 01
 ########
+# NAME Bug 53482 (and maybe others)
 # our $IS_EBCDIC; SKIP ? $IS_EBCDIC
 # skipped on EBCDIC because "2" | "8" is 0xFA (not COLON as it is on ASCII),
 # which isn't representable in this file's UTF-8 encoding.
-# Bug 53482 (and maybe others)
 
 sub TIESCALAR { my $foo = $_[1]; bless \$foo, $_[0] }
 sub FETCH { ${$_[0]} }
@@ -662,6 +669,7 @@ my $pm;
 
 sub do_require {
     my ($str, $eval) = @_;
+    $str = '';
     open my $fh, '>', $file or die "Can't create $file: $!\n";
     print $fh $str;
     close $fh;
@@ -731,7 +739,7 @@ for my $action(qw(eval require)) {
 }
 1 while unlink $file;
 
-$foo{'exit'};
+{ no warnings 'void'; $foo{'exit'}; }
 print "overshot main\n"; # shouldn't reach here
 
 EXPECT
@@ -749,7 +757,7 @@ require: s3=REQUIRE-0-RQ
 
 sub TIEARRAY { bless [], $_[0] }
 sub TIEHASH  { bless [], $_[0] }
-sub FETCH { $_[0]->[$_[1]] }
+sub FETCH { no warnings 'numeric'; $_[0]->[$_[1]] }
 sub STORE { $_[0]->[$_[1]] = $_[2] }
 
 
@@ -848,33 +856,33 @@ fetching... <=> 1
 }
 my $o = bless [], 'overloaded';
 
-sub TIESCALAR { bless {}, "" }
+sub TIESCALAR { no warnings 'misc'; bless {}, "" }
 sub FETCH { print "fetching... "; $o }
 sub STORE{}
 my $ghew; tie $ghew, "";
 
-my (@spled, %frit, $drile);
-$ghew=undef; 1+$ghew; print "\n";
-$ghew=undef; $ghew**1; print "\n";
-$ghew=undef; $ghew*1; print "\n";
-$ghew=undef; $ghew/1; print "\n";
-$ghew=undef; $ghew%1; print "\n";
-$ghew=undef; $ghew-1; print "\n";
-$ghew=undef; -$ghew; print "\n";
-$ghew=undef; int $ghew; print "\n";
-$ghew=undef; abs $ghew; print "\n";
-$ghew=undef; 1 == $ghew; print "\n";
-$ghew=undef; $ghew<1; print "\n";
-$ghew=undef; $ghew>1; print "\n";
-$ghew=undef; $ghew<=1; print "\n";
-$ghew=undef; $ghew >=1; print "\n";
-$ghew=undef; $ghew != 1; print "\n";
-$ghew=undef; $ghew<=>1; print "\n";
-$ghew=undef; <$ghew>; print "\n";
-$ghew=\*shrext; *$ghew; print "\n";
-$ghew=\@spled; @$ghew; print "\n";
-$ghew=\%frit; %$ghew; print "\n";
-$ghew=\$drile; $$ghew; print "\n";
+my (@spled, %frit, $drile, $t);
+$ghew=undef; $t = 1+$ghew; print "\n";
+$ghew=undef; $t = $ghew**1; print "\n";
+$ghew=undef; $t = $ghew*1; print "\n";
+$ghew=undef; $t = $ghew/1; print "\n";
+$ghew=undef; $t = $ghew%1; print "\n";
+$ghew=undef; $t = $ghew-1; print "\n";
+$ghew=undef; $t = -$ghew; print "\n";
+$ghew=undef; $t = int $ghew; print "\n";
+$ghew=undef; $t = abs $ghew; print "\n";
+$ghew=undef; $t = 1 == $ghew; print "\n";
+$ghew=undef; $t = $ghew<1; print "\n";
+$ghew=undef; $t = $ghew>1; print "\n";
+$ghew=undef; $t = $ghew<=1; print "\n";
+$ghew=undef; $t = $ghew >=1; print "\n";
+$ghew=undef; $t = $ghew != 1; print "\n";
+$ghew=undef; $t = $ghew<=>1; print "\n";
+$ghew=undef; $t = <$ghew>; print "\n";
+{ no warnings 'once'; $ghew=\*shrext; $t = *$ghew; print "\n"; }
+$ghew=\@spled; $t = @$ghew; print "\n";
+$ghew=\%frit; $t = %$ghew; print "\n";
+$ghew=\$drile; $t = $$ghew; print "\n";
 EXPECT
 fetching... +
 fetching... **
@@ -934,7 +942,7 @@ called=2
 sub IO::File::TIEARRAY {
     die "Did not want to invoke IO::File::TIEARRAY";
 }
-my @a; fileno FOO; tie @a, "FOO"
+my @a; my $descriptor = fileno FOO; tie @a, "FOO"
 EXPECT
 Can't locate object method "TIEARRAY" via package "FOO" (perhaps you forgot to load "FOO"?) at - line 4.
 ########
@@ -946,6 +954,7 @@ Can't locate object method "TIESCALAR" via package "main" at - line 1.
 # NAME tie into undef package name
 my $foo; tie $foo, undef;
 EXPECT
+Use of uninitialized value in tie at - line 1.
 Can't locate object method "TIESCALAR" via package "main" at - line 1.
 ########
 # NAME tie into nonexistent glob [RT#130623 assertion failure]
@@ -1039,6 +1048,7 @@ ok
 sub TIESCALAR { bless [] }
 sub FETCH { __PACKAGE__ }
 sub STORE {}
+no warnings 'void';
 our $x; tie $x, "";
 "$x";
 {
@@ -1094,7 +1104,7 @@ sub FETCH {*foo}
 sub f::TIEHANDLE{bless[], 'f'}
 tie *foo, "f";
 my $rin; tie $rin, "";
-[$rin]; # call FETCH
+{ no warnings 'void'; [$rin]; } # call FETCH
 print ref tied $rin, "\n";
 print ref tied *$rin, "\n";
 EXPECT
@@ -1160,7 +1170,7 @@ sub STORE{}
 sub FETCH { 72 }
 tie my $x, "main";
 my $y; $x = \$y;
-\&$x;
+{ no warnings 'void'; \&$x; }
 print "ok\n";
 EXPECT
 ok
@@ -1195,7 +1205,7 @@ EXPECT
 BEGIN { unless (defined &DynaLoader::boot_DynaLoader) {
     print "HASH\nHASH\nARRAY\nARRAY\n"; exit;
 }}
-use Scalar::Util 'weaken';
+use Scalar::Util 'weaken';no warnings 'once'; 
 { package xoufghd;
   sub TIEHASH { Scalar::Util::weaken($_[1]); bless \$_[1], xoufghd:: }
   *TIEARRAY = *TIEHASH;
@@ -1248,12 +1258,12 @@ ARRAY
 
 # NAME Localising a tied variable with a typeglob in it should copy magic
 sub TIESCALAR{bless[]}
-sub FETCH{warn "fetching\n"; *foo}
+sub FETCH{no warnings 'once'; warn "fetching\n"; *foo}
 sub STORE{}
 our $x; tie $x, "";
 local $x;
 warn "before";
-"$x";
+{ no warnings 'void'; "$x"; }
 warn "after";
 EXPECT
 fetching
@@ -1318,6 +1328,7 @@ sub A::FETCH {print ++ $i, "\n"}
 my @a = ("", "", "");
 
 tie $" => 'A';
+no warnings 'void';
 "@a";
 
 $i = 0;
@@ -1390,6 +1401,7 @@ sub TIEARRAY{bless[]};
 sub FETCHSIZE{}
 my @a = ();
 tie @a, "";
+no warnings 'uninitialized';
 print "ok\n" if ! defined $a[-1];
 EXPECT
 ok
@@ -1437,7 +1449,7 @@ sub TIEARRAY{
     print \$_[1] == \$_[1] ? "ok\n" : "not ok\n";
 };
 my @a = ();
-my ($alpha, $beta);
+my ($alpha, $beta) = ('') x 2;
 tie @a, "", "$alpha$beta";
 EXPECT
 ok
@@ -1506,7 +1518,7 @@ crumpets
 # NAME tied() in list assignment
 
 sub TIESCALAR : lvalue {
-    ${+pop} = bless [], shift;
+    no warnings 'misc'; ${+pop} = bless [], shift;
 }
 my ($t, $alpha, $beta);
 tie $t, "", \$alpha;

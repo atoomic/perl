@@ -93,7 +93,7 @@ our @ISA = 'Implement';
 
 # simulate indices -2 .. 2
 my $offset = 2;
-$NegIndex::NEGATIVE_INDICES = 1;
+{ no warnings 'once'; $NegIndex::NEGATIVE_INDICES = 1; }
 
 sub FETCH {
     my ($ob,$id) = @_;
@@ -208,11 +208,12 @@ package main;
     shift @ary;                     # this didn't used to call SHIFT at  all
     is($seen{SHIFT}, 1);
     $seen{PUSH} = 0;
-    my $got = push @ary;            # this didn't used to call PUSH at all
+    my $got;
+    { no warnings 'syntax'; $got = push @ary; }       # this didn't used to call PUSH at all
     is($got, 0);
     is($seen{PUSH}, 1);
     $seen{UNSHIFT} = 0;
-    $got = unshift @ary;            # this didn't used to call UNSHIFT at all
+    { no warnings 'syntax'; $got = unshift @ary; }    # this didn't used to call UNSHIFT at all
     is($got, 0);
     is($seen{UNSHIFT}, 1);
 
@@ -288,7 +289,7 @@ is($seen{'DESTROY'}, 1, "n freed");
 
 {
     tie my @dummy, "NegFetchsize";
-    eval { "@dummy"; };
+    eval { { no warnings 'void'; "@dummy"; }; };
     like($@, qr/^FETCHSIZE returned a negative value/,
 	 " - croak on negative FETCHSIZE");
 }

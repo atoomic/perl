@@ -9,18 +9,18 @@ BEGIN {
 plan(26);
 
 my $tmpfile = tempfile();
-open (tmp,'>', $tmpfile) || die "Can't create Cmd_while.tmp.";
-print tmp "tvi925\n";
-print tmp "tvi920\n";
-print tmp "vt100\n";
-print tmp "Amiga\n";
-print tmp "paper\n";
-close tmp or die "Could not close: $!";
+open (TMP,'>', $tmpfile) || die "Can't create Cmd_while.tmp.";
+print TMP "tvi925\n";
+print TMP "tvi920\n";
+print TMP "vt100\n";
+print TMP "Amiga\n";
+print TMP "paper\n";
+close TMP or die "Could not close: $!";
 
 # test "last" command
 
-open(fh, $tmpfile) || die "Can't open Cmd_while.tmp.";
-while (<fh>) {
+open(FH, $tmpfile) || die "Can't open Cmd_while.tmp.";
+while (<FH>) {
     last if /vt100/;
 }
 ok(!eof && /vt100/);
@@ -28,18 +28,18 @@ ok(!eof && /vt100/);
 # test "next" command
 
 my $bad = '';
-open(fh, $tmpfile) || die "Can't open Cmd_while.tmp.";
-while (<fh>) {
+open(FH, $tmpfile) || die "Can't open Cmd_while.tmp.";
+while (<FH>) {
     next if /vt100/;
     $bad = 1 if /vt100/;
 }
-ok(eof && !/vt100/ && !$bad);
+{ no warnings 'uninitialized'; ok(eof && !/vt100/ && !$bad); }
 
 # test "redo" command
 
 $bad = '';
-open(fh,$tmpfile) || die "Can't open Cmd_while.tmp.";
-while (<fh>) {
+open(FH,$tmpfile) || die "Can't open Cmd_while.tmp.";
+while (<FH>) {
     if (s/vt100/VT100/g) {
         s/VT100/Vt100/g;
         redo;
@@ -54,8 +54,8 @@ ok(eof && !$bad);
 # test "last" command
 
 my $badcont = '';
-open(fh,$tmpfile) || die "Can't open Cmd_while.tmp.";
-line: while (<fh>) {
+open(FH,$tmpfile) || die "Can't open Cmd_while.tmp.";
+line: while (<FH>) {
     if (/vt100/) {last line;}
 } continue {
     $badcont = 1 if /vt100/;
@@ -67,22 +67,22 @@ ok(!$badcont);
 
 $bad = '';
 $badcont = 1;
-open(fh,$tmpfile) || die "Can't open Cmd_while.tmp.";
-entry: while (<fh>) {
+open(FH,$tmpfile) || die "Can't open Cmd_while.tmp.";
+entry: while (<FH>) {
     next entry if /vt100/;
     $bad = 1 if /vt100/;
 } continue {
     $badcont = '' if /vt100/;
 }
-ok(eof && !/vt100/ && !$bad);
+{ no warnings 'uninitialized'; ok(eof && !/vt100/ && !$bad); }
 ok(!$badcont);
 
 # test "redo" command
 
 $bad = '';
 $badcont = '';
-open(fh,$tmpfile) || die "Can't open Cmd_while.tmp.";
-loop: while (<fh>) {
+open(FH,$tmpfile) || die "Can't open Cmd_while.tmp.";
+loop: while (<FH>) {
     if (s/vt100/VT100/g) {
         s/VT100/Vt100/g;
         redo loop;
@@ -95,7 +95,7 @@ loop: while (<fh>) {
 ok(eof && !$bad);
 ok(!$badcont);
 
-close(fh) || die "Can't close Cmd_while.tmp.";
+close(FH) || die "Can't close Cmd_while.tmp.";
 
 my $i = 9;
 {
@@ -219,8 +219,8 @@ sub save_context { $_[0] = wantarray; $_[1] }
 }
 
 fresh_perl_is <<'72406', "foobar\n", {},
-{ package o; use overload bool => sub { die unless $::ok++; return 1 } }
+{ package o; use overload bool => sub { no warnings 'once'; die unless $::ok++; return 1 } }
 use constant OK => bless [], o::;
 do{print("foobar\n");}until OK;
 72406
-    "[perl #72406] segv with do{}until CONST where const is not folded";
+    "[perl #72406] [gh #10117] segv with do{}until CONST where const is not folded";
