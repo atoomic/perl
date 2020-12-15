@@ -15,10 +15,13 @@ is('-' x 3.1, '---',    'compile time 3.1');
 is('-' x 3.9, '---',    'compile time 3.9');
 is('-' x 1, '-',        '  x 1');
 is('-' x 0, '',         '  x 0');
-is('-' x -1, '',        '  x -1');
-is('-' x undef, '',     '  x undef');
-is('-' x "foo", '',     '  x "foo"');
-is('-' x "3rd", '---',  '  x "3rd"');
+{ no warnings 'numeric'; is('-' x -1, '',        '  x -1'); }
+{ no warnings 'uninitialized'; is('-' x undef, '',     '  x undef'); }
+{
+    no warnings 'numeric';
+    is('-' x "foo", '',     '  x "foo"');
+    is('-' x "3rd", '---',  '  x "3rd"');
+}
 
 is('ab' x 3, 'ababab',  '  more than one char');
 
@@ -30,17 +33,20 @@ is($alpha x 3.1, '---',     '  x 3.1');
 is($alpha x 3.9, '---',     '  x 3.9');
 is($alpha x 1, '-',         '  x 1');
 is($alpha x 0, '',          '  x 0');
-is($alpha x -3, '',         '  x -3');
-is($alpha x undef, '',      '  x undef');
-is($alpha x "foo", '',      '  x "foo"');
-is($alpha x "3rd", '---',   '  x "3rd"');
+{ no warnings 'numeric'; is($alpha x -3, '',         '  x -3'); }
+{ no warnings 'uninitialized'; is($alpha x undef, '',      '  x undef'); }
+{
+    no warnings 'numeric';
+    is($alpha x "foo", '',      '  x "foo"');
+    is($alpha x "3rd", '---',   '  x "3rd"');
+}
 
 $alpha = 'ab';
 is($alpha x 3, 'ababab',    '  more than one char');
 $alpha = 'ab';
 is($alpha x 0, '',          '  more than one char');
 $alpha = 'ab';
-is($alpha x -12, '',        '  more than one char');
+{ no warnings 'numeric'; is($alpha x -12, '',        '  more than one char'); }
 
 $alpha = 'xyz';
 $alpha x= 2;
@@ -61,8 +67,11 @@ is(join(':', (9) x 4),      '9:9:9:9',              '(X) x Y');
 is(join(':', (9,9) x 4),    '9:9:9:9:9:9:9:9',      '(X,X) x Y');
 is(join('', (split(//,"123")) x 2), '123123',       'split and x');
 
-is(join('', @x x -12),      '',                     '@x x -12');
-is(join('', (@x) x -14),    '',                     '(@x) x -14');
+{
+    no warnings 'numeric';
+    is(join('', @x x -12),      '',                     '@x x -12');
+    is(join('', (@x) x -14),    '',                     '(@x) x -14');
+}
 
 my $beta;
 ($alpha, (undef)x5, $beta) = 1..10;
@@ -144,11 +153,11 @@ is(77, scalar ((1,7)x2),    'stack truncation');
 
 # ( )x in void context should not read preceding stack items
 package Tiecount {
-    sub TIESCALAR { bless[]} sub FETCH { our $Tiecount++; study; 3 }
+    sub TIESCALAR { bless[]} sub FETCH { no warnings 'uninitialized'; our $Tiecount++; study; 3 }
 }
 sub nil {}
 tie my $t, "Tiecount";
-{ push my @temp, $t, scalar((nil) x 3, 1) }
+{ no warnings 'void'; no warnings 'uninitialized'; push my @temp, $t, scalar((nil) x 3, 1) }
 is($Tiecount::Tiecount, 1,
    '(...)x... in void context in list (via scalar comma)');
 
@@ -197,7 +206,7 @@ is($@, "", "RT #130247");
 
 # yes, the newlines matter
 fresh_perl_is(<<'PERL', "", { stderr => 1 }, "(perl #133778) MARK mishandling");
-map{s[][];eval;0}<DATA>__END__
+no warnings q|uninitialized|;map{s[][];eval;0}<DATA>__END__
 
 
 

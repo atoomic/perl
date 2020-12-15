@@ -62,6 +62,7 @@ isnt("$fh", "$fh{abc}");
 fresh_perl_like(<<'EOP', qr/^no crash/, {}, 'GH #9813');
   eval {
     my $x = ".";
+    no warnings 'io';
     my @files = readdir($x);
   };
   print "no crash";
