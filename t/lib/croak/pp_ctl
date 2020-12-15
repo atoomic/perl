@@ -22,7 +22,7 @@ given is experimental at - line 2.
 Can't "goto" into a "given" block at - line 2.
 ########
 # NAME goto into expression
-no warnings 'deprecated';
+no warnings 'deprecated'; no warnings 'void';
 eval { goto a; 1 + do { a: } }; warn $@;
 eval { goto b; meth { b: }   }; warn $@;
 eval { goto c; map { c: } () }; warn $@;
