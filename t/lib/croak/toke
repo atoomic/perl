@@ -510,6 +510,7 @@ Execution of - aborted due to compilation errors.
 0x_;
 0b;
 EXPECT
+Misplaced _ in number at - line 3.
 No digits found for hexadecimal literal at - line 1, near "0x "
 No digits found for hexadecimal literal at - line 2, near "0xx"
 No digits found for hexadecimal literal at - line 3, near "0x_;"
