@@ -87,6 +87,7 @@ use Symbol qw(qualify qualify_to_ref);  # must import into this package too
 
 # tests for delete_package
 package main;
+no warnings 'once';
 $Transient::variable = 42;
 ok( exists $::{'Transient::'}, 'transient stash exists' );
 ok( defined $Transient::{variable}, 'transient variable in stash' );
