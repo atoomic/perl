@@ -7,16 +7,20 @@ our $local_tests = 6;
 require "../t/lib/common.pl";
 
 eval qq(use strict 'garbage');
-like($@, qr/^Unknown 'strict' tag\(s\) 'garbage'/);
+like($@, qr/^Unknown 'strict' tag\(s\) 'garbage'/,
+    "Caught exception for unknown stricture with 'use'");
 
 eval qq(no strict 'garbage');
-like($@, qr/^Unknown 'strict' tag\(s\) 'garbage'/);
+like($@, qr/^Unknown 'strict' tag\(s\) 'garbage'/,
+    "Caught exception for unknown stricture with 'no'");
 
 eval qq(use strict qw(foo bar));
-like($@, qr/^Unknown 'strict' tag\(s\) 'foo bar'/);
+like($@, qr/^Unknown 'strict' tag\(s\) 'foo bar'/,
+    "Caught exception for unknown strictures with 'use'");
 
 eval qq(no strict qw(foo bar));
-like($@, qr/^Unknown 'strict' tag\(s\) 'foo bar'/);
+like($@, qr/^Unknown 'strict' tag\(s\) 'foo bar'/,
+    "Caught exception for unknown strictures with 'no'");
 
 eval 'use v5.12; use v5.10; ${"c"}';
 is($@, '', 'use v5.10 disables implicit strict refs');
