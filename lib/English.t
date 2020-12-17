@@ -26,9 +26,12 @@ foo(1);
 
 "abc" =~ /b/;
 
-ok( !$PREMATCH, '$PREMATCH undefined' );
-ok( !$MATCH, '$MATCH undefined' );
-ok( !$POSTMATCH, '$POSTMATCH undefined' );
+{
+    no warnings 'once';
+    ok( !$PREMATCH, '$PREMATCH undefined' );
+    ok( !$MATCH, '$MATCH undefined' );
+    ok( !$POSTMATCH, '$POSTMATCH undefined' );
+}
 
 $OFS = " ";
 $ORS = "\n";
@@ -69,7 +72,10 @@ is( $ACCUMULATOR, $^A, '$ACCUMULATOR' );
 
 undef $OUTPUT_FIELD_SEPARATOR;
 
-if ($threads) { $" = "\n" } else { $LIST_SEPARATOR = "\n" };
+{
+    no warnings 'once';
+    if ($threads) { $" = "\n" } else { $LIST_SEPARATOR = "\n" };
+}
 my @foo = (8, 9);
 @foo = split(/\n/, "@foo");
 is( $foo[0], 8, '$"' );
@@ -157,9 +163,12 @@ use English qw( -no_match_vars ) ;
 
 "abc" =~ /b/;
 
-main::ok( !$PREMATCH, '$PREMATCH disabled' );
-main::ok( !$MATCH, '$MATCH disabled' );
-main::ok( !$POSTMATCH, '$POSTMATCH disabled' );
+{
+    no warnings 'once';
+    main::ok( !$PREMATCH, '$PREMATCH disabled' );
+    main::ok( !$MATCH, '$MATCH disabled' );
+    main::ok( !$POSTMATCH, '$POSTMATCH disabled' );
+}
 
 
 # Check that both variables change when localized.
