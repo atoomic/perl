@@ -1,5 +1,9 @@
 # copied over from JSON::XS and modified to use JSON::PP
-
+package JSON::PP::freeze;
+1;
+package JSON::PP::tojson;
+1;
+package main;
 use strict;
 use Test::More;
 BEGIN { plan tests => 20 };
