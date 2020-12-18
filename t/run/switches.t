@@ -115,7 +115,7 @@ SKIP: {
 
     local $ENV{'LC_ALL'} = 'C'; # Keep the test simple: expect English
     local $ENV{LANGUAGE} = 'C';
-    setlocale(LC_ALL, "C");
+    setlocale('LC_ALL', "C");
 
     # Win32 won't let us open the directory, so we never get to die with
     # EISDIR, which happens after open.
