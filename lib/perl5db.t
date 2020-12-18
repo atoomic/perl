@@ -6,7 +6,6 @@ BEGIN {
     require './test.pl';
 }
 
-use warnings;
 use Config;
 
 delete $ENV{PERLDB_OPTS};
