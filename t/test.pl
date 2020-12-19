@@ -1274,7 +1274,12 @@ sub run_multiple_progs {
 	    $prog = shift @files;
 	}
 
+#print STDERR "CCC: file: $file\n" if $file =~ m{lib/warnings/};
 	open my $fh, '>', $tmpfile or die "Cannot open >$tmpfile: $!";
+    if ($file =~ m{lib/warnings/}) {
+        #print STDERR "DDD: file: $file\n";
+        print $fh q|no warnings;|;
+    }
 	print $fh q{
         BEGIN {
             push @INC, '.';
@@ -1285,11 +1290,13 @@ sub run_multiple_progs {
 	print $fh "\n#line 1\n";  # So the line numbers don't get messed up.
 	print $fh $prog,"\n";
 	close $fh or die "Cannot close $tmpfile: $!";
+    #print STDERR "EEE $tmpfile\n";
 	my $results = runperl( stderr => 1, progfile => $tmpfile,
 			       stdin => undef, $up
 			       ? (switches => ["-I$up/lib", $switch], nolib => 1)
 			       : (switches => [$switch])
 			        );
+#sleep 30;
 	my $status = $?;
 	$results =~ s/\n+$//;
 	# allow expected output to be written as if $prog is on STDIN

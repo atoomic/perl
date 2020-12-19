@@ -1,0 +1,9 @@
+Check existing $^W functionality
+
+
+__END__
+
+# warnable code, warnings disabled
+$a =+ 3 ;
+EXPECT
+
