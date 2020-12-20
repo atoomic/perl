@@ -1,7 +1,7 @@
 __END__
 # NAME \N{U+too large} on 64-bit machine
 # SKIP ? use Config; $Config{uvsize} < 8 && "Not 64 bit"
-qr/\N{U+7FFFFFFFFFFFFFFF}/;
+no warnings 'portable'; qr/\N{U+7FFFFFFFFFFFFFFF}/;
 qr/\N{U+1_0000_0000_0000_0000}/;
 EXPECT
 Use of code point 0x1_0000_0000_0000_0000 is not allowed; the permissible max is 0x7FFFFFFFFFFFFFFF in regex; marked by <-- HERE in m/\N{U+1_0000_0000_0000_0000 <-- HERE }/ at - line 2.
@@ -15,7 +15,7 @@ Use of code point 0x1_0000_0000 is not allowed; the permissible max is 0x7FFFFFF
 ########
 # NAME \N{U+100.too large} on 64-bit machine
 # SKIP ? use Config; $Config{uvsize} < 8 && "Not 64 bit"
-qr/\N{U+100.7FFFFFFFFFFFFFFF}/;
+no warnings 'portable'; qr/\N{U+100.7FFFFFFFFFFFFFFF}/;
 qr/\N{U+100.1_0000_0000_0000_0000}/;
 EXPECT
 Use of code point 0x1_0000_0000_0000_0000 is not allowed; the permissible max is 0x7FFFFFFFFFFFFFFF in regex; marked by <-- HERE in m/\N{U+100.1_0000_0000_0000_0000 <-- HERE }/ at - line 2.

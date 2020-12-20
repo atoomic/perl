@@ -24,12 +24,12 @@ EXPECT
 Can't localize through a reference at - line 1.
 ########
 # NAME \local %$ref
-   our %hash; \local %{\%hash}
+   no warnings 'void'; our %hash; \local %{\%hash}
 EXPECT
 Can't localize through a reference at - line 1.
 ########
 # NAME \local @$ref
-   our @hash; \local @{\@hash}
+   no warnings 'void'; our @hash; \local @{\@hash}
 EXPECT
 Can't localize through a reference at - line 1.
 ########
