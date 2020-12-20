@@ -84,7 +84,8 @@ sub testit {
        my $code_ref;
        my $chomp_chop = '';
        if ($lex == 2 and ($expr =~ m/CORE::chom?p/)) {
-           $chomp_chop = "no warnings 'parenthesis';";
+           #$chomp_chop = "no warnings 'parenthesis';";
+           $chomp_chop = "";
        }
 
        if ($lexsub) {
@@ -94,7 +95,7 @@ sub testit {
            no strict 'vars';
            $code = "sub { state sub $keyword; ${chomp_chop} ${vars}() = $expr }";
            $code = "use feature 'isa';\n$code" if $keyword eq "isa";
-           ::diag("FFF: $code");
+::diag("FFF: $code");
            $code_ref = eval $code
                or die "$@ in $expr";
        }
@@ -105,7 +106,7 @@ sub testit {
            import subs $keyword;
            $code = "no strict 'vars'; sub { ${chomp_chop} ${vars}() = $expr }";
            $code = "use feature 'isa';\n$code" if $keyword eq "isa";
-           ::diag("GGG: $code");
+::diag("GGG: $code");
            $code_ref = eval $code
                or die "$@ in $expr";
        }
@@ -166,22 +167,39 @@ sub do_infix_keyword {
     testit $keyword, "$keyword(\$a, \$b)", "$keyword(\$a, \$b);", 1;
 }
 
-# test a keyword that is as tandard op/function, like 'index(...)'.
+# test a keyword that is a standard op/function, like 'index(...)'.
 # narg    - how many args to test it with
 # $parens - "foo $a, $b" is deparsed as "foo($a, $b)"
 # $dollar - an extra '$_' arg will appear in the deparsed output
 # $strong - keyword is strong
-
+our $seenQ = 0;
+our $seenR = 0;
+our $seenZ = 0;
 
 sub do_std_keyword {
+::diag("PPP: ". ++$seenZ);
     my ($keyword, $narg, $parens, $dollar, $strong) = @_;
+if ($keyword eq 'chomp' or $keyword eq 'chop') {
+    diag(join("\n" => (
+                " P1: keyword: $keyword",
+                " P2: narg:    $narg",
+                " P3: parens:  $parens",
+                " P4: dollar:  $dollar",
+                " P5: strong:: $strong"
+    )));
+}
+
+my $insert_no_warn_paren = ($keyword =~ m/chom?p/ and $narg == 2) ? 1 : 0;
 
     $SEEN_STRENGH{$keyword} = $strong;
 
     for my $core (0,1) { # if true, add CORE:: to keyword being deparsed
+::diag("QQQ: $core " . ++$seenQ);
         for my $lexsub (0,1) { # if true, define lex sub
+::diag("RRR: $lexsub " . ++$seenR);
             my @code;
             for my $do_exp(0, 1) { # first create expr, then expected-expr
+#diag("SSS: $_");
                 my @args = map "\$$_", (undef,"a".."z")[1..$narg];
                 push @args, '$_'
                     if $dollar && $do_exp && ($strong && !$lexsub or $core);
@@ -190,15 +208,34 @@ sub do_std_keyword {
                 #     deparsed properly.
                 my $lex_parens =
                     !$core && $do_exp && $lexsub && $keyword ne 'map';
-                    $args = ((!$core && !$strong) || $parens || $lex_parens)
-                        ? "($args)"
-                        :  @args ? " $args" : "";
-                push @code, (($core && !($do_exp && $strong))
+                $args = ((!$core && !$strong) || $parens || $lex_parens)
+                    ? "($args)"
+                    :  @args
+                        ? " $args"
+                        : "";
+::diag("TTT: <$args>");
+#                push @code, (($core && !($do_exp && $strong))
+#                     ? "CORE::"
+#                     : $lexsub && $do_exp
+#                        ? "CORE::" x $core
+#                        : $do_exp && !$core && !$strong
+#                            ? "test::"
+#                            : "")
+#                    . "$keyword$args;";
+                #my $insert_no_warn_paren = ($keyword =~ m/chom?p/ and $narg == 2) ? 1 :: 0;
+                my $this = (($core && !($do_exp && $strong))
                      ? "CORE::"
                      : $lexsub && $do_exp
-                       ? "CORE::" x $core
-                       : $do_exp && !$core && !$strong ? "test::" : "")
-                                           . "$keyword$args;";
+                        ? "CORE::" x $core
+                        : $do_exp && !$core && !$strong
+                            ? "test::"
+                            : "")
+                    . "$keyword$args;";
+                if ($insert_no_warn_paren && $core) {
+::diag("UUU: BINGO");
+                    $this = "no warnings 'parenthesis'; $this";
+                }
+                push @code, $this;
             }
             # code[0]: to run; code[1]: expected
             ::diag("AAA: keyword: $keyword");
