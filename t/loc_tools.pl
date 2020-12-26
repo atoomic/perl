@@ -11,8 +11,6 @@
 # for this file, and are not to be used by outside callers.
 
 use Config;
-use strict;
-use warnings;
 use feature 'state';
 
 eval { require POSIX; import POSIX 'locale_h'; };
