@@ -17,9 +17,12 @@ my $test = 0;
 print "1..2\n";
 
 # This tests whether glob assignment fails to load the tie.
-*X = *-;
-'X'=~/(?<X>X)/;
-print eval '*X{HASH}{X} || 1' ? "" :"not ","ok ",++$test,"\n";
+{
+    no warnings 'once';
+    *X = *-;
+    'X'=~/(?<X>X)/;
+    print eval '*X{HASH}{X} || 1' ? "" :"not ","ok ",++$test,"\n";
+}
 
 # And since it's a similar case we check %! as well. Note that
 # this can't be done until ../lib/Errno.pm is in place, as the

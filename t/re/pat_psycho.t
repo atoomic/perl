@@ -194,6 +194,7 @@ sub run_tests {
 	# run these in separate processes, since they set $&
 
         fresh_perl_is(<<'EOF', "ok\n", {}, 'ascii =~ /(.)/, mention $&');
+no warnings 'void';
 $&;
 my $x = 'x' x 1_000_000;
 1 while $x =~ /(.)/g;
@@ -201,6 +202,7 @@ print "ok\n";
 EOF
 
         fresh_perl_is(<<'EOF', "ok\n", {}, 'utf8 =~ /(.)/, mention $&');
+no warnings 'void';
 $&;
 local ${^UTF8CACHE} = 1; # defeat debugging
 my $x = "\x{100}" x 1_000_000;
