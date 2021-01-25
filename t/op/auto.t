@@ -50,8 +50,11 @@ cmp_ok($x{0},          '==',10000,'helem x final');
 
 my $foo;
 cmp_ok(++($foo = '99'), 'eq','100','99 incr 100');
-cmp_ok(++($foo = "99a"), 'eq','100','99a incr 100');
-cmp_ok(++($foo = "99\0a"), 'eq','100','99\0a incr 100');
+{
+    no warnings 'numeric';
+    cmp_ok(++($foo = "99a"), 'eq','100','99a incr 100');
+    cmp_ok(++($foo = "99\0a"), 'eq','100','99\0a incr 100');
+}
 cmp_ok(++($foo = 'a0'), 'eq','a1','a0 incr a1');
 cmp_ok(++($foo = 'Az'), 'eq','Ba','Az incr Ba');
 cmp_ok(++($foo = 'zz'), 'eq','aaa','zzz incr aaa');
@@ -62,7 +65,9 @@ cmp_ok(++($foo = 'zr'), 'eq','zs','zr incr zs (EBCDIC r,s non-contiguous check)'
 # test with glob copies
 
 for(qw '$x++ ++$x $x-- --$x') {
+  no warnings 'once';
   my $x = *foo;
+  no warnings 'numeric';
   ok eval "$_; 1", "$_ does not die on a glob copy";
   is $x, /-/ ? -1 : 1, "result of $_ on a glob copy";
 }

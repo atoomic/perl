@@ -155,6 +155,7 @@ not_hash($@);
 
 $avhv = [{foo=>1, bar=>2}];
 eval {
+    no warnings 'misc';
     %$avhv =~ m,^\d+/\d+,;
 };
 not_hash($@);

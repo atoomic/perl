@@ -9,7 +9,7 @@ BEGIN {
     set_up_inc(qw '../lib ../cpan/Perl-OSType/lib');
 }
 
-plan(tests => 57 + 27*14);
+plan(tests => 58 + 27*14);
 
 if ($^O =~ /MSWin32|cygwin|msys/ && !is_miniperl) {
   require Win32; # for IsAdminUser()
@@ -129,13 +129,13 @@ SKIP: {
  # Since we already have our skip block set up, we might as well put this
  # test here, too:
  # -l always treats a non-bareword argument as a file name
- system 'ln', '-s', $ro_empty_file, \*foo;
+ system 'ln', '-s', $ro_empty_file, \*Foo;
  local $^W = 1;
  my @warnings;
  local $SIG{__WARN__} = sub { push @warnings, @_ };
- is(-l \*foo, 1, '-l \*foo is a file name');
- ok($warnings[0] =~ /-l on filehandle foo/, 'warning for -l $handle');
- unlink \*foo;
+ is(-l \*Foo, 1, '-l \*Foo is a file name');
+ ok($warnings[0] =~ /-l on filehandle Foo/, 'warning for -l $handle');
+ unlink \*Foo;
 }
 # More -l $handle warning tests
 {
@@ -145,11 +145,14 @@ SKIP: {
  { no strict 'refs'; () = -l \*{"\x{3c6}oo"}; }
  like($warnings[0], qr/-l on filehandle \x{3c6}oo/,
   '-l $handle warning is utf8-clean');
- () = -l *foo;
- like($warnings[1], qr/-l on filehandle foo/,
+ () = -l *Foo;
+ like($warnings[1], qr/-l on filehandle Foo/,
   '-l $handle warning occurs for globs, not just globrefs');
- tell foo; # vivify the IO slot
- () = -l *foo{IO};
+ no warnings 'void'; # Compile-time warning
+ tell Foo; # vivify the IO slot
+ like($warnings[2], qr/^tell\(\) on unopened filehandle Foo/,
+  'Captured warning about tell on unopened filehandle');
+ () = -l *Foo{IO};
     # (element [3] because tell also warns)
  like($warnings[3], qr/-l on filehandle at/,
   '-l $handle warning occurs for iorefs as well');
@@ -233,16 +236,30 @@ for my $op (split //, "rwxoRWXOezsfdlpSbctugkTMBAC") {
     ($exp, $is) = $op eq "l" ? (1, "is") : (0, "not");
 
     $over = 0;
-    eval "-$op \$gv";
-    is( $over,      $exp,   "string overload $is called for -$op on GLOB" );
+    if ($op eq 'l') {
+        no warnings 'io';
+        eval "-$op \$gv";
+        is( $over,      $exp,   "string overload $is called for -$op on GLOB" );
+    }
+    else {
+        eval "-$op \$gv";
+        is( $over,      $exp,   "string overload $is called for -$op on GLOB" );
+    }
 
     # IO refs always get string overload called. This might be a bug.
     $op eq "t" || $op eq "T" || $op eq "B"
         and ($exp, $is) = (1, "is");
 
     $over = 0;
-    eval "-$op \$io";
-    is( $over,      $exp,   "string overload $is called for -$op on IO");
+    if ($op eq 'l') {
+        no warnings 'io';
+        eval "-$op \$io";
+        is( $over,      $exp,   "string overload $is called for -$op on IO");
+    }
+    else {
+        eval "-$op \$io";
+        is( $over,      $exp,   "string overload $is called for -$op on IO");
+    }
 
     $rv = eval "-$op \$both";
     is( $rv,        "-$op",         "correct -$op on string/-X overload" );
@@ -257,7 +274,9 @@ for my $op (split //, "rwxoRWXOezsfdlpSbctugkTMBAC") {
 
 # -l stack corruption: this bug occurred from 5.8 to 5.14
 {
- push my @foo, "bar", -l baz;
+ no warnings 'once';
+ no warnings 'io';
+ push my @foo, "bar", -l Baz;
  is $foo[0], "bar", '-l bareword does not corrupt the stack';
 }
 
@@ -290,23 +309,24 @@ SKIP: {
     -T STDERR;     # should set it to stat, since -T does a stat
     eval { -l _ }; # should die, because the last stat type is not lstat
     like $@, qr/^The stat preceding -l _ wasn't an lstat at /,
-	'-T HANDLE sets the stat type';
+        '-T HANDLE sets the stat type';
 
     # statgv should be cleared when freed
     fresh_perl_is
-	'open my $fh, "test.pl"; -r $fh; undef $fh; open my $fh2, '
-	. "q\0$Perl\0; print -B _",
-	'',
-	{ switches => ['-l'] },
-	'PL_statgv should not point to freed-and-reused SV';
+        'open my $fh, "test.pl"; -r $fh; undef $fh; open my $fh2, '
+        . "q\0$Perl\0; no warnings q|uninitialized|; print -B _",
+        '',
+        { switches => ['-l'] },
+        'PL_statgv should not point to freed-and-reused SV';
 
     # or coerced into a non-glob
     fresh_perl_is
-	'open Fh, "test.pl"; my %h; -r($h{i} = *Fh); $h{i} = 3; undef %h;'
-	. 'open my $fh2, ' . "q\0" . which_perl() . "\0; print -B _",
-	'',
-	{ switches => ['-l'] },
-	'PL_statgv should not point to coerced-freed-and-reused GV';
+        'open Fh, "test.pl"; my %h; -r($h{i} = *Fh); $h{i} = 3; undef %h;'
+        . 'open my $fh2, ' . "q\0" . which_perl()
+        . "\0; no warnings q|uninitialized|; print -B _",
+        '',
+        { switches => ['-l'] },
+        'PL_statgv should not point to coerced-freed-and-reused GV';
 
     # -T _ should work after stat $ioref
     open my $fh, 'test.pl';
@@ -321,14 +341,20 @@ SKIP: {
     # -T _ on closed filehandle should still reset stat info
     stat $fh;
     close $fh;
-    -T _;
-    isnt(stat _, 1, '-T _ on closed filehandle resets stat info');
+    {
+        no warnings 'unopened';
+        -T _;
+        isnt(stat _, 1, '-T _ on closed filehandle resets stat info');
+    }
 
-    lstat "test.pl";
-    -T $fh; # closed
-    eval { lstat _ };
-    like $@, qr/^The stat preceding lstat\(\) wasn't an lstat at /,
-	'-T on closed handle resets last stat type';
+    {
+        no warnings 'closed';
+        lstat "test.pl";
+        -T $fh; # closed
+        eval { lstat _ };
+        like $@, qr/^The stat preceding lstat\(\) wasn't an lstat at /,
+        '-T on closed handle resets last stat type';
+    }
 
     # Fatal warnings should not affect the setting of errno.
     $! = 7;
@@ -338,7 +364,7 @@ SKIP: {
     eval { use warnings FATAL => 'unopened'; -T 'cradd' };
     my $errno2 = $!;
     is $errno2, $errno,
-	'fatal warnings do not affect errno after -T BADHADNLE';
+        'fatal warnings do not affect errno after -T BADHADNLE';
 }
 
 is runperl(prog => '-T _', switches => ['-w'], stderr => 1), "",
@@ -357,6 +383,7 @@ SKIP: {
 {
     stat "test.pl";
     # This GV has no IO
+    no warnings 'unopened';
     -r *phlon;
     my $failed_stat1 = stat _;
 
@@ -365,22 +392,23 @@ SKIP: {
     my $failed_stat2 = stat _;
 
     is $failed_stat2, $failed_stat1,
-	'failed -r($gv_without_io) with and w/out fatal warnings';
+        'failed -r($gv_without_io) with and w/out fatal warnings';
 
     stat "test.pl";
-    -r cength;  # at compile time autovivifies IO, but with no fp
+    -r Cength;  # at compile time autovivifies IO, but with no fp
     $failed_stat1 = stat _;
 
     stat "test.pl";
-    eval { use warnings FATAL => 'unopened'; -r cength };
+    eval { use warnings FATAL => 'unopened'; -r Cength };
     $failed_stat2 = stat _;
     
     is $failed_stat2, $failed_stat1,
-	'failed -r($gv_with_io_but_no_fp) with and w/out fatal warnings';
+        'failed -r($gv_with_io_but_no_fp) with and w/out fatal warnings';
 } 
 
 {
     # [perl #131895] stat() doesn't fail on filenames containing \0 / NUL
+    no warnings 'syscalls';
     ok(!-T "TEST\0-", '-T on name with \0');
     ok(!-B "TEST\0-", '-B on name with \0');
     ok(!-f "TEST\0-", '-f on name with \0');

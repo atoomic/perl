@@ -72,7 +72,7 @@ my $foo = 'foo'; local1($foo); local1($foo);
 is($foo, 'foo',
     "got 'foo' as expected rather than '\$foo': RT \#21542");
 
-sub local2 { local $_[0]; last L }
+sub local2 { no warnings 'exiting'; local $_[0]; last L }
 L: { local2 }
 pass("last to label");
 

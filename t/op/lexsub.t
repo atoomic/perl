@@ -37,6 +37,7 @@ package main;
   a(1);
   sub bar::b { 43 }
   our sub b;
+  no warnings 'shadow';
   our sub b {
     if (shift) {
       package bar;
@@ -135,6 +136,7 @@ is &foo, 43, 'state sub falling out of scope (called via amper)';
   sa(1);
   sub sb { 43 }
   state sub sb;
+  no warnings 'shadow';
   state sub sb {
     if (shift) {
       # ‘state sub foo{}’ creates a new pad entry, not reusing the forward
@@ -323,7 +325,7 @@ sub make_anon_with_state_sub{
   pass 'state subs are never special blocks';
   state sub END { shift }
   no strict 'subs';
-  is eval{END('jkqeudth')}, jkqeudth,
+  is eval{END('Jkqeudth')}, Jkqeudth,
     'state sub END {shift} implies @_, not @ARGV';
   state sub CORE { scalar reverse shift }
   is CORE::uc("hello"), "HELLO",
@@ -353,6 +355,7 @@ sub make_anon_with_state_sub{
   is x, 3, 'state sub defined inside eval';
 
   sub r {
+    no warnings 'redefine';
     state sub foo { 3 };
     if (@_) { # outer call
       r();
@@ -389,6 +392,7 @@ like runperl(
 {
   state sub foo;
   *cvgv = \&foo;
+  no warnings 'once';
   local *cvgv2 = *cvgv;
   eval 'sub cvgv2 {42}'; # uses the stub already present
   is foo, 42, 'defining state sub body via package sub declaration';
@@ -498,6 +502,7 @@ is &foo, 43, 'my sub falling out of scope (called via amper)';
   ma(1);
   sub mb { 43 }
   my sub mb;
+  no warnings 'shadow';
   my sub mb {
     if (shift) {
       # ‘my sub foo{}’ creates a new pad entry, not reusing the forward
@@ -514,6 +519,7 @@ is &foo, 43, 'my sub falling out of scope (called via amper)';
   mb(1);
   sub mb2 { 43 }
   my sub sb2;
+  no warnings 'redefine';
   sub mb2 {
     if (shift) {
       package bar;
@@ -561,6 +567,7 @@ package main;
   is prototype eval{\&me}, '$', 'my sub with proto';
   is prototype "me", undef, 'prototype "..." ignores my subs';
 
+  no warnings 'illegalproto';
   my $coderef = eval "my sub foo (\$\x{30cd}) {1}; \\&foo";
   my $proto = prototype $coderef;
   ok(utf8::is_utf8($proto), "my sub with UTF8 proto maintains the UTF8ness");
@@ -664,7 +671,7 @@ sub make_anon_with_my_sub{
   pass 'my subs are never special blocks';
   my sub END { shift }
   no strict 'subs';
-  is END('jkqeudth'), jkqeudth,
+  is END('Jkqeudth'), Jkqeudth,
     'my sub END {shift} implies @_, not @ARGV';
 }
 {
@@ -721,6 +728,7 @@ sub not_lexical10 {
     my sub bar {
       my $x = 'khaki car keys for the khaki car';
       not_lexical10();
+      no warnings 'closure';
       sub foo {
        is $x, 'khaki car keys for the khaki car',
        'mysubs in inner clonables use the running clone of their CvOUTSIDE'
@@ -773,6 +781,7 @@ like runperl(
   state $stuff;
   package A {
     my sub foo{ $stuff .= our $AUTOLOAD }
+    no warnings 'redefine';
     *A::AUTOLOAD = \&foo;
   }
   A::bar();
@@ -786,6 +795,7 @@ like runperl(
 {
   my sub foo;
   *mcvgv = \&foo;
+  no warnings 'once';
   local *mcvgv2 = *mcvgv;
   eval 'sub mcvgv2 {42}'; # uses the stub already present
   is foo, 42, 'defining my sub body via package sub declaration';
@@ -885,6 +895,7 @@ sub not_lexical2 {
   my sub bar;
   sub not_lexical3 {
     not_lexical2();
+    no warnings 'closure';
     sub bar { $x }
   };
   bar
@@ -901,6 +912,7 @@ sub not_lexical5 {
   sub not_lexical4 {
     my $x = 234;
     not_lexical5();
+    no warnings 'closure';
     sub foo { $x }
   }
   foo
@@ -917,18 +929,21 @@ undef *not_lexical6;
 
 undef &not_lexical7;
 eval 'sub not_lexical7 { my @x }';
-{
-  my sub foo;
-  foo();
-  sub not_lexical7 {
-    state $x;
-    sub foo {
-      is ref \$x, 'SCALAR',
-        "redeffing a mysub's outside does not make it use the wrong pad"
-    }
-  }
-}
 
+{
+    no warnings q|closure|;
+    {
+      my sub foo;
+      foo();
+      sub not_lexical7 {
+        state $x;
+        sub foo {
+          is ref \$x, 'SCALAR',
+            "redeffing a mysub's outside does not make it use the wrong pad"
+        }
+      }
+    }
+}
 like runperl(
       switches => [ '-Mfeature=lexical_subs,state', '-Mwarnings=FATAL,all', '-M-warnings=experimental::lexical_subs' ],
       prog     => 'my sub foo; sub foo { foo } foo',
@@ -947,6 +962,7 @@ like runperl(
 
 {
   my sub foo;
+  no warnings 'once';
   *AutoloadTestSuper::blah = \&foo;
   sub AutoloadTestSuper::AUTOLOAD {
     is $AutoloadTestSuper::AUTOLOAD, "AutoloadTestSuper::blah",
@@ -959,7 +975,7 @@ like runperl(
 # This used to crash because op.c:find_lexical_cv was looking at the wrong
 # CV’s OUTSIDE pointer.  [perl #124099]
 {
-  my sub h; sub{my $x; sub{h}}
+  no warnings 'void'; my sub h; sub{my $x; sub{h}}
 }
 
 is join("-", qw(aa bb), do { my sub lleexx; 123 }, qw(cc dd)),

@@ -19,14 +19,17 @@ use feature qw( fc );
 
 plan tests => 139 + 2 * (4 * 256) + 15;
 
-is(lc(undef),	   "", "lc(undef) is ''");
-is(lcfirst(undef), "", "lcfirst(undef) is ''");
-is(uc(undef),	   "", "uc(undef) is ''");
-is(ucfirst(undef), "", "ucfirst(undef) is ''");
+{
+    no warnings 'uninitialized';
+    is(lc(undef),	   "", "lc(undef) is ''");
+    is(lcfirst(undef), "", "lcfirst(undef) is ''");
+    is(uc(undef),	   "", "uc(undef) is ''");
+    is(ucfirst(undef), "", "ucfirst(undef) is ''");
+}
 
 {
     no feature 'fc';
-    is(CORE::fc(undef), "", "fc(undef) is ''");
+    { no warnings 'uninitialized'; is(CORE::fc(undef), "", "fc(undef) is ''"); }
     is(CORE::fc(''),    "", "fc('') is ''");
 
     local $@;
@@ -36,7 +39,7 @@ is(ucfirst(undef), "", "ucfirst(undef) is ''");
     {
         use feature 'fc';
         local $@;
-        eval { fc("eeyup") };
+        eval { no warnings 'void'; fc("eeyup") };
         ok(!$@, "...but works after requesting the feature");
     }
 }
@@ -262,27 +265,30 @@ for (1, 4, 9, 16, 25) {
        'fc U+03B0 grows threefold');
 }
 
-# bug #43207
-my $temp = "HellO";
-for ("$temp") {
-    lc $_;
-    is($_, "HellO", '[perl #43207] lc($_) modifying $_');
-}
-for ("$temp") {
-    fc $_;
-    is($_, "HellO", '[perl #43207] fc($_) modifying $_');
-}
-for ("$temp") {
-    uc $_;
-    is($_, "HellO", '[perl #43207] uc($_) modifying $_');
-}
-for ("$temp") {
-    ucfirst $_;
-    is($_, "HellO", '[perl #43207] ucfirst($_) modifying $_');
-}
-for ("$temp") {
-    lcfirst $_;
-    is($_, "HellO", '[perl #43207] lcfirst($_) modifying $_');
+{
+    # bug #43207
+    no warnings 'void';
+    my $temp = "HellO";
+    for ("$temp") {
+        lc $_;
+        is($_, "HellO", '[perl #43207] lc($_) modifying $_');
+    }
+    for ("$temp") {
+        fc $_;
+        is($_, "HellO", '[perl #43207] fc($_) modifying $_');
+    }
+    for ("$temp") {
+        uc $_;
+        is($_, "HellO", '[perl #43207] uc($_) modifying $_');
+    }
+    for ("$temp") {
+        ucfirst $_;
+        is($_, "HellO", '[perl #43207] ucfirst($_) modifying $_');
+    }
+    for ("$temp") {
+        lcfirst $_;
+        is($_, "HellO", '[perl #43207] lcfirst($_) modifying $_');
+    }
 }
 
 # new in Unicode 5.1.0
