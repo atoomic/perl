@@ -105,7 +105,8 @@ SKIP: {
     TODO: {
         my $why = "spaces after filename silently truncated";
         my $how_many = 1;
-        my $condition = ($^O eq "cygwin") or ($^O eq "vos");
+        my $condition;
+        { no warnings 'void'; $condition = ($^O eq "cygwin") or ($^O eq "vos"); }
         todo_skip $why, $how_many if $condition;
         is($donetests[2], 0, "file/fileCR [$donetests[2]]");
     }

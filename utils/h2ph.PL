@@ -283,7 +283,7 @@ while (defined (my $file = next_file())) {
 	    foreach my $enum (@enum_subs) {
 		my ($enum_name, $enum_value) = $enum =~ /^([a-zA-Z_]\w*)(=.+)?$/;
 		$enum_name or next;
-		$enum_value =~ s/^=//;
+		{ no warnings 'uninitialized'; $enum_value =~ s/^=//; }
 		$enum_val = (length($enum_value) ? $enum_value : $enum_val + 1);
 		if ($opt_h) {
 		    print OUT ($t,
@@ -641,6 +641,7 @@ sub next_line
             }
         }
 
+        no warnings 'uninitialized';
         last READ if $out =~ /\S/;
     }
 

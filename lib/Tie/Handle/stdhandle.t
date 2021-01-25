@@ -9,7 +9,7 @@ use Test::More tests => 29;
 
 use_ok('Tie::StdHandle');
 
-tie *tst, 'Tie::StdHandle';
+{ no warnings 'once'; tie *tst, 'Tie::StdHandle'; }
 
 our $f = 'tst';
 

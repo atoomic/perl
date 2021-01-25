@@ -129,7 +129,7 @@ is($?,0,"outer lex scope of vmsish [POSIX status]");
     my $oldtz = $ENV{'SYS$TIMEZONE_DIFFERENTIAL'};
     $ENV{'SYS$TIMEZONE_DIFFERENTIAL'} = 3600;
     eval "END { \$ENV{'SYS\$TIMEZONE_DIFFERENTIAL'} = $oldtz; }";
-    gmtime(0); # Force reset of tz offset
+    no warnings 'void'; gmtime(0); # Force reset of tz offset
   }
 
   # Unless we are prepared to parse the timezone rules here and figure out
@@ -140,7 +140,7 @@ is($?,0,"outer lex scope of vmsish [POSIX status]");
   my $file = 'sys$scratch:vmsish_t_flirble.tmp';
   open TMP, '>', $file or die "Couldn't open file $file";
   close TMP;
-  END { 1 while unlink $file; }
+  END { no warnings 'uninitialized'; 1 while unlink $file; }
 
   {
      use_ok('vmsish', 'time');

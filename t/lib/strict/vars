@@ -4,23 +4,23 @@ __END__
 
 # no strict, should build & run ok.
 no strict ;
-Fred ;
+{ no warnings 'void';  Fred; }
 my $fred ;
 $beta = "fred" ;
-$alpha = $$beta ;
+{ no warnings 'once'; $alpha = $$beta ; }
 EXPECT
 
 ########
 
 no strict 'vars' ;
-$fred ;
+no warnings 'void'; no warnings 'once'; $fred ;
 EXPECT
 
 ########
 
 use strict ;
 no strict 'vars' ;
-$fred ;
+no warnings 'void'; no warnings 'once'; $fred ;
 EXPECT
 
 ########
@@ -156,7 +156,7 @@ $jòè = 1 ;
 no strict 'vars' ;
 use utf8;
 use open qw( :utf8 :std );
-$jòè = 1 ;
+no warnings 'once'; $jòè = 1 ;
 require "./abc";
 EXPECT
 Variable "$jòè" is not imported at ./abc line 4.
@@ -394,7 +394,7 @@ sub foo {
     our $fred;
     $fred;
 }
-$fred ;
+no warnings 'void'; $fred ;
 EXPECT
 
 ########
@@ -542,7 +542,7 @@ Execution of - aborted due to compilation errors.
 ########
 # [perl #73712] [gh #10245] 'Variable is not imported' should be suppressible
 no strict 'vars';
-$dweck;
+{ no warnings 'void'; no warnings 'once'; $dweck; }
 no warnings;
 eval q/$dweck/;
 EXPECT

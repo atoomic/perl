@@ -53,9 +53,12 @@ my $handler = sub {};
 sigtrap->import(handler => $handler, 'FAKE3');
 is( $SIG{FAKE3}, $handler, 'install custom handler' );
 
-$SIG{FAKE} = 'IGNORE';
-sigtrap->import('untrapped', 'FAKE');
-is( $SIG{FAKE}, 'IGNORE', 'respect existing handler set to IGNORE' );
+{
+    no warnings 'signal';
+    $SIG{FAKE} = 'IGNORE';
+    sigtrap->import('untrapped', 'FAKE');
+    is( $SIG{FAKE}, 'IGNORE', 'respect existing handler set to IGNORE' );
+}
 
 fresh_perl_like
   '
@@ -70,10 +73,11 @@ fresh_perl_like
 ;
 
 my $out = tie *STDOUT, 'TieOut';
-$SIG{FAKE} = 'DEFAULT';
-$sigtrap::Verbose = 1;
+{ no warnings 'signal'; $SIG{FAKE} = 'DEFAULT'; }
+{ no warnings 'once'; $sigtrap::Verbose = 1; }
 sigtrap->import('any', 'FAKE');
 my $read = $out->read;
+undef $out;
 untie *STDOUT;
 is( $SIG{FAKE}, \&sigtrap::handler_traceback, 'should set default handler' );
 like( $read, qr/^Installing handler/, 'does it talk with $Verbose set?' );

@@ -7,39 +7,39 @@ no strict;
 my $fred ;
 $b = "fred" ;
 $a = $$b ;
-$c = ${"def"} ;
-$c = @{"def"} ;
-$c = %{"def"} ;
-$c = *{"def"} ;
-$c = \&{"def"} ;
-$c = def->[0];
-$c = def->{xyz};
+$c = ${"Def"} ;
+$c = @{"Def"} ;
+$c = %{"Def"} ;
+$c = *{"Def"} ;
+$c = \&{"Def"} ;
+$c = Def->[0];
+$c = Def->{xyz};
 EXPECT
 
 ########
 
 # strict refs - error
-my $str="A::Really::Big::Package::Name::To::Use"; 
+no warnings 'void'; my $str="A::Really::Big::Package::Name::To::Use"; 
 $str->{foo}= 1;
 EXPECT
 Can't use string ("A::Really::Big::Package::Name::T"...) as a HASH ref while "strict refs" in use at - line 4.
 ########
 
 # strict refs - error
-"A::Really::Big::Package::Name::To::Use" =~ /(.*)/; 
+no warnings 'void'; "A::Really::Big::Package::Name::To::Use" =~ /(.*)/; 
 ${$1};
 EXPECT
 Can't use string ("A::Really::Big::Package::Name::T"...) as a SCALAR ref while "strict refs" in use at - line 4.
 ########
 
 # strict refs - error
-*{"A::Really::Big::Package::Name::To::Use"; }
+no warnings 'void'; *{"A::Really::Big::Package::Name::To::Use"; }
 EXPECT
 Can't use string ("A::Really::Big::Package::Name::T"...) as a symbol ref while "strict refs" in use at - line 3.
 ########
 
 # strict refs - error
-"A::Really::Big::Package::Name::To::Use" =~ /(.*)/;
+no warnings 'void'; "A::Really::Big::Package::Name::To::Use" =~ /(.*)/;
 *{$1}
 EXPECT
 Can't use string ("A::Really::Big::Package::Name::T"...) as a symbol ref while "strict refs" in use at - line 4.
@@ -219,7 +219,7 @@ use strict 'refs' ;
 my $alpha = ${"Fred"} ;
 1;
 --FILE-- 
-${"Fred"} ;
+no warnings 'void'; ${"Fred"} ;
 require "./abc";
 EXPECT
 Can't use string ("Fred") as a SCALAR ref while "strict refs" in use at - line 1.
@@ -324,20 +324,20 @@ Can't use string ("Fred") as a SCALAR ref while "strict refs" in use at - line 8
 ########
 # [perl #26910] hints not propagated into (?{...})
 use strict 'refs';
-/(?{${"foo"}++})/;
+no warnings 'uninitialized'; /(?{${"foo"}++})/;
 EXPECT
 Can't use string ("foo") as a SCALAR ref while "strict refs" in use at - line 3.
 ########
 # [perl #37886] strict 'refs' doesn't apply inside defined
 use strict 'refs';
 my $x = "foo";
-defined $$x;
+no warnings 'void'; defined $$x;
 EXPECT
 Can't use string ("foo") as a SCALAR ref while "strict refs" in use at - line 4.
 ########
 # [perl #74168] Assertion failed: (SvTYPE(_svcur) >= SVt_PV), function Perl_softref2xv, file pp.c, line 240.
 use strict 'refs';
-my $o = 1 ; $o->{1} ;
+my $o = 1 ; no warnings 'void'; $o->{1} ;
 EXPECT
 Can't use string ("1") as a HASH ref while "strict refs" in use at - line 3.
 ########

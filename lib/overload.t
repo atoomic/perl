@@ -39,7 +39,7 @@ sub new {
   bless \$foo, $_[0];
 }
 
-sub stringify { "${$_[0]}" }
+sub stringify { no warnings 'uninitialized'; "${$_[0]}" }
 sub numify { 0 + "${$_[0]}" }	# Not needed, additional overhead
 				# comparing to direct compilation based on
 				# stringify
@@ -290,9 +290,12 @@ like($@, qr/no method found/);
 # Check AUTOLOADING:
 
 our $AUTOLOAD;
-*Oscalar::AUTOLOAD =
-  sub { no strict 'refs'; *{"Oscalar::$AUTOLOAD"} = sub {"_!_" . shift() . "_!_"} ;
-	goto &{"Oscalar::$AUTOLOAD"}};
+{
+    no warnings 'once';
+    *Oscalar::AUTOLOAD =
+      sub { no strict 'refs'; *{"Oscalar::$AUTOLOAD"} = sub {"_!_" . shift() . "_!_"} ;
+        goto &{"Oscalar::$AUTOLOAD"}};
+}
 
 eval "package Oscalar; sub comple; use overload '~' => 'comple'";
 
@@ -382,6 +385,7 @@ my $foo = 'foo';
 my $foo1 = 'f\'o\\o';
 my ( $q, @q, $qr, @qr, $out1, $out2 );
 {
+  no warnings 'uninitialized';
   BEGIN { $q = $qr = 7;
 	  overload::constant 'q' => sub {$q++; push @q, shift, ($_[1] || 'none'); shift},
 			     'qr' => sub {$qr++; push @qr, shift, ($_[1] || 'none'); shift}; }
@@ -417,7 +421,7 @@ EOF
 oups1
 EOF
   no strict;
-  $c = bareword;
+  $c = Bareword;
   m'try it';
   s'first part'second part';
   s/yet another/tail here/;
@@ -436,7 +440,7 @@ is($a, "_<oups
 >_");
 is($b, "_<oups1
 >_");
-is($c, "bareword");
+is($c, "Bareword");
 
 {
   package symbolic;		# Primitive symbolic calculator
@@ -938,6 +942,7 @@ unless ($aaa) {
     # check the Odd number of arguments for overload::constant warning
     my $a = "" ;
     local $SIG{__WARN__} = sub {$a = $_[0]} ;
+    no warnings 'overload';
     $x = eval ' overload::constant "integer" ; ' ;
     is($a, "");
     use warnings 'overload' ;
@@ -949,6 +954,7 @@ unless ($aaa) {
     # check the '$_[0]' is not an overloadable type warning
     my $a = "" ;
     local $SIG{__WARN__} = sub {$a = $_[0]} ;
+    no warnings 'overload';
     $x = eval ' overload::constant "fred" => sub {} ; ' ;
     is($a, "");
     use warnings 'overload' ;
@@ -960,6 +966,7 @@ unless ($aaa) {
     # check the '$_[1]' is not a code reference warning
     my $a = "" ;
     local $SIG{__WARN__} = sub {$a = $_[0]} ;
+    no warnings 'overload';
     $x = eval ' overload::constant "integer" => 1; ' ;
     is($a, "");
     use warnings 'overload' ;
@@ -971,6 +978,7 @@ unless ($aaa) {
     # check the invalid argument warning [perl #74098]
     my $a = "" ;
     local $SIG{__WARN__} = sub {$a = $_[0]} ;
+    no warnings 'overload';
     $x = eval ' use overload "~|_|~" => sub{} ' ;
     eval ' no overload "~|_|~" ' ;
     is($a, "");
@@ -1041,6 +1049,7 @@ use overload
 sub is_zero
   {
   my $self = shift;
+  no warnings 'uninitialized';
   return $self->{var} == 0;
   }
 
@@ -1142,7 +1151,7 @@ like ($@, qr/zap/);
     like(overload::StrVal([]),        qr/^ARRAY\(0x[0-9a-f]+\)$/);
     like(overload::StrVal({}),        qr/^HASH\(0x[0-9a-f]+\)$/);
     like(overload::StrVal(sub{1}),    qr/^CODE\(0x[0-9a-f]+\)$/);
-    like(overload::StrVal(\*GLOB),    qr/^GLOB\(0x[0-9a-f]+\)$/);
+    { no warnings 'once'; like(overload::StrVal(\*GLOB),    qr/^GLOB\(0x[0-9a-f]+\)$/); }
     like(overload::StrVal(\$o),       qr/^REF\(0x[0-9a-f]+\)$/);
     like(overload::StrVal(qr/a/),     qr/^Regexp=REGEXP\(0x[0-9a-f]+\)$/);
     like(overload::StrVal($o),        qr/^perl31793=ARRAY\(0x[0-9a-f]+\)$/);
@@ -1903,7 +1912,8 @@ foreach my $op (qw(<=> == != < <= > >=)) {
 	for my $sub (keys %subs) {
 	    no warnings 'experimental::smartmatch';
 	    my $term = $subs{$sub};
-	    my $t = sprintf( $term, '$_[0][0]' );
+	    my $t;
+        { no warnings 'redundant'; $t = sprintf( $term, '$_[0][0]' ); }
 	    my $e ="sub { \$funcs .= '($sub)'; my \$r; if (\$use_int) {"
 		. "use integer; \$r = ($t) } else { \$r = ($t) } \$r }";
 	    $subs{$sub} = eval $e;
@@ -2294,6 +2304,8 @@ fresh_perl_is
 # overload::Overloaded used to return incorrect results for proxy objects.
 package proxy {
     sub new { bless [$_[1]], $_[0] }
+    my $destroy = 0;
+    sub DESTROY { $destroy++ }
     sub AUTOLOAD {
        our $AUTOLOAD =~ s/.*:://;
        &_self->$AUTOLOAD;
@@ -2768,7 +2780,7 @@ package refsgalore {
     use feature 'postderef';
     use feature 'indirect';
     no strict;
-    tell myio; # vivifies *myio{IO} at compile time
+    { no warnings 'reserved'; no warnings 'unopened'; my $b = tell myio; } # vivifies *myio{IO} at compile time
     use constant ioref => bless( *myio{IO}, 'refsgalore' );
     is ioref->$*, 42, '(overloaded constant that is not a scalar ref)->$*';
     is ioref->[0], 43, '(ovrld constant that is not an array ref)->[0]';
@@ -2778,9 +2790,12 @@ package refsgalore {
 
 package xstack { use overload 'x' => sub { shift . " x " . shift },
                               '""'=> sub { "xstack" } }
-is join(",", 1..3, scalar((bless([], 'xstack')) x 3, 1), 4..6),
-  "1,2,3,1,4,5,6",
-  '(...)x... in void cx with x overloaded [perl #121827]';
+{
+    no warnings 'void';
+    is join(",", 1..3, scalar((bless([], 'xstack')) x 3, 1), 4..6),
+      "1,2,3,1,4,5,6",
+      '(...)x... in void cx with x overloaded [perl #121827]';
+}
 
 package bitops {
     our @o;
@@ -3167,6 +3182,7 @@ package Stringify {
     use overload
         '.'  => sub {
                         my ($a, $b, $rev) = @_;
+                        $b = '';
                         bless [ $rev ? "$b" . $a->[0] : $a->[0] . "$b" ];
             },
         '""' => sub {  $count++; $_[0][0] },

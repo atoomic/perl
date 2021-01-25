@@ -4,24 +4,24 @@ __END__
 
 # no strict, should build & run ok.
 no strict;
-Fred ;
+{ no warnings 'void'; Fred; }
 my $fred ;
 $beta = "fred" ;
-$alpha = $$beta ;
+{ no warnings 'once'; $alpha = $$beta; }
 EXPECT
 
 ########
 
 # no strict subs, bareword ok.
 no strict 'subs' ;
-Fred ;
+no warnings 'void'; Fred ;
 EXPECT
 
 ########
 
 use strict ;
 no strict 'subs' ;
-Fred ;
+no warnings 'void'; Fred ;
 EXPECT
 
 ########
@@ -274,7 +274,7 @@ no strict ;
 eval '
     Fred ;
 '; print STDERR $@ ;
-Fred ;
+no warnings 'void'; Fred ;
 EXPECT
 
 ########
@@ -396,13 +396,13 @@ Execution of - aborted due to compilation errors.
 ########
 #  [perl #27628] strict 'subs' didn't warn on bareword array index
 use strict 'subs';
-my @a; my $x=$a[FOO];
+my @a; no warnings 'numeric'; my $x=$a[FOO];
 EXPECT
 Bareword "FOO" not allowed while "strict subs" in use at - line 3.
 Execution of - aborted due to compilation errors.
 ########
 use strict 'subs';
-my @a;my $x=$a[FOO];
+my @a; no warnings 'numeric'; my $x=$a[FOO];
 EXPECT
 Bareword "FOO" not allowed while "strict subs" in use at - line 2.
 Execution of - aborted due to compilation errors.
@@ -430,7 +430,7 @@ sub _rankCompare2 { }
 EXPECT
 
 ########
-use strict;
+use strict; no warnings 'unopened';
 readline(FOO);
 EXPECT
 
