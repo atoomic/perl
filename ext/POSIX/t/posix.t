@@ -118,8 +118,9 @@ SKIP: {
     }
     sleep 1;
 
-    $todo = 1 if ($^O eq 'freebsd' && $Config{osvers} < 8)
-              || ($^O eq 'darwin' && $Config{osvers} < '6.6');
+    my ($major, $minor) = $Config{osvers} =~ / (\d+) \. (\d+) .* /x;
+    $todo = 1 if ($^O eq 'freebsd' && $major < 8)
+              || ($^O eq 'darwin' && "${major}.${minor}" < '6.6');
     printf "%s 11 - masked SIGINT received %s\n",
         $sigint_called ? "ok" : "not ok",
         $todo ? $why_todo : '';
@@ -356,11 +357,16 @@ is ($result, undef, "fgets should fail");
 like ($@, qr/^Unimplemented: POSIX::fgets\(\): Use method IO::Handle::gets\(\) instead/,
       "check its redef message");
 
-eval { use strict; no warnings 'uninitialized'; POSIX->import("S_ISBLK"); my $x = S_ISBLK };
+eval {
+    use strict;
+    no warnings 'uninitialized'; # S_ISBLK normally has an arg
+    POSIX->import("S_ISBLK");
+    my $x = S_ISBLK
+};
 unlike( $@, qr/Can't use string .* as a symbol ref/, "Can import autoloaded constants" );
 
 SKIP: {
-    skip("locales not available", 26) unless locales_enabled(qw(NUMERIC MONETARY));
+    skip("locales not available", 26) unless locales_enabled([ qw(NUMERIC MONETARY) ]);
     skip("localeconv() not available", 26) unless $Config{d_locconv};
     my $conv = localeconv;
     is(ref $conv, 'HASH', 'localeconv returns a hash reference');
